@@ -1,0 +1,119 @@
+<?php
+
+use \m2i\framework\Router;
+use m2i\framework\Tools;
+
+?>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chroniques Mobiles</title>
+  <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+</head>
+<body class="container-fluid">
+<header class="card-header row">
+  <div class="col-md-4">
+    <h3>Chroniques Mobiles</h3>
+  </div>
+  <div class="col-md-4 text-center">
+    <?php if (isset($fm)) : ?>
+      <h3><?= $fm->getTitle() ?></h3>
+    <?php else : ?>
+      <h3><?= $title ?? "" ?></h3>
+    <?php endif; ?>
+  </div>
+  <div class="col-md-4 text-right">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" href="<?= Router::route(['home', 'select']) ?>">(<?= $_SESSION["dataset"]["name"] ?>)</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= Router::route(['family']) ?>">Familles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= Router::route(['profile']) ?>">Profils</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= Router::route(['path']) ?>">Voies</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Capacités</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<div class="row justify-content-center">
+
+  <?php
+  $messages = Tools::getFlash();
+  if (is_array($messages) && count($messages) > 0) : ?>
+    <div class="alert alert-success alert-dismissible fade show col-md-6 mt-2" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+        <span>&times;</span>
+      </button>
+      <ul>
+        <?php foreach ($messages as $message) : ?>
+          <li><?= $message ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif ?>
+
+  <?php
+  $messages = Tools::getFlash("warning");
+  if (is_array($messages) && count($messages) > 0) : ?>
+    <div class="alert alert-warning alert-dismissible fade show col-md-6 mt-2" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+        <span>&times;</span>
+      </button>
+      <ul>
+        <?php foreach ($messages as $message) : ?>
+          <li><?= $message ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif ?>
+
+  <?php
+  $messages = Tools::getFlash("error");
+  if (is_array($messages) && count($messages) > 0) : ?>
+    <div class="alert alert-danger alert-dismissible fade show col-md-6 mt-2" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+        <span>&times;</span>
+      </button>
+      <ul>
+        <?php foreach ($messages as $message) : ?>
+          <li><?= $message ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <button type="button" class="close"></button>
+    </div>
+  <?php endif ?>
+</div>
+
+<div class="row justify-content-center">
+  <?= $content ?>
+</div>
+
+
+<script src="assets/jquery/dist/jquery.slim.js"></script>
+<script src="assets/popper.js/dist/umd/popper.js"></script>
+<script src="assets/bootstrap/dist/js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script src="js/utils.js"></script>
+
+<script>
+  <?php if ($script) : ?>
+  <?php include $script ?>
+  <?php endif; ?>
+</script>
+
+</body>
+</html>

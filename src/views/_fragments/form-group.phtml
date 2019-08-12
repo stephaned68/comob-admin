@@ -1,0 +1,14 @@
+<?php
+
+?>
+
+<div class="form-group">
+  <label for="<?= $fieldName ?>"><?= $fieldLabel ?? $fieldName ?></label>
+  <input type="<?= $fieldType ?>"
+         class="<?= $fieldClass ?? '' ?>"
+         id="<?= $fieldName ?>"
+         name="<?= $fieldName ?>"
+         value="<?= $fieldValue ?? '' ?>"
+    <?= $fieldReadonly ?? "" ?>
+  >
+</div>

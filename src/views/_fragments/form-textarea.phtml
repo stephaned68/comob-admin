@@ -1,0 +1,13 @@
+<?php
+
+?>
+
+<div class="form-group">
+  <label for="<?= $fieldName ?>"><?= $fieldLabel ?? $fieldName ?></label>
+  <textarea
+    class="<?= $fieldClass ?? '' ?>"
+    id="<?= $fieldName ?>"
+    name="<?= $fieldName ?>"
+    <?= $fieldReadonly ?? "" ?>
+  ><?= $fieldValue ?></textarea>
+</div>

@@ -1,0 +1,52 @@
+<?php
+use \m2i\framework\Tools;
+use \m2i\framework\Router;
+?>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <!-- Affichage message flash -->
+      <?php
+      $message = Tools::getFlash();
+      if (!empty($message)) : ?>
+          <div class="alert alert-success mt-2">
+            <?= $message ?>
+          </div>
+      <?php endif ?>
+        <div class="row mt-4 mb-2">
+            <div class="col">
+                <h2>Liste des familles</h2>
+            </div>
+            <div class="col text-right">
+                <a class="btn btn-success"
+                   href="<?= Router::route([ 'family', 'edit' ]) ?>"
+                >Ajouter</a>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr class="text-center">
+                    <th>Libellé</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($familyList as $family) : ?>
+                    <tr>
+                        <td>
+                            <a href="<?= Router::route([ 'family','edit', $family['famille'] ]) ?>"
+                            ><?= $family["description"] ?></a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-danger"
+                               href="<?= Router::route([ 'family','delete', $family['famille'] ]) ?>"
+                            >Supprimer</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

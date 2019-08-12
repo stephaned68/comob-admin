@@ -1,0 +1,57 @@
+<?php
+
+use \m2i\framework\Router;
+
+?>
+<div class="col-md-4">
+  <div class="row mt-4 mb-2">
+    <div class="col">
+      <form id="filter_form" method="post">
+        <div class="form-inline">
+          <label for="filter_family">Famille</label>&nbsp;
+          <select id="filter_family" name="filter_family" class="form-control-sm">
+            <option value="*" <?= ($familyFilter === "*") ? "selected" : "" ?>>Toutes</option>
+            <?php foreach ($families as $familyKey => $familyLabel) : ?>
+              <option value="<?= $familyKey ?>"
+                <?= ($familyFilter != "*" && $familyKey == $familyFilter) ? "selected" : "" ?>
+              ><?= $familyLabel ?></option>
+            <?php endforeach; ?>
+          </select>
+          <button class="btn btn-sm btn-outline-dark" type="submit" name="submit">Filtrer</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-2 text-right">
+      <a class="btn btn-success"
+         href="<?= Router::route(['profile', 'edit']) ?>"
+      >Ajouter</a>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-bordered table-striped">
+      <thead>
+      <tr class="text-center">
+        <th>Intitulé</th>
+        <th>Famille</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <?php foreach ($profileList as $profile) : ?>
+        <tr>
+          <td>
+            <a href="<?= Router::route(['profile', 'edit', $profile['pr_profil']]) ?>"
+            ><?= $profile["pr_nom"] ?></a>
+          </td>
+          <td><?= $profile["fa_description"] ?></td>
+          <td class="text-center">
+            <a class="btn btn-sm btn-outline-danger confirm-delete"
+               href="<?= Router::route(['profile', 'delete', $profile['pr_profil']]) ?>"
+            >Supprimer</a>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
