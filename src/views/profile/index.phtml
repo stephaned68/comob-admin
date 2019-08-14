@@ -45,6 +45,9 @@ use \m2i\framework\Router;
           </td>
           <td><?= $profile["fa_description"] ?></td>
           <td class="text-center">
+            <a class="btn btn-sm btn-outline-dark"
+               href="<?= Router::route(['profile', 'paths', $profile['pr_profil']]) ?>"
+            >Voies</a>
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['profile', 'delete', $profile['pr_profil']]) ?>"
             >Supprimer</a>

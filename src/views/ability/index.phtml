@@ -1,52 +1,66 @@
 <?php
-use \m2i\framework\Tools;
-use \m2i\framework\Router;
-?>
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <!-- Affichage message flash -->
-      <?php
-      $message = Tools::getFlash();
-      if (!empty($message)) : ?>
-          <div class="alert alert-success mt-2">
-            <?= $message ?>
-          </div>
-      <?php endif ?>
-        <div class="row mt-4 mb-2">
-            <div class="col">
-                <h2>Liste des familles</h2>
-            </div>
-            <div class="col text-right">
-                <a class="btn btn-success"
-                   href="<?= Router::route([ 'family', 'edit' ]) ?>"
-                >Ajouter</a>
-            </div>
-        </div>
-        <div class="row">
-            <table class="table table-bordered table-striped">
-                <thead>
-                <tr class="text-center">
-                    <th>Libellé</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach($familyList as $family) : ?>
-                    <tr>
-                        <td>
-                            <a href="<?= Router::route([ 'family','edit', $family['famille'] ]) ?>"
-                            ><?= $family["description"] ?></a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-danger"
-                               href="<?= Router::route([ 'family','delete', $family['famille'] ]) ?>"
-                            >Supprimer</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
 
+use \m2i\framework\Router;
+
+?>
+<div class="col-md-4">
+  <div class="row mt-4 mb-2">
+    <div class="col">
+      <form id="filter_form" method="post">
+        <div class="form-inline">
+          <label for="filter_type">Type</label>&nbsp;
+          <select id="filter_type" name="filter_type" class="form-control-sm">
+            <option value="*" <?= ($abilityType === "*") ? "selected" : "" ?>>Toutes</option>
+            <?php foreach ($abilityTypes as $abilityTypeK => $abilityTypeV) : ?>
+              <option value="<?= $abilityTypeK ?>"
+                <?= ($abilityType != "*" && $abilityTypeK == $abilityType) ? "selected" : "" ?>
+              ><?= $abilityTypeV ?></option>
+            <?php endforeach; ?>
+          </select>
+          <button class="btn btn-sm btn-outline-dark" type="submit" name="submit">Filtrer</button>
         </div>
+      </form>
     </div>
+    <div class="col text-right">
+      <a class="btn btn-success"
+         href="<?= Router::route(['ability', 'edit']) ?>"
+      >Ajouter</a>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-bordered table-striped">
+      <thead>
+      <tr class="text-center">
+        <th>Intitulé</th>
+        <th>Propriétés</th>
+        <th>Type</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <?php foreach ($abilityList as $ability) : ?>
+        <tr>
+          <td>
+            <a href="<?= Router::route(['ability', 'edit', $ability['capacite']]) ?>"
+            ><?= $ability["nom"] ?></a>
+          </td>
+          <td>
+            <?php if ($ability["limitee"] == 1) : ?>
+              <i class="fas fa-cogs" title="Action (L)imitée"></i>
+            <?php endif; ?>
+            <?php if ($ability["sort"] == 1) : ?>
+              <i class="fas fa-magic" title="Sort"></i>
+            <?php endif; ?>
+          </td>
+          <td><?= $abilityTypes[$ability['type']] ?></td>
+          <td class="text-center">
+            <a class="btn btn-sm btn-outline-danger confirm-delete"
+               href="<?= Router::route(['ability', 'delete', $ability['capacite']]) ?>"
+            >Supprimer</a>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
 </div>

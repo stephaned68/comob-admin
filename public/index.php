@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-use m2i\framework\Database;
 use m2i\framework\Router;
 use m2i\framework\Dispatcher;
 

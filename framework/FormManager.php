@@ -121,12 +121,13 @@ class FormManager
       ->setName($props["name"] ?? "")
       ->setLabel($props["label"] ?? $props["name"])
       ->setFilter($props["filter"] ?? FILTER_SANITIZE_STRING)
-      ->setRequired($props["required"] ?? true)
-      ->setErrorMessage($props["errorMessage"] ?? "{$props['label']} non saisi(e)")
+      ->setRequired($props["required"] ?? false)
+      ->setErrorMessage($props["errorMessage"] ?? ($props['label'] ?? $props["name"]) . " non saisi(e)")
       ->setControlType($props["controlType"] ?? "text")
-      ->setCssClass($props["cssClass"] ?? "form-control")
+      ->setCssClass($props["cssClass"] ?? FormField::getDefaultCSS($field->getControlType()))
       ->setPrimeKey($props["primeKey"] ?? false)
       ->setValueList($props["valueList"] ?? [])
+      ->setSize($props["size"] ?? [])
     ;
 
     $this->formFields[$props["name"]] = $field;
@@ -163,8 +164,10 @@ class FormManager
 
     foreach ($this->formFields as $field) {
       $fieldValue = filter_input(INPUT_POST, $field->getName(), $field->getFilter());
-      if (trim($fieldValue) === "" && $field->isRequired()) {
-        array_push($errorList, $field->getErrorMessage());
+      if (trim($fieldValue) === "") {
+        if ($field->isPrimeKey() || $field->isRequired()) {
+          array_push($errorList, $field->getErrorMessage());
+        }
       }
     }
 
@@ -180,13 +183,35 @@ class FormManager
 
     $formData = [];
     foreach ($this->formFields as $field) {
-      $formData[$field->getName()] = filter_input(INPUT_POST, $field->getName(), $field->getFilter());
+      $fieldName = $field->getName();
+      $fieldValue = filter_input(INPUT_POST, $fieldName, $field->getFilter());
+      if ($field->getControlType() === "checkbox") {
+        $fieldValue = $fieldValue === "1" ? "1" : "0";
+      }
+      $formData[$fieldName] = $fieldValue;
     }
 
     return $formData;
   }
 
   /**
+   * Generate HTML chunk for field
+   * @param FormField $field
+   * @param $data
+   * @return false|string
+   */
+  private function renderHTML(FormField $field, $data)
+  {
+    $name = $field->getName();
+    $value = null;
+    if (array_key_exists($name, $data)) {
+      $value = $data[$name];
+    }
+    return $field->render($value);
+  }
+
+  /**
+   * Render all fields in the form
    * @param array $data
    * @return string
    */
@@ -195,17 +220,37 @@ class FormManager
     $formHTML = "";
 
     foreach ($this->formFields as $field) {
-      $name = $field->getName();
-      $value = null;
-      if (array_key_exists($name, $data)) {
-        $value = $data[$name];
-      }
-      $formHTML .= $field->render($value) . "\n";
+      $formHTML .= $this->renderHTML($field, $data) . "\n";
     }
 
     return $formHTML;
   }
 
+  /**
+   * Render a field by its name
+   * @param $fieldName
+   * @param array $data
+   * @return false|string
+   */
+  public function renderField($fieldName, $data = [])
+  {
+    $formHTML = "";
+
+    foreach ($this->formFields as $field) {
+      if ($field->getName() === $fieldName) {
+        $formHTML = $this->renderHTML($field, $data);
+        break;
+      }
+    }
+
+    return $formHTML;
+  }
+
+  /**
+   * Render the bottom buttons bar
+   * @param array $data
+   * @return false|string
+   */
   public function renderButtons($data = [])
   {
 

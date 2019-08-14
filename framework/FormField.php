@@ -53,6 +53,11 @@ class FormField
   private $valueList;
 
   /**
+   * @var array
+   */
+  private $size;
+
+  /**
    * FormField constructor.
    * @param string $name
    * @param string $label
@@ -63,17 +68,19 @@ class FormField
    * @param string $cssClass
    * @param bool $primeKey
    * @param array $valueList
+   * @param array $size
    */
   public function __construct(
-    string $name = "",
-    string $label = "",
+    string $name = null,
+    string $label = null,
     int $filter = 0,
     bool $required = false,
-    string $errorMessage = "",
-    string $controlType = "",
-    string $cssClass = "",
+    string $errorMessage = null,
+    string $controlType = null,
+    string $cssClass = null,
     bool $primeKey = false,
-    array $valueList = []
+    array $valueList = [],
+    array $size = []
   )
   {
     $this->name = $name;
@@ -85,6 +92,7 @@ class FormField
     $this->cssClass = $cssClass;
     $this->primeKey = $primeKey;
     $this->valueList = $valueList;
+    $this->size = $size;
   }
 
 
@@ -251,6 +259,24 @@ class FormField
   }
 
   /**
+   * @return array
+   */
+  public function getSize(): array
+  {
+    return $this->size;
+  }
+
+  /**
+   * @param array $size
+   * @return FormField
+   */
+  public function setSize(array $size): FormField
+  {
+    $this->size = $size;
+    return $this;
+  }
+
+  /**
    * @param $data
    * @return false|string
    */
@@ -258,15 +284,16 @@ class FormField
   {
 
     if ($this->controlType === "hidden") {
-      return '<input type="hidden" name="{$this->name}" value="{$data}">';
+      return '<input type="hidden" name="' . $this->name . '" value="' . $data . '">';
     }
 
     $options = [
       "fieldName" => $this->name,
       "fieldLabel" => $this->label ?? $this->name,
       "fieldType" => $this->controlType ?? "text",
-      "fieldClass" => $this->cssClass ?? "form-control",
+      "fieldClass" => $this->cssClass ?? self::getDefaultCSS($this->controlType),
       "fieldSelect" => $this->valueList ?? [],
+      "fieldSize" => $this->size,
       "fieldValue" => $data
     ];
 
@@ -279,7 +306,9 @@ class FormField
 
     extract($options);
 
-    if ($this->controlType === "select" || $this->controlType === "textarea") {
+    if ($this->controlType === "select"
+      || $this->controlType === "textarea"
+      || $this->controlType === "checkbox") {
       require VIEWS_PATH . "/_fragments/form-{$this->controlType}.phtml";
     } else {
       require VIEWS_PATH . "/_fragments/form-group.phtml";
@@ -288,5 +317,19 @@ class FormField
     $fieldHTML = ob_get_clean();
 
     return $fieldHTML;
+  }
+
+  public static function getDefaultCSS($controlType)
+  {
+    $defaultCSS = [
+      "hidden" => "",
+      "text" => "form-control",
+      "number" => "form-control",
+      "select" => "form-control",
+      "textarea" => "form-control",
+      "checkbox" => "form-check-input"
+    ];
+
+    return $defaultCSS[$controlType];
   }
 }

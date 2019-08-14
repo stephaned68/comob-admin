@@ -45,6 +45,9 @@ use \m2i\framework\Router;
           </td>
           <td><?= $pathTypes[$path['type']] ?></td>
           <td class="text-center">
+            <a class="btn btn-sm btn-outline-dark"
+               href="<?= Router::route(['path', 'abilities', $path['voie']]) ?>"
+            >Capacités</a>
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['path', 'delete', $path['voie']]) ?>"
             >Supprimer</a>

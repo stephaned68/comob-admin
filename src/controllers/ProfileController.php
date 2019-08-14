@@ -4,10 +4,12 @@
 namespace m2i\project\controllers;
 
 
+use m2i\framework\Database;
 use m2i\framework\FormManager;
 use m2i\framework\Router;
 use m2i\framework\Tools;
 use m2i\project\models\FamilyModel;
+use m2i\project\models\PathModel;
 use m2i\project\models\ProfileModel;
 
 class ProfileController extends AbstractController
@@ -15,7 +17,7 @@ class ProfileController extends AbstractController
 
   public function indexAction()
   {
-    $familyFilter="*";
+    $familyFilter = "*";
     if (FormManager::isSubmitted()) {
       $familyFilter = filter_input(INPUT_POST, "filter_family", FILTER_SANITIZE_STRING);
     }
@@ -29,7 +31,7 @@ class ProfileController extends AbstractController
         $profileList = ProfileModel::getAll();
       }
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
     }
 
     $this->render("profile/index",
@@ -69,7 +71,7 @@ class ProfileController extends AbstractController
           "label" => "Famille",
           "errorMessage" => "Famille non choisie",
           "controlType" => "select",
-          "valueList" => Tools::select(FamilyModel::getAll(),"famille", "description")
+          "valueList" => Tools::select(FamilyModel::getAll(), "famille", "description")
         ]
       )
       ->addField(
@@ -84,43 +86,25 @@ class ProfileController extends AbstractController
           ]
         ]
       )
-      ->setIndexRoute(Router::route([ "profile", "index" ]))
-      ->setDeleteRoute(Router::route([ "profile", "delete" ]))
-    ;
+      ->setIndexRoute(Router::route(["profile", "index"]))
+      ->setDeleteRoute(Router::route(["profile", "delete"]));
 
     if ($id) {
       $profile = ProfileModel::getOne($id);
     }
 
     if (FormManager::isSubmitted()) {
-      if ($form->isValid()) {
-        $message = null;
-        $data = $form->getData();
-        if ($id) {
-          try {
-            ProfileModel::update($data);
-            $message = "Le profil {$data['nom']} a été modifié avec succès";
-          } catch (\PDOException $ex) {
-            Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
-            return;
-          }
-        } else {
-          try {
-            ProfileModel::insert($data);
-            $message = "Le profil {$data['nom']} a été ajouté avec succès";
-          } catch (\PDOException $ex) {
-            Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
-            return;
-          }
-        }
-        if ($message) {
-          Tools::setFlash($message);
-        }
+      if (Database::save(
+        $form,
+        $id,
+        ProfileModel::class,
+        [
+          "insert" => "Le profil a été ajouté avec succès",
+          "update" => "Le profil a été modifié avec succès"
+        ])
+      ) {
         Router::redirectTo(["profile", "index"]);
         return;
-      } else {
-        $errors = $form->validateForm();
-        Tools::setFlash($errors, "warning");
       }
     }
 
@@ -128,6 +112,56 @@ class ProfileController extends AbstractController
       [
         "profile" => $profile,
         "fm" => $form
+      ]);
+  }
+
+  public function pathsAction($id)
+  {
+    $form = new FormManager();
+    $form
+      ->setTitle("Maintenance des voies de profils")
+      ->addField(
+        [
+          "name" => "profil",
+          "controlType" => "hidden",
+          "primeKey" => true
+        ]
+      )
+      ->addField(
+        [
+          "name" => "nom",
+          "label" => "Profil",
+          "primeKey" => true
+        ]
+      )
+      ->setIndexRoute(Router::route(["profile", "index"]));
+
+    $profile = ProfileModel::getOne($id);
+
+    $paths = [];
+    foreach (ProfileModel::getPaths($id) as $path) {
+      $paths[] = $path["voie"];
+    }
+
+    if (FormManager::isSubmitted()) {
+      $data = $form->getData();
+      $voies = filter_input(INPUT_POST, "voies", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+      $data["voies"] = $voies;
+
+      ProfileModel::savePaths($data);
+
+      Tools::setFlash("La liste des voies du profil a été enregistrée avec succès");
+      Router::redirectTo(["profile", "index"]);
+
+      return;
+    }
+
+    $this->render("profile/paths",
+      [
+        "profile" => $profile,
+        "voies" => $paths,
+        "pathList" => Tools::select(PathModel::getAllForType(0), "voie", "nom"),
+        "fm" => $form,
       ]);
   }
 }

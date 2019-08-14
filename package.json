@@ -2,6 +2,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
+    "jquery-confirm": "^3.3.4",
     "popper.js": "^1.15.0",
     "select2": "^4.0.8"
   }

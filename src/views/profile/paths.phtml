@@ -1,0 +1,27 @@
+<?php
+
+?>
+<div class="col-md-4 mt-2 mb-2">
+  <form method="post">
+
+    <?= $fm->render($profile) ?>
+
+    <div class="form-group">
+      <label for="voies">Voies</label>
+      <select id="voies"
+              name="voies[]"
+              class="form-control"
+              multiple="multiple">
+        <?php foreach ($pathList as $pathValue => $pathLabel) : ?>
+        <option value="<?= $pathValue ?>"
+                <?= (in_array($pathValue, $voies)) ? "selected" : "" ?>
+        ><?= $pathLabel ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+
+    <?= $fm->renderButtons($profile) ?>
+
+  </form>
+
+</div>

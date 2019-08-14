@@ -27,8 +27,8 @@ class ProfileModel
       array_push($params, $family);
     }
 
-    array_push($sql,"order by pr.nom");
-    $stmt = implode(" ",$sql);
+    array_push($sql, "order by pr.nom");
+    $stmt = implode(" ", $sql);
 
     if ($family !== "") {
       $statement = Database::getPDO()->prepare($stmt);
@@ -108,7 +108,7 @@ class ProfileModel
 
   public static function deleteOne($id)
   {
-    $sql=implode(" ",
+    $sql = implode(" ",
       [
         "delete from",
         Database::table(self::$table),
@@ -118,4 +118,57 @@ class ProfileModel
     return $statement->execute([$id]);
   }
 
+  public static function getPaths($id)
+  {
+    $sql = implode(" ",
+      [
+        "select * from",
+        Database::table("voies_profils"),
+        "where profil = ?"
+      ]);
+    $statement = Database::getPDO()->prepare($sql);
+    $statement->execute([$id]);
+    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+  }
+
+  public static function savePaths($data)
+  {
+    $pdo = Database::getPDO();
+    $pdo->beginTransaction();
+
+    // remove existing
+    $sql = implode(" ",
+    [
+      "delete from",
+      Database::table("voies_profils"),
+      "where profil = ? and voie = ?"
+    ]);
+    $statement = $pdo->prepare($sql);
+    foreach ($data["voies"] as $voie) {
+      $statement->execute(
+        [
+          $data["profil"],
+          $voie
+        ]);
+    }
+
+    // insert
+    $sql = implode(" ",
+      [
+        "insert into",
+        Database::table("voies_profils"),
+        "(profil, voie)",
+        "values(?, ?)"
+      ]);
+    $statement = $pdo->prepare($sql);
+    foreach ($data["voies"] as $voie) {
+      $statement->execute(
+        [
+          $data["profil"],
+          $voie
+        ]);
+    }
+
+    $pdo->commit();
+  }
 }

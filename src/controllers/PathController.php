@@ -4,18 +4,19 @@
 namespace m2i\project\controllers;
 
 
+use m2i\framework\Database;
 use m2i\framework\FormManager;
 use m2i\framework\Router;
 use m2i\framework\Tools;
+use m2i\project\models\AbilityModel;
 use m2i\project\models\PathModel;
-use m2i\project\models\ProfileModel;
 
 class PathController extends AbstractController
 {
 
   public function indexAction()
   {
-    $pathType="*";
+    $pathType = "*";
     if (FormManager::isSubmitted()) {
       $pathType = filter_input(INPUT_POST, "filter_type", FILTER_SANITIZE_STRING);
     }
@@ -43,14 +44,14 @@ class PathController extends AbstractController
 
   public function editAction($id = null)
   {
-    $profile = [];
+    $path = [];
 
     $form = new FormManager();
     $form
-      ->setTitle("Maintenance des profils")
+      ->setTitle("Maintenance des voies")
       ->addField(
         [
-          "name" => "profil",
+          "name" => "voie",
           "label" => "Identifiant",
           "errorMessage" => "Identifiant non saisi",
           "primeKey" => true
@@ -65,59 +66,100 @@ class PathController extends AbstractController
       )
       ->addField(
         [
+          "name" => "notes",
+          "label" => "Notes",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 8
+          ]
+        ]
+      )
+      ->addField(
+        [
           "name" => "type",
           "label" => "Type",
           "errorMessage" => "Type non choisi",
           "controlType" => "select",
-          "valueList" => [
-            "0" => "Base",
-            "1" => "Hybride"
-          ]
+          "valueList" => PathModel::getTypes()
         ]
       )
-      ->setIndexRoute(Router::route(["profile", "index"]))
-      ->setDeleteRoute(Router::route(["profile", "delete"]));
+      ->setIndexRoute(Router::route(["path", "index"]))
+      ->setDeleteRoute(Router::route(["path", "delete"]));
 
     if ($id) {
-      $profile = ProfileModel::getOne($id);
+      $path = PathModel::getOne($id);
     }
 
     if (FormManager::isSubmitted()) {
-      if ($form->isValid()) {
-        $message = null;
-        $data = $form->getData();
-        if ($id) {
-          try {
-            ProfileModel::update($data);
-            $message = "Le profil {$data['nom']} a été modifié avec succès";
-          } catch (\PDOException $ex) {
-            Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
-            return;
-          }
-        } else {
-          try {
-            ProfileModel::insert($data);
-            $message = "Le profil {$data['nom']} a été ajouté avec succès";
-          } catch (\PDOException $ex) {
-            Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
-            return;
-          }
-        }
-        if ($message) {
-          Tools::setFlash($message);
-        }
-        Router::redirectTo(["profile", "index"]);
+      if (Database::save(
+        $form,
+        $id,
+        PathModel::class,
+        [
+          "insert" => "La voie a été ajoutée avec succès",
+          "update" => "La voie a été modifiée avec succès"
+        ])
+      ) {
+        Router::redirectTo(["path", "index"]);
         return;
-      } else {
-        $errors = $form->validateForm();
-        Tools::setFlash($errors);
       }
     }
 
-    $this->render("profile/edit",
+    $this->render("path/edit",
       [
-        "profile" => $profile,
+        "path" => $path,
         "fm" => $form
+      ]);
+  }
+
+  public function abilitiesAction($id)
+  {
+    $form = new FormManager();
+    $form
+      ->setTitle("Maintenance des capacités par voies")
+      ->addField(
+        [
+          "name" => "voie",
+          "controlType" => "hidden",
+          "primeKey" => true
+        ]
+      )
+      ->addField(
+        [
+          "name" => "nom",
+          "label" => "Voie",
+          "primeKey" => true
+        ]
+      )
+      ->setIndexRoute(Router::route(["path", "index"]));
+
+    $path = PathModel::getOne($id);
+
+    $abilities = [];
+    foreach (PathModel::getAbilities($id) as $ability) {
+      $abilities[] = $ability["capacite"];
+    }
+
+    if (FormManager::isSubmitted()) {
+      $data = $form->getData();
+      $capacites = filter_input(INPUT_POST, "capacites", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+      $data["capacites"] = $capacites;
+
+      PathModel::saveAbilities($data);
+
+      Tools::setFlash("La liste des capacités de la voie a été enregistrée avec succès");
+      Router::redirectTo(["path", "index"]);
+
+      return;
+    }
+
+    $this->render("path/abilities",
+      [
+        "path" => $path,
+        "capacites" => $abilities,
+        "abilityList" => Tools::select(AbilityModel::getAllForType($path["type"]), "capacite", "nom"),
+        "fm" => $form,
       ]);
   }
 }

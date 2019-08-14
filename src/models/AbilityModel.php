@@ -3,18 +3,21 @@
 
 namespace m2i\project\models;
 
+
 use m2i\framework\Database;
 
-class PathModel
+class AbilityModel
 {
-  public static $table = "voies";
+
+  public static $table = "capacites";
 
   public static function getTypes()
   {
     return [
       "0" => "Profil",
       "1" => "Raciale",
-      "2" => "Prestige"
+      "2" => "Prestige",
+      "3" => "Epique"
     ];
   }
 
@@ -48,7 +51,7 @@ class PathModel
       [
         "select * from",
         Database::table(self::$table),
-        "where voie = ?"
+        "where capacite = ?"
       ]);
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([$id]);
@@ -61,8 +64,8 @@ class PathModel
       [
         "insert into",
         Database::table(self::$table),
-        "(voie, nom, notes, type)",
-        "values(:voie, :nom, :notes, :type)"
+        "(capacite, nom, limitee, sort, type, description)",
+        "values(:capacite, :nom, :limitee, :sort, :type, :description)"
       ]);
     $statement = Database::getPDO()->prepare($sql);
     return $statement->execute($data);
@@ -76,9 +79,11 @@ class PathModel
         Database::table(self::$table),
         "set",
         "nom=:nom,",
-        "notes=:notes,",
-        "type=:type",
-        "where voie=:voie"
+        "limitee=:limitee,",
+        "sort=:sort,",
+        "type=:type,",
+        "description=:description",
+        "where capacite=:capacite"
       ]);
     $statement = Database::getPDO()->prepare($sql);
     return $statement->execute($data);
@@ -90,64 +95,10 @@ class PathModel
       [
         "delete from",
         Database::table(self::$table),
-        "where voie = ?"
+        "where capacite = ?"
       ]);
     $statement = Database::getPDO()->prepare($sql);
     return $statement->execute([$id]);
   }
 
-  public static function getAbilities($id)
-  {
-    $sql = implode(" ",
-      [
-        "select * from",
-        Database::table("capacites_voies"),
-        "where voie = ?"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
-    $statement->execute([$id]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
-  }
-
-  public static function saveAbilities($data)
-  {
-    $pdo = Database::getPDO();
-    $pdo->beginTransaction();
-
-    // remove existing
-    $sql = implode(" ",
-      [
-        "delete from",
-        Database::table("capacites_voies"),
-        "where voie = ? and rang = ?"
-      ]);
-    $statement = $pdo->prepare($sql);
-    for ($rang = 0; $rang < 5; $rang++) {
-      $statement->execute(
-        [
-          $data["voie"],
-          $rang + 1
-        ]);
-    }
-
-    // insert
-    $sql = implode(" ",
-      [
-        "insert into",
-        Database::table("capacites_voies"),
-        "(voie, rang, capacite)",
-        "values(?, ?, ?)"
-      ]);
-    $statement = $pdo->prepare($sql);
-    for ($rang = 0; $rang < 5; $rang++) {
-      $statement->execute(
-        [
-          $data["voie"],
-          $rang + 1,
-          $data["capacites"][$rang]
-        ]);
-    }
-
-    $pdo->commit();
-  }
 }

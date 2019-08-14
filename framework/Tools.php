@@ -39,12 +39,12 @@ class Tools
   }
 
   /**
-   * @param string $message
+   * @param string|array $message
    * @param null $type
    */
   public static function setFlash($message, $type = null)
   {
-    $type = ($type) ? $type : "flash";
+    $type = $type ?? "flash";
 
     if (array_key_exists($type, $_SESSION)) {
       $messages = $_SESSION[$type];
@@ -70,7 +70,7 @@ class Tools
    */
   public static function getFlash($type = null)
   {
-    $type = ($type) ? $type : "flash";
+    $type = $type ?? "flash";
     $messages = $_SESSION[$type] ?? [];
     unset($_SESSION[$type]);
     return $messages;

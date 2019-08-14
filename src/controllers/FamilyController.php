@@ -3,6 +3,7 @@
 
 namespace m2i\project\controllers;
 
+use m2i\framework\Database;
 use m2i\framework\FormManager;
 use m2i\framework\Router;
 use m2i\framework\Tools;
@@ -58,34 +59,17 @@ class FamilyController extends AbstractController
     }
 
     if (FormManager::isSubmitted()) {
-      if ($form->isValid()) {
-        $message = null;
-        $data = $form->getData();
-        if ($id) {
-          try {
-            FamilyModel::update($data);
-            $message = "La famille {$data['description']} a été modifiée avec succès";
-          } catch (\PDOException $ex) {
-            Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
-            return;
-          }
-        } else {
-          try {
-            FamilyModel::insert($data);
-            $message = "La famille {$data['description']} a été ajoutée avec succès";
-          } catch (\PDOException $ex) {
-            Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
-            return;
-          }
-        }
-        if ($message) {
-          Tools::setFlash($message);
-        }
+      if (Database::save(
+        $form,
+        $id,
+        FamilyModel::class,
+        [
+          "insert" => "La famille a été ajoutée avec succès",
+          "update" => "La famille a été modifiée avec succès"
+        ])
+      ) {
         Router::redirectTo(["family", "index"]);
         return;
-      } else {
-        $errors = $form->validateForm();
-        Tools::setFlash($errors);
       }
     }
 

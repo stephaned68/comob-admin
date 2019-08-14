@@ -46,6 +46,9 @@ class Router
     }
 
     if (count($urlParts) > 0 && !empty(trim($urlParts[0]))) {
+      array_map(function ($item) {
+        return urldecode($item);
+      }, $urlParts);
       $this->actionParameters = $urlParts;
     }
   }
@@ -91,9 +94,15 @@ class Router
   {
     $url = "index.php?route=";
     if (count($args) > 0) {
+      foreach ($args as $argK => $argV) {
+        $args[$argK] = urlencode(trim($argV));
+      }
       $url .= implode("/", $args);
     }
     if (count($query) > 0) {
+      foreach ($query as $queryK => $queryV) {
+        $query[$queryK] = urlencode(trim($queryV));
+      }
       $url .= "?" . implode("&", $query);
     }
     return $url;

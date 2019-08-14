@@ -1,0 +1,28 @@
+<?php
+
+?>
+<div class="col-md-4 mt-2 mb-2">
+  <form method="post">
+
+    <?= $fm->render($path) ?>
+
+    <?php for ($r = 0; $r < 5; $r++) : ?>
+      <div class="form-group">
+        <label for="rang<?= $r ?>">Rang <?= $r + 1 ?></label>
+        <select id="rang<?= $r ?>"
+                name="capacites[]"
+                class="form-control select2-search--dropdown">
+          <?php foreach ($abilityList as $abilityValue => $abilityLabel) : ?>
+            <option value="<?= $abilityValue ?>"
+              <?= $capacites[$r] == $abilityValue ? "selected" : "" ?>
+            ><?= $abilityLabel ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+    <?php endfor; ?>
+
+    <?= $fm->renderButtons($path) ?>
+
+  </form>
+
+</div>
