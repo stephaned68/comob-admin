@@ -82,30 +82,14 @@ class FamilyController extends AbstractController
 
   public function deleteAction($id = null)
   {
-    if (!$id) {
-      return;
-    }
 
-    $family = null;
-    try {
-      $family = FamilyModel::getOne($id);
-    } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
-    }
+    $success = Database::remove($id, FamilyModel::class,
+      [
+        "success" => "La famille a été supprimée avec succès",
+        "failure" => "Cet identifiant de famille n'existe pas"
+      ]);
 
-    if (!$family) {
-      Tools::setFlash("Cet identifiant de famille n'existe pas", "error");
-    } else {
-      try {
-        FamilyModel::deleteOne($id);
-        Tools::setFlash("La famille {$family['description']} a été supprimée avec succès");
-      } catch (\PDOException $ex) {
-        Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
-      }
-    }
-
-    Router::redirectTo(["family", "index"]);
-
+    Router::redirectTo([($success ? "family" : "home"), "index"]);
   }
 
 }

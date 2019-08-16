@@ -23,12 +23,9 @@ class AbilityModel
 
   public static function getAll()
   {
-    $sql = implode(" ",
-      [
-        "select *",
-        "from " . Database::table(self::$table)
-      ]);
-    $rs = Database::getPDO()->query($sql);
+    $rs = Database::getPDO()->query(
+      Database::getAllQuery(self::$table)
+    );
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
   }
 
@@ -36,9 +33,8 @@ class AbilityModel
   {
     $sql = implode(" ",
       [
-        "select *",
-        "from " . Database::table(self::$table),
-        "where type = ?"
+        Database::getAllQuery(self::$table),
+        Database::buildWhere(["type"])
       ]);
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([$type]);
@@ -47,57 +43,44 @@ class AbilityModel
 
   public static function getOne($id)
   {
-    $sql = implode(" ",
-      [
-        "select * from",
-        Database::table(self::$table),
-        "where capacite = ?"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::getOneQuery(self::$table, ["capacite"])
+    );
     $statement->execute([$id]);
     return $statement->fetch(\PDO::FETCH_ASSOC);
   }
 
   public static function insert($data)
   {
-    $sql = implode(" ",
-      [
-        "insert into",
-        Database::table(self::$table),
-        "(capacite, nom, limitee, sort, type, description)",
-        "values(:capacite, :nom, :limitee, :sort, :type, :description)"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::insertQuery(
+        self::$table,
+        ["capacite", "nom", "limitee", "sort", "type", "description"]
+      )
+    );
     return $statement->execute($data);
   }
 
   public static function update($data)
   {
-    $sql = implode(" ",
-      [
-        "update",
-        Database::table(self::$table),
-        "set",
-        "nom=:nom,",
-        "limitee=:limitee,",
-        "sort=:sort,",
-        "type=:type,",
-        "description=:description",
-        "where capacite=:capacite"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::updateQuery(
+        self::$table,
+        ["nom", "limitee", "sort", "type", "description"],
+        ["capacite"]
+      )
+    );
     return $statement->execute($data);
   }
 
   public static function deleteOne($id)
   {
-    $sql = implode(" ",
-      [
-        "delete from",
-        Database::table(self::$table),
-        "where capacite = ?"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::deleteOneQuery(
+        self::$table,
+        ["capacite"]
+      )
+    );
     return $statement->execute([$id]);
   }
 

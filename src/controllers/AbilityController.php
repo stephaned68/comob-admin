@@ -102,7 +102,7 @@ class AbilityController extends AbstractController
         ]
       )
       ->setIndexRoute(Router::route(["ability", "index"]))
-      ->setDeleteRoute(Router::route(["ability", "delete"]))
+      ->setDeleteRoute(Router::route(["ability", "delete", $id]))
     ;
 
     if ($id) {
@@ -129,5 +129,16 @@ class AbilityController extends AbstractController
         "ability" => $ability,
         "fm" => $form
       ]);
+  }
+
+  public function deleteAction($id = null)
+  {
+    $success = Database::remove($id,AbilityModel::class,
+      [
+        "success" => "La capacité a été supprimée avec succès",
+        "failure" => "Cet identifiant de capacité n'existe pas"
+      ]);
+
+    Router::redirectTo([($success ? "ability" : "home"), "index"]);
   }
 }

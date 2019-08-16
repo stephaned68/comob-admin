@@ -20,12 +20,9 @@ class PathModel
 
   public static function getAll()
   {
-    $sql = implode(" ",
-      [
-        "select *",
-        "from " . Database::table(self::$table)
-      ]);
-    $rs = Database::getPDO()->query($sql);
+    $rs = Database::getPDO()->query(
+      Database::getAllQuery(self::$table)
+    );
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
   }
 
@@ -33,9 +30,8 @@ class PathModel
   {
     $sql = implode(" ",
       [
-        "select *",
-        "from " . Database::table(self::$table),
-        "where type = ?"
+        Database::getAllQuery(self::$table),
+        Database::buildWhere(["type"])
       ]);
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([$type]);
@@ -44,55 +40,44 @@ class PathModel
 
   public static function getOne($id)
   {
-    $sql = implode(" ",
-      [
-        "select * from",
-        Database::table(self::$table),
-        "where voie = ?"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::getOneQuery(self::$table, ["voie"])
+    );
     $statement->execute([$id]);
     return $statement->fetch(\PDO::FETCH_ASSOC);
   }
 
   public static function insert($data)
   {
-    $sql = implode(" ",
-      [
-        "insert into",
-        Database::table(self::$table),
-        "(voie, nom, notes, type)",
-        "values(:voie, :nom, :notes, :type)"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::insertQuery(
+        self::$table,
+        ["voie", "nom", "notes", "type", "pfx_deladu"]
+      )
+    );
     return $statement->execute($data);
   }
 
   public static function update($data)
   {
-    $sql = implode(" ",
-      [
-        "update",
-        Database::table(self::$table),
-        "set",
-        "nom=:nom,",
-        "notes=:notes,",
-        "type=:type",
-        "where voie=:voie"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::updateQuery(
+        self::$table,
+        ["voie", "nom", "notes", "type", "pfx_deladu"],
+        ["voie"]
+      )
+    );
     return $statement->execute($data);
   }
 
   public static function deleteOne($id)
   {
-    $sql = implode(" ",
-      [
-        "delete from",
-        Database::table(self::$table),
-        "where voie = ?"
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
+    $statement = Database::getPDO()->prepare(
+      Database::deleteOneQuery(
+        self::$table,
+        ["voie"]
+      )
+    );
     return $statement->execute([$id]);
   }
 
@@ -100,9 +85,8 @@ class PathModel
   {
     $sql = implode(" ",
       [
-        "select * from",
-        Database::table("capacites_voies"),
-        "where voie = ?"
+        Database::getAllQuery("capacites_voies"),
+        Database::buildWhere(["voie"])
       ]);
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([$id]);
@@ -115,13 +99,15 @@ class PathModel
     $pdo->beginTransaction();
 
     // remove existing
-    $sql = implode(" ",
-      [
-        "delete from",
-        Database::table("capacites_voies"),
-        "where voie = ? and rang = ?"
-      ]);
-    $statement = $pdo->prepare($sql);
+    $statement = $pdo->prepare(
+      Database::deleteOneQuery(
+        "capacites_voies",
+        [
+          "voie",
+          "rang"
+        ]
+      )
+    );
     for ($rang = 0; $rang < 5; $rang++) {
       $statement->execute(
         [
@@ -131,20 +117,22 @@ class PathModel
     }
 
     // insert
-    $sql = implode(" ",
-      [
-        "insert into",
-        Database::table("capacites_voies"),
-        "(voie, rang, capacite)",
-        "values(?, ?, ?)"
-      ]);
-    $statement = $pdo->prepare($sql);
+    $statement = $pdo->prepare(
+      Database::insertQuery(
+        "capacites_voies",
+        [
+          "voie",
+          "rang",
+          "capacite"
+        ]
+      )
+    );
     for ($rang = 0; $rang < 5; $rang++) {
       $statement->execute(
         [
-          $data["voie"],
-          $rang + 1,
-          $data["capacites"][$rang]
+          "voie" => $data["voie"],
+          "rang" => $rang + 1,
+          "capacite" => $data["capacites"][$rang]
         ]);
     }
 

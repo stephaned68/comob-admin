@@ -84,8 +84,22 @@ class PathController extends AbstractController
           "valueList" => PathModel::getTypes()
         ]
       )
+      ->addField(
+        [ // <Troumad>
+          "name" => "pfx_deladu",
+          "label" => "Préfixe",
+          "errorMessage" => "Préfixe non choisi",
+          "controlType" => "select",
+          "valueList" => [
+            "0" => "Voie du",
+            "1" => "Voie de la",
+            "2" => "Voie de l'",
+            "3" => "Voie des",
+          ]
+        ] // </Troumad>
+      )
       ->setIndexRoute(Router::route(["path", "index"]))
-      ->setDeleteRoute(Router::route(["path", "delete"]));
+      ->setDeleteRoute(Router::route(["path", "delete", $id]));
 
     if ($id) {
       $path = PathModel::getOne($id);
@@ -111,6 +125,17 @@ class PathController extends AbstractController
         "path" => $path,
         "fm" => $form
       ]);
+  }
+
+  public function deleteAction($id = null)
+  {
+    $success = Database::remove($id,PathModel::class,
+      [
+        "success" => "La voie a été supprimée avec succès",
+        "failure" => "Cet identifiant de voie n'existe pas"
+      ]);
+
+    Router::redirectTo([($success ? "path" : "home"), "index"]);
   }
 
   public function abilitiesAction($id)

@@ -87,7 +87,7 @@ class ProfileController extends AbstractController
         ]
       )
       ->setIndexRoute(Router::route(["profile", "index"]))
-      ->setDeleteRoute(Router::route(["profile", "delete"]));
+      ->setDeleteRoute(Router::route(["profile", "delete", $id]));
 
     if ($id) {
       $profile = ProfileModel::getOne($id);
@@ -113,6 +113,17 @@ class ProfileController extends AbstractController
         "profile" => $profile,
         "fm" => $form
       ]);
+  }
+
+  public function deleteAction($id = null)
+  {
+    $success = Database::remove($id,ProfileModel::class,
+      [
+        "success" => "Le profil a été supprimé avec succès",
+        "failure" => "Cet identifiant de profil n'existe pas"
+      ]);
+
+    Router::redirectTo([($success ? "profile" : "home"), "index"]);
   }
 
   public function pathsAction($id)

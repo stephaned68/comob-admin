@@ -12,9 +12,12 @@
         <select id="rang<?= $r ?>"
                 name="capacites[]"
                 class="form-control select2-search--dropdown">
+          <option value="">Choisir...</option>
           <?php foreach ($abilityList as $abilityValue => $abilityLabel) : ?>
             <option value="<?= $abilityValue ?>"
+              <?php if (count($capacites) > 0) :?>
               <?= $capacites[$r] == $abilityValue ? "selected" : "" ?>
+              <?php endif; ?>
             ><?= $abilityLabel ?></option>
           <?php endforeach; ?>
         </select>
