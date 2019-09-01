@@ -8,20 +8,27 @@ class Database
 {
 
   /**
+   * @var \PDO $pdo
+   */
+  private static $pdo = null;
+
+  /**
    * Return a PDO connection
    * @return \PDO
    */
   public static function getPDO()
   {
-    $options = [
-      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-    ];
-    return new \PDO(
-      DSN,
-      "root",
-      "",
-      $options
-    );
+    if (!self::$pdo) {
+      self::$pdo = new \PDO(
+        DSN,
+        "root",
+        "",
+        [
+          \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ]
+      );
+    }
+    return self::$pdo;
   }
 
   /**
@@ -29,7 +36,7 @@ class Database
    * @param $table
    * @return string
    */
-  public static function table($table)
+  public static function table(string $table)
   {
     return "{$_SESSION['dataset']['id']}_{$table}";
   }
@@ -38,9 +45,10 @@ class Database
    * Return a SQL where clause
    * @param array $filters
    * @param bool $ordinal
+   * @param bool $orWhere
    * @return string
    */
-  public static function buildWhere(array $filters, bool $ordinal = true)
+  public static function buildWhere(array $filters, bool $ordinal = true, bool $orWhere = false)
   {
     $where = [];
     $andWhere = "where";
@@ -48,7 +56,7 @@ class Database
     foreach ($filters as $filter) {
       $where[] = "$andWhere $filter = " . (($ordinal) ? "?" : ":$filter");
       if ($andWhere === "where") {
-        $andWhere = "and";
+        $andWhere = $orWhere ? "or" : "and";
       }
     }
 
@@ -177,7 +185,6 @@ class Database
           $message = $messages["update"];
         } catch (\PDOException $ex) {
           Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
-          $success = true;
         }
       } else {
         try {
@@ -185,7 +192,6 @@ class Database
           $message = $messages["insert"];
         } catch (\PDOException $ex) {
           Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
-          $success = true;
         }
       }
       if ($message) {
@@ -232,5 +238,14 @@ class Database
     }
 
     return true;
+  }
+
+  public static function getTypes(string $table, string $valueField, string $labelField)
+  {
+    $rs = self::getPDO()->query(
+      self::getAllQuery($table)
+    );
+    $types = Tools::select($rs->fetchAll(\PDO::FETCH_ASSOC),$valueField, $labelField);
+    return array_merge(["" => "Base"], $types);
   }
 }

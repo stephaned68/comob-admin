@@ -4,6 +4,7 @@
 namespace m2i\project\models;
 
 use m2i\framework\Database;
+use m2i\framework\Tools;
 
 class PathModel
 {
@@ -11,11 +12,11 @@ class PathModel
 
   public static function getTypes()
   {
-    return [
-      "0" => "Profil",
-      "1" => "Raciale",
-      "2" => "Prestige"
-    ];
+    return Database::getTypes(
+      "types_voie",
+      "type_voie",
+      "type_voie_intitule"
+    );
   }
 
   public static function getAll()

@@ -100,12 +100,19 @@ class FormManager
 
   /**
    * Check if form has been submitted
-   * @param string $submit
+   * @param array $submits
    * @return bool
    */
-  public static function isSubmitted($submit = "submit")
+  public static function isSubmitted($submits = [ "submit", "close" ])
   {
-    return filter_has_var(INPUT_POST, $submit);
+    $submitted = false;
+    foreach ($submits as $submit) {
+      if (filter_has_var(INPUT_POST, $submit)) {
+        $submitted = true;
+        break;
+      }
+    }
+    return $submitted;
   }
 
 
@@ -186,9 +193,9 @@ class FormManager
       $fieldName = $field->getName();
       $fieldValue = filter_input(INPUT_POST, $fieldName, $field->getFilter());
       if ($field->getControlType() === "checkbox") {
-        $fieldValue = $fieldValue === "1" ? "1" : "0";
+        $fieldValue = $fieldValue ?? "0";
       }
-      $formData[$fieldName] = $fieldValue;
+      $formData[$fieldName] = addslashes($fieldValue);
     }
 
     return $formData;
@@ -255,6 +262,10 @@ class FormManager
   {
 
     $options["btnSubmit"] = count($data) == 0 ? "Ajouter" : "Modifier";
+
+    if (count($data) == 0) {
+      $options["btnClose"] = "Ajouter & fermer";
+    }
 
     if (!empty($this->indexRoute)) {
       $options["indexRoute"] = $this->indexRoute;

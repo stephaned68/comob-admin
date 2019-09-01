@@ -2,6 +2,6 @@
 
 $(function() {
 
-  $('#voies').select2();
+  $('.select-2').select2();
 
 });

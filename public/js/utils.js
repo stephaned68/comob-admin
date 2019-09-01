@@ -15,6 +15,22 @@ function slugify(s) {
 }
 
 /**
+ * Cleanup text
+ * @param text
+ * @returns {string}
+ */
+function cleanText(text) {
+  if (text !== "") {
+    text = text.replace(/\n\n/g, "§");
+    text = text.replace(/\n/g, " ");
+    text = text.replace(/'/g, "’");
+    text = text.replace(/§/g, "\n");
+    text = text[0].toUpperCase() + text.slice(1);
+  }
+  return text;
+}
+
+/**
  * Handle confirmation dialog for element deletion
  */
 function confirmDelete() {

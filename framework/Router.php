@@ -28,6 +28,11 @@ class Router
   private $actionParameters = [];
 
   /**
+   * @var array
+   */
+  private $queryParams = [];
+
+  /**
    * Router constructor.
    * @param string $route
    */
@@ -51,6 +56,11 @@ class Router
       }, $urlParts);
       $this->actionParameters = $urlParts;
     }
+
+    $queryParams = $_GET;
+    array_shift($queryParams);
+    $this->queryParams = $queryParams;
+
   }
 
   /**
@@ -86,6 +96,14 @@ class Router
   }
 
   /**
+   * @return array
+   */
+  public function getQueryParams(): array
+  {
+    return $this->queryParams;
+  }
+
+  /**
    * @param array $args
    * @param array $query
    * @return string
@@ -100,10 +118,11 @@ class Router
       $url .= implode("/", $args);
     }
     if (count($query) > 0) {
+      $queryArgs = [];
       foreach ($query as $queryK => $queryV) {
-        $query[$queryK] = urlencode(trim($queryV));
+        $queryArgs[] = $queryK . "=" . urlencode(trim($queryV));
       }
-      $url .= "?" . implode("&", $query);
+      $url .= "&" . implode("&", $queryArgs);
     }
     return $url;
   }

@@ -34,6 +34,7 @@ class Dispatcher
 
     if (is_subclass_of($controllerInstance, "m2i\project\controllers\AbstractController")) {
       $controllerInstance->setView("layout");
+      $controllerInstance->setQueryParams($this->router->getQueryParams());
     }
 
     call_user_func_array(

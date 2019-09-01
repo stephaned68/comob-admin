@@ -6,6 +6,10 @@
   <div class="col text-left">
     <button type="submit" name="submit"
             class="btn btn-primary"><?= $btnSubmit ?></button>
+    <?php if (isset($btnClose)) : ?>
+      <button type="submit" name="close"
+              class="btn btn-primary"><?= $btnClose ?></button>
+    <?php endif; ?>
     <?php if (isset($indexRoute)) : ?>
       <a class="text-dark" href="<?= $indexRoute ?>">Retour</a>
     <?php endif; ?>

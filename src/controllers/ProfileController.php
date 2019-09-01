@@ -23,7 +23,6 @@ class ProfileController extends AbstractController
     }
 
     $profileList = [];
-
     try {
       if ($familyFilter !== "*") {
         $profileList = ProfileModel::getAllForFamily($familyFilter);
@@ -80,10 +79,7 @@ class ProfileController extends AbstractController
           "label" => "Type",
           "errorMessage" => "Type non choisi",
           "controlType" => "select",
-          "valueList" => [
-            "0" => "Base",
-            "1" => "Hybride"
-          ]
+          "valueList" => ProfileModel::getTypes()
         ]
       )
       ->setIndexRoute(Router::route(["profile", "index"]))
@@ -103,8 +99,10 @@ class ProfileController extends AbstractController
           "update" => "Le profil a été modifié avec succès"
         ])
       ) {
-        Router::redirectTo(["profile", "index"]);
-        return;
+        if (FormManager::isSubmitted(["close"])) {
+          Router::redirectTo(["profile", "index"]);
+          return;
+        }
       }
     }
 
@@ -172,6 +170,7 @@ class ProfileController extends AbstractController
         "profile" => $profile,
         "voies" => $paths,
         "pathList" => Tools::select(PathModel::getAllForType(0), "voie", "nom"),
+        "prestList" => Tools::select(PathModel::getAllForType(2), "voie", "nom"),
         "fm" => $form,
       ]);
   }

@@ -18,7 +18,7 @@
               <?php if (count($capacites) > 0) :?>
               <?= $capacites[$r] == $abilityValue ? "selected" : "" ?>
               <?php endif; ?>
-            ><?= $abilityLabel ?></option>
+            ><?= $abilityLabel ?> (<?= $abilityValue ?>)</option>
           <?php endforeach; ?>
         </select>
       </div>

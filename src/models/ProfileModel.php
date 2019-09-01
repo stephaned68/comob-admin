@@ -9,6 +9,14 @@ class ProfileModel
 {
   public static $table = "profils";
 
+  public static function getTypes()
+  {
+    return [
+      "0" => "Base",
+      "1" => "Hybride"
+    ];
+  }
+
   private static function getProfiles($family = "")
   {
     $sql =
@@ -20,14 +28,15 @@ class ProfileModel
         "from " . Database::table(self::$table) . " as pr",
         "inner join " . Database::table("familles") . " as fa on pr.famille = fa.famille"
       ];
-    $params = [];
 
+    $params = [];
     if ($family !== "") {
       $sql[] = "where pr.famille = ?";
       $params[] = $family;
     }
 
     $sql[] = "order by pr.nom";
+
     $stmt = implode(" ", $sql);
 
     if ($family !== "") {

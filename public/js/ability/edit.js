@@ -12,12 +12,7 @@ $(function() {
 
   var $description = $("#description");
   $description.blur(function() {
-    text = $description.val();
-    if (text !== "") {
-      text = text.replace(/\n/g, " ");
-      text = text.replace(/'/g, "’");
-      $description.val(text[0].toUpperCase() + text.slice(1));
-    }
+    $description.val(cleanText($description.val()));
   });
 
 });

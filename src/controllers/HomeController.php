@@ -24,7 +24,7 @@ class HomeController extends AbstractController
       if ($dataset != $_SESSION["dataset"]["id"]) {
         $_SESSION["dataset"] = [
           "id" => $dataset,
-          "name" => DATASETS[$dataset]
+          "name" => DATASETS[$dataset]["name"]
         ];
       }
       Router::redirectTo(["home", "index"]);

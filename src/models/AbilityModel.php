@@ -13,12 +13,12 @@ class AbilityModel
 
   public static function getTypes()
   {
-    return [
-      "0" => "Profil",
-      "1" => "Raciale",
-      "2" => "Prestige",
-      "3" => "Epique"
-    ];
+    return Database::getTypes(
+      "types_capacite",
+      "type_capacite",
+      "type_capacite_intitule"
+    );
+
   }
 
   public static function getAll()

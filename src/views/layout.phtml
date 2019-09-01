@@ -18,32 +18,34 @@ use m2i\framework\Tools;
 </head>
 <body class="container-fluid">
 <header class="card-header row">
-  <div class="col-md-4">
-    <h3>Chroniques Mobiles</h3>
+  <div class="col-4">
+    <h3 title="<?= DATABASE ?>">Chroniques Mobiles</h3>
   </div>
-  <div class="col-md-4 text-center">
+  <div class="col-4 text-center">
     <?php if (isset($fm)) : ?>
       <h3><?= $fm->getTitle() ?></h3>
     <?php else : ?>
       <h3><?= $title ?? "" ?></h3>
     <?php endif; ?>
   </div>
-  <div class="col-md-4 text-right">
+  <div class="col-4 text-right">
     <ul class="nav nav-pills">
       <li class="nav-item">
         <a class="nav-link" href="<?= Router::route(['home', 'select']) ?>">(<?= $_SESSION["dataset"]["name"] ?>)</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?= Router::route(['family']) ?>">Familles</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Personnages
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="<?= Router::route(['family']) ?>">Familles</a>
+          <a class="dropdown-item" href="<?= Router::route(['profile']) ?>">Profils</a>
+          <a class="dropdown-item" href="<?= Router::route(['path']) ?>">Voies</a>
+          <a class="dropdown-item" href="<?= Router::route(['ability']) ?>">Capacités</a>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?= Router::route(['profile']) ?>">Profils</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?= Router::route(['path']) ?>">Voies</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?= Router::route(['ability']) ?>">Capacités</a>
+        <a class="nav-link" href="#">Equipement</a>
       </li>
     </ul>
   </div>
