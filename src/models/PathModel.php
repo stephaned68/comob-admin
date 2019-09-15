@@ -1,10 +1,10 @@
 <?php
 
 
-namespace m2i\project\models;
+namespace app\models;
 
-use m2i\framework\Database;
-use m2i\framework\Tools;
+use framework\Database;
+use framework\Tools;
 
 class PathModel
 {

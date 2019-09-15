@@ -1,10 +1,10 @@
 <?php
 
-namespace m2i\project\controllers;
+namespace app\controllers;
 
 
-use m2i\framework\FormManager;
-use m2i\framework\Router;
+use framework\FormManager;
+use framework\Router;
 
 class HomeController extends AbstractController
 {

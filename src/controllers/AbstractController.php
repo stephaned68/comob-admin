@@ -1,9 +1,9 @@
 <?php
 
 
-namespace m2i\project\controllers;
+namespace app\controllers;
 
-use m2i\framework\View;
+use framework\View;
 
 abstract class AbstractController
 {

@@ -17,9 +17,9 @@
   },
   "autoload": {
     "psr-4": {
-      "m2i\\framework\\": "framework/",
-      "m2i\\project\\controllers\\": "src/controllers/",
-      "m2i\\project\\models\\": "src/models/"
+      "framework\\": "framework/",
+      "app\\controllers\\": "src/controllers/",
+      "app\\models\\": "src/models/"
     }
   }
 }

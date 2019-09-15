@@ -1,7 +1,7 @@
 <?php
 
 
-namespace m2i\framework;
+namespace framework;
 
 
 class Dispatcher
@@ -32,7 +32,7 @@ class Dispatcher
     $className = $this->nameSpace . $this->router->getControllerName();
     $controllerInstance = new $className();
 
-    if (is_subclass_of($controllerInstance, "m2i\project\controllers\AbstractController")) {
+    if (is_subclass_of($controllerInstance, "app\controllers\AbstractController")) {
       $controllerInstance->setView("layout");
       $controllerInstance->setQueryParams($this->router->getQueryParams());
     }

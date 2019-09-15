@@ -1,7 +1,7 @@
 <?php
 
 
-namespace m2i\framework;
+namespace framework;
 
 
 class FormField

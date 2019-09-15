@@ -1,15 +1,15 @@
 <?php
 
 
-namespace m2i\project\controllers;
+namespace app\controllers;
 
 
-use m2i\framework\Database;
-use m2i\framework\FormManager;
-use m2i\framework\Router;
-use m2i\framework\Tools;
-use m2i\project\models\AbilityModel;
-use m2i\project\models\PathModel;
+use framework\Database;
+use framework\FormManager;
+use framework\Router;
+use framework\Tools;
+use app\models\AbilityModel;
+use app\models\PathModel;
 
 class PathController extends AbstractController
 {
