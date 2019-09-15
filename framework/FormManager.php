@@ -261,10 +261,11 @@ class FormManager
   public function renderButtons($data = [])
   {
 
-    $options["btnSubmit"] = count($data) == 0 ? "Ajouter" : "Modifier";
-
     if (count($data) == 0) {
+      $options["btnSubmit"] = "Ajouter";
       $options["btnClose"] = "Ajouter & fermer";
+    } else {
+      $options["btnClose"] = "Modifier";
     }
 
     if (!empty($this->indexRoute)) {

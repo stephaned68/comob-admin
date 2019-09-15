@@ -4,8 +4,10 @@
 
 <div class="row form-group">
   <div class="col text-left">
+    <?php if (isset($btnSubmit)) : ?>
     <button type="submit" name="submit"
             class="btn btn-primary"><?= $btnSubmit ?></button>
+    <?php endif; ?>
     <?php if (isset($btnClose)) : ?>
       <button type="submit" name="close"
               class="btn btn-primary"><?= $btnClose ?></button>

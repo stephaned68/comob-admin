@@ -169,8 +169,8 @@ class ProfileController extends AbstractController
       [
         "profile" => $profile,
         "voies" => $paths,
-        "pathList" => Tools::select(PathModel::getAllForType(0), "voie", "nom"),
-        "prestList" => Tools::select(PathModel::getAllForType(2), "voie", "nom"),
+        "pathList" => Tools::select(PathModel::getAllForType(""), "voie", "nom"),
+        "prestList" => Tools::select(PathModel::getAllForType("prest"), "voie", "nom"),
         "fm" => $form,
       ]);
   }

@@ -115,8 +115,10 @@ class PathController extends AbstractController
           "update" => "La voie a été modifiée avec succès"
         ])
       ) {
-        Router::redirectTo(["path", "index"]);
-        return;
+        if (FormManager::isSubmitted(["close"])) {
+          Router::redirectTo(["path", "index"]);
+          return;
+        }
       }
     }
 
@@ -164,6 +166,9 @@ class PathController extends AbstractController
     $abilities = [];
     foreach (PathModel::getAbilities($id) as $ability) {
       $abilities[] = $ability["capacite"];
+    }
+    while (count($abilities) < 5) {
+      $abilities[] = "";
     }
 
     if (FormManager::isSubmitted()) {

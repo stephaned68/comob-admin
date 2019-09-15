@@ -102,8 +102,7 @@ class AbilityController extends AbstractController
         ]
       )
       ->setIndexRoute(Router::route(["ability", "index"]))
-      ->setDeleteRoute(Router::route(["ability", "delete", $id]))
-    ;
+      ->setDeleteRoute(Router::route(["ability", "delete", $id]));
 
     if ($id) {
       $ability = AbilityModel::getOne($id);
@@ -119,8 +118,10 @@ class AbilityController extends AbstractController
           "update" => "La capacité a été modifiée avec succès"
         ])
       ) {
-        Router::redirectTo(["ability", "index"]);
-        return;
+        if (FormManager::isSubmitted(["close"])) {
+          Router::redirectTo(["ability", "index"]);
+          return;
+        }
       }
     }
 
@@ -133,12 +134,96 @@ class AbilityController extends AbstractController
 
   public function deleteAction($id = null)
   {
-    $success = Database::remove($id,AbilityModel::class,
+    $success = Database::remove($id, AbilityModel::class,
       [
         "success" => "La capacité a été supprimée avec succès",
         "failure" => "Cet identifiant de capacité n'existe pas"
       ]);
 
     Router::redirectTo([($success ? "ability" : "home"), "index"]);
+  }
+
+  public function multipleAction()
+  {
+
+    $form = new FormManager();
+    $form
+      ->setTitle("Voie complète")
+      ->addField([
+        "name" => "path",
+        "label" => "Voie",
+        "controlType" => "select",
+        "valueList" => Tools::select(
+          PathModel::getAll(),
+          "voie",
+          "nom"
+        )
+      ])
+      ->addField(
+        [
+          "name" => "fullPath",
+          "label" => "Description de la voie",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 25
+          ],
+          "required" => true
+        ]
+      );
+
+    if (FormManager::isSubmitted()) {
+      $data = $form->getData();
+
+      $path = $data["path"];
+      $pathData = PathModel::getOne($path);
+      $abilities = [];
+      $abilities["voie"] = $path;
+
+      $fullPath = " " . $data["fullPath"] . " 6. ";
+      $slugs = [];
+      for ($r = 1; $r <= 5; $r++) {
+        $startAt = strpos($fullPath, " {$r}. ");
+        $nr = $r + 1;
+        $endsAt = strpos($fullPath, " {$nr}. ");
+        $rank = substr($fullPath, $startAt + 1, $endsAt - $startAt - 1);
+        $rankParts = explode(" : ", $rank);
+        $rankParts[0] = substr($rankParts[0],3);
+        if (substr($rankParts[0], -1) === "*") {
+          $spell = 1;
+          $rankParts[0] = substr($rankParts[0], 0, strlen($rankParts[0]) - 1);
+        }
+        if (substr($rankParts[0], -4) === " (L)") {
+          $limited = 1;
+          $rankParts[0] = substr($rankParts[0], 0, strlen($rankParts[0]) - 4);
+        }
+        $slug = iconv('UTF-8','ASCII//TRANSLIT', $rankParts[0]);
+        $slug = str_replace([ " ", "'", "`", "^" ], [ "-" ], $slug);
+        $slug = strtolower($slug);
+        if (!AbilityModel::getOne($slug)) {
+          AbilityModel::insert([
+            "capacite" => $slug,
+            "nom" => $rankParts[0],
+            "limitee" => $limited ?? 0,
+            "sort" => $spell ?? 0,
+            "type" => $pathData["type"],
+            "description" => $rankParts[1]
+          ]);
+          Tools::setFlash("La capacité '{$rankParts[0]}' a été ajoutée avec succès");
+        } else {
+          Tools::setFlash("L'identifiant de capacité '$slug' existe déjà", "error");
+        }
+        $slugs[] = $slug;
+      }
+      $abilities["capacites"] = $slugs;
+      PathModel::saveAbilities($abilities);
+      Router::redirectTo(["ability", "index"]);
+      return;
+    }
+
+    $this->render("ability/multiple",
+      [
+        "fm" => $form,
+      ]);
   }
 }

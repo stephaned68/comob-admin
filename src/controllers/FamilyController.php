@@ -68,8 +68,10 @@ class FamilyController extends AbstractController
           "update" => "La famille a été modifiée avec succès"
         ])
       ) {
-        Router::redirectTo(["family", "index"]);
-        return;
+        if (FormManager::isSubmitted(["close"])) {
+          Router::redirectTo(["family", "index"]);
+          return;
+        }
       }
     }
 

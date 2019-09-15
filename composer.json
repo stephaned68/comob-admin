@@ -12,7 +12,8 @@
   "minimum-stability": "stable",
   "require": {
     "ext-PDO": "^7.3",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-iconv": "*"
   },
   "autoload": {
     "psr-4": {

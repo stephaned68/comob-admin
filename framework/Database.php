@@ -64,15 +64,30 @@ class Database
   }
 
   /**
-   * Return the SQL query to get all records
-   * @param string $table
+   * @param array $fields
    * @return string
    */
-  public static function getAllQuery(string $table)
+  public static function selectFields(array $fields = [])
   {
+    if (count($fields) > 0) {
+      return implode(", ", $fields);
+    } else {
+      return "*";
+    }
+  }
+
+  /**
+   * Return the SQL query to get all records
+   * @param string $table
+   * @param array $fields
+   * @return string
+   */
+  public static function getAllQuery(string $table, array $fields = [])
+  {
+    $select = self::selectFields($fields);
     return implode(" ",
       [
-        "select *",
+        "select {$select}",
         "from " . self::table($table)
       ]);
   }
@@ -81,13 +96,15 @@ class Database
    * Return the SQL query to get one record
    * @param string $table
    * @param array $primaryKeys
+   * @param array $fields
    * @return string
    */
-  public static function getOneQuery(string $table, array $primaryKeys)
+  public static function getOneQuery(string $table, array $primaryKeys, array $fields = [])
   {
+    $select = self::selectFields($fields);
     $sql =
       [
-        "select * from",
+        "select {$select} from",
         self::table($table),
         self::buildWhere($primaryKeys)
       ];
