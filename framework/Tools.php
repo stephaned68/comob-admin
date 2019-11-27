@@ -38,6 +38,20 @@ class Tools
       . substr($temp, 1);
   }
 
+  public static function snakeCase($str)
+  {
+    $temp = str_split($str);
+    $result = "";
+    foreach ($temp as $char)
+    {
+      if (strtoupper($char) == $char && $result != "") {
+        $result .= "_";
+      }
+      $result .= strtolower($char);
+    }
+    return $result;
+  }
+
   /**
    * @param string|array $message
    * @param null $type

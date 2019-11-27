@@ -13,6 +13,11 @@ class FormManager
   private $title;
 
   /**
+   * @var string
+   */
+  private $entity;
+
+  /**
    * @var array
    */
   private $formFields;
@@ -42,6 +47,24 @@ class FormManager
   public function setTitle(string $title): FormManager
   {
     $this->title = $title;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getEntity(): string
+  {
+    return $this->entity;
+  }
+
+  /**
+   * @param string $entity
+   * @return FormManager
+   */
+  public function setEntity(string $entity): FormManager
+  {
+    $this->entity = $entity;
     return $this;
   }
 
@@ -129,6 +152,7 @@ class FormManager
       ->setLabel($props["label"] ?? $props["name"])
       ->setFilter($props["filter"] ?? FILTER_SANITIZE_STRING)
       ->setRequired($props["required"] ?? false)
+      ->setDefaultValue($props["defaultValue"] ?? "")
       ->setErrorMessage($props["errorMessage"] ?? ($props['label'] ?? $props["name"]) . " non saisi(e)")
       ->setControlType($props["controlType"] ?? "text")
       ->setCssClass($props["cssClass"] ?? FormField::getDefaultCSS($field->getControlType()))
@@ -202,6 +226,21 @@ class FormManager
   }
 
   /**
+   * @param string $className
+   * @param array $data
+   * @return mixed
+   */
+  public function hydrate($className = "", $data = [])
+  {
+    if ($className == "")
+      $className = $this->entity;
+    if ($data == [])
+      $data = $this->getData();
+
+    return EntityManager::hydrate($className, $data);
+  }
+
+  /**
    * Generate HTML chunk for field
    * @param FormField $field
    * @param $data
@@ -211,8 +250,12 @@ class FormManager
   {
     $name = $field->getName();
     $value = null;
-    if (array_key_exists($name, $data)) {
-      $value = $data[$name];
+    if ($this->entity && $data instanceof $this->entity) {
+      $value = EntityManager::getValue($name, $data);
+    } else {
+      if (array_key_exists($name, $data)) {
+        $value = $data[$name];
+      }
     }
     return $field->render($value);
   }
@@ -260,8 +303,13 @@ class FormManager
    */
   public function renderButtons($data = [])
   {
+    if ($this->entity && $data instanceof $this->entity) {
+      $empty = EntityManager::isEmpty($data);
+    } else {
+      $empty = (count($data) == 0);
+    }
 
-    if (count($data) == 0) {
+    if ($empty) {
       $options["btnSubmit"] = "Ajouter";
       $options["btnClose"] = "Ajouter & fermer";
     } else {
@@ -272,7 +320,7 @@ class FormManager
       $options["indexRoute"] = $this->indexRoute;
     }
 
-    if (!empty($this->deleteRoute) && count($data) > 0) {
+    if (!empty($this->deleteRoute) && !$empty) {
       $options["deleteRoute"] = $this->deleteRoute;
     }
 

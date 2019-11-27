@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\models\Category;
 use app\models\CategoryModel;
 use app\models\PropertyModel;
 use framework\Database;
@@ -33,11 +34,12 @@ class CategoryController extends AbstractController
 
   public function editAction($id = null)
   {
-    $category = [];
+    $category = new Category();
 
     $form = new FormManager();
     $form
       ->setTitle("Maintenance des catégories")
+      ->setEntity(Category::class)
       ->addField(
         [
           "name" => "code",

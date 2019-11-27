@@ -41,6 +41,21 @@ class Database
     return "{$_SESSION['dataset']['id']}_{$table}";
   }
 
+  public static function exists(string $table)
+  {
+    $sql = implode(
+      " ",
+      [
+        "select count(*) as found",
+        "from information_schema.tables",
+        "where table_schema = '" . DATABASE . "'",
+        "and table_name = '{$_SESSION['dataset']['id']}_{$table}'"
+      ]
+    );
+    $result = Database::getPDO()->query($sql)->fetch(\PDO::FETCH_ASSOC);
+    return ($result["found"] > 0);
+  }
+
   /**
    * Return a SQL where clause
    * @param array $filters
@@ -195,7 +210,11 @@ class Database
 
     if ($form->isValid()) {
       $message = null;
-      $data = $form->getData();
+      if ($form->getEntity() != "") {
+        $data = EntityManager::hydrate($form->getEntity(), $form->getData());
+      } else {
+        $data = $form->getData();
+      }
       if ($id) {
         try {
           $model::update($data);
@@ -240,7 +259,7 @@ class Database
     try {
       $data = $model::getOne($id);
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL " . $ex->getMessage(),"error");
     }
 
     if (!$data) {
@@ -250,7 +269,11 @@ class Database
         $model::deleteOne($id);
         Tools::setFlash($messages["success"]);
       } catch (\PDOException $ex) {
-        Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+        if ($ex->errorInfo[0] == "23000") {
+          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle", "error");
+        } else {
+          Tools::setFlash("Erreur SQL " . $ex->getMessage(), "error");
+        }
       }
     }
 

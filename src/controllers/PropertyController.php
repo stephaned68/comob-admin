@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\CategoryModel;
+use app\models\Property;
 use app\models\PropertyModel;
 use framework\Database;
 use framework\FormManager;
@@ -34,11 +35,12 @@ class PropertyController extends AbstractController
   public function editAction($id = null)
   {
 
-    $property = [];
+    $property = new Property();
 
     $form = new FormManager();
     $form
       ->setTitle("Maintenance des propriétés")
+      ->setEntity(Property::class)
       ->addField(
         [
           "name" => "code",
@@ -51,6 +53,12 @@ class PropertyController extends AbstractController
           "name" => "intitule",
           "label" => "Intitulé",
           "errorMessage" => "Intitulé non saisi"
+        ]
+      )
+      ->addField(
+        [
+          "name" => "defaut",
+          "label" => "Valeur par défaut"
         ]
       )
       ->setIndexRoute(Router::route([ "property", "index" ]))

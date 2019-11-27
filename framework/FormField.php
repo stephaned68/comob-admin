@@ -28,6 +28,11 @@ class FormField
   private $required;
 
   /**
+   * @var mixed
+   */
+  private $defaultValue;
+
+  /**
    * @var string
    */
   private $errorMessage;
@@ -63,6 +68,7 @@ class FormField
    * @param string $label
    * @param int $filter
    * @param bool $required
+   * @param object $defaultValue
    * @param string $errorMessage
    * @param string $controlType
    * @param string $cssClass
@@ -75,6 +81,7 @@ class FormField
     string $label = null,
     int $filter = 0,
     bool $required = false,
+    object $defaultValue = null,
     string $errorMessage = null,
     string $controlType = null,
     string $cssClass = null,
@@ -87,6 +94,7 @@ class FormField
     $this->label = $label;
     $this->filter = $filter;
     $this->required = $required;
+    $this->defaultValue = $defaultValue;
     $this->errorMessage = $errorMessage;
     $this->controlType = $controlType;
     $this->cssClass = $cssClass;
@@ -165,6 +173,24 @@ class FormField
   public function setRequired(bool $required): FormField
   {
     $this->required = $required;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getDefaultValue()
+  {
+    return $this->defaultValue;
+  }
+
+  /**
+   * @param mixed $defaultValue
+   * @return FormField
+   */
+  public function setDefaultValue($defaultValue)
+  {
+    $this->defaultValue = $defaultValue;
     return $this;
   }
 
@@ -294,7 +320,7 @@ class FormField
       "fieldClass" => $this->cssClass ?? self::getDefaultCSS($this->controlType),
       "fieldSelect" => $this->valueList ?? [],
       "fieldSize" => $this->size,
-      "fieldValue" => $data
+      "fieldValue" => $data ?? $this->defaultValue
     ];
 
     if ($this->primeKey && $data) {
