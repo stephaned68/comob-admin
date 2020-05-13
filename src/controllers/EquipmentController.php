@@ -4,7 +4,6 @@
 namespace app\controllers;
 
 use app\models\CategoryModel;
-use app\models\Equipment;
 use app\models\EquipmentModel;
 use app\models\PropertyModel;
 use framework\Database;
@@ -45,12 +44,11 @@ class EquipmentController extends AbstractController
 
   public function editAction($id = null)
   {
-    $equipment = new Equipment();
+    $equipment = [];
 
     $form = new FormManager();
     $form
       ->setTitle("Maintenance des équipements")
-      ->setEntity(Equipment::class)
       ->addField(
         [
           "name" => "code",
@@ -80,8 +78,15 @@ class EquipmentController extends AbstractController
       )
       ->addField(
         [
+          "name" => "sequence",
+          "label" => "Séquence"
+        ]
+      )
+      ->addField(
+        [
           "name" => "prix",
           "label" => "Prix",
+          "controlType" => "number",
           "errorMessage" => "Prix non saisi"
         ]
       )
@@ -97,7 +102,7 @@ class EquipmentController extends AbstractController
         ]
       )
       ->setIndexRoute(Router::route([ "equipment", "index" ]))
-      ->setDeleteRoute(Router::route([ "equipment", "delete" ]))
+      ->setDeleteRoute(Router::route([ "equipment", "delete", $id ]))
       ;
 
     if ($id) {
@@ -105,15 +110,15 @@ class EquipmentController extends AbstractController
     }
 
     if (FormManager::isSubmitted()) {
-      if (Database::save(
+      $success = Database::save(
         $form,
         $id,
         EquipmentModel::class,
         [
           "insert" => "L'équipement a été ajouté avec succès",
           "update" => "L'équipement a été modifié avec succès"
-        ])
-      ) {
+        ]);
+      if ($success) {
         if (FormManager::isSubmitted(["close"])) {
           Router::redirectTo(["equipment", "index"]);
           return;
@@ -133,7 +138,7 @@ class EquipmentController extends AbstractController
 
     $success = Database::remove($id, EquipmentModel::class,
       [
-        "success" => "L'équipement a été supprimée avec succès",
+        "success" => "L'équipement a été supprimé avec succès",
         "failure" => "Cet identifiant d'équipement n'existe pas",
         "integrity" => "Echec de la suppression de l'équipement : supprimer d'abord les propriétés liées."
       ]);
@@ -145,8 +150,8 @@ class EquipmentController extends AbstractController
   {
 
     $equipment = EquipmentModel::getOne($id);
-    $category = CategoryModel::getOne($equipment->getCategorie());
-    $propertyList = PropertyModel::getByCategory($category->getCode());
+    $category = CategoryModel::getOne($equipment["categorie"]);
+    $propertyList = PropertyModel::getByCategory($category["code"]);
 
     $propertyValues = EquipmentModel::getProperties($id);
     $properties = [];
@@ -157,7 +162,6 @@ class EquipmentController extends AbstractController
     $mainForm = new FormManager();
     $mainForm
       ->setTitle("Maintenance des propriétés d'équipements")
-      ->setEntity(Equipment::class)
       ->addField(
         [
           "name" => "code",

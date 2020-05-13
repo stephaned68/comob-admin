@@ -21,5 +21,8 @@
       "app\\controllers\\": "src/controllers/",
       "app\\models\\": "src/models/"
     }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^5.0"
   }
 }

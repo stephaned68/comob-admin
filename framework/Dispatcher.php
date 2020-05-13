@@ -37,8 +37,22 @@ class Dispatcher
       $controllerInstance->setQueryParams($this->router->getQueryParams());
     }
 
+    // Method is either <functionName>Action
+    $action = $this->router->getActionName(); // e.g. indexAction()
+    // or <httpVerb><functionName>
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+      $method = $this->router->getGetActionName(); // e.g. getIndex()
+    } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $method = $this->router->getPostActionName(); // e.g. postIndex()
+    } else {
+      $method = $action;
+    }
+    if (method_exists($controllerInstance, $method)) {
+      $action = $method;
+    }
+
     call_user_func_array(
-      [$controllerInstance, $this->router->getActionName()],
+      [$controllerInstance, $action],
       $this->router->getActionParameters()
     );
   }

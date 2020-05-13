@@ -4,7 +4,7 @@
 namespace app\models;
 
 use framework\Database;
-use framework\Tools;
+use PDOException;
 
 class PathModel
 {
@@ -19,6 +19,19 @@ class PathModel
     );
   }
 
+  public static function getOneType($id) {
+    $statement = Database::getPDO()->prepare(
+      Database::getOneQuery(
+        Database::table("types_voie"),
+        [
+          "type_voie"
+        ]
+      )
+    );
+    $statement->execute([ $id ]);
+    return $statement->fetch(\PDO::FETCH_ASSOC);
+  }
+
   public static function getAll()
   {
     $rs = Database::getPDO()->query(
@@ -29,32 +42,40 @@ class PathModel
 
   public static function getAllForType($type)
   {
-    $sql = implode(" ",
-      [
-        Database::getAllQuery(self::$table),
-        Database::buildWhere(["type"])
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
-    $statement->execute([$type]);
+    $qb = Database::getAll(self::$table);
+    if ($type == "" || $type == null) {
+      $qb->where("type = ''");
+      $qb->orWhere("type is null");
+    } else {
+      $qb->where("type = ?");
+    }
+    $statement = Database::getPDO()->prepare($qb->getQuery());
+    if ($type == "" || $type == null) {
+      $statement->execute();
+    } else {
+      $statement->execute([ $type ]);
+    }
     return $statement->fetchAll(\PDO::FETCH_ASSOC);
   }
 
   public static function getOne($id)
   {
     $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(self::$table, ["voie"])
+      Database::getOneQuery(
+        self::$table,
+        [
+          "voie"
+        ]
+      )
     );
-    $statement->execute([$id]);
+    $statement->execute([ $id ]);
     return $statement->fetch(\PDO::FETCH_ASSOC);
   }
 
   public static function insert($data)
   {
     $statement = Database::getPDO()->prepare(
-      Database::insertQuery(
-        self::$table,
-        ["voie", "nom", "notes", "type", "pfx_deladu"]
-      )
+      Database::insertQuery(self::$table)
     );
     return $statement->execute($data);
   }
@@ -64,8 +85,9 @@ class PathModel
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
         self::$table,
-        ["voie", "nom", "notes", "type", "pfx_deladu"],
-        ["voie"]
+        [
+          "voie"
+        ]
       )
     );
     return $statement->execute($data);
@@ -76,10 +98,12 @@ class PathModel
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
         self::$table,
-        ["voie"]
+        [
+          "voie"
+        ]
       )
     );
-    return $statement->execute([$id]);
+    return $statement->execute([ $id ]);
   }
 
   public static function getAbilities($id)
@@ -90,7 +114,7 @@ class PathModel
         Database::buildWhere(["voie"])
       ]);
     $statement = Database::getPDO()->prepare($sql);
-    $statement->execute([$id]);
+    $statement->execute([ $id ]);
     return $statement->fetchAll(\PDO::FETCH_ASSOC);
   }
 
@@ -98,6 +122,7 @@ class PathModel
   {
     $pdo = Database::getPDO();
     $pdo->beginTransaction();
+    $rangs = intval($data["rangs"] ?? "5");
 
     // remove existing
     $statement = $pdo->prepare(
@@ -109,12 +134,16 @@ class PathModel
         ]
       )
     );
-    for ($rang = 0; $rang < 5; $rang++) {
-      $statement->execute(
-        [
-          $data["voie"],
-          $rang + 1
-        ]);
+    for ($rang = 0; $rang < $rangs; $rang++) {
+      try {
+        $statement->execute(
+          [
+            $data["voie"],
+            $rang + 1
+          ]);
+      } catch (PDOException $ex) {
+        var_dump($rang);
+      }
     }
 
     // insert
@@ -128,7 +157,7 @@ class PathModel
         ]
       )
     );
-    for ($rang = 0; $rang < 5; $rang++) {
+    for ($rang = 0; $rang < $rangs; $rang++) {
       $statement->execute(
         [
           "voie" => $data["voie"],

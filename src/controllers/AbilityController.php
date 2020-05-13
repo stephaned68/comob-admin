@@ -156,9 +156,17 @@ class AbilityController extends AbstractController
         "valueList" => Tools::select(
           PathModel::getAll(),
           "voie",
-          "nom"
+          "nom",
+          true
         )
       ])
+      ->addField(
+        [
+          "name" => "ranks",
+          "label" => "Rangs",
+          "controlType" => "number"
+        ]
+      )
       ->addField(
         [
           "name" => "fullPath",
@@ -170,7 +178,8 @@ class AbilityController extends AbstractController
           ],
           "required" => true
         ]
-      );
+      )
+    ;
 
     if (FormManager::isSubmitted()) {
       $data = $form->getData();
@@ -180,9 +189,12 @@ class AbilityController extends AbstractController
       $abilities = [];
       $abilities["voie"] = $path;
 
-      $fullPath = " " . $data["fullPath"] . " 6. ";
+      $ranks = intval($data["ranks"] ?? "5");
+      $abilities["rangs"] = $ranks++;
+
+      $fullPath = " " . $data["fullPath"] . " {$ranks}. ";
       $slugs = [];
-      for ($r = 1; $r <= 5; $r++) {
+      for ($r = 1; $r <= $ranks - 1; $r++) {
         $startAt = strpos($fullPath, " {$r}. ");
         $nr = $r + 1;
         $endsAt = strpos($fullPath, " {$nr}. ");
@@ -224,6 +236,7 @@ class AbilityController extends AbstractController
     $this->render("ability/multiple",
       [
         "fm" => $form,
+        "ranks" => 5
       ]);
   }
 }

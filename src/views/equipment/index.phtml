@@ -18,14 +18,14 @@ $eqCount = 0;
               ><?= $categoryLabel ?></option>
             <?php endforeach; ?>
           </select>
-          <button class="btn btn-sm btn-outline-dark" type="submit" name="submit">Filtrer</button>
+          <button class="btn btn-sm btn-outline-dark" type="submit" name="submit"><i class="fas fa-search"></i> Filtrer</button>
         </div>
       </form>
     </div>
     <div class="col-4 text-right">
       <a class="btn btn-success"
          href="<?= Router::route(['equipment', 'edit']) ?>"
-      >Ajouter</a>
+      ><i class="fas fa-plus-circle"></i> Ajouter</a>
     </div>
   </div>
   <div class="row">
@@ -57,7 +57,7 @@ $eqCount = 0;
             <?php
               if (strpos($equipment['props'],"\n") != 0 || $equipment['props'] != "") {
                 $props = explode("\n", $equipment['props']);
-                echo "<div class='text-center'>Afficher <a data-toggle=\"collapse\" href=\"#collapseProps$eqCount\"><i class=\"fas fa-chevron-circle-down\"></i></a></div>";
+                echo "<div class='text-left'>Afficher <a data-toggle=\"collapse\" href=\"#collapseProps$eqCount\"><i class=\"fas fa-chevron-circle-down\"></i></a></div>";
                 echo "<ul class=\"collapse\" id=\"collapseProps$eqCount\">";
                 foreach ($props as $prop) {
                   echo "<li>" . trim($prop) . "</li>";
@@ -69,10 +69,10 @@ $eqCount = 0;
           <td class="text-center">
             <a class="btn btn-sm btn-outline-dark"
                href="<?= Router::route(['equipment', 'properties', $equipment['code']]) ?>"
-            >Propriétés</a>
+            ><i class="fas fa-edit"></i> Propriétés</a>
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['equipment', 'delete', $equipment['code']]) ?>"
-            >Supprimer</a>
+            ><i class="fas fa-trash"></i></a>
           </td>
         </tr>
       <?php endforeach; ?>

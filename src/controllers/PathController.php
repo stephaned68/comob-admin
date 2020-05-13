@@ -159,13 +159,33 @@ class PathController extends AbstractController
           "primeKey" => true
         ]
       )
+      ->addField(
+        [
+          "name" => "rangs",
+          "label" => "Rangs",
+          "controlType" => "number"
+        ]
+      )
       ->setIndexRoute(Router::route(["path", "index"]));
 
     $path = PathModel::getOne($id);
+    $maxRanks = 5;
+    if ($path["type"] !== null && $path["type"] !== "") {
+      $pathType = PathModel::getOneType($path["type"]);
+      $pathData = $pathType["type_voie_config"];
+      if ($pathData !== null && $pathData !== "") {
+        $pathConfig = json_decode($pathData, true);
+        $maxRanks = $pathConfig["ranks"] ?? 5;
+      }
+    }
 
     $abilities = [];
     foreach (PathModel::getAbilities($id) as $ability) {
       $abilities[] = $ability["capacite"];
+    }
+    $path["rangs"] = count($abilities);
+    if ($path["rangs"] !== $maxRanks) {
+      $path["rangs"] = $maxRanks;
     }
     while (count($abilities) < 5) {
       $abilities[] = "";

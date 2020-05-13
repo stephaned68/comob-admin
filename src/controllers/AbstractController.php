@@ -54,6 +54,10 @@ abstract class AbstractController
     return $this;
   }
 
+  /**
+   * @param $template
+   * @param array $data
+   */
   protected function render($template, $data = [])
   {
     echo $this->view->render($template, $data);

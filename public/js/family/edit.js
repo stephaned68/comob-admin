@@ -2,6 +2,8 @@
 
 $(function() {
 
+  makeSlug("famille", "description");
+  /*
   var $famille = $("#famille");
   var $description = $('#description');
   $description.blur(function() {
@@ -9,5 +11,6 @@ $(function() {
       $famille.val(slugify($description.val()));
     }
   });
+   */
 
 });

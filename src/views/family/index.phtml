@@ -9,7 +9,7 @@ use \framework\Router;
     <div class="col text-right">
       <a class="btn btn-success"
          href="<?= Router::route(['family', 'edit']) ?>"
-      >Ajouter</a>
+      ><i class="fas fa-plus-circle"></i> Ajouter</a>
     </div>
   </div>
   <div class="row">
@@ -21,20 +21,42 @@ use \framework\Router;
       </tr>
       </thead>
       <tbody>
+      <?php if (count($familyList) == 0) : ?>
+        <tr>
+          <td colspan="2">
+            Rien à afficher
+          </td>
+        </tr>
+      <?php else : ?>
       <?php foreach ($familyList as $family) : ?>
         <tr>
           <td>
+            <input
+              type="checkbox"
+              class="form-check-inline"
+              name="deleted[]"
+              value="<?= $family['famille'] ?>"
+            >
             <a href="<?= Router::route(['family', 'edit', $family['famille']]) ?>"
             ><?= $family["description"] ?></a>
           </td>
           <td class="text-center">
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['family', 'delete', $family['famille']]) ?>"
-            >Supprimer</a>
+            ><i class="fas fa-trash"></i></a>
           </td>
         </tr>
       <?php endforeach; ?>
+      <?php endif; ?>
       </tbody>
     </table>
+    <div class="row mt-2">
+      <div class="col">
+        <button type="submit" class="btn btn-sm btn-outline-danger" name="deleteManyBtn">
+          <span><i class="fas fa-trash"></i> Supprimer</span>
+        </button>
+      </div>
+      <div class="col"></div>
+    </div>
   </div>
 </div>

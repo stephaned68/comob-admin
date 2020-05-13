@@ -2,12 +2,11 @@
 
 $(function() {
 
-  var $profil = $("#profil");
-  var $nom = $('#nom');
-  $nom.blur(function() {
-    if ($nom.val() !== '' && $profil.val() === '') {
-      $profil.val(slugify($nom.val()));
-    }
+  makeSlug("profil", "nom");
+
+  var $description = $("#description");
+  $description.blur(function() {
+    $description.val(cleanText($description.val()));
   });
 
 });

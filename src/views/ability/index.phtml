@@ -3,7 +3,7 @@
 use \framework\Router;
 
 ?>
-<div class="col-md-4">
+<div class="col-md-6">
   <div class="row mt-4 mb-2">
     <div class="col">
       <form id="filter_form" method="post">
@@ -17,14 +17,14 @@ use \framework\Router;
               ><?= $abilityTypeV ?></option>
             <?php endforeach; ?>
           </select>
-          <button class="btn btn-sm btn-outline-dark" type="submit" name="submit">Filtrer</button>
+          <button class="btn btn-sm btn-outline-dark" type="submit" name="submit"><i class="fas fa-search"></i> Filtrer</button>
         </div>
       </form>
     </div>
     <div class="col text-right">
       <a class="btn btn-success"
          href="<?= Router::route(['ability', 'edit']) ?>"
-      >Ajouter</a>
+      ><i class="fas fa-plus-circle"></i> Ajouter</a>
     </div>
   </div>
   <div class="row">
@@ -56,7 +56,7 @@ use \framework\Router;
           <td class="text-center">
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['ability', 'delete', $ability['capacite']]) ?>"
-            >Supprimer</a>
+            ><i class="fas fa-trash"></i></a>
           </td>
         </tr>
       <?php endforeach; ?>

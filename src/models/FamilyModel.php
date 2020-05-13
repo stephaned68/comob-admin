@@ -20,19 +20,21 @@ class FamilyModel
   public static function getOne($id)
   {
     $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(self::$table, ["famille"])
+      Database::getOneQuery(
+        self::$table,
+        [
+          "famille"
+        ]
+      )
     );
-    $statement->execute([$id]);
+    $statement->execute([ $id ]);
     return $statement->fetch(\PDO::FETCH_ASSOC);
   }
 
   public static function insert($data)
   {
     $statement = Database::getPDO()->prepare(
-      Database::insertQuery(
-        self::$table,
-        ["famille", "description"]
-      )
+      Database::insertQuery(self::$table)
     );
     return $statement->execute($data);
   }
@@ -42,8 +44,9 @@ class FamilyModel
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
         self::$table,
-        ["description"],
-        ["famille"]
+        [
+          "famille"
+        ]
       )
     );
     return $statement->execute($data);
@@ -54,10 +57,12 @@ class FamilyModel
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
         self::$table,
-        ["famille"]
+        [
+          "famille"
+        ]
       )
     );
-    return $statement->execute([$id]);
+    return $statement->execute([ $id ]);
   }
 
 }

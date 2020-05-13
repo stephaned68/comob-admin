@@ -1,13 +1,11 @@
 
 $(function() {
 
-  // slugify description for new family
-  var $code = $("#code");
-  var $designation = $('#designation');
-  $designation.blur(function() {
-    if ($designation.val() !== '' && $code.val() === '') {
-      $code.val(slugify($designation.val()));
-    }
+  makeSlug("code", "designation");
+
+  var $notes = $("#notes");
+  $notes.blur(function() {
+    $notes.val(cleanText($notes.val()));
   });
 
 });

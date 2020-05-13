@@ -3,7 +3,7 @@
 use \framework\Router;
 
 ?>
-<div class="col-md-4">
+<div class="col-md-6">
   <div class="row mt-4 mb-2">
     <div class="col">
       <form id="filter_form" method="post">
@@ -40,16 +40,22 @@ use \framework\Router;
       <?php foreach ($profileList as $profile) : ?>
         <tr>
           <td>
-            <a href="<?= Router::route(['profile', 'edit', $profile['pr_profil']]) ?>"
-            ><?= $profile["pr_nom"] ?></a>
+            <a href="<?= Router::route(['profile', 'edit', $profile['profil']]) ?>"
+            ><?= $profile["nom"] ?></a>
           </td>
-          <td><?= $profile["fa_description"] ?></td>
+          <td><?= $profile["famille"] ?></td>
           <td class="text-center">
             <a class="btn btn-sm btn-outline-dark"
-               href="<?= Router::route(['profile', 'paths', $profile['pr_profil']]) ?>"
+               href="<?= Router::route(['profile', 'paths', $profile['profil']]) ?>"
             >Voies</a>
+            <a class="btn btn-sm btn-outline-dark"
+               href="<?= Router::route(['profile', 'equipments', $profile['profil']]) ?>"
+            >Equipement</a>
+            <a class="btn btn-sm btn-outline-dark"
+               href="<?= Router::route(['profile', 'traits', $profile['profil']]) ?>"
+            >Traits</a>
             <a class="btn btn-sm btn-outline-danger confirm-delete"
-               href="<?= Router::route(['profile', 'delete', $profile['pr_profil']]) ?>"
+               href="<?= Router::route(['profile', 'delete', $profile['profil']]) ?>"
             >Supprimer</a>
           </td>
         </tr>

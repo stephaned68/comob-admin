@@ -4,8 +4,7 @@
 namespace app\models;
 
 use framework\Database;
-use framework\EntityManager;
-use framework\Tools;
+use framework\QueryBuilder;
 
 class EquipmentModel
 {
@@ -21,65 +20,58 @@ class EquipmentModel
 
   public static function getByCategory($category=null)
   {
-    $sql = implode(
-      " ",
-      [
-        "select",
-        "e.code as code,",
-        "e.designation as designation,",
-        "c.libelle as categorie",
-        "from " . Database::table(self::$table) . " as e",
-        "left join ". Database::table(CategoryModel::$table) . " as c",
-        "on c.code = e.categorie",
-        ($category != null ? "where e.categorie = '$category'" : ""),
-        "order by c.code, e.code"
-      ]
-    );
+    $qb = new QueryBuilder();
+    $qb
+      ->from(Database::table(self::$table), "e")
+      ->left(Database::table(CategoryModel::$table), "c.code", "e.categorie", "c")
+      ->orderBy("c.parent")
+      ->orderBy("c.sequence")
+      ->orderBy("c.code")
+      ->orderBy("e.sequence")
+      ->orderBy("e.code")
+      ->select([
+        "e.code as code",
+        "e.designation as designation",
+        "c.libelle as categorie"
+      ]);
+    if ($category != null) {
+      $qb->where("e.categorie = '$category'");
+    }
+    $sql = $qb->getQuery();
 
-    $rs = Database::getPDO()->query(implode(
-      " ",
-      [
-        "select * from {$_SESSION['dataset']['id']}_vu_equipment_getbycategory",
-        ($category != null ? "where categorie = '$category'" : "")
-      ]
-    ));
+    $rs = Database::getPDO()->query($sql);
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
   }
 
   public static function getByCategoryWithProps($category=null)
   {
-    $view = "vu_equipment_" . __FUNCTION__;
-    if (Database::exists($view)) {
-      $sql = implode(
-        " ",
-        [
-          "select * from {$_SESSION['dataset']['id']}_{$view}",
-          ($category != null ? "where categorie = '$category'" : "")
-        ]
-      );
-    } else {
-      $sql = implode(
-        " ",
-        [
-          "select",
-          "e.code as code,",
-          "e.designation as designation,",
-          "c.libelle as categorie,",
-          "e.prix as prix,",
-          "group_concat(concat_ws(' : ', pe.intitule, ep.valeur) separator '\n ') as props",
-          "from " . Database::table(self::$table) . " as e",
-          "join " . Database::table(CategoryModel::$table) . " as c",
-          "on c.code = e.categorie",
-          "left join cof_equipement_proprietes as ep",
-          "on ep.code_equipement = e.code",
-          "left join cof_proprietes_equipement as pe",
-          "on pe.code = ep.code_propriete",
-          ($category != null ? "where e.categorie = '$category'" : ""),
-          "group by c.code, e.code",
-          "order by c.code, e.code"
-        ]
-      );
+
+    $qb = new QueryBuilder();
+    $qb
+      ->from(Database::table(self::$table), "e")
+      ->inner(Database::table(CategoryModel::$table), "c.code", "e.categorie", "c")
+      ->left(Database::table("equipement_proprietes"), "ep.code_equipement", "e.code", "ep")
+      ->left(Database::table(PropertyModel::$table), "pe.code", "ep.code_propriete", "pe")
+      ->groupBy("c.code")
+      ->groupBy("e.code")
+      ->orderBy("c.parent")
+      ->orderBy("c.sequence")
+      ->orderBy("c.code")
+      ->orderBy("e.sequence")
+      ->orderBy("e.code")
+      ->orderBy("pe.code")
+      ->select([
+        "e.code as code",
+        "e.designation as designation",
+        "c.libelle as categorie",
+        "e.prix as prix",
+        "group_concat(concat_ws(' : ', pe.intitule, ep.valeur) separator '\n ') as props"
+      ])
+      ;
+    if ($category != null) {
+      $qb->where("e.categorie = '$category'");
     }
+    $sql = $qb->getQuery();
 
     $rs = Database::getPDO()->query($sql);
     return $rs->fetchAll(\PDO::FETCH_ASSOC);
@@ -88,97 +80,63 @@ class EquipmentModel
   public static function getOne($id)
   {
     $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(self::$table, [ "code" ])
+      Database::getOneQuery(
+        self::$table,
+        [
+          "code"
+        ]
+      )
     );
-    $statement->execute([$id]);
-    $data = $statement->fetch(\PDO::FETCH_ASSOC);
-    return EntityManager::hydrate(Equipment::class, $data);
+    $statement->execute([ $id ]);
+    return $statement->fetch(\PDO::FETCH_ASSOC);
   }
 
   public static function insert($data)
   {
-    if ($data instanceof Equipment) {
-      $statement = Database::getPDO()->prepare("call {$_SESSION['dataset']['id']}_sp_equipment_insert(:code, :designation, :categorie, :prix, :notes);");
-      $statement->bindValue(':code', $data->getCode());
-      $statement->bindValue(':designation', $data->getDesignation());
-      $statement->bindValue(':categorie', $data->getCategorie());
-      $statement->bindValue(':prix', $data->getPrix());
-      $statement->bindValue(':notes', $data->getNotes());
-      return $statement->execute();
-    } else {
-      $statement = Database::getPDO()->prepare(
-        Database::insertQuery(
-          self::$table,
-          [
-            "code",
-            "designation",
-            "categorie",
-            "prix",
-            "notes"
-          ]
-        )
-      );
-      return $statement->execute($data);
-    }
+    $statement = Database::getPDO()->prepare(
+      Database::insertQuery(self::$table)
+    );
+    return $statement->execute($data);
   }
 
   public static function update($data)
   {
-    if ($data instanceof Equipment) {
-      $statement = Database::getPDO()->prepare("call {$_SESSION['dataset']['id']}_sp_equipment_update(:code, :designation, :categorie, :prix, :notes);");
-      $statement->bindValue(':code', $data->getCode());
-      $statement->bindValue(':designation', $data->getDesignation());
-      $statement->bindValue(':categorie', $data->getCategorie());
-      $statement->bindValue(':prix', $data->getPrix());
-      $statement->bindValue(':notes', $data->getNotes());
-      return $statement->execute();
-    } else {
       $statement = Database::getPDO()->prepare(
         Database::updateQuery(
           self::$table,
           [
-            "designation",
-            "categorie",
-            "prix",
-            "notes"
-          ],
-          ["code"]
+            "code"
+          ]
         )
       );
       return $statement->execute($data);
-    }
   }
 
   public static function deleteOne($data)
   {
-    if ($data instanceof Equipment) {
-      $statement = Database::getPDO()->prepare("call {$_SESSION['dataset']['id']}_sp_equipment_delete(:code);");
-      $statement->bindValue(':code', $data->getCode());
-      return $statement->execute();
-    } else {
-      $statement = Database::getPDO()->prepare(
-        Database::deleteOneQuery(
-          self::$table,
-          ["code"]
-        )
-      );
-      return $statement->execute([$data]);
-    }
+    $statement = Database::getPDO()->prepare(
+      Database::deleteOneQuery(
+        self::$table,
+        [
+          "code"
+        ]
+      )
+    );
+    return $statement->execute([$data]);
   }
 
   public static function getProperties($id)
   {
-    $sql = implode(
-      " ",
-      [
-        "select *",
-        "from " . Database::table("equipement_proprietes"),
-        Database::buildWhere([ "code_equipement" ])
-      ]
-    );
+
+    $qb = new QueryBuilder();
+    $qb
+      ->from(Database::table("equipement_proprietes"))
+      ->where("code_equipement = ?")
+      ->select();
+    $sql = $qb->getQuery();
 
     $statement = Database::getPDO()->prepare($sql);
-    $statement->execute([$id]);
+    $statement->execute([ $id ]);
     return $statement->fetchAll(\PDO::FETCH_ASSOC);
   }
 
@@ -188,28 +146,26 @@ class EquipmentModel
     $pdo->beginTransaction();
 
     // remove existing
-    $statement = $pdo->prepare(
-      implode(" ",
+    $sql = implode(" ",
       [
         "delete from",
         Database::table("equipement_proprietes"),
         Database::buildWhere([ "code_equipement" ])
       ]
-      )
     );
+    $statement = $pdo->prepare($sql);
     $statement->execute([ $data["code"] ]);
 
     // insert
-    $statement = $pdo->prepare(
-      Database::insertQuery(
-        "equipement_proprietes",
-        [
-          "code_equipement",
-          "code_propriete",
-          "valeur"
-        ]
-      )
+    $sql = Database::insertQuery(
+      "equipement_proprietes",
+      [
+        "code_equipement",
+        "code_propriete",
+        "valeur"
+      ]
     );
+    $statement = $pdo->prepare($sql);
     foreach ($data["props"] as $propKey => $propValue) {
       if ($propValue != null && $propValue != "") {
         $statement->execute(

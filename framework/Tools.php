@@ -7,6 +7,44 @@ namespace framework;
 class Tools
 {
 
+  public static $themeList =
+    [
+      "cerulean",
+      "cosmo",
+      "cyborg",
+      "darkly",
+      "flatly",
+      "journal",
+      "litera",
+      "lumen",
+      "lux",
+      "materia",
+      "minty",
+      "pulse",
+      "sandstone",
+      "simplex",
+      "sketchy",
+      "slate",
+      "solar",
+      "spacelab",
+      "superhero",
+      "united",
+      "yeti"
+    ];
+
+  public static function pluralize($singular)
+  {
+    $last_letter = $singular[strlen($singular)-1];
+    switch ($last_letter) {
+      case 'y':
+        return substr($singular,0, -1) . "ies";
+      case 's':
+        return $singular . "es";
+      default:
+        return $singular . "s";
+    }
+  }
+
   /**
    * @param string $str
    * @return string|string[]|null
@@ -94,16 +132,61 @@ class Tools
    * @param array $list
    * @param string $valueField
    * @param string $labelField
+   * @param bool $showValue
    * @return array
    */
-  public static function select($list, $valueField, $labelField)
+  public static function select($list, $valueField, $labelField, $showValue = false)
   {
     $select = [];
     foreach ($list as $item) {
-      $select[$item[$valueField]] = $item[$labelField];
+      $select[$item[$valueField]] = $item[$labelField] . ($showValue ? " (" . $item[$valueField] . ")" : "");
     }
 
     return $select;
+  }
+
+  /**
+   * @param $list
+   * @param $groupField
+   * @param $valueField
+   * @param $labelField
+   * @return array
+   */
+  public static function selectGroup($list, $groupField, $valueField, $labelField)
+  {
+    $groups = [];
+    foreach ($list as $item) {
+      if (!in_array($item[$groupField], $groups)) {
+        $groups[$item[$groupField]] = [];
+      }
+    }
+    foreach ($groups as $groupK => $groupV) {
+      foreach ($list as $item) {
+        if ($item[$groupField] === $groupK) {
+          $groups[$groupK][$item[$valueField]] = $item[$labelField];
+        }
+      }
+    }
+
+    return $groups;
+  }
+
+  /**
+   * Set default theme for session
+   */
+  public static function setTheme()
+  {
+    if (isset($_GET["theme"])) {
+      $theme = $_GET["theme"];
+      if (array_search($theme,self::$themeList)) {
+        $_SESSION["theme"] = $theme;
+      }
+    } else {
+      if(!isset($_SESSION["theme"])) {
+        $theme = rand(0, count(self::$themeList)-1);
+        $_SESSION["theme"] = self::$themeList[$theme];
+      }
+    }
   }
 
 }

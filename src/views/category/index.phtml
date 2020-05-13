@@ -9,7 +9,7 @@ use framework\Router;
     <div class="col text-right">
       <a class="btn btn-success"
          href="<?= Router::route(['category', 'edit']) ?>"
-      >Ajouter</a>
+      ><i class="fas fa-plus-circle"></i> Ajouter</a>
     </div>
   </div>
   <div class="row">
@@ -34,7 +34,7 @@ use framework\Router;
           <td class="text-center">
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['category', 'delete', $category['code']]) ?>"
-            >Supprimer</a>
+            ><i class="fas fa-trash"></i></a>
           </td>
         </tr>
       <?php endforeach; ?>

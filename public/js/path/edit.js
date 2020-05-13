@@ -2,6 +2,8 @@
 
 $(function() {
 
+  makeSlug("voie", "nom");
+  /*
   var $voie = $("#voie");
   var $nom = $('#nom');
   $nom.blur(function() {
@@ -9,6 +11,7 @@ $(function() {
       $voie.val(slugify($nom.val()));
     }
   });
+   */
 
   var $notes = $("#notes");
   $notes.blur(function() {

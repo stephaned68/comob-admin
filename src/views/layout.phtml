@@ -12,14 +12,15 @@ use framework\Tools;
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Chroniques Mobiles</title>
-  <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" href="assets/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="assets/jquery-confirm/dist/jquery-confirm.min.css">
+  <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.<?= $_SESSION['theme'] ?>.css">
+  <link rel="stylesheet" href="/assets/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="/assets/jquery-confirm/dist/jquery-confirm.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="container-fluid">
 <header class="card-header row">
   <div class="col-4">
-    <h3 title="<?= DATABASE ?>">Chroniques Mobiles</h3>
+    <h3 title="<?= $_SESSION['theme'] ?>">Chroniques Mobiles</h3>
   </div>
   <div class="col-4 text-center">
     <?php if (isset($fm)) : ?>
@@ -42,6 +43,8 @@ use framework\Tools;
           <a class="dropdown-item" href="<?= Router::route(['profile']) ?>">Profils</a>
           <a class="dropdown-item" href="<?= Router::route(['path']) ?>">Voies</a>
           <a class="dropdown-item" href="<?= Router::route(['ability']) ?>">Capacités</a>
+          <a class="dropdown-item" href="<?= Router::route(['race']) ?>">Races</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<?= Router::route(['ability', 'multiple']) ?>">Voie complète</a>
         </div>
       </li>
@@ -113,14 +116,14 @@ use framework\Tools;
 </div>
 
 
-<script src="assets/jquery/dist/jquery.slim.js"></script>
-<script src="assets/popper.js/dist/umd/popper.js"></script>
-<script src="assets/bootstrap/dist/js/bootstrap.js"></script>
-<script src="assets/select2/dist/js/select2.min.js"></script>
-<script src="assets/jquery-confirm/dist/jquery-confirm.min.js"></script>
+<script src="/assets/jquery/dist/jquery.slim.js"></script>
+<script src="/assets/popper.js/dist/umd/popper.js"></script>
+<script src="/assets/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/assets/select2/dist/js/select2.min.js"></script>
+<script src="/assets/jquery-confirm/dist/jquery-confirm.min.js"></script>
 <script src="https://kit.fontawesome.com/fff1f19af2.js"></script>
 
-<script src="js/utils.js"></script>
+<script src="/js/utils.js"></script>
 
 <script>
   <?php if ($script) : ?>

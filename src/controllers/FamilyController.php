@@ -51,7 +51,7 @@ class FamilyController extends AbstractController
         ]
       )
       ->setIndexRoute(Router::route([ "family", "index" ]))
-      ->setDeleteRoute(Router::route([ "family", "delete" ]))
+      ->setDeleteRoute(Router::route([ "family", "delete", $id ]))
     ;
 
     if ($id) {

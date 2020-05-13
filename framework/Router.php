@@ -23,6 +23,16 @@ class Router
   private $actionName = "indexAction";
 
   /**
+   * @var string
+   */
+  private $getActionName = "getIndex";
+
+  /**
+   * @var string
+   */
+  private $postActionName = "postIndex";
+
+  /**
    * @var array
    */
   private $actionParameters = [];
@@ -47,7 +57,10 @@ class Router
     }
 
     if (count($urlParts) > 0 && !empty(trim($urlParts[0]))) {
-      $this->actionName = Tools::camelize(array_shift($urlParts)) . "Action";
+      $action = array_shift($urlParts);
+      $this->actionName = Tools::camelize($action) . "Action";
+      $this->getActionName = "get" . Tools::pascalize($action);
+      $this->postActionName = "post" . Tools::pascalize($action);
     }
 
     if (count($urlParts) > 0 && !empty(trim($urlParts[0]))) {
@@ -58,7 +71,9 @@ class Router
     }
 
     $queryParams = $_GET;
-    array_shift($queryParams);
+    if (isset($queryParams["route"])) {
+      array_shift($queryParams);
+    }
     $this->queryParams = $queryParams;
 
   }
@@ -88,6 +103,22 @@ class Router
   }
 
   /**
+   * @return string
+   */
+  public function getGetActionName(): string
+  {
+    return $this->getActionName;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPostActionName(): string
+  {
+    return $this->postActionName;
+  }
+
+  /**
    * @return array
    */
   public function getActionParameters()
@@ -104,13 +135,18 @@ class Router
   }
 
   /**
+   * @var string
+   */
+  public static $prefix = "index.php?route=";
+
+  /**
    * @param array $args
    * @param array $query
    * @return string
    */
   public static function route($args = [], $query = [])
   {
-    $url = "index.php?route=";
+    $url = self::$prefix; // "/" or // "index.php?route="
     if (count($args) > 0) {
       foreach ($args as $argK => $argV) {
         $args[$argK] = urlencode(trim($argV));

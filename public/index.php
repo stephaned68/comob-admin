@@ -3,6 +3,7 @@ session_start();
 
 use framework\Router;
 use framework\Dispatcher;
+use framework\Tools;
 
 define("ROOT_PATH", dirname(__DIR__));
 define("MODELS_PATH", dirname(__DIR__) . "/src/models");
@@ -12,7 +13,7 @@ define("PUBLIC_PATH", dirname(__DIR__) . "/public");
 
 define("DATABASE", "comobdb");
 
-define("DSN", "mysql:host=localhost;dbname=" . DATABASE . ";charset=utf8mb4");
+define("DSN", "mysql:host=localhost;dbname=" . DATABASE . ";charset=UTF8");
 
 define ("DATASETS",
   [
@@ -42,7 +43,14 @@ if(!isset($_SESSION["dataset"])) {
   ];
 }
 
+Tools::setTheme();
+
 $route = filter_input(INPUT_GET, "route", FILTER_SANITIZE_URL);
+if ($route == "") {
+  $route = $_SERVER["PATH_INFO"] ?? "";
+  $route = substr($route,1);
+  Router::$prefix = "/";
+}
 
 $router = new Router($route);
 

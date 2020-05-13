@@ -53,7 +53,7 @@ class FormManager
   /**
    * @return string
    */
-  public function getEntity(): string
+  public function getEntity()
   {
     return $this->entity;
   }
@@ -219,25 +219,14 @@ class FormManager
       if ($field->getControlType() === "checkbox") {
         $fieldValue = $fieldValue ?? "0";
       }
-      $formData[$fieldName] = addslashes($fieldValue);
+      if ($fieldValue != null) {
+        $formData[$fieldName] = addslashes($fieldValue);
+      } else {
+        $formData[$fieldName] = null;
+      }
     }
 
     return $formData;
-  }
-
-  /**
-   * @param string $className
-   * @param array $data
-   * @return mixed
-   */
-  public function hydrate($className = "", $data = [])
-  {
-    if ($className == "")
-      $className = $this->entity;
-    if ($data == [])
-      $data = $this->getData();
-
-    return EntityManager::hydrate($className, $data);
   }
 
   /**
@@ -250,12 +239,8 @@ class FormManager
   {
     $name = $field->getName();
     $value = null;
-    if ($this->entity && $data instanceof $this->entity) {
-      $value = EntityManager::getValue($name, $data);
-    } else {
-      if (array_key_exists($name, $data)) {
-        $value = $data[$name];
-      }
+    if (array_key_exists($name, $data)) {
+      $value = $data[$name];
     }
     return $field->render($value);
   }
@@ -303,17 +288,13 @@ class FormManager
    */
   public function renderButtons($data = [])
   {
-    if ($this->entity && $data instanceof $this->entity) {
-      $empty = EntityManager::isEmpty($data);
-    } else {
-      $empty = (count($data) == 0);
-    }
+    $empty = (count($data) == 0);
 
     if ($empty) {
       $options["btnSubmit"] = "Ajouter";
       $options["btnClose"] = "Ajouter & fermer";
     } else {
-      $options["btnClose"] = "Modifier";
+      $options["btnClose"] = "Appliquer";
     }
 
     if (!empty($this->indexRoute)) {

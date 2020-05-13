@@ -54,3 +54,54 @@ function confirmDelete() {
     }
   });
 }
+
+/**
+ * Create entity identifier slug from name
+ * @param idField
+ * @param nameField
+ */
+function makeSlug(idField, nameField) {
+  var $id = $(`#${idField}`);
+  var $name = $(`#${nameField}`);
+  $name.blur(function() {
+    if ($name.val() !== '' && $id.val() === '') {
+      $id.val(slugify($name.val()));
+    }
+  });
+}
+
+/**
+ * Add an row to a parent table
+ * @param tableId
+ * @param resetFunction
+ */
+function addItem(tableId, resetFunction) {
+  const $items = $(`#${tableId}`);
+  let $newItem = $items.children().first().clone();
+  $newItem = resetFunction($newItem);
+  $items.append($newItem);
+}
+
+/**
+ * Delete a row from a parent table
+ * @param tableId
+ * @param deleteBtClass
+ * @param confirm
+ */
+function deleteItem(tableId, deleteBtClass, confirm) {
+  confirm = confirm || false;
+  $(`#${tableId}`).on("click",`.${deleteBtClass}`, function (event) {
+    event.preventDefault();
+    const itemCount = $(`#${tableId}`).children().length;
+    if (itemCount === 1) { // do not destroy last entry
+      return;
+    }
+    if (confirm) { // confirm deletion
+      if (!window.confirm('Confirmez-vous la suppression de cet élément ?')) {
+        return;
+      }
+    }
+    const $row = $(this).parent().parent();
+    $row.remove();
+  });
+}

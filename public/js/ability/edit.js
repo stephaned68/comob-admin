@@ -2,13 +2,7 @@
 
 $(function() {
 
-  var $capacite = $("#capacite");
-  var $nom = $('#nom');
-  $nom.blur(function() {
-    if ($nom.val() !== '' && $capacite.val() === '') {
-      $capacite.val(slugify($nom.val()));
-    }
-  });
+  makeSlug("capacite", "nom");
 
   var $description = $("#description");
   $description.blur(function() {

@@ -3,8 +3,6 @@
 
 namespace app\controllers;
 
-
-use app\models\Category;
 use app\models\CategoryModel;
 use app\models\PropertyModel;
 use framework\Database;
@@ -34,12 +32,12 @@ class CategoryController extends AbstractController
 
   public function editAction($id = null)
   {
-    $category = new Category();
+
+    $category = [];
 
     $form = new FormManager();
     $form
       ->setTitle("Maintenance des catégories")
-      ->setEntity(Category::class)
       ->addField(
         [
           "name" => "code",
@@ -61,13 +59,19 @@ class CategoryController extends AbstractController
           "errorMessage" => "Catégorie parente non saisie",
           "controlType" => "select",
           "valueList" => array_merge(
-            [ "" => "Choisir une catégorie..." ],
+            [ null => "Choisir une catégorie..." ],
             Tools::select(CategoryModel::getAllMain(), "code", "libelle")
           )
         ]
       )
+      ->addField(
+        [
+          "name" => "sequence",
+          "label" => "Sequence de tri",
+        ]
+      )
       ->setIndexRoute(Router::route([ "category", "index" ]))
-      ->setDeleteRoute(Router::route([ "category", "delete" ]))
+      ->setDeleteRoute(Router::route([ "category", "delete", $id ]))
     ;
 
     if ($id) {
@@ -80,15 +84,15 @@ class CategoryController extends AbstractController
     }
 
     if (FormManager::isSubmitted()) {
-      if (Database::save(
+      $success = Database::save(
         $form,
         $id,
         CategoryModel::class,
         [
           "insert" => "La catégorie a été ajoutée avec succès",
           "update" => "La catégorie a été modifiée avec succès"
-        ])
-      ) {
+        ]);
+      if ($success) {
         $data = $form->getData();
         $properties = filter_input(INPUT_POST, "properties", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $data["properties"] = $properties;

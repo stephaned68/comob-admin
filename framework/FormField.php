@@ -313,6 +313,26 @@ class FormField
       return '<input type="hidden" name="' . $this->name . '" value="' . $data . '">';
     }
 
+    if ($this->controlType === "number") {
+      if ($this->filter !== FILTER_SANITIZE_NUMBER_INT && $this->filter !== FILTER_SANITIZE_NUMBER_FLOAT) {
+        $this->filter = FILTER_SANITIZE_NUMBER_FLOAT;
+      }
+    }
+
+    if ($this->controlType === "decimal" || isset($this->size["step"])) {
+      $this->controlType = "number";
+      $this->filter = FILTER_SANITIZE_NUMBER_FLOAT;
+      if (!isset($this->size["step"])) {
+        $this->size["step"] = "0.01";
+      }
+    }
+
+    if ($this->filter === FILTER_SANITIZE_NUMBER_INT || $this->filter === FILTER_SANITIZE_NUMBER_FLOAT) {
+      if ($this->controlType !== "hidden") {
+        $this->controlType = "number";
+      }
+    }
+
     $options = [
       "fieldName" => $this->name,
       "fieldLabel" => $this->label ?? $this->name,
@@ -351,6 +371,7 @@ class FormField
       "hidden" => "",
       "text" => "form-control",
       "number" => "form-control",
+      "decimal" => "form-control",
       "select" => "form-control",
       "textarea" => "form-control",
       "checkbox" => "form-check-input"

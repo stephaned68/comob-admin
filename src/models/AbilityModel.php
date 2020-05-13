@@ -3,7 +3,6 @@
 
 namespace app\models;
 
-
 use framework\Database;
 
 class AbilityModel
@@ -31,32 +30,40 @@ class AbilityModel
 
   public static function getAllForType($type)
   {
-    $sql = implode(" ",
-      [
-        Database::getAllQuery(self::$table),
-        Database::buildWhere(["type"])
-      ]);
-    $statement = Database::getPDO()->prepare($sql);
-    $statement->execute([$type]);
+    $qb = Database::getAll(self::$table);
+    if ($type == "" || $type == null) {
+      $qb->where("type = ''");
+      $qb->orWhere("type is null");
+    } else {
+      $qb->where("type = ?");
+    }
+    $statement = Database::getPDO()->prepare($qb->getQuery());
+    if ($type == "" || $type == null) {
+      $statement->execute();
+    } else {
+      $statement->execute([ $type ]);
+    }
     return $statement->fetchAll(\PDO::FETCH_ASSOC);
   }
 
   public static function getOne($id)
   {
     $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(self::$table, ["capacite"])
+      Database::getOneQuery(
+        self::$table,
+        [
+          "capacite"
+        ]
+      )
     );
-    $statement->execute([$id]);
+    $statement->execute([ $id ]);
     return $statement->fetch(\PDO::FETCH_ASSOC);
   }
 
   public static function insert($data)
   {
     $statement = Database::getPDO()->prepare(
-      Database::insertQuery(
-        self::$table,
-        ["capacite", "nom", "limitee", "sort", "type", "description"]
-      )
+      Database::insertQuery(self::$table)
     );
     return $statement->execute($data);
   }
@@ -66,8 +73,9 @@ class AbilityModel
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
         self::$table,
-        ["nom", "limitee", "sort", "type", "description"],
-        ["capacite"]
+        [
+          "capacite"
+        ]
       )
     );
     return $statement->execute($data);
@@ -78,10 +86,12 @@ class AbilityModel
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
         self::$table,
-        ["capacite"]
+        [
+          "capacite"
+        ]
       )
     );
-    return $statement->execute([$id]);
+    return $statement->execute([ $id ]);
   }
 
 }

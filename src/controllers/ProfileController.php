@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\models\EquipmentModel;
 use framework\Database;
 use framework\FormManager;
 use framework\Router;
@@ -62,6 +63,17 @@ class ProfileController extends AbstractController
           "name" => "nom",
           "label" => "Libellé",
           "errorMessage" => "Libellé non saisi"
+        ]
+      )
+      ->addField(
+        [
+          "name" => "description",
+          "label" => "Description",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 80,
+            "rows" => 6
+          ]
         ]
       )
       ->addField(
@@ -173,5 +185,137 @@ class ProfileController extends AbstractController
         "prestList" => Tools::select(PathModel::getAllForType("prest"), "voie", "nom"),
         "fm" => $form,
       ]);
+  }
+
+  public function equipmentsAction($id)
+  {
+    $source = $this->getQueryParam("source");
+    if (isset($source) && $source !== "") {
+      $sql = implode(" ",
+      [
+        "insert into",
+        Database::table("equipement_profils"),
+        "(profil, sequence, equipement, nombre, special)",
+        "select '$id' as profil, sequence, equipement, nombre, special",
+        "from",
+        Database::table("equipement_profils"),
+        "where profil = '$source'"
+      ]);
+      Database::getPDO()->query($sql);
+    }
+
+    $form = new FormManager();
+    $form
+      ->setTitle("Maintenance des équipements de profils")
+      ->addField(
+        [
+          "name" => "profil",
+          "controlType" => "hidden",
+          "primeKey" => true
+        ]
+      )
+      ->addField(
+        [
+          "name" => "nom",
+          "label" => "Profil",
+          "primeKey" => true
+        ]
+      )
+      ->setIndexRoute(Router::route(["profile", "index"]));
+
+    $profile = ProfileModel::getOne($id);
+
+    $equipments = ProfileModel::getEquipments($id);
+    if (count($equipments) == 0) {
+      $equipments[] = [
+        "code" => "",
+        "designation" => "",
+        "nombre" => 1,
+        "special" => ""
+      ];
+    }
+
+    if (FormManager::isSubmitted()) {
+      $data = $form->getData();
+
+      $data["equipments"] = filter_input(INPUT_POST, "equipments", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+      $data["numbers"] = filter_input(INPUT_POST, "numbers", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+      $data["specials"] = filter_input(INPUT_POST, "specials", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+
+      ProfileModel::saveEquipments($data);
+
+      Tools::setFlash("La liste d'équipement du profil a été enregistrée avec succès");
+      Router::redirectTo(["profile", "index"]);
+      return;
+    }
+
+    $this->render("profile/equipments",
+      [
+        "profile" => $profile,
+        "equipments" => $equipments,
+        "equipmentList" => array_merge(
+          [ "Choisir" =>
+            [
+              "" => "Choisir un équipement..."
+            ]
+          ],
+          Tools::selectGroup(EquipmentModel::getByCategory(), "categorie", "code", "designation")
+        ),
+        "fm" => $form,
+      ]);
+  }
+
+  public function traitsAction($id)
+  {
+    $form = new FormManager();
+    $form
+      ->setTitle("Maintenance des traits de profils")
+      ->addField(
+        [
+          "name" => "profil",
+          "controlType" => "hidden",
+          "primeKey" => true
+        ]
+      )
+      ->addField(
+        [
+          "name" => "nom",
+          "label" => "Profil",
+          "primeKey" => true
+        ]
+      )
+      ->setIndexRoute(Router::route(["profile", "index"]))
+    ;
+
+    $profil = ProfileModel::getOne($id);
+
+    $traits = ProfileModel::getTraits($id);
+    if (count($traits) == 0) {
+      $traits[] = [
+        "intitule" => "",
+        "description" => ""
+      ];
+    }
+
+    if (FormManager::isSubmitted()) {
+      $data = $form->getData();
+
+      $data["labels"] = filter_input(INPUT_POST, "labels", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+      $data["descriptions"] = filter_input(INPUT_POST, "descriptions", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+
+      ProfileModel::saveTraits($data);
+
+      Tools::setFlash("La liste de traits de profil a été enregistrée avec succès");
+      Router::redirectTo(["profile", "index"]);
+      return;
+    }
+
+    $this->render("profile/traits",
+      [
+        "profil" => $profil,
+        "traits" => $traits,
+        "fm" => $form,
+      ]
+    );
   }
 }

@@ -1,11 +1,7 @@
 <?php
 
-
 namespace app\controllers;
 
-
-use app\models\CategoryModel;
-use app\models\Property;
 use app\models\PropertyModel;
 use framework\Database;
 use framework\FormManager;
@@ -35,12 +31,11 @@ class PropertyController extends AbstractController
   public function editAction($id = null)
   {
 
-    $property = new Property();
+    $property = [];
 
     $form = new FormManager();
     $form
       ->setTitle("Maintenance des propriétés")
-      ->setEntity(Property::class)
       ->addField(
         [
           "name" => "code",
@@ -52,7 +47,8 @@ class PropertyController extends AbstractController
         [
           "name" => "intitule",
           "label" => "Intitulé",
-          "errorMessage" => "Intitulé non saisi"
+          "errorMessage" => "Intitulé non saisi",
+          "required" => true
         ]
       )
       ->addField(
@@ -62,7 +58,7 @@ class PropertyController extends AbstractController
         ]
       )
       ->setIndexRoute(Router::route([ "property", "index" ]))
-      ->setDeleteRoute(Router::route([ "property", "delete" ]))
+      ->setDeleteRoute(Router::route([ "property", "delete", $id ]))
     ;
 
     if ($id) {
@@ -92,6 +88,19 @@ class PropertyController extends AbstractController
         "fm" => $form
       ]);
 
+  }
+
+
+  public function deleteAction($id = null)
+  {
+
+    $success = Database::remove($id, PropertyModel::class,
+      [
+        "success" => "La propriété a été supprimée avec succès",
+        "failure" => "Cet identifiant de propriété n'existe pas"
+      ]);
+
+    Router::redirectTo([($success ? "property" : "home"), "index"]);
   }
 
 }

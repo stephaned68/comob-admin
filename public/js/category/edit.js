@@ -2,6 +2,8 @@
 
 $(function() {
 
+  makeSlug("code", "libelle");
+  /*
   var $code = $("#code");
   var $libelle = $('#libelle');
   $libelle.blur(function() {
@@ -9,6 +11,7 @@ $(function() {
       $code.val(slugify($libelle.val()));
     }
   });
+   */
 
   $('.select-2').select2();
 
