@@ -13,10 +13,16 @@ class CategoryModel
 
   public static function getAll()
   {
-    $rs = Database::getPDO()->query(
-      Database::getAllQuery(self::$table)
-    );
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query(
+        Database::getAllQuery(self::$table)
+      );
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    return $all;
   }
 
   public static function getAllMain()
@@ -27,9 +33,14 @@ class CategoryModel
       ->orWhere("parent = ''")
       ->select();
 
-    // "select * from {$_SESSION['dataset']['id']}_vu_category_getallmain"
-    $rs = Database::getPDO()->query($qb->getQuery());
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query($qb->getQuery());
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    return $all;
   }
 
   public static function getAllWithMain()
@@ -48,9 +59,14 @@ class CategoryModel
         "p.libelle as libelle_parent"
       ]);
 
-    // "select * from {$_SESSION['dataset']['id']}_vu_category_getallwithmain"
-    $rs = Database::getPDO()->query($qb->getQuery());
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query($qb->getQuery());
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    return $all;
   }
 
   public static function getAllSubWithMain()
@@ -71,23 +87,34 @@ class CategoryModel
         "p.libelle as libelle_parent"
       ]);
 
-    // "select * from {$_SESSION['dataset']['id']}_vu_category_getallsubwithmain"
-    $rs = Database::getPDO()->query($qb->getQuery());
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query($qb->getQuery());
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    return $all;
   }
 
   public static function getOne($id)
   {
-    $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(
-        self::$table,
-        [
-          "code"
-        ]
-      )
-    );
-    $statement->execute([ $id ]);
-    return $statement->fetch(\PDO::FETCH_ASSOC);
+    $category = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare(
+        Database::getOneQuery(
+          self::$table,
+          [
+            "code"
+          ]
+        )
+      );
+      $statement->execute([$id]);
+      $category = $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    return $category;
   }
 
   public static function insert($data)

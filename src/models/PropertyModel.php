@@ -13,24 +13,34 @@ class PropertyModel
 
   public static function getAll()
   {
-    $rs = Database::getPDO()->query(
-      Database::getAllQuery(self::$table)
-    );
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query(
+        Database::getAllQuery(self::$table)
+      );
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    return $all;
   }
 
   public static function getOne($id)
   {
-    $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(
-        self::$table,
-        [
-          "code"
-        ]
-      )
-    );
-    $statement->execute([ $id ]);
-    return $statement->fetch(\PDO::FETCH_ASSOC);
+    $property = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare(
+        Database::getOneQuery(
+          self::$table,
+          [
+            "code"
+          ]
+        )
+      );
+      $statement->execute([ $id ]);
+      $property = $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return $property;
   }
 
   public static function getByCategory($id)

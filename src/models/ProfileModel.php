@@ -38,15 +38,20 @@ class ProfileModel
     }
     $sql = $qb->getQuery();
 
-    if ($family !== "") {
-      $statement = Database::getPDO()->prepare($sql);
-      $statement->execute($params);
-      $rs = $statement;
-    } else {
-      $rs = Database::getPDO()->query($sql);
-    }
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      if ($family !== "") {
+        $statement = $pdo->prepare($sql);
+        $statement->execute($params);
+        $rs = $statement;
+      } else {
+        $rs = $pdo->query($sql);
+      }
 
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    return $all;
   }
 
   public static function getAll()
@@ -61,16 +66,21 @@ class ProfileModel
 
   public static function getOne($id)
   {
-    $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(
-        self::$table,
-        [
-          "profil"
-        ]
-      )
-    );
-    $statement->execute([ $id ]);
-    return $statement->fetch(\PDO::FETCH_ASSOC);
+    $profile = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare(
+        Database::getOneQuery(
+          self::$table,
+          [
+            "profil"
+          ]
+        )
+      );
+      $statement->execute([ $id ]);
+      $profile = $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return $profile;
   }
 
   public static function insert($data)

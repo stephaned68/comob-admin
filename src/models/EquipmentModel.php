@@ -12,10 +12,15 @@ class EquipmentModel
 
   public static function getAll()
   {
-    $rs = Database::getPDO()->query(
-      Database::getAllQuery(self::$table)
-    );
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query(
+        Database::getAllQuery(self::$table)
+      );
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    return $all;
   }
 
   public static function getByCategory($category=null)
@@ -39,8 +44,13 @@ class EquipmentModel
     }
     $sql = $qb->getQuery();
 
-    $rs = Database::getPDO()->query($sql);
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = Database::getPDO()->query($sql);
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    return $all;
   }
 
   public static function getByCategoryWithProps($category=null)
@@ -73,22 +83,33 @@ class EquipmentModel
     }
     $sql = $qb->getQuery();
 
-    $rs = Database::getPDO()->query($sql);
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $pdo->exec("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
+      $rs = $pdo->query($sql);
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    return $all;
   }
 
   public static function getOne($id)
   {
-    $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(
-        self::$table,
-        [
-          "code"
-        ]
-      )
-    );
-    $statement->execute([ $id ]);
-    return $statement->fetch(\PDO::FETCH_ASSOC);
+    $equipment = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare(
+        Database::getOneQuery(
+          self::$table,
+          [
+            "code"
+          ]
+        )
+      );
+      $statement->execute([ $id ]);
+      $equipment = $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return $equipment;
   }
 
   public static function insert($data)

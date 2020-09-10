@@ -20,24 +20,34 @@ class PathModel
   }
 
   public static function getOneType($id) {
-    $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(
-        Database::table("types_voie"),
-        [
-          "type_voie"
-        ]
-      )
-    );
-    $statement->execute([ $id ]);
-    return $statement->fetch(\PDO::FETCH_ASSOC);
+    $type = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare(
+        Database::getOneQuery(
+          Database::table("types_voie"),
+          [
+            "type_voie"
+          ]
+        )
+      );
+      $statement->execute([$id]);
+      $type = $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return $type;
   }
 
   public static function getAll()
   {
-    $rs = Database::getPDO()->query(
-      Database::getAllQuery(self::$table)
-    );
-    return $rs->fetchAll(\PDO::FETCH_ASSOC);
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $rs = $pdo->query(
+        Database::getAllQuery(self::$table)
+      );
+      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    return $all;
   }
 
   public static function getAllForType($type)
@@ -49,27 +59,38 @@ class PathModel
     } else {
       $qb->where("type = ?");
     }
-    $statement = Database::getPDO()->prepare($qb->getQuery());
-    if ($type == "" || $type == null) {
-      $statement->execute();
-    } else {
-      $statement->execute([ $type ]);
+
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare($qb->getQuery());
+      if ($type == "" || $type == null) {
+        $statement->execute();
+      } else {
+        $statement->execute([$type]);
+      }
+      $all = $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $all;
   }
 
   public static function getOne($id)
   {
-    $statement = Database::getPDO()->prepare(
-      Database::getOneQuery(
-        self::$table,
-        [
-          "voie"
-        ]
-      )
-    );
-    $statement->execute([ $id ]);
-    return $statement->fetch(\PDO::FETCH_ASSOC);
+    $path = [];
+    $pdo = Database::getPDO();
+    if ($pdo) {
+      $statement = $pdo->prepare(
+        Database::getOneQuery(
+          self::$table,
+          [
+            "voie"
+          ]
+        )
+      );
+      $statement->execute([ $id ]);
+      $path = $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return $path;
   }
 
   public static function insert($data)
