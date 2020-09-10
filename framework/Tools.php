@@ -96,35 +96,39 @@ class Tools
    */
   public static function setFlash($message, $type = null)
   {
-    $type = $type ?? "flash";
+    $type = $type ?? "primary";
 
-    if (array_key_exists($type, $_SESSION)) {
-      $messages = $_SESSION[$type];
+    if (array_key_exists("flash", $_SESSION)) {
+      $messages = $_SESSION["flash"];
     } else {
       $messages = [];
     }
 
     if (is_array($message)) {
-      if (is_array($messages) && count($messages) > 0) {
-        array_merge($messages, $message);
-      } else {
-        $messages = $message;
+      foreach ($message as $mtype => $mtext) {
+        if (array_key_exists($mtype, $messages)) {
+          $messages[$mtype][] = $mtext;
+        } else {
+          $messages[$mtype] = [ $mtext ];
+        }
       }
     } else {
-      array_push($messages, $message);
+      if (array_key_exists($type, $messages)) {
+        $messages[$type][] = $message;
+      } else {
+        $messages[$type] = [ $message ];
+      }
     }
-    $_SESSION[$type] = $messages;
+    $_SESSION["flash"] = $messages;
   }
 
   /**
-   * @param null $type
    * @return mixed|string
    */
-  public static function getFlash($type = null)
+  public static function getFlash()
   {
-    $type = $type ?? "flash";
-    $messages = $_SESSION[$type] ?? [];
-    unset($_SESSION[$type]);
+    $messages = $_SESSION["flash"] ?? [];
+    unset($_SESSION["flash"]);
     return $messages;
   }
 

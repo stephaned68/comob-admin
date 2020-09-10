@@ -30,7 +30,7 @@ class EquipmentController extends AbstractController
         $equipmentList = EquipmentModel::getByCategoryWithProps();
       }
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"danger");
     }
 
     $this->render("equipment/index",
@@ -196,7 +196,7 @@ class EquipmentController extends AbstractController
 
       EquipmentModel::saveProperties($data);
 
-      Tools::setFlash("Les propriétés de l'équipement ont été enregistrées avec succès");
+      Tools::setFlash("Les propriétés de l'équipement ont été enregistrées avec succès", "success");
       Router::redirectTo(["equipment", "index"]);
 
       return;

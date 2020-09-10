@@ -31,7 +31,7 @@ class ProfileController extends AbstractController
         $profileList = ProfileModel::getAll();
       }
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
     }
 
     $this->render("profile/index",
@@ -171,7 +171,7 @@ class ProfileController extends AbstractController
 
       ProfileModel::savePaths($data);
 
-      Tools::setFlash("La liste des voies du profil a été enregistrée avec succès");
+      Tools::setFlash("La liste des voies du profil a été enregistrée avec succès", "success");
       Router::redirectTo(["profile", "index"]);
 
       return;
@@ -244,7 +244,7 @@ class ProfileController extends AbstractController
 
       ProfileModel::saveEquipments($data);
 
-      Tools::setFlash("La liste d'équipement du profil a été enregistrée avec succès");
+      Tools::setFlash("La liste d'équipement du profil a été enregistrée avec succès", "success");
       Router::redirectTo(["profile", "index"]);
       return;
     }
@@ -305,7 +305,7 @@ class ProfileController extends AbstractController
 
       ProfileModel::saveTraits($data);
 
-      Tools::setFlash("La liste de traits de profil a été enregistrée avec succès");
+      Tools::setFlash("La liste de traits de profil a été enregistrée avec succès", "success");
       Router::redirectTo(["profile", "index"]);
       return;
     }

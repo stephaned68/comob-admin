@@ -3,12 +3,8 @@
 namespace app\controllers;
 
 
-use app\models\Property;
-use framework\Database;
-use framework\EntityManager;
 use framework\FormManager;
 use framework\Router;
-use framework\Tools;
 
 class HomeController extends AbstractController
 {
@@ -36,7 +32,8 @@ class HomeController extends AbstractController
     $this->render("home/select",
       [
         "title" => "Catalogues"
-      ]);
+      ]
+    );
 
   }
 }

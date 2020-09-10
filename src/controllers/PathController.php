@@ -30,7 +30,7 @@ class PathController extends AbstractController
         $pathList = PathModel::getAll();
       }
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
     }
 
     $this->render("path/index",
@@ -198,7 +198,7 @@ class PathController extends AbstractController
 
       PathModel::saveAbilities($data);
 
-      Tools::setFlash("La liste des capacités de la voie a été enregistrée avec succès");
+      Tools::setFlash("La liste des capacités de la voie a été enregistrée avec succès", "success");
       Router::redirectTo(["path", "index"]);
 
       return;

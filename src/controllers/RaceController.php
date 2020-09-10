@@ -19,7 +19,7 @@ class RaceController extends AbstractController
     try {
       $raceList = RaceModel::getAll();
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"danger");
     }
 
     $this->render("race/index",
@@ -233,7 +233,7 @@ class RaceController extends AbstractController
 
       RaceModel::saveTraits($data);
 
-      Tools::setFlash("La liste de traits raciaux a été enregistrée avec succès");
+      Tools::setFlash("La liste de traits raciaux a été enregistrée avec succès", "success");
       Router::redirectTo(["race", "index"]);
       return;
     }
@@ -284,7 +284,7 @@ class RaceController extends AbstractController
 
       RaceModel::saveAbilities($data);
 
-      Tools::setFlash("La liste des capacités raciales a été enregistrée avec succès");
+      Tools::setFlash("La liste des capacités raciales a été enregistrée avec succès", "success");
       Router::redirectTo(["race", "index"]);
 
       return;

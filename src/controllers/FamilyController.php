@@ -19,7 +19,7 @@ class FamilyController extends AbstractController
     try {
       $familyList = FamilyModel::getAll();
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"danger");
     }
 
     $this->render("family/index",

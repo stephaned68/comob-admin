@@ -32,7 +32,7 @@ class Database
           ]
         );
       } catch (PDOException $ex) {
-        Tools::setFlash($ex->getMessage(),"error");
+        Tools::setFlash($ex->getMessage(),"danger");
       }
     }
     return self::$pdo;
@@ -301,7 +301,7 @@ class Database
           $message = $messages["update"];
           $success = true;
         } catch (\PDOException $ex) {
-          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
+          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
         }
       } else {
         try {
@@ -309,11 +309,11 @@ class Database
           $message = $messages["insert"];
           $success = true;
         } catch (\PDOException $ex) {
-          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
+          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
         }
       }
       if ($message) {
-        Tools::setFlash($message);
+        Tools::setFlash($message, "success");
       }
     } else {
       $errors = $form->validateForm();
@@ -342,21 +342,21 @@ class Database
     try {
       $data = $model::getOne($id);
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL " . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL " . $ex->getMessage(),"danger");
     }
 
     if (!$data) {
-      Tools::setFlash($messages["failure"], "warning");
+      Tools::setFlash($messages["failure"], "danger");
     } else {
       try {
         $model::deleteOne($id);
-        Tools::setFlash($messages["success"]);
+        Tools::setFlash($messages["success"], "success");
         $success = true;
       } catch (\PDOException $ex) {
         if ($ex->errorInfo[0] == "23000") {
-          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle", "error");
+          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle", "warning");
         } else {
-          Tools::setFlash("Erreur SQL " . $ex->getMessage(), "error");
+          Tools::setFlash("Erreur SQL " . $ex->getMessage(), "danger");
         }
       }
     }

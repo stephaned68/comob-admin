@@ -20,7 +20,7 @@ class CategoryController extends AbstractController
     try {
       $categoryList = CategoryModel::getAllWithMain();
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"danger");
     }
 
     $this->render("category/index",

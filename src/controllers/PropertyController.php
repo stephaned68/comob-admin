@@ -18,7 +18,7 @@ class PropertyController extends AbstractController
     try {
       $propertyList = PropertyModel::getAll();
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(),"danger");
     }
 
     $this->render("property/index",

@@ -30,7 +30,7 @@ class AbilityController extends AbstractController
         $abilityList = AbilityModel::getAll();
       }
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "error");
+      Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
     }
 
     $this->render("ability/index",
@@ -221,9 +221,9 @@ class AbilityController extends AbstractController
             "type" => $pathData["type"],
             "description" => $rankParts[1]
           ]);
-          Tools::setFlash("La capacité '{$rankParts[0]}' a été ajoutée avec succès");
+          Tools::setFlash("La capacité '{$rankParts[0]}' a été ajoutée avec succès", "success");
         } else {
-          Tools::setFlash("L'identifiant de capacité '$slug' existe déjà", "error");
+          Tools::setFlash("L'identifiant de capacité '$slug' existe déjà", "warning");
         }
         $slugs[] = $slug;
       }
