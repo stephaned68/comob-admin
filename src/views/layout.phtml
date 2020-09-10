@@ -12,10 +12,15 @@ use framework\Tools;
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Chroniques Mobiles</title>
-  <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.<?= $_SESSION['theme'] ?>.css">
+  <?php if (isset($_SESSION['theme'])): ?>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/<?= $_SESSION['theme'] ?>/bootstrap.min.css">
+  <?php else: ?>
+    <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.css">
+  <?php endif; ?>
   <link rel="stylesheet" href="/assets/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="/assets/jquery-confirm/dist/jquery-confirm.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="container-fluid">
 <header class="card-header row">

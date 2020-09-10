@@ -182,14 +182,15 @@ class Tools
   {
     if (isset($_GET["theme"])) {
       $theme = $_GET["theme"];
-      if (array_search($theme,self::$themeList)) {
-        $_SESSION["theme"] = $theme;
+      if (!$theme === "!reset") {
+        if (array_search($theme, self::$themeList)) {
+          $_SESSION["theme"] = $theme;
+        }
       }
-    } else {
-      if(!isset($_SESSION["theme"])) {
+    }
+    if(!isset($_SESSION["theme"])) {
         $theme = rand(0, count(self::$themeList)-1);
         $_SESSION["theme"] = self::$themeList[$theme];
-      }
     }
   }
 
