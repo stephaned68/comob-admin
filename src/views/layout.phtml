@@ -67,48 +67,20 @@ use framework\Tools;
   <?php
   $messages = Tools::getFlash();
   if (is_array($messages) && count($messages) > 0) : ?>
-    <div class="alert alert-success alert-dismissible fade show col-md-6 mt-2" role="alert">
-      <button type="button" class="close" data-dismiss="alert">
-        <span>&times;</span>
-      </button>
-      <ul>
-        <?php foreach ($messages as $message) : ?>
-          <li><?= $message ?></li>
-        <?php endforeach; ?>
-      </ul>
-    </div>
-  <?php endif ?>
+    <?php foreach ($messages as $type => $messageList) : ?>
+      <div class="alert alert-<?= $type ?> alert-dismissible fade show col-md-6 mt-2" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          <span>&times;</span>
+        </button>
+        <ul>
+          <?php foreach ($messageList as $message) : ?>
+            <li><?= $message ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    <?php endforeach; ?>
+  <?php endif; ?>
 
-  <?php
-  $messages = Tools::getFlash("warning");
-  if (is_array($messages) && count($messages) > 0) : ?>
-    <div class="alert alert-warning alert-dismissible fade show col-md-6 mt-2" role="alert">
-      <button type="button" class="close" data-dismiss="alert">
-        <span>&times;</span>
-      </button>
-      <ul>
-        <?php foreach ($messages as $message) : ?>
-          <li><?= $message ?></li>
-        <?php endforeach; ?>
-      </ul>
-    </div>
-  <?php endif ?>
-
-  <?php
-  $messages = Tools::getFlash("error");
-  if (is_array($messages) && count($messages) > 0) : ?>
-    <div class="alert alert-danger alert-dismissible fade show col-md-6 mt-2" role="alert">
-      <button type="button" class="close" data-dismiss="alert">
-        <span>&times;</span>
-      </button>
-      <ul>
-        <?php foreach ($messages as $message) : ?>
-          <li><?= $message ?></li>
-        <?php endforeach; ?>
-      </ul>
-      <button type="button" class="close"></button>
-    </div>
-  <?php endif ?>
 </div>
 
 <div class="row justify-content-center">
@@ -120,6 +92,8 @@ use framework\Tools;
 <script src="/assets/popper.js/dist/umd/popper.js"></script>
 <script src="/assets/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/assets/select2/dist/js/select2.min.js"></script>
+<script src="/assets/bootbox/dist/bootbox.min.js"></script>
+<script src="/assets/bootbox/dist/bootbox.locales.min.js"></script>
 <script src="/assets/jquery-confirm/dist/jquery-confirm.min.js"></script>
 <script src="https://kit.fontawesome.com/fff1f19af2.js"></script>
 

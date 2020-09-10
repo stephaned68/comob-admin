@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "bootbox": "^5.4.0",
+    "bootbox.js": "^4.3.0",
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
     "jquery-confirm": "^3.3.4",
