@@ -31,12 +31,6 @@ use \framework\Router;
       <?php foreach ($familyList as $family) : ?>
         <tr>
           <td>
-            <input
-              type="checkbox"
-              class="form-check-inline"
-              name="deleted[]"
-              value="<?= $family['famille'] ?>"
-            >
             <a href="<?= Router::route(['family', 'edit', $family['famille']]) ?>"
             ><?= $family["description"] ?></a>
           </td>
@@ -51,11 +45,7 @@ use \framework\Router;
       </tbody>
     </table>
     <div class="row mt-2">
-      <div class="col">
-        <button type="submit" class="btn btn-sm btn-outline-danger" name="deleteManyBtn">
-          <span><i class="fas fa-trash"></i> Supprimer</span>
-        </button>
-      </div>
+      <div class="col"></div>
       <div class="col"></div>
     </div>
   </div>
