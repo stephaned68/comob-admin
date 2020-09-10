@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le :  mer. 13 mai 2020 à 16:43
--- Version du serveur :  10.3.15-MariaDB
--- Version de PHP :  7.3.6
+-- Hôte : localhost:3306
+-- Généré le : mar. 16 juin 2020 à 09:08
+-- Version du serveur :  5.7.24
+-- Version de PHP : 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `comobdb`
+-- Base de données : `comobdb`
 --
 
 -- --------------------------------------------------------
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `cga_equipement` (
   `categorie` varchar(20) NOT NULL,
   `sequence` varchar(5) DEFAULT NULL,
   `prix` decimal(16,2) DEFAULT NULL,
-  `notes` mediumtext DEFAULT NULL,
+  `notes` mediumtext,
   PRIMARY KEY (`code`),
   KEY `cga_equipement_categorie` (`categorie`),
   KEY `cga_equipement_sequence_idx` (`sequence`)
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `cga_equipement_profils` (
   `profil` varchar(20) NOT NULL,
   `sequence` tinyint(4) NOT NULL,
   `equipement` varchar(20) NOT NULL,
-  `nombre` tinyint(1) NOT NULL DEFAULT 1,
+  `nombre` tinyint(1) NOT NULL DEFAULT '1',
   `special` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cga_equipement_profils_equipement` (`equipement`),
@@ -171,7 +171,7 @@ DROP TABLE IF EXISTS `cga_profils`;
 CREATE TABLE IF NOT EXISTS `cga_profils` (
   `profil` varchar(20) NOT NULL,
   `nom` varchar(50) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` text,
   `famille` varchar(20) NOT NULL,
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
@@ -290,7 +290,7 @@ DROP TABLE IF EXISTS `cga_types_capacite`;
 CREATE TABLE IF NOT EXISTS `cga_types_capacite` (
   `type_capacite` varchar(5) NOT NULL,
   `type_capacite_intitule` varchar(50) NOT NULL,
-  `type_capacite_config` text DEFAULT NULL,
+  `type_capacite_config` text,
   PRIMARY KEY (`type_capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -304,7 +304,7 @@ DROP TABLE IF EXISTS `cga_types_races`;
 CREATE TABLE IF NOT EXISTS `cga_types_races` (
   `type_race` varchar(5) NOT NULL,
   `type_race_intitule` varchar(50) NOT NULL,
-  `type_race_config` text DEFAULT NULL,
+  `type_race_config` text,
   PRIMARY KEY (`type_race`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -318,7 +318,7 @@ DROP TABLE IF EXISTS `cga_types_voie`;
 CREATE TABLE IF NOT EXISTS `cga_types_voie` (
   `type_voie` varchar(5) NOT NULL,
   `type_voie_intitule` varchar(50) NOT NULL,
-  `type_voie_config` text DEFAULT NULL,
+  `type_voie_config` text,
   PRIMARY KEY (`type_voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1030,7 +1030,7 @@ CREATE TABLE IF NOT EXISTS `cocy_equipement` (
   `categorie` varchar(20) NOT NULL,
   `sequence` varchar(5) DEFAULT NULL,
   `prix` decimal(16,2) DEFAULT NULL,
-  `notes` mediumtext DEFAULT NULL,
+  `notes` mediumtext,
   PRIMARY KEY (`code`),
   KEY `cocy_equipement_categorie` (`categorie`),
   KEY `cocy_equipement_sequence_idx` (`sequence`)
@@ -1161,7 +1161,7 @@ CREATE TABLE IF NOT EXISTS `cocy_equipement_profils` (
   `profil` varchar(20) NOT NULL,
   `sequence` tinyint(4) NOT NULL,
   `equipement` varchar(20) NOT NULL,
-  `nombre` tinyint(1) NOT NULL DEFAULT 1,
+  `nombre` tinyint(1) NOT NULL DEFAULT '1',
   `special` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cocy_equipement_profils_equipement` (`equipement`),
@@ -1512,7 +1512,7 @@ DROP TABLE IF EXISTS `cocy_profils`;
 CREATE TABLE IF NOT EXISTS `cocy_profils` (
   `profil` varchar(20) NOT NULL,
   `nom` varchar(50) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` text,
   `famille` varchar(20) NOT NULL,
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
@@ -2326,7 +2326,7 @@ DROP TABLE IF EXISTS `cocy_types_capacite`;
 CREATE TABLE IF NOT EXISTS `cocy_types_capacite` (
   `type_capacite` varchar(5) NOT NULL,
   `type_capacite_intitule` varchar(50) NOT NULL,
-  `type_capacite_config` text DEFAULT NULL,
+  `type_capacite_config` text,
   PRIMARY KEY (`type_capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2349,7 +2349,7 @@ DROP TABLE IF EXISTS `cocy_types_races`;
 CREATE TABLE IF NOT EXISTS `cocy_types_races` (
   `type_race` varchar(5) NOT NULL,
   `type_race_intitule` varchar(50) NOT NULL,
-  `type_race_config` text DEFAULT NULL,
+  `type_race_config` text,
   PRIMARY KEY (`type_race`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2363,7 +2363,7 @@ DROP TABLE IF EXISTS `cocy_types_voie`;
 CREATE TABLE IF NOT EXISTS `cocy_types_voie` (
   `type_voie` varchar(5) NOT NULL,
   `type_voie_intitule` varchar(50) NOT NULL,
-  `type_voie_config` text DEFAULT NULL,
+  `type_voie_config` text,
   PRIMARY KEY (`type_voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2477,37 +2477,37 @@ CREATE TABLE IF NOT EXISTS `cocy_voies_profils` (
 --
 
 INSERT INTO `cocy_voies_profils` (`profil`, `voie`) VALUES
+('fixer               ', 'avantages'),
+('ganger              ', 'baston'),
+('chrome              ', 'chrome'),
 ('adepte              ', 'combataucontact'),
-('adepte              ', 'mondeastral'),
-('adepte              ', 'prouessesmentales'),
-('adepte              ', 'prouessesphysiques'),
+('chrome              ', 'commando'),
+('rigger              ', 'drones'),
 ('chaman              ', 'esprits'),
+('fixer               ', 'etiquette'),
 ('chaman              ', 'gaia'),
 ('chaman              ', 'guerisseur'),
-('chaman              ', 'mondeastral'),
-('chrome              ', 'chrome'),
-('chrome              ', 'commando'),
 ('chrome              ', 'implants'),
-('chrome              ', 'tireur'),
-('fixer               ', 'avantages'),
-('fixer               ', 'etiquette'),
 ('fixer               ', 'implants'),
-('fixer               ', 'terrain'),
-('ganger              ', 'baston'),
 ('ganger              ', 'implants'),
-('ganger              ', 'survie'),
-('ganger              ', 'tribu'),
 ('hacker              ', 'implants'),
+('rigger              ', 'implants'),
 ('hacker              ', 'infiltration'),
-('hacker              ', 'matrice'),
-('hacker              ', 'tacticien'),
 ('mage                ', 'magiedecombat'),
 ('mage                ', 'magiementale'),
 ('mage                ', 'mana'),
+('hacker              ', 'matrice'),
+('adepte              ', 'mondeastral'),
+('chaman              ', 'mondeastral'),
 ('mage                ', 'mondeastral'),
-('rigger              ', 'drones'),
-('rigger              ', 'implants'),
+('adepte              ', 'prouessesmentales'),
+('adepte              ', 'prouessesphysiques'),
+('ganger              ', 'survie'),
+('hacker              ', 'tacticien'),
 ('rigger              ', 'techos'),
+('fixer               ', 'terrain'),
+('chrome              ', 'tireur'),
+('ganger              ', 'tribu'),
 ('rigger              ', 'vehicules');
 
 -- --------------------------------------------------------
@@ -3784,7 +3784,7 @@ CREATE TABLE IF NOT EXISTS `coc_equipement` (
   `categorie` varchar(20) NOT NULL,
   `sequence` varchar(5) DEFAULT NULL,
   `prix` decimal(16,2) DEFAULT NULL,
-  `notes` mediumtext DEFAULT NULL,
+  `notes` mediumtext,
   PRIMARY KEY (`code`),
   KEY `coc_equipement_categorie` (`categorie`),
   KEY `coc_equipement_sequence_idx` (`sequence`)
@@ -3889,7 +3889,7 @@ CREATE TABLE IF NOT EXISTS `coc_equipement_profils` (
   `profil` varchar(20) NOT NULL,
   `sequence` tinyint(4) NOT NULL,
   `equipement` varchar(20) NOT NULL,
-  `nombre` tinyint(1) NOT NULL DEFAULT 1,
+  `nombre` tinyint(1) NOT NULL DEFAULT '1',
   `special` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `coc_equipement_profils_equipement` (`equipement`),
@@ -4404,7 +4404,7 @@ DROP TABLE IF EXISTS `coc_profils`;
 CREATE TABLE IF NOT EXISTS `coc_profils` (
   `profil` varchar(20) NOT NULL,
   `nom` varchar(50) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` text,
   `famille` varchar(20) NOT NULL,
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
@@ -9844,7 +9844,7 @@ DROP TABLE IF EXISTS `coc_types_capacite`;
 CREATE TABLE IF NOT EXISTS `coc_types_capacite` (
   `type_capacite` varchar(5) NOT NULL,
   `type_capacite_intitule` varchar(50) NOT NULL,
-  `type_capacite_config` text DEFAULT NULL,
+  `type_capacite_config` text,
   PRIMARY KEY (`type_capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -9866,7 +9866,7 @@ DROP TABLE IF EXISTS `coc_types_races`;
 CREATE TABLE IF NOT EXISTS `coc_types_races` (
   `type_race` varchar(5) NOT NULL,
   `type_race_intitule` varchar(50) NOT NULL,
-  `type_race_config` text DEFAULT NULL,
+  `type_race_config` text,
   PRIMARY KEY (`type_race`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -9880,7 +9880,7 @@ DROP TABLE IF EXISTS `coc_types_voie`;
 CREATE TABLE IF NOT EXISTS `coc_types_voie` (
   `type_voie` varchar(5) NOT NULL,
   `type_voie_intitule` varchar(50) NOT NULL,
-  `type_voie_config` text DEFAULT NULL,
+  `type_voie_config` text,
   PRIMARY KEY (`type_voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -9956,7 +9956,7 @@ INSERT INTO `coc_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
 ('discours', 'Discours', 'Équipement : un lot de carte de visite, une trousse de maquillage.', '', '0'),
 ('divination', 'Divination', 'La magie de la divination pourrait éventuellement utiliser la PER au lieu de l’INT comme caractéristique de magie (remplacez alors tous les Mod. d’INT par Mod. de PER).', '', '1'),
 ('dominateur', 'Dominateur (CHA)', 'Le dominateur utilise sa force mentale pour contrôler ses victimes. Si une victime résiste à un pouvoir de contrôle, elle y est immunisée pour 24 heures.', '', '0'),
-('dragon', 'Dragon CHA)', 'Un être qui descend d’une créature puissante et majestueuse parfois aussi appelé linnorm ou wyverne.', '', '0'),
+('dragon', 'Dragon (CHA)', 'Un être qui descend d’une créature puissante et majestueuse parfois aussi appelé linnorm ou wyverne.', NULL, '0'),
 ('dryade', 'Dryade (INT)', 'Un être proche de la forêt et de la magie, aussi appelé elfe ou sidhe.', '', '1'),
 ('dwergar', 'Dwergar (PER)', 'Un être courtaud mais solide, qui aime les souterrains et parle aux pierres, aussi appelé gnome ou nain.', '', '0'),
 ('elixirs', 'Elixirs', 'Chaque jour, le personnage peut créer jusqu’à deux élixirs par rang acquis dans la voie. N’importe quel individu peut consommer un élixir et en bénéficier, même s’il n’est pas lui-même magicien. Produire un lot d’élixirs prend une heure, quel qu’en soit le nombre. Ce sont des mélanges instables qui deviennent inopérants après 24 heures. Le joueur doit donc en noter l’heure de fabrication. Passé 24 heures, le personnage peut régénérer les élixirs en seulement 10 minutes, mais ils comptent alors parmi les potions créées pour la journée (et les PM ne sont pas récupérés). L’alchimiste doit dépenser 1 PM par élixir produit. Ces PM sont déduits du nombre de PM max du personnage et ne sont pas récupérés avant 24 heures.', '', '3'),
@@ -12250,7 +12250,7 @@ CREATE TABLE IF NOT EXISTS `cof_equipement` (
   `categorie` varchar(20) NOT NULL,
   `sequence` varchar(5) DEFAULT NULL,
   `prix` decimal(16,2) DEFAULT NULL,
-  `notes` mediumtext DEFAULT NULL,
+  `notes` mediumtext,
   PRIMARY KEY (`code`),
   KEY `cof_fk_categorie_equipement_idx` (`categorie`),
   KEY `cof_equipement_sequence` (`sequence`)
@@ -12366,7 +12366,7 @@ CREATE TABLE IF NOT EXISTS `cof_equipement_profils` (
   `profil` varchar(20) NOT NULL,
   `sequence` tinyint(4) NOT NULL,
   `equipement` varchar(20) NOT NULL,
-  `nombre` tinyint(1) NOT NULL DEFAULT 1,
+  `nombre` tinyint(1) NOT NULL DEFAULT '1',
   `special` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cof_equipement_profils_profil` (`profil`),
@@ -12742,7 +12742,7 @@ DROP TABLE IF EXISTS `cof_profils`;
 CREATE TABLE IF NOT EXISTS `cof_profils` (
   `profil` varchar(20) NOT NULL,
   `nom` varchar(50) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` text,
   `famille` varchar(20) NOT NULL,
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
@@ -16025,7 +16025,7 @@ DROP TABLE IF EXISTS `cof_types_capacite`;
 CREATE TABLE IF NOT EXISTS `cof_types_capacite` (
   `type_capacite` varchar(5) NOT NULL,
   `type_capacite_intitule` varchar(50) NOT NULL,
-  `type_capacite_config` text DEFAULT NULL,
+  `type_capacite_config` text,
   PRIMARY KEY (`type_capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -16049,7 +16049,7 @@ DROP TABLE IF EXISTS `cof_types_races`;
 CREATE TABLE IF NOT EXISTS `cof_types_races` (
   `type_race` varchar(5) NOT NULL,
   `type_race_intitule` varchar(50) NOT NULL,
-  `type_race_config` text DEFAULT NULL,
+  `type_race_config` text,
   PRIMARY KEY (`type_race`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -16071,7 +16071,7 @@ DROP TABLE IF EXISTS `cof_types_voie`;
 CREATE TABLE IF NOT EXISTS `cof_types_voie` (
   `type_voie` varchar(5) NOT NULL,
   `type_voie_intitule` varchar(50) NOT NULL,
-  `type_voie_config` text DEFAULT NULL,
+  `type_voie_config` text,
   PRIMARY KEY (`type_voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
