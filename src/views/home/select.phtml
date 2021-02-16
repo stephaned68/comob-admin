@@ -5,7 +5,7 @@
   <form method="post">
     <div class="form-group">
       <label for="dataset"></label>
-      <select class="form-control" id="dataset" name="dataset" size="5">
+      <select class="form-control" id="dataset" name="dataset" size="<?= count(DATASETS) ?>">
         <?php foreach (DATASETS as $dsKey => $dsValue) : ?>
         <option value="<?= $dsKey ?>"><?= $dsValue["name"] ?></option>
         <?php endforeach; ?>

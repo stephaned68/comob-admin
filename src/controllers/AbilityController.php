@@ -199,6 +199,7 @@ class AbilityController extends AbstractController
         $nr = $r + 1;
         $endsAt = strpos($fullPath, " {$nr}. ");
         $rank = substr($fullPath, $startAt + 1, $endsAt - $startAt - 1);
+        $fullPath = substr($fullPath, $endsAt - 1);
         $rankParts = explode(" : ", $rank);
         $rankParts[0] = substr($rankParts[0],3);
         if (substr($rankParts[0], -1) === "*") {
@@ -213,14 +214,18 @@ class AbilityController extends AbstractController
         $slug = str_replace([ " ", "'", "`", "^" ], [ "-" ], $slug);
         $slug = strtolower($slug);
         if (!AbilityModel::getOne($slug)) {
-          AbilityModel::insert([
+          $description = $rankParts[1];
+          if (count($rankParts) > 2)
+            $description .= " : " . $rankParts[2];
+          $data = [
             "capacite" => $slug,
             "nom" => $rankParts[0],
             "limitee" => $limited ?? 0,
             "sort" => $spell ?? 0,
             "type" => $pathData["type"],
-            "description" => $rankParts[1]
-          ]);
+            "description" => $description
+          ];
+          AbilityModel::insert($data);
           Tools::setFlash("La capacité '{$rankParts[0]}' a été ajoutée avec succès", "success");
         } else {
           Tools::setFlash("L'identifiant de capacité '$slug' existe déjà", "warning");

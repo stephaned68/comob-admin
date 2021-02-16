@@ -354,7 +354,7 @@ class Database
         $success = true;
       } catch (\PDOException $ex) {
         if ($ex->errorInfo[0] == "23000") {
-          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle", "warning");
+          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle" . "\n" . $ex->getMessage() , "warning");
         } else {
           Tools::setFlash("Erreur SQL " . $ex->getMessage(), "danger");
         }

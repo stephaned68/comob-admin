@@ -278,11 +278,13 @@ CREATE TABLE IF NOT EXISTS `cox_races_traits` (
 --
 
 DROP TABLE IF EXISTS `cox_types_capacite`;
-CREATE TABLE IF NOT EXISTS `cox_types_capacite` (
+CREATE TABLE `cox_types_capacite` (
   `type_capacite` varchar(5) NOT NULL,
   `type_capacite_intitule` varchar(50) NOT NULL,
+  `type_capacite_config` text,
   PRIMARY KEY (`type_capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 
@@ -291,11 +293,13 @@ CREATE TABLE IF NOT EXISTS `cox_types_capacite` (
 --
 
 DROP TABLE IF EXISTS `cox_types_races`;
-CREATE TABLE IF NOT EXISTS `cox_types_races` (
+CREATE TABLE `cox_types_races` (
   `type_race` varchar(5) NOT NULL,
   `type_race_intitule` varchar(50) NOT NULL,
+  `type_race_config` text,
   PRIMARY KEY (`type_race`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 
@@ -304,11 +308,13 @@ CREATE TABLE IF NOT EXISTS `cox_types_races` (
 --
 
 DROP TABLE IF EXISTS `cox_types_voie`;
-CREATE TABLE IF NOT EXISTS `cox_types_voie` (
+CREATE TABLE `cox_types_voie` (
   `type_voie` varchar(5) NOT NULL,
   `type_voie_intitule` varchar(50) NOT NULL,
+  `type_voie_config` text,
   PRIMARY KEY (`type_voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 

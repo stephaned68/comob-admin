@@ -19,7 +19,13 @@ define ("DATASETS",
   [
     "cof" => [
       "name" => "Fantasy"
-      ],
+    ],
+    "cota" => [
+      "name" => "Terres d'Arran"
+    ],
+    "coct" => [
+      "name" => "Cthulhu"
+    ],
     "coc" => [
       "name" => "Contemporain"
     ],

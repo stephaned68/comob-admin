@@ -141,36 +141,29 @@ class ProfileModel
     $statement = $pdo->prepare(
       Database::deleteOneQuery(
         "voies_profils",
-        [
-          "profil",
-          "voie"
-        ]
+        [ "profil" ]
       )
     );
-    foreach ($data["voies"] as $voie) {
-      $statement->execute(
-        [
-          $data["profil"],
-          $voie
-        ]);
-    }
+    $statement->execute([ $data["profil"] ]);
 
     // insert
-    $statement = $pdo->prepare(
-      Database::insertQuery(
-        "voies_profils",
-        [
-          "profil",
-          "voie"
-        ]
-      )
-    );
-    foreach ($data["voies"] as $voie) {
-      $statement->execute(
-        [
-          "profil" => $data["profil"],
-          "voie" => $voie
-        ]);
+    if ($data["voies"] !== null) {
+      $statement = $pdo->prepare(
+        Database::insertQuery(
+          "voies_profils",
+          [
+            "profil",
+            "voie"
+          ]
+        )
+      );
+      foreach ($data["voies"] as $voie) {
+        $statement->execute(
+          [
+            "profil" => $data["profil"],
+            "voie" => $voie
+          ]);
+      }
     }
 
     $pdo->commit();
