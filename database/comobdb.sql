@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : sam. 17 oct. 2020 à 07:04
+-- Généré le : mer. 17 fév. 2021 à 16:08
 -- Version du serveur :  5.7.24
 -- Version de PHP : 7.4.7
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `comobdb`
 --
-CREATE DATABASE IF NOT EXISTS `comobdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `comobdb`;
 
 -- --------------------------------------------------------
 
@@ -35,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `cga_capacites` (
   `nom` varchar(50) NOT NULL,
   `limitee` tinyint(1) DEFAULT NULL,
   `sort` tinyint(1) DEFAULT NULL,
-  `type` char(1) NOT NULL,
+  `type` varchar(5) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -71,6 +69,35 @@ CREATE TABLE IF NOT EXISTS `cga_categories_equipement` (
   PRIMARY KEY (`code`),
   KEY `cga_categories_equipemet_parent` (`parent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cga_categories_equipement`
+--
+
+INSERT INTO `cga_categories_equipement` (`code`, `libelle`, `parent`, `sequence`) VALUES
+('armes', 'Armes', NULL, '0005'),
+('armes-a-feu', 'Armes à feu', 'armes', '0015'),
+('armes-archaiques', 'Armes archaïques', 'armes', '0005'),
+('armes-de-contact', 'Armes de contact', 'armes', '0010'),
+('armes-ioniques', 'Armes ioniques', 'armes', '0020'),
+('armes-laser', 'Armes laser', 'armes', '0025'),
+('armes-lourdes', 'Armes lourdes', 'armes', '0035'),
+('armes-plasma', 'Armes plasma', 'armes', '0025'),
+('armes-soniques', 'Armes soniques', 'armes', '0030'),
+('armures', 'Armures', 'protections', '0005'),
+('augmentations', 'Augmentations', NULL, '0020'),
+('champs-de-force', 'Champs de force', 'protections', '0010'),
+('combinaisons', 'Combinaisons', 'protections', '0015'),
+('divers', 'Divers', NULL, '0015'),
+('drogues', 'Drogues', NULL, '0025'),
+('drones', 'Drones', 'divers', '0035'),
+('logement', 'Logement', 'divers', '0010'),
+('medical', 'Medical', 'divers', '0025'),
+('nourriture', 'Nourriture', 'divers', '0015'),
+('protections', 'Protections', NULL, '0010'),
+('robots', 'Robots', 'divers', '0030'),
+('utilitaires', 'Utilitaires', 'divers', '0020'),
+('vetements', 'Vêtements', 'divers', '0005');
 
 -- --------------------------------------------------------
 
@@ -158,9 +185,9 @@ CREATE TABLE IF NOT EXISTS `cga_familles` (
 --
 
 INSERT INTO `cga_familles` (`famille`, `description`) VALUES
-('bordure', 'Bordure'),
-('centre', 'Centre'),
-('espace', 'Espace');
+('action', 'Action'),
+('aventure', 'Aventure'),
+('reflexion', 'Réflexion');
 
 -- --------------------------------------------------------
 
@@ -295,6 +322,17 @@ CREATE TABLE IF NOT EXISTS `cga_types_capacite` (
   PRIMARY KEY (`type_capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `cga_types_capacite`
+--
+
+INSERT INTO `cga_types_capacite` (`type_capacite`, `type_capacite_intitule`, `type_capacite_config`) VALUES
+('augm', 'Augmentations', NULL),
+('cult', 'Culturelle', NULL),
+('espe', 'Espèce', NULL),
+('psych', 'PSI', NULL),
+('savf', 'Savoir-faire', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -323,6 +361,17 @@ CREATE TABLE IF NOT EXISTS `cga_types_voie` (
   PRIMARY KEY (`type_voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `cga_types_voie`
+--
+
+INSERT INTO `cga_types_voie` (`type_voie`, `type_voie_intitule`, `type_voie_config`) VALUES
+('augm', 'Augmentations', NULL),
+('cult', 'Culturelle', NULL),
+('espe', 'Espèce', NULL),
+('psych', 'PSI', NULL),
+('savf', 'Savoir-faire', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -334,10 +383,17 @@ CREATE TABLE IF NOT EXISTS `cga_voies` (
   `voie` varchar(20) NOT NULL,
   `nom` varchar(50) NOT NULL,
   `notes` varchar(1024) DEFAULT NULL,
-  `type` char(1) DEFAULT NULL,
+  `type` varchar(5) DEFAULT NULL,
   `pfx_deladu` char(1) NOT NULL,
   PRIMARY KEY (`voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cga_voies`
+--
+
+INSERT INTO `cga_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
+('humains', 'Humains', NULL, 'espe', '3');
 
 -- --------------------------------------------------------
 
@@ -380,8 +436,10 @@ INSERT INTO `coct_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `des
 ('a-lecoute', 'A l\'écoute', 0, 0, '', 'Le personnage sait écouter et mettre les autres à l’aise pour obtenir leurs confidences. Il gagne un bonus de +2 par rang atteint dans cette voie aux tests de PER effectués pour analyser l’état émotionnel de ses interlocuteurs et aux tests de CHA pour obtenir un aveu.'),
 ('acrobate', 'Acrobate', 0, 0, '', 'Le personnage reçoit un bonus de +5 pour tous les tests de DEX destinés à grimper, sauter ou tenir en équilibre. De plus, il ne subit pas de malus en attaque lorsqu’il se trouve en équilibre précaire et réduit tous les DM des chutes du rang atteint dans cette voie.'),
 ('adaptation-heroique', 'Adaptation héroïque', 0, 0, '', 'Le personnage augmente de +2 ses valeurs de PER et de CON.'),
+('aide-psychologique', 'Aide psychologique', 0, 0, NULL, 'Lorsqu’un allié est victime d’une crise de folie passagère, le personnage peut tenter un test de CHA difficulté [10+PF de la victime] pour le ramener à la raison (action limitée, une tentative par tour). Le personnage peut réduire le score de folie d’un allié de 1 point en passant 1d6 jours avec lui. Un seul point peut être récupéré de cette façon par un même allié. Un nouveau point peut être récupéré par cet allié lorsque le personnage atteint le rang 5 dans cette voie.'),
 ('ajuster', 'Ajuster', 0, 0, '', 'Le personnage obtient un bonus de +2 en attaque avec les armes à feu jusqu’à la portée de base de l’arme.'),
 ('ami-de-la-nature', 'Ami de la nature', 0, 0, '', 'Le personnage a l’habitude de se déplacer dans la nature. Il obtient un bonus de +2 par rang atteint dans cette voie à tous les tests de survie en milieu naturel et +1 par rang atteint dans cette voie à son initiative lorsqu’un combat survient dans un tel environnement.'),
+('analyse-personnelle', 'Analyse personnelle', 0, 0, NULL, 'La formation du personnage lui permet de renforcer sa santé mentale. Le personnage obtient un bonus de +5 pour résister aux crises de folie. Il réduit le nombre de point de folie acquis de 1 point (s’il n’en a pas encore, il pourra ignorer le premier point de folie acquis). Il enlève un second point de folie lorsqu’il atteint le rang 4 dans cette voie.'),
 ('appel-a-un-ami', 'Appel à un ami', 0, 0, '', 'Une fois par jour, le personnage peut demander de l’aide à un ami : renseignement, coup de main, etc. Il doit réussir un test de CHA difficulté 10 si le service est du domaine de la routine, de 15 si le service est difficile ou s’il peut présenter un risque, et de 20 si le service fait appel à une information secrète ou s’il met ouvertement l’allié en danger.'),
 ('arme-de-predilection', 'Arme de prédilection', 0, 0, '', 'Le personnage choisit une arme de prédilection (arme de contact), il gagne un bonus de +1 en attaque lorsqu’il utilise cette arme. De plus, lorsqu’il utilise une arme légère (couteau, rapière) ou qu’il combat à mains nues, il peut choisir son Mod. de DEX au lieu de celui de FOR pour calculer son score d’attaque au contact.'),
 ('arts-martiaux', 'Arts martiaux', 0, 0, '', 'Lorsqu’il combat à mains nues, le personnage inflige [1d4 + Mod. de FOR] DM (létaux ou temporaires, au choix). Le dé de DM passe à 1d6 au rang 3 atteint dans cette voie et à 1d8 au rang 5. De plus, le personnage obtient un bonus de +1 par rang en DEF contre les attaques au contact (sauf en cas de surprise) et à tous les tests de DEX destinés à esquiver.'),
@@ -404,10 +462,12 @@ INSERT INTO `coct_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `des
 ('endurant', 'Endurant', 0, 0, '', 'Le personnage peut réaliser une période de marche supplémentaire par jour sans fatigue tout en portant une charge jusqu’à deux fois plus lourde, quel que soit le mode de déplacement (course, marche, ski, vélo, etc.).'),
 ('entrainement-de-haut', 'Entrainement de haut niveau', 0, 0, '', 'Le personnage augmente de +2 la valeur du score de la caractéristique choisie au rang 2. Désormais, il lance deux d20 à tous les tests basés sur cette caractéristique et conserve le meilleur résultat.'),
 ('esprit-danalyse', 'Esprit d\'analyse', 0, 0, '', 'Le personnage obtient un bonus de +1 par rang atteint dans cette voie pour chaque test de recherche d’indices (voir les règles à ce sujet p. 37).'),
+('etoiles-propices', 'Étoiles propices', 0, 0, '', 'L’art de la divination permet au personnage de prendre les bonnes décisions ou de profiter des faiblesses de ses adversaires. Chaque matin, après un rituel de 10 minutes effectué par son personnage, le joueur lance 1d20 et note le résultat. À tout moment dans la journée, il peut remplacer le résultat d’un d20 qu’il a lancé ou que le MJ a lancé pour une attaque ou un test opposé contre lui, par ce résultat.'),
 ('examen-psychologique', 'Examen psychologique', 0, 0, '', 'En parlant pendant 1d6 minutes avec sa cible et en réussissant un test opposé de PER contre CHA, le personnage peut déterminer l’état émotionnel de sa cible même si elle tente de le camoufler. Le personnage peut notamment savoir si on tente de lui mentir ou de lui cacher des choses (sans pouvoir déterminer lequel des deux). En cas d’échec, le personnage ne peut plus tenter cette capacité sur la même cible pendant 24 heures.'),
 ('expert-medical', 'Expert', 0, 0, '', 'Le personnage est une pointure dans le domaine de la chirurgie, il obtient un bonus de +5 à tous les tests de DEX de précision manuelle et augmente de +2 sa valeur d’INT. Désormais, le joueur lance deux d20 à tous les tests de médecine ou de chirurgie et garde le meilleur résultat.'),
 ('expertise', 'Expertise', 0, 0, '', 'Le personnage est spécialisé dans la collecte et la recherche d’indices, dans un domaine particulier en rapport avec son background. Il obtient un bonus de +5 pour les tests liés à ce domaine (cumulable avec le rang 1). Voici une liste non exhaustive de domaines possibles : anthropologie, archéologie, astronomie, autopsie, balistique, biologie, chimie, géologie, paléographie, parapsychologie, photographie, psychologie, sociologie, théologie, etc. Au rang 4, le personnage fait l’acquisition d’une seconde spécialité en rapport avec les aventures déjà jouées.'),
 ('flair-infaillible', 'Flair infaillible', 0, 0, '', 'Le joueur lance désormais deux d20 pour tous les tests de recherche d’indices et peut garder le meilleur résultat. Si le personnage quitte une scène de crime ou d’enquête en ayant raté un renseignement utile à l’avancée du scénario, le meneur de jeu doit lui signaler que « quelquechose cloche ».'),
+('force-dame', 'Force d’âme', 0, 0, '', 'Une fois par jour, s’il est à 0 point de choc, le personnage peut effectuer un petit rituel de prière ou de méditation d’une durée de 1 heure qui lui permet de récupérer 1 point de choc.'),
 ('formation-artistique', 'Formation artistique', 0, 0, '', 'Le personnage obtient un bonus de +1 par rang atteint dans cette voie à tous les tests en rapport avec la connaissance de l’art. De plus, il obtient un bonus supplémentaire de +5 pour tous les tests en rapport avec une forme d’art de son choix (littérature, sculpture, peinture, musique, chant, danse, etc.).'),
 ('formation-dhistorien', 'Formation d\'historien', 0, 0, '', 'Le personnage obtient un bonus de +1 par rang atteint dans cette Voie à tous les tests en rapport avec l’histoire. Il choisit une période particulière (préhistoire, antiquité, moyen âge, renaissance, moderne) pour laquelle il reçoit un bonus supplémentaire de +5.'),
 ('formation-scientifiq', 'Formation scientifique', 0, 0, '', 'Le personnage obtient un bonus de +1 par rang atteint dans cette voie à tous les tests en rapport avec les sciences. Il choisit un domaine particulier (mathématiques, physique, chimie, etc.) dans lequel il reçoit un bonus de +2 par rang au lieu de +1.'),
@@ -433,7 +493,7 @@ INSERT INTO `coct_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `des
 ('manoeuvre-devitement', 'Manoeuvre d\'évitement', 0, 0, '', 'Le personnage obtient un bonus supplémentaire de +5 pour éviter les accidents. De plus, son véhicule, lui-même et tous ses passagers gagnent un bonus de +2 en DEF.'),
 ('mecano', 'Mécano', 0, 0, '', 'Le personnage obtient un bonus de +2 par rang atteint dans cette voie à tous les tests visant à réparer ou à comprendre des mécanismes.'),
 ('medecin', 'Médecin', 0, 0, '', 'Le personnage sait diagnostiquer les maladies et les traumatismes. Il reçoit un bonus de +2 par rang atteint dans cette voie à tous les tests de médecine, de biologie ou d’anatomie. S’il accorde des soins à un personnage blessé avant une période de repos, il lui permet de doubler le résultat du Dé de vie utilisé (soit 2 DV + Niveau + Mod. de CON).'),
-('meme-pas-peur', 'Même pas peur', 0, 0, '', 'Le personnage aime le danger ou sait parfaitement gérer les situations à risques. Il gagne un bonus de +1 par rang atteint dans cette voie à tous les tests de caractéristique effectués sous la pression d’un danger mortel, par exemple crocheter une porte tandis que le plafond de la pièce s’effondre, ou sauter par-dessus un précipice ainsi qu’à tous les tests destinés à résister à la peur.'),
+('meme-pas-peur', 'Même pas peur', 0, 0, NULL, 'Le personnage aime le danger ou sait parfaitement gérer les situations à risques. Il gagne un bonus de +1 par rang atteint dans cette voie à tous les tests de caractéristique effectués sous la pression d’un danger mortel, par exemple crocheter une porte tandis que le plafond de la pièce s’effondre, ou sauter par-dessus un précipice ainsi qu’à tous les tests de choc.'),
 ('memoire-eidetique', 'Mémoire eidétique', 0, 0, '', 'Le personnage a une mémoire parfaite de tout ce qu’il a vu et entendu. Si le joueur le demande, le MJ doit lui rappeler tous les détails relatifs à un lieu qu’il a visité ou une conversation qu’il a entendue. Le personnage obtient aussi un bonus de +5 sur tous les tests de culture générale.'),
 ('mental-dacier', 'Mental d\'acier', 0, 0, '', 'Le personnage a étudié ses propres points faibles et il est devenu particulièrement résilient. Lorsqu’il obtient un 1 (échec critique) sur le d20 lors d’un test, il récupère immédiatement un point de chance (sans pouvoir dépasser son maximum).'),
 ('milieux-extremes', 'Milieux extrêmes', 0, 0, '', 'Le personnage est formé aux techniques de progression dans les milieux difficiles et dangereux (haute altitude, froid ou chaleur extrême, marche sur glacier, escalade, etc.). Il obtient un bonus de +5 à tous les tests dans ces milieux, pour l’utilisation de matériel spécifique ainsi que pour les procédures de sécurité.'),
@@ -443,11 +503,14 @@ INSERT INTO `coct_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `des
 ('perception-superieur', 'PERception supérieure', 0, 0, '', 'Le personnage augmente de +2 la valeur de son score de PER. Lorsqu’il combat dans le noir, il peut retrancher son Mod. de PER aux malus subis et il ajoute son Mod. de PER à son score d’initiative.'),
 ('pilote-emerite', 'Pilote émérite', 0, 0, '', 'Le personnage obtient un bonus de +2 par rang atteint dans cette voie à tous les tests de pilotage (DEX) ainsi qu’en initiative lorsqu’il conduit un véhicule du type choisi (auto, moto, avion, bateau à moteur, voilier…). Il n’a plus besoin de faire de test de pilotage pour éviter une sortie de route lorsqu’il tire tout en conduisant.'),
 ('polyvalent', 'Polyvalent', 0, 0, '', 'Le personnage choisi une nouvelle catégorie de véhicule (voir Pilote émérite). Il bénéficie de tous les bonus et effets des capacités de cette voie pour cette nouvelle catégorie de véhicule. Il apprend à piloter une nouvelle et dernière catégorie de véhicule au rang 5.'),
+('pouvoir-doutre-monde', 'Pouvoir d’outre-monde', 0, 0, NULL, 'Le personnage est désormais capable de pratiquer une forme de magie. Le MJ et le joueur doivent se mettre d’accord sur ce que le personnage apprend. Ce sera probablement un sort ou un rituel particulier avec lequel le personnage a été en contact durant les aventures qu’il a vécu. Attention, un pouvoir puissant a toujours une contrepartie déplaisante. Si vous n’avez pas d’idée, voici trois propositions. \r\n• Une fois par tour, le personnage peut sacrifier 1d4 PV (ou 1d6 au choix) pour obtenir un bonus égal au double de ce montant sur le résultat d’un test (d20, d12). Il peut annoncer cet effet après avoir pris connaissance du résultat. Ce dé est un jet sans limite (comme la règle des DM). \r\n• Le personnage sacrifie 2 points sur la valeur d’une caractéristique de son choix. En échange, il augmente une autre caractéristique de 6 points. \r\n• Le personnage n’a plus besoin de dormir, il n’a besoin que de la moitié de la nourriture et de l’eau que consomme un être humain normal, il est immunisé aux maladies et aux poisons naturels. Enfin, il guérit deux fois plus vite (il double le nombre de PV récupérés) et il vieillit deux fois moins vite. Mais cela a un prix, sa peau devient pâle et froide, et il développe une sensibilité à la lumière vive (elle est considérée comme de la pénombre).'),
 ('provocation', 'Provocation', 1, 0, '', 'Le personnage maîtrise l’art de se rendre désagréable, voire insupportable. Par un test opposé de CHA contre l’INT de la victime, il peut forcer celle-ci à s’énerver ou à l’attaquer, au choix du joueur, pendant un tour. Une victime énervée réalise des actions stupides qui ne sont pas dans son intérêt : montrer son vrai visage, révéler des informations qu’elle entendait cacher ou prendre une décision inadéquate. Si elle attaque le personnage, elle subit une pénalité de -5 en attaque à son premier tour, en raison de l’énervement. Toute nouvelle tentative de provocation après la première se voit pénalisée d’un malus cumulatif de -5.'),
 ('recherche-rapide', 'Recherche rapide', 0, 0, '', 'Le personnage divise par deux le temps nécessaire à la recherche de tout type d’indices.'),
 ('resistance', 'Résistance', 0, 0, '', 'Le personnage reçoit un bonus de +5 à tous les tests pour résister aux maladies et aux poisons et il ne subit que la moitié des pénalités ou des DM lorsqu’il est malade ou empoisonné. Il peut manger n’importe quelle nourriture locale comestible sans tomber malade, il est capable de manger ou de dormir deux fois moins que la normale et continue à guérir normalement, même dans les pires conditions.'),
+('resistance-occulte', 'Résistance occulte', 0, 0, '', 'Le personnage commence un entraînement dans le but d’obtenir des pouvoirs magiques. Il obtient un bonus de +5 à tous les tests destinés à résister à la perte de points de choc et augmente de 1 son score maximum de points de choc. De plus, il peut dépenser 1 point de choc (PC) pour annuler la pénalité d’une blessure grave pendant 1 heure.'),
 ('riche', 'Riche', 0, 0, '', 'Désormais, le personnage gagne très bien sa vie grâce à son art. Il obtient immédiatement 50 000 $ (ou €) et acquiert la même somme chaque année pendant les dix prochaines années. Lorsqu’il atteint le rang 5 dans cette voie, ce bonus passe à 200 000 $ par an.'),
 ('savoirs-interdits', 'Savoirs interdits', 0, 0, '', 'Le personnage obtient un bonus de +5 pour résister à la peur ou à la perte de points de choc provoqués par l’apparition de créatures surnaturelles. De plus, il obtient un bonus de +5 aux tests pour résister à leurs pouvoirs et +2 en DEF contre leurs attaques.'),
+('sciences-occultes', 'Sciences occultes', 0, 0, '', 'Le personnage obtient un bonus de +1 par rang à tous les tests de sciences occultes et un bonus de +2 par rang sur un sujet en particulier (l’alchimie, les créatures des autres plans, les grands anciens, etc.). Mais cette connaissance n’est pas sans conséquence, il gagne immédiatement 1 point de folie et il en gagne un autre au rang 3 de la voie.'),
 ('se-depasser', 'Se dépasser', 0, 0, '', 'En sacrifiant 1 PV, le personnage obtient un bonus de +5 sur n’importe quel test de FOR, DEX ou CON dont il ne connaît pas encore le résultat du jet de dé. En sacrifiant 1d4 PV (pas de jet sans limite), il peut obtenir le même bonus après avoir pris connaissance du résultat.'),
 ('secouriste', 'Secouriste', 0, 0, '', 'En passant 5 minutes à soigner un personnage à 0 PV, le médecin lui permet de récupérer 1d4 PV. Il accorde aussi un bonus de +5 à tous les tests de CON tentés par son patient.'),
 ('sens-affutes', 'Sens affûtés', 0, 0, '', 'Pour chaque rang atteint dans cette voie, le personnage gagne un bonus de +1 à tous les tests de PER destinés à simuler la perception (vue, ouïe, vigilance, etc.).'),
@@ -456,7 +519,7 @@ INSERT INTO `coct_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `des
 ('specialite', 'Spécialité', 0, 0, '', 'Le personnage acquiert une spécialité sportive au choix du joueur (jeux de ballon, jeux de raquette, course, etc.), il obtient un bonus de +5 à tous les tests en rapport avec cette activité (en plus du bonus de rang 1). Le MJ doit déterminer la caractéristique principale utilisée pour ces sports parmi FOR, DEX ou CON. S’il s’agit de la CON, le personnage gagne 3 PV, s’il s’agit de la DEX, il gagne +1 en DEF, s’il s’agit de la FOR, il gagne +1 aux DM au contact. S’il s’agit d’un sport de combat, le personnage peut à la place gagner un bonus de +1 en attaque au contact ou à distance, au choix du joueur.'),
 ('speleologue', 'Spéléologue', 0, 0, '', 'Sous terre, le personnage sait toujours retrouver la direction de la sortie la plus proche et à quelle profondeur environ il se trouve. Il obtient un bonus de +5 aux tests pour se faufiler dans des espaces étroits et il divise par 2 les malus (-2 au lieu de -5) lorsqu’il doit agir dans le noir (ou s’il est Aveuglé) ou dans un espace exigu.'),
 ('sportif-accompli', 'Sportif accompli', 0, 0, '', 'Le personnage obtient un bonus de +1 par rang atteint dans cette voie à tous les tests en rapport avec les activités sportives (natation, course, lancer, escalade, saut, etc.).'),
-('survivant', 'Survivant', 0, 0, '', 'Le personnage s’est déjà tiré de nombreux mauvais pas et a pu regarder la mort en face. Il est capable de trouver en lui des ressources surhumaines pour vaincre la fatigue ou les blessures. Désormais, le joueur lance deux d20 à tous les tests de CON et garde le meilleur résultat. De plus, lorsque le personnage est victime d’une blessure grave, le joueur continue à lancer un d20 pour tous les tests de caractéristiques, au lieu d’un d12.'),
+('survivant', 'Survivant', 0, 0, NULL, 'Le personnage s’est déjà tiré de nombreux mauvais pas et a pu regarder la mort en face. Il est capable de trouver en lui des ressources surhumaines pour vaincre la fatigue ou les blessures. Désormais, le joueur lance deux d20 à tous les tests de CON et garde le meilleur résultat. De plus, lorsque le personnage est victime d’une blessure grave, le joueur continue à lancer un d20 pour tous les tests de caractéristiques, au lieu d’un d12. Enfin il peut ajouter son Mod. de CON à tous les tests de choc.'),
 ('systeme-d', 'Système D', 0, 0, '', 'Le personnage est capable de réparer n’importe quoi avec presque rien. Une fois par aventure, le MJ devrait lui permettre de réparer ou de créer un mécanisme avec des objets improbables. De plus, le personnage ne subit pas de pénalité lorsqu’il ne possède pas l’outillage approprié et, lorsqu’il dispose de tout le nécessaire, il peut diviser par 2 le temps nécessaire à une réparation.'),
 ('systemes-modernes', 'Systèmes modernes', 0, 0, '', 'Le personnage s’est formé aux dernières technologies (électricité, électronique, informatique, selon l’époque). Il applique son bonus de Mécano aux tests concernés.'),
 ('tacticien', 'Tacticien', 0, 0, '', 'Le personnage applique le raisonnement logique et les probabilités aux actions à venir et analyse leurs effets à travers le prisme de la science (pensez au personnage de Sherlock Holmes dans le film du même nom, interprété par Robert Downey Jr). Il obtient son Mod. d’INT en bonus à l’initiative et peut utiliser chaque jour un nombre de points de tactique (PT) égal à son Mod. d’INT. Chaque point de tactique peut être dépensé pour relancer un dé dont le résultat ne convient pas au joueur.'),
@@ -492,8 +555,10 @@ INSERT INTO `coct_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('psychologie', '1', 'a-lecoute'),
 ('danger', '2', 'acrobate'),
 ('voyages', '5', 'adaptation-heroique'),
+('psychologie', '3', 'aide-psychologique'),
 ('armes-a-feu', '1', 'ajuster'),
 ('survie', '1', 'ami-de-la-nature'),
+('psychologie', '2', 'analyse-personnelle'),
 ('corporations', '2', 'appel-a-un-ami'),
 ('corps-a-corps', '2', 'arme-de-predilection'),
 ('corps-a-corps', '1', 'arts-martiaux'),
@@ -516,10 +581,12 @@ INSERT INTO `coct_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('survie', '2', 'endurant'),
 ('exploits-physiques', '5', 'entrainement-de-haut'),
 ('investigation', '1', 'esprit-danalyse'),
+('occulte', '3', 'etoiles-propices'),
 ('psychologie', '4', 'examen-psychologique'),
 ('medecine', '5', 'expert-medical'),
 ('investigation', '2', 'expertise'),
 ('investigation', '5', 'flair-infaillible'),
+('occulte', '4', 'force-dame'),
 ('arts', '1', 'formation-artistique'),
 ('archeologie', '1', 'formation-dhistorien'),
 ('sciences', '1', 'formation-scientifiq'),
@@ -531,7 +598,6 @@ INSERT INTO `coct_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('arts', '3', 'imprevisible'),
 ('arts', '2', 'inspiration'),
 ('sciences', '5', 'intelligence-heroiqu'),
-('psychologie', '3', 'intervention-psychol'),
 ('psychologie', '5', 'intuition-heroique'),
 ('corporations', '4', 'joker'),
 ('armes-a-feu', '2', 'joli-coup'),
@@ -547,7 +613,6 @@ INSERT INTO `coct_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('medecine', '2', 'medecin'),
 ('danger', '1', 'meme-pas-peur'),
 ('investigation', '4', 'memoire-eidetique'),
-('psychologie', '2', 'mental-dacier'),
 ('survie', '3', 'milieux-extremes'),
 ('langues', '4', 'oreille-fantastique'),
 ('voyages', '2', 'par-monts-et-par-vau'),
@@ -555,11 +620,14 @@ INSERT INTO `coct_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('langues', '5', 'perception-superieur'),
 ('pilotage', '1', 'pilote-emerite'),
 ('pilotage', '3', 'polyvalent'),
+('occulte', '5', 'pouvoir-doutre-monde'),
 ('discours', '2', 'provocation'),
 ('investigation', '3', 'recherche-rapide'),
 ('voyages', '4', 'resistance'),
+('occulte', '2', 'resistance-occulte'),
 ('arts', '4', 'riche'),
 ('archeologie', '5', 'savoirs-interdits'),
+('occulte', '1', 'sciences-occultes'),
 ('exploits-physiques', '3', 'se-depasser'),
 ('medecine', '1', 'secouriste'),
 ('furtivite', '2', 'sens-affutes'),
@@ -785,33 +853,169 @@ INSERT INTO `coct_equipement_profils` (`profil`, `sequence`, `equipement`, `nomb
 ('archeologue-cthulhu', 1, 'tenue-de-randonnee', 1, ''),
 ('archeologue-cthulhu', 2, 'autre', 1, 'Matériel de fouille'),
 ('archeologue-cthulhu', 3, 'autre', 1, 'Lot de cartes de sites de fouille'),
+('archeologue-cthulhu', 4, 'autre', 1, 'Tenue de citadin'),
+('archeologue-cthulhu', 5, 'autre', 1, '200$'),
+('artiste', 1, 'autre', 1, 'De quoi pratiquer son art'),
+('artiste', 2, 'a-la-mode', 1, ''),
+('artiste', 3, 'classieux', 1, ''),
+('artiste', 4, 'autre', 1, 'Objet symbolique (beaux-arts)'),
+('artiste', 5, 'autre', 1, 'Lot de cartes de visite'),
+('artiste', 6, 'autre', 1, 'Trousse de maquillage'),
+('artiste', 7, 'autre', 1, 'Tenue de citadin'),
+('artiste', 8, 'autre', 1, '200$'),
 ('aventurier', 1, 'tenue-de-randonnee', 1, ''),
 ('aventurier', 2, 'autre', 1, 'Matériel de camping'),
 ('aventurier', 3, 'autre', 1, 'Matériel d\'alpinisme'),
 ('aventurier', 4, 'autre', 1, 'Carnet de notes'),
 ('aventurier', 5, 'pistolet-moyen', 1, ''),
 ('aventurier', 6, 'autre', 1, 'Voilier'),
+('aventurier', 7, 'autre', 1, 'Tenue de citadin'),
+('aventurier', 8, 'autre', 1, '200$'),
+('baroudeur', 1, 'autre', 1, 'Véhicule au choix'),
+('baroudeur', 2, 'autre', 1, 'Tenue de pilote'),
+('baroudeur', 3, 'tenue-de-randonnee', 1, ''),
+('baroudeur', 4, 'autre', 1, 'Matériel de camping'),
+('baroudeur', 5, 'autre', 1, 'Cartes diverses'),
+('baroudeur', 6, 'autre', 1, 'Devises de plusieurs pays'),
+('baroudeur', 7, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('baroudeur', 8, 'autre', 1, 'Tenue de citadin'),
+('baroudeur', 9, 'autre', 1, '200$'),
+('chasseur-gros-gibier', 1, 'autre', 1, 'Pistolet au choix'),
+('chasseur-gros-gibier', 2, 'autre', 1, 'Fusil au choix'),
+('chasseur-gros-gibier', 3, 'tenue-de-randonnee', 1, ''),
+('chasseur-gros-gibier', 4, 'autre', 1, 'Matériel de camping'),
+('chasseur-gros-gibier', 5, 'autre', 1, 'Cartes diverses'),
+('chasseur-gros-gibier', 6, 'autre', 1, 'Devises de plusieurs pays'),
+('chasseur-gros-gibier', 7, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('chasseur-gros-gibier', 8, 'autre', 1, 'Tenue de citadin'),
+('chasseur-gros-gibier', 9, 'autre', 1, '200$'),
+('criminel', 1, 'classieux', 1, ''),
+('criminel', 2, 'autre', 1, 'Objet symbolique (crime organisé)'),
+('criminel', 3, 'poignard', 1, ''),
+('criminel', 4, 'trousse-de-secours', 1, ''),
+('criminel', 5, 'tenue-de-randonnee', 1, ''),
+('criminel', 6, 'autre', 1, 'Matériel d\'alpinisme'),
+('criminel', 7, 'autre', 1, 'Tenue de citadin'),
+('criminel', 8, 'autre', 1, '200$'),
+('espion', 1, 'autre', 1, 'Chapeau ou casquette'),
+('espion', 2, 'lampe-torche', 1, ''),
+('espion', 3, 'autre', 1, 'Loupe'),
+('espion', 4, 'autre', 1, 'Cartes diverses'),
+('espion', 5, 'autre', 1, 'Devises de plusieurs pays'),
+('espion', 6, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('espion', 7, 'autre', 1, 'Tenue de citadin'),
+('espion', 8, 'autre', 1, '200$'),
+('explorateur', 1, 'autre', 1, 'Lot de romans en langue étrangère'),
+('explorateur', 2, 'tenue-de-randonnee', 1, ''),
+('explorateur', 3, 'autre', 1, 'Matériel de camping'),
+('explorateur', 4, 'autre', 1, 'Cartes diverses'),
+('explorateur', 5, 'autre', 1, 'Devises de plusieurs pays'),
+('explorateur', 6, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('explorateur', 7, 'autre', 1, 'Tenue de citadin'),
+('explorateur', 8, 'autre', 1, '200$'),
+('garde-du-corps', 1, 'autre', 1, 'Pistolet au choix'),
+('garde-du-corps', 2, 'autre', 1, 'Fusil au choix'),
+('garde-du-corps', 3, 'poignard', 1, ''),
+('garde-du-corps', 4, 'autre', 1, 'Tenue de sport'),
+('garde-du-corps', 5, 'autre', 1, 'De quoi pratiquer son sport'),
+('garde-du-corps', 6, 'autre', 1, 'Tenue de citadin'),
+('garde-du-corps', 7, 'autre', 1, '200$'),
+('humanitaire', 1, 'tenue-de-randonnee', 1, ''),
+('humanitaire', 2, 'autre', 1, 'Matériel d\'alpinisme'),
+('humanitaire', 3, 'trousse-de-secours', 2, ''),
+('humanitaire', 4, 'autre', 1, 'Livre sur les médicaments'),
+('humanitaire', 5, 'classieux', 1, ''),
+('humanitaire', 6, 'autre', 1, 'Cartes diverses'),
+('humanitaire', 7, 'autre', 1, 'Devises de plusieurs pays'),
+('humanitaire', 8, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('humanitaire', 9, 'autre', 1, 'Tenue de citadin'),
+('humanitaire', 10, 'autre', 1, '200$'),
+('inspecteur', 1, 'autre', 1, 'Pistolet au choix'),
+('inspecteur', 2, 'autre', 1, 'Fusil au choix'),
+('inspecteur', 3, 'classieux', 1, ''),
+('inspecteur', 4, 'autre', 1, 'Objet symbolique (police)'),
+('inspecteur', 5, 'lampe-torche', 1, ''),
+('inspecteur', 6, 'autre', 1, 'Loupe'),
+('inspecteur', 7, 'autre', 1, 'Tenue de citadin'),
+('inspecteur', 8, 'autre', 1, '200$'),
 ('journaliste-cthulhu', 1, 'autre', 1, 'Tenue de citadin'),
 ('journaliste-cthulhu', 2, 'autre', 1, 'Carte de presse'),
 ('journaliste-cthulhu', 3, 'autre', 1, 'Carnet d\'adresse'),
 ('journaliste-cthulhu', 4, 'appareil-photo', 1, ''),
 ('journaliste-cthulhu', 5, 'mini-pistolet-derrin', 1, ''),
+('linguiste', 1, 'autre', 1, 'Lot de cartes de visite'),
+('linguiste', 2, 'autre', 1, 'Trousse de maquillage'),
+('linguiste', 3, 'autre', 1, 'Lot de romans en langue étrangère'),
+('linguiste', 4, 'autre', 1, 'Cartes diverses'),
+('linguiste', 5, 'autre', 1, 'Devises de plusieurs pays'),
+('linguiste', 6, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('linguiste', 7, 'autre', 1, 'Tenue de citadin'),
+('linguiste', 8, 'autre', 1, '200$'),
+('medecin', 1, 'classieux', 1, ''),
+('medecin', 2, 'autre', 1, 'Objet symbolique (médecine)'),
+('medecin', 3, 'lampe-torche', 1, ''),
+('medecin', 4, 'autre', 1, 'Loupe'),
+('medecin', 5, 'trousse-de-secours', 1, ''),
+('medecin', 6, 'autre', 1, 'Livre sur les médicaments'),
+('medecin', 7, 'autre', 1, 'Tenue de citadin'),
+('medecin', 8, 'autre', 1, '200$'),
 ('militaire-cthulhu', 1, 'pistolet-lourd', 1, ''),
 ('militaire-cthulhu', 2, 'carabine-a-repetitio', 1, ''),
 ('militaire-cthulhu', 3, 'autre', 1, 'Uniforme'),
 ('militaire-cthulhu', 4, 'autre', 1, 'Canne'),
 ('militaire-cthulhu', 5, 'auto-berline', 1, ''),
+('militaire-cthulhu', 6, 'autre', 1, 'Tenue de citadin'),
+('militaire-cthulhu', 7, 'autre', 1, '200$'),
+('missionnaire', 1, 'classieux', 1, ''),
+('missionnaire', 2, 'autre', 1, 'Objet symbolique (église)'),
+('missionnaire', 3, 'autre', 1, 'Lot de livres de sciences humaines'),
+('missionnaire', 4, 'autre', 1, 'Cartes diverses'),
+('missionnaire', 5, 'autre', 1, 'Devises de plusieurs pays'),
+('missionnaire', 6, 'autre', 1, 'Photos souvenirs de pays lointains'),
+('missionnaire', 7, 'autre', 1, 'Tenue de citadin'),
+('missionnaire', 8, 'autre', 1, '200$'),
 ('occultiste', 1, 'autre', 1, 'Tenue de citadin'),
 ('occultiste', 2, 'lampe-torche', 1, ''),
 ('occultiste', 3, 'autre', 1, 'Loupe'),
 ('occultiste', 4, 'autre', 1, 'Lot de livres anciens'),
+('occultiste', 5, 'autre', 1, 'Tenue de citadin'),
+('occultiste', 6, 'autre', 1, '200$'),
+('ouvrier', 1, 'classieux', 1, ''),
+('ouvrier', 2, 'autre', 1, 'Objet symbolique (syndicats)'),
+('ouvrier', 3, 'autre', 1, 'Tenue de sport'),
+('ouvrier', 4, 'autre', 1, 'De quoi pratiquer son sport'),
+('ouvrier', 5, 'caisse-a-outils', 1, ''),
+('ouvrier', 6, 'autre', 1, 'Voiture ou Moto'),
+('ouvrier', 7, 'autre', 1, 'Tenue de citadin'),
+('ouvrier', 8, 'autre', 1, '200$'),
 ('pilote-cthulhu', 1, 'autre', 1, 'Tenue d\'aviateur'),
 ('pilote-cthulhu', 2, 'caisse-a-outils', 1, ''),
 ('pilote-cthulhu', 3, 'auto-berline', 1, ''),
 ('pilote-cthulhu', 4, 'avion-de-tourisme', 1, 'Biplan d\'occasion'),
+('pilote-cthulhu', 5, 'autre', 1, 'Tenue de citadin'),
+('pilote-cthulhu', 6, 'autre', 1, '200$'),
+('pompier', 1, 'autre', 1, 'Tenue de sport'),
+('pompier', 2, 'autre', 1, 'De quoi pratiquer son sport'),
+('pompier', 3, 'trousse-de-secours', 1, ''),
+('pompier', 4, 'autre', 1, 'Livre sur les médicaments'),
+('pompier', 5, 'classieux', 1, ''),
+('pompier', 6, 'autre', 1, 'Véhicule au choix'),
+('pompier', 7, 'autre', 1, 'Tenue de pilote'),
+('pompier', 8, 'autre', 1, 'Tenue de citadin'),
+('pompier', 9, 'autre', 1, '200$'),
 ('therapeute', 1, 'autre', 1, 'Tenue de médecin'),
 ('therapeute', 2, 'trousse-de-secours', 1, ''),
-('therapeute', 3, 'auto-citadine', 1, 'Tenue de médecin');
+('therapeute', 3, 'auto-citadine', 1, ''),
+('therapeute', 4, 'autre', 1, 'Tenue de citadin'),
+('therapeute', 5, 'autre', 1, '200$'),
+('universitaire', 1, 'autre', 1, 'Lot de cartes de visite'),
+('universitaire', 2, 'autre', 1, 'Trousse de maquillage'),
+('universitaire', 3, 'lampe-torche', 1, ''),
+('universitaire', 4, 'autre', 1, 'Loupe'),
+('universitaire', 5, 'autre', 1, 'Lot de livres de sciences'),
+('universitaire', 6, 'classieux', 1, ''),
+('universitaire', 7, 'autre', 1, 'Tenue de citadin'),
+('universitaire', 8, 'autre', 1, '200$');
 
 -- --------------------------------------------------------
 
@@ -1067,13 +1271,28 @@ CREATE TABLE IF NOT EXISTS `coct_profils` (
 --
 
 INSERT INTO `coct_profils` (`profil`, `nom`, `description`, `famille`, `type`) VALUES
-('archeologue-cthulhu', 'Archéologue', NULL, 'adc-aventure', '0'),
-('aventurier', 'Aventurier', NULL, 'adc-aventure', '0'),
-('journaliste-cthulhu', 'Journaliste', NULL, 'adc-reflexion', '0'),
-('militaire-cthulhu', 'Militaire', NULL, 'adc-action', '0'),
+('archeologue-cthulhu', 'Archéologue', 'L’archéologue est un historien de terrain. C’est un voyageur averti et un investigateur de premier ordre.\r\nATC +1, ATD 0', 'adc-aventure', '0'),
+('artiste', 'Artiste', NULL, 'adc-reflexion', '0'),
+('aventurier', 'Aventurier', 'L’aventurier est un dandy sportif, il aime l’action autant que les arts et pratique les deux avec bonheur égal.\r\nATC +1, ATD 0', 'adc-aventure', '0'),
+('baroudeur', 'Baroudeur', NULL, 'adc-action', '0'),
+('chasseur-gros-gibier', 'Chasseur de gros gibier', NULL, 'adc-action', '0'),
+('criminel', 'Criminel', NULL, 'adc-action', '0'),
+('espion', 'Espion', NULL, 'adc-aventure', '0'),
+('explorateur', 'Explorateur', NULL, 'adc-aventure', '0'),
+('garde-du-corps', 'Garde du corps', NULL, 'adc-action', '0'),
+('humanitaire', 'Humanitaire', NULL, 'adc-aventure', '0'),
+('inspecteur', 'Inspecteur', NULL, 'adc-aventure', '0'),
+('journaliste-cthulhu', 'Journaliste', 'Le journaliste est capable de soutirer des renseignements à un témoin des plus récalcitrants, même s’il faut pour cela utiliser la ruse.\r\nATC 0, ATD 0', 'adc-reflexion', '0'),
+('linguiste', 'Linguiste', NULL, 'adc-reflexion', '0'),
+('medecin', 'Médecin', NULL, 'adc-reflexion', '0'),
+('militaire-cthulhu', 'Militaire', 'Le militaire est un soldat à la retraite, un vétéran qui a vu bien des conflits. Il n’a pas son égal lorsqu’il faut faire parler les armes.\r\nATC 0, ATD +2', 'adc-action', '0'),
+('missionnaire', 'Missionnaire', NULL, 'adc-reflexion', '0'),
 ('occultiste', 'Occultiste', NULL, 'adc-reflexion', '0'),
-('pilote-cthulhu', 'Pilote', NULL, 'adc-action', '0'),
-('therapeute', 'Thérapeute', NULL, 'adc-reflexion', '0');
+('ouvrier', 'Ouvrier', NULL, 'adc-aventure', '0'),
+('pilote-cthulhu', 'Pilote', 'Le pilote est à la fois un mécanicien et un casse-cou professionnel, un as du volant aussi à son aise sur terre que dans les airs.\r\nATC +1, ATD +1', 'adc-action', '0'),
+('pompier', 'Pompier', NULL, 'adc-action', '0'),
+('therapeute', 'Thérapeute', 'Le thérapeute est un médecin qui s’intéresse à la santé physique et mentale de ses patients ainsi qu’aux comportements étranges.\r\nATC 0, ATD 0', 'adc-reflexion', '0'),
+('universitaire', 'Universitaire', NULL, 'adc-reflexion', '0');
 
 -- --------------------------------------------------------
 
@@ -1882,24 +2101,69 @@ INSERT INTO `coct_voies_profils` (`profil`, `voie`) VALUES
 ('archeologue-cthulhu', 'archeologie'),
 ('archeologue-cthulhu', 'investigation'),
 ('archeologue-cthulhu', 'voyages'),
+('artiste', 'arts'),
+('artiste', 'corporations'),
+('artiste', 'discours'),
 ('aventurier', 'arts'),
 ('aventurier', 'exploits-physiques'),
 ('aventurier', 'survie'),
+('baroudeur', 'pilotage'),
+('baroudeur', 'survie'),
+('baroudeur', 'voyages'),
+('chasseur-gros-gibier', 'armes-a-feu'),
+('chasseur-gros-gibier', 'survie'),
+('chasseur-gros-gibier', 'voyages'),
+('criminel', 'corporations'),
+('criminel', 'corps-a-corps'),
+('criminel', 'danger'),
+('espion', 'furtivite'),
+('espion', 'investigation'),
+('espion', 'voyages'),
+('explorateur', 'langues'),
+('explorateur', 'survie'),
+('explorateur', 'voyages'),
+('garde-du-corps', 'armes-a-feu'),
+('garde-du-corps', 'corps-a-corps'),
+('garde-du-corps', 'exploits-physiques'),
+('humanitaire', 'danger'),
+('humanitaire', 'medecine'),
+('humanitaire', 'voyages'),
+('inspecteur', 'armes-a-feu'),
+('inspecteur', 'corporations'),
+('inspecteur', 'investigation'),
 ('journaliste-cthulhu', 'discours'),
 ('journaliste-cthulhu', 'furtivite'),
 ('journaliste-cthulhu', 'langues'),
+('linguiste', 'discours'),
+('linguiste', 'langues'),
+('linguiste', 'voyages'),
+('medecin', 'corporations'),
+('medecin', 'investigation'),
+('medecin', 'medecine'),
 ('militaire-cthulhu', 'armes-a-feu'),
 ('militaire-cthulhu', 'corporations'),
 ('militaire-cthulhu', 'corps-a-corps'),
+('missionnaire', 'corporations'),
+('missionnaire', 'psychologie'),
+('missionnaire', 'voyages'),
 ('occultiste', 'investigation'),
 ('occultiste', 'occulte'),
 ('occultiste', 'voyages'),
+('ouvrier', 'corporations'),
+('ouvrier', 'exploits-physiques'),
+('ouvrier', 'mecanique'),
 ('pilote-cthulhu', 'danger'),
 ('pilote-cthulhu', 'mecanique'),
 ('pilote-cthulhu', 'pilotage'),
+('pompier', 'exploits-physiques'),
+('pompier', 'medecine'),
+('pompier', 'pilotage'),
 ('therapeute', 'medecine'),
 ('therapeute', 'psychologie'),
-('therapeute', 'sciences');
+('therapeute', 'sciences'),
+('universitaire', 'discours'),
+('universitaire', 'investigation'),
+('universitaire', 'sciences');
 
 -- --------------------------------------------------------
 
@@ -17500,6 +17764,1320 @@ INSERT INTO `cof_voies_profils` (`profil`, `voie`) VALUES
 ('voleur              ', 'roublard'),
 ('voleur              ', 'spadassin');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_capacites`
+--
+
+DROP TABLE IF EXISTS `cota_capacites`;
+CREATE TABLE IF NOT EXISTS `cota_capacites` (
+  `capacite` varchar(20) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `limitee` tinyint(1) DEFAULT NULL,
+  `sort` tinyint(1) DEFAULT NULL,
+  `type` varchar(5) DEFAULT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_capacites`
+--
+
+INSERT INTO `cota_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('a-couvert', 'À couvert', 1, 0, NULL, 'Jusqu’à son prochain tour, le PJ divise par deux les DM dus aux attaques à distance et de zone qu’il reçoit, et peut se déplacer de 20 mètres. Un compagnon du PJ peut profiter de cette aptitude s’il a son accord et reste à son contact. Capacité avancée : jusqu’à [Mod. de CHA] compagnons (minimum 1) du PJ peuvent profiter de cette aptitude s’ils ont son accord et restent à moins de 10 mètres de lui.'),
+('absorber-un-coup', 'Absorber un coup', 1, 0, NULL, 'Lors de son tour, le PJ fait seulement une action d’attaque ou de déplacement. Par la suite, à tout moment avant son prochain tour, le PJ peut effectuer un test d’attaque au contact en opposition à un test réussi d’attaque au contact ou à distance d’un adversaire. En cas de réussite, l’attaque adverse est bloquée par le bouclier. Capacité avancée'),
+('absorber-un-sort', 'Absorber un sort', 1, 0, NULL, 'Lors de son tour, le PJ fait seulement une action d’attaque ou de déplacement. Par la suite, à tout moment avant son prochain tour, le PJ peut effectuer un test d’attaque magique (Mod. d’INT) en opposition à un test d’attaque magique qui le visait. En cas de réussite, le sort est absorbé par le bouclier et n’a aucun effet sur le PJ.'),
+('acrobate', 'Acrobate', 0, 0, NULL, 'Le PJ obtient un bonus de +5 à tous ses tests de DEX visant à réaliser des acrobaties, conserver son équilibre, faire des sauts ou de l’escalade.\r\nCapacité avancée : le bonus passe à +10.'),
+('action-concertee', 'Action concertée', 0, 0, NULL, 'Une fois par tour, le PJ peut échanger son initiative avec un autre PJ volontaire. S’il cède son initiative à un PJ plus lent, il gagne un bonus de +1 sur ses tests d’attaque à ce tour. Ce bonus passe à +2 au rang 4 de la voie. Capacité avancée : le bonus aux tests d’attaque est augmenté de +1.'),
+('adaptable', 'Adaptable', 0, 0, 'race', 'Après avoir raté un test de Carac., le PJ obtient un bonus de +5 au prochain test pour retenter la même action au prochain tour.'),
+('agile-et-sournois', 'Agile et sournois', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de l’acrobatie ou de la voie de l’assassinat. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie de l’acrobatie ou de la voie de l’assassinat.'),
+('ambidextrie', 'Ambidextrie', 1, 0, NULL, 'Le PJ peut à présent utiliser une arme dans chaque main sans pénalité s’il utilise des armes de duel ou des dagues. Avec sa main faible, il peut effectuer une attaque au contact gratuite supplémentaire à chaque tour. Cette seconde attaque n’empêche pas l’utilisation d’une capacité limitée, mais elle ne peut pas en être l’origine.'),
+('amitie', 'Amitié', 0, 1, NULL, 'Si le PJ réussit un test d’attaque magique (portée : 10 m) contre le score maximal de PV d’une cible humanoïde, celle-ci se comporte comme un ami de longue date tant qu’elle n’est pas attaquée. Elle peut résister au sort avec un test de SAG difficulté [12 + Mod. d’INT], renouvelable une fois par jour.'),
+('animal-fabuleux', 'Animal fabuleux', 0, 0, NULL, 'Le loup du PJ devient un spécimen particulièrement puissant. \r\nMâle alpha : Init. 13, DEF 16, PV [niveau du PJ x 4], attaque au contact = [niveau du PJ + 2], DM 1d6+3, FOR +3, DEX +1, CON* +3, INT -3, SAG* +2, CHA -2'),
+('animation-dun-arbre', 'Animation d’un arbre', 0, 1, NULL, 'Une fois par combat, le PJ peut animer un arbre en le touchant. Il combat pendant [niveau du PJ] tours. Arbre animé : Init. 7, DEF 13, PV [rang x 10], attaque de contact = [niveau du PJ], DM 1d6+3, déplacement 10 m par action de mouvement. Réduction de DM de 10 sauf contre les armes tranchantes et le feu.'),
+('apprenti-de-slurce', 'Apprenti de Slurce', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de de la voie de l’assassinat ou de la voie des sombre savoirs. Au rang 4 de cette voie culturelle, il gagne une capacité supplémentaire de rang 1 ou 2 dans la voie de l’assassinat ou la voie des sombre savoirs.'),
+('archer-emerite', 'Archer émérite', 0, 0, 'cult', 'Lorsqu’il utilise un arc, le PJ obtient une réussite critique sur un résultat de 19-20 au d20. Il gagne la maîtrise des armes de trait.'),
+('argument-de-taille', 'Argument de taille', 0, 0, NULL, 'Le PJ ajoute son Mod. de FOR à son score de PV maximal ainsi qu’à ses tests de CHA et à ceux de ses alliés au contact pour les tests de négociation, de persuasion ou d’intimidation. Allez savoir pourquoi, sa simple présence donne de la force aux arguments de ses alliés… \r\nCapacité avancée : lorsque le rang 4 est atteint dans cette voie, le PJ ajoute une nouvelle fois son Mod. de FOR à son score de PV maximal.'),
+('argumenter', 'Argumenter', 0, 0, NULL, 'Le PJ peut mettre sa logique et sa malice au service de sa force de persuasion. Il obtient un bonus de +5 aux tests de CHA visant à convaincre. \r\nCapacité avancée : le PJ peut également appliquer ce bonus pour tromper, mentir ou séduire (ne se cumule pas avec la capacité Charmant de la voie du charme – cf. ci-après).'),
+('arme-de-predilection', 'Arme de prédilection', 0, 0, NULL, 'Le PJ choisit une arme de prédilection (par exemple une épée longue ou une hache à une main, un arc court, etc.), et gagne +1 en attaque lorsqu’il l’utilise. \r\nCapacité avancée : le combattant peut choisir une seconde arme qui devient alors une arme familière. Il gagne un bonus de +1 en attaque lorsqu’il l’utilise. Le bonus de la capacité Spécialisation ne s’applique pas à l’arme familière.'),
+('armes-secretes', 'Armes secrètes', 0, 0, 'cult', 'Le PJ a appris l’art et la manière de cacher ses armes et de porter des coups mortels imparables. Il peut dissimuler jusqu’à deux armes légères (d6 maxi) et gagne un bonus de +5 à un test de DEX à opposer à un test de SAG de son adversaire. En cas de réussite, la première attaque portée par chaque arme surprend l’adversaire et inflige les DM maximaux (incluant les DM liés à des dés bonus).'),
+('armure-de-terre', 'Armure de terre', 0, 1, NULL, 'Pendant [5 + Mod. de SAG] tours, le PJ retranche à tous les DM de feu, de froid, d’électricité ou d’acide subis un montant égal à deux fois son rang atteint dans cette voie.'),
+('armure-lourde', 'Armure lourde', 1, 0, NULL, 'Le PJ peut porter une armure de plaques. Celleci lui confère une DEF de +7 et le protège des attaques critiques (il subit sur un critique des DM normaux au lieu des DM doublés).'),
+('armure-naturelle', 'Armure naturelle', 0, 0, NULL, 'Le PJ a endurci son corps. Il bénéficie d’un bonus de +2 à la DEF. \r\nCapacité avancée : le bonus de DEF augmente de +1.'),
+('artisan-de-la-forge', 'Artisan de la forge', 0, 0, 'cult', 'Le PJ choisit un métier présent au sein de l’ordre de la Forge (alchimiste, armurier, médecin, orfèvre, mineur, etc.). Il obtient un bonus de +5 à tous les tests en rapport avec ce métier.'),
+('artiste-de-lombre', 'Artiste de l’ombre', 0, 0, 'cult', 'Pour dissimuler leurs activités, dans la plupart des pays civilisés, les Elfes noirs se font passer pour des artistes. Ils ont recours à cette couverture pour obtenir les informations nécessaires à l’exécution de leurs contrats. Le PJ choisit un domaine (danse, théâtre, peinture, poésie) et gagne un bonus de +5 à tous les tests de CHA en rapport avec celui-ci, ainsi qu’aux tests visant à trouver ou obtenir des informations secrètes ou sensibles.'),
+('as-de-la-gachette', 'As de la gâchette', 1, 0, NULL, 'Lorsqu’il atteint une DEF de 25 ou plus à son attaque à distance avec une arbalète, le PJ ajoute +1d6 aux DM de son attaque.'),
+('attaque-brutale', 'Attaque brutale', 1, 0, NULL, 'Le PJ réalise une attaque au contact avec une pénalité de -2 en attaque et +1d6 au DM. Au rang 5 atteint dans cette voie, il peut choisir de subir une pénalité de -5 pour obtenir +2d6 aux DM.'),
+('attaque-circulaire', 'Attaque circulaire', 1, 0, NULL, 'Le PJ peut tenter une attaque au contact contre chaque adversaire engagé au contact avec lui.'),
+('attaque-eclair', 'Attaque éclair', 1, 0, NULL, 'Le PJ peut effectuer une attaque au contact très percutante. Il ajoute son Mod. de DEX en attaque et aux DM pour cette offensive.'),
+('attaque-en-finesse', 'Attaque en finesse', 0, 0, NULL, 'Le PJ peut utiliser son score d’attaque à distance pour porter une attaque au contact lorsqu’il utilise une arme de duel ou une dague. \r\nCapacité avancée : le PJ peut appliquer le bonus de DEF d’une main gauche (cf. « Équipement » page 156) contre les attaques à distance.'),
+('attaque-en-traitre', 'Attaque en traître', 1, 0, NULL, 'Une fois par tour, lorsqu’un allié réussit à blesser une créature au contact du PJ, celui-ci peut lui porter une attaque normale gratuite en profitant de l’ouverture.'),
+('attaque-flamboyante', 'Attaque flamboyante', 1, 0, NULL, 'Le style de combat du PJ est flamboyant et surprenant : avec cette capacité, il effectue une attaque de contact avec un bonus d’attaque et de DM égal à son Mod. de CHA (en plus du Mod. de FOR ou de DEX).'),
+('attaque-massive', 'Attaque massive', 1, 0, 'cult', 'Le PJ réalise une attaque de contact de tout son poids. Il bénéficie d’un bonus au DM égal à son [Mod. de CON] et subit en retour un malus de DEF égal à son [Mod. de CON] pendant un tour.'),
+('attaque-paralysante', 'Attaque paralysante', 1, 0, NULL, 'Une fois par combat, le PJ peut, en réussissant une attaque de contact, paralyser un adversaire de douleur. Ce dernier n’encaisse pas de DM, mais ne peut plus attaquer ni se déplacer pendant 1d4 tours.'),
+('attaque-parfaite', 'Attaque parfaite', 1, 0, NULL, 'Lancez deux d20 en attaque au contact et gardez le meilleur résultat ; ajoutez +1d6 aux DM.'),
+('attaque-puissante', 'Attaque puissante', 1, 0, NULL, 'Le PJ peut choisir d’utiliser 1d12 en attaque au contact au lieu du d20 habituel (il ajoute normalement son score d’attaque). Si une telle attaque est réussie, il ajoute +2d6 aux DM. Cette capacité peut être utilisée avec Double attaque ou Attaque circulaire par exemple.'),
+('attaque-sanglante', 'Attaque sanglante', 1, 0, 'cult', 'Le PJ réalise une attaque de contact violente qui provoque une hémorragie. En plus des DM normaux, l’attaque produit un saignement qui inflige à la victime +1d6 DM à chaque tour suivant jusqu’à ce que la cible réussisse un test de CON difficulté [12 + Mod. de FOR] ou qu’elle soit soignée. On ne peut cumuler plusieurs effets de saignement.'),
+('attaque-sournoise', 'Attaque sournoise', 1, 0, NULL, 'Quand il attaque un adversaire dans le dos* ou par surprise, le PJ inflige 1d6 de DM supplémentaires par rang atteint dans cette voie (notez que les dés d’attaque sournoise ne sont pas multipliés en cas de critique). *Attaquer de dos : lorsque le PJ attaque la même créature qu’un allié, on considère qu’il peut attaquer celle-ci de dos à deux conditions :1. le PJ et l’allié peuvent se placer de part et d’autre de la cible ;2. la cible n’a pas attaqué le PJ lors de son dernier tour (dans le cas contraire, on considère qu’elle lui fait face). \r\nCapacité avancée'),
+('attaque-tourbillon', 'Attaque tourbillon', 1, 0, NULL, 'Une fois par combat, le PJ tourne sur lui-même en assénant des attaques à toutes les cibles au contact. Il inflige automatiquement des DM correspondant à l’arme utilisée (+ tous les bonus habituels) à toutes les cibles dans un rayon de 5 m autour de lui.'),
+('autorite-culturelle', 'Autorité culturelle', 0, 0, 'cult', 'Le PJ dégage une impression de confiance, de sagesse et une force de caractère peu communes. Il obtient un bonus de +2 en Initiative et en DEF. À la place de cette capacité, le joueur peut, s’il le veut, choisir un nouveau domaine d’érudition pour son PJ (capacité du rang 1 de cette voie).'),
+('baies-magiques', 'Baies magiques', 0, 1, NULL, 'Le PJ doit se trouver devant un buisson ou un arbre vivant. Son incantation fait pousser [1d6 + Mod. d’INT] fruits qu’il peut cueillir. Chaque fruit offre l’équivalent d’un repas et rend [1d10 + niveau du PJ] PV à celui qui le consomme. Les effets de ces fruits ne fonctionnent qu’une fois par jour et par personnage.'),
+('barbare', 'Barbare', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de la bravoure ou de la voie de la Chasse. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie de la bravoure ou de la voie de la chasse.'),
+('benediction', 'Bénédiction', 0, 1, NULL, 'Le PJ entonne un chant pour encourager ses compagnons en vue. Ceux-ci (ainsi que le PJ) bénéficient d’un bonus de +1 à tous leurs tests de Carac. et d’attaque pendant [3 + Mod. de SAG] tours. Le bonus passe à +2 au rang 5 atteint dans cette voie. \r\nCapacité avancée : le bonus aux tests est augmenté de 1.'),
+('blancheur-immaculee', 'Blancheur immaculée', 0, 0, 'cult', 'Le PJ n’a besoin que de la moitié du repos, de la nourriture ou de la boisson d’un Elfe normal pour être en pleine forme. Il est immunisé aux effets des poisons et des maladies.'),
+('botte-mortelle', 'Botte mortelle', 1, 0, NULL, 'Lors d’une attaque au contact, s’il obtient un score total d’attaque supérieur ou égal à la DEF de son adversaire +10 points, le PJ obtient un bonus de +2d6 aux DM de son attaque.'),
+('botte-secrete', 'Botte secrète', 1, 0, NULL, 'Lorsque le PJ obtient un critique sur une attaque au contact, l’attaque devient automatiquement une Attaque sournoise. Les effets de la capacité d’Attaque sournoise s’appliquent en plus des effets normaux du critique.'),
+('boule-de-feu', 'Boule de feu', 0, 1, NULL, 'Le PJ choisit une cible située à moins de 30 mètres. Il fait un test d’attaque magique et le compare à la DEF de tous les personnages (y compris le PJ et ses compagnons) se trouvant dans un rayon de 6 mètres autour de la cible. Chaque victime pour laquelle le test est un succès encaisse [4d6 + Mod. d’INT] de DM. En cas d’échec, la cible ne subit que la moitié des DM.'),
+('briseur-dos', 'Briseur d’os', 1, 0, NULL, 'Les coups critiques du PJ sont terribles et provoquent des handicaps durables. Le PJ obtient un critique sur 19 ou 20 au résultat du d20 en attaque au contact. Lorsqu’il obtient un critique, en plus des DM doublés, il inflige une pénalité de -2 à tous les tests d’attaque, de FOR et de DEX de sa victime. Cette pénalité affecte la cible jusqu’à ce qu’elle soit complètement guérie.'),
+('brumes', 'Brumes', 0, 1, NULL, 'Le PJ créé un brouillard très dense jusqu’à une portée de 20 m sur une zone de 20 m de diamètre. Dans cette zone la visibilité est très réduite et équivalente à de la pénombre. Il n’est pas possible de voir par-delà le brouillard qui persiste pendant [5 + Mod. SAG] tours.  Capacité avancée : en doublant le coût en PM, le PJ peut doubler la zone du sort ou la durée du sort – tout en appliquant les effets d’une concentration s’il le souhaite.'),
+('brute', 'Brute', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de la férocité ou de la voie du pugilat. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie de la férocité ou de la voie du pugilat.'),
+('cadence-de-tir', 'Cadence de tir', 0, 0, NULL, 'Recharger une arbalète lourde devient une action de mouvement. Dans le cas d’une arbalète de poing ou d’une arbalète légère, l’action devient gratuite. À partir du rang 5 atteint dans cette voie, le PJ peut recharger deux armes en une seule action. \r\nCapacité avancée : si son arme est prête (chargée et tenue en main), le PJ peut tirer à son rang d’initiative +5.'),
+('capitaine-bouclier', 'Capitaine du Bouclier', 0, 0, 'cult', 'Lorsque le PJ manie un bouclier, ce dernier confère un bonus supplémentaire de +1 en DEF. De plus, une fois par tour, le PJ peut dévier un projectile (flèche, javelot…) et par conséquent ignorer totalement une attaque à distance qui aurait normalement dû le toucher, sauf si le test d’attaque est un critique.'),
+('cavalier-emerite', 'Cavalier émérite', 0, 0, NULL, ' Lorsqu’il est en selle, le PJ gagne un bonus de +2 en attaque au contact et partage sa DEF avec celle de sa monture – on garde le meilleur score des deux. Monter ou descendre de monture est désormais une action gratuite. \r\nCapacité avancée : en selle, le PJ gagne également un bonus de +2 aux DM.'),
+('charge', 'Charge', 1, 0, NULL, 'À monture, le PJ peut effectuer un déplacement de 40 m en ligne droite, et une attaque de contact placée au moment son choix. Il doit parcourir au moins 10 m avant d’attaquer, mais peut réaliser le reste du déplacement à sa guise. Le joueur lance deux d20 à son test d’attaque et garde le meilleur résultat, tout en ajoutant +1d6 aux DM. Une créature située sur la trajectoire de la charge doit réussir un test de FOR difficulté 18 ou être contrainte de céder le passage en subissant 1d6 DM. Si elle réussit ce test, la charge est bloquée et le tour du combattant se termine.'),
+('charge-fantastique', 'Charge fantastique', 1, 0, NULL, 'Une fois par combat, à l’initiative du PJ, lui-même et tous ses alliés en vue bénéficient immédiatement d’un déplacement d’un maximum de 20 m en ligne droite, suivi d’une action d’attaque avec un bonus de +3 au test de réussite et +1d6 aux dégâts. Résolvez d’abord tous les déplacements en commençant par le PJ, puis par ordre d’initiative. Ensuite, effectuez toutes les attaques dans le même ordre.'),
+('charge-ferocite', 'Charge', 1, 0, NULL, 'Le PJ se déplace en ligne droite d’au moins 5 mètres (20 mètres au maximum) et effectue une attaque au contact avec un bonus de +2 en attaque et +1d6 aux DM. \r\nCapacité avancée : le PJ gagne un bonus supplémentaire de +1 en attaque et aux DM.'),
+('charisme-hero\"ique', 'Charisme héroïque', 1, 0, NULL, 'Le PJ augmente sa valeur de CHA de +2. Il peut de plus lancer deux d20 à chaque fois qu’un test de CHA lui est demandé et conserver le meilleur résultat.'),
+('charmant', 'Charmant', 0, 0, NULL, 'Le PJ obtient un bonus de +5 pour tous ses tests de CHA visant à séduire, baratiner ou mentir. \r\nCapacité avancée : le bonus passe à +10.'),
+('chevaucheur-dragons', 'Chevaucheur de dragons', 0, 0, 'cult', 'Le PJ est féru des courses de montures volantes. Il fait l’acquisition d’un dragon d’Akrähyng dont les Caracs. sont les suivantes : Init 15, DEF 16, PV [5 × niveau du PJ], Att +8, DM 1d6+4 (trait de feu, portée 20 m). S’il possède, ou venait à acquérir par la suite, la capacité Monture fantastique (voie voie du combat monté, rang 5) ou Ordre de chevalerie (voie de prestige de l’ordre ailé, rang 1), sa monture gagnerait un bonus de +2 en DEF, attaque et DM pour chacune de ces capacités. Sa monture lui est parfaitement fidèle et il gagne un bonus de +5 aux tests de DEX pour toutes les manoeuvres aériennes réalisées avec elle.'),
+('clairvoyance', 'Clairvoyance', 0, 1, NULL, 'Le PJ peut voir et entendre à distance ce qui se passe dans un lieu qu’il connaît, tant qu’il reste concentré (action limitée à chaque tour). Les créatures présentes ont droit à un test de SAG difficulté [12 + Mod. d’INT] : en cas de réussite, elles se sentent observées.'),
+('colosse', 'Colosse', 0, 0, 'cult', 'Le PJ augmente ses valeurs de FOR et de CON de +2.'),
+('combat', 'Combat', 0, 0, NULL, 'Le loup du PJ peut désormais se battre comme un véritable personnage. Il attaque en même temps que le PJ. \r\nLoup : Init. 13, DEF 14, PV [niveau x 4], attaque au contact = [niveau du PJ], DM 1d6+1, FOR +1, DEX +1, CON* +1, INT -3, SAG* +2, CHA -2.'),
+('combat-2a-parfait', 'Combat à deux armes parfait', 0, 0, NULL, 'Le combat à deux armes (et en conséquence la parade croisée) ne nécessite plus qu’une action d’attaque au lieu d’une action limitée pour être utilisé.'),
+('combat-a-deux-armes', 'Combat à deux armes', 1, 0, NULL, 'Le PJ effectue une attaque de chaque main. Il utilise 1d20 pour le test d’attaque de sa main directrice et un d12 pour l’attaque portée avec son autre bras. Il doit manier une arme légère dans sa main faible (1d6 de DM maxi). Capacité avancée : s’il utilise deux armes légères (1d6 de DM au maximum), le PJ gagne un bonus de +1 en attaque.'),
+('combat-en-phalange', 'Combat en phalange', 0, 0, 'cult', 'Lorsque le PJ combat la même créature qu’un allié, il gagne +1 en attaque et en DEF par allié au contact avec lui et avec la créature.'),
+('compagnon-animal-sup', 'Compagnon animal supérieur', 0, 0, 'cult', 'Le PJ a tissé un lien particulier avec un animal qui lutte à ses côtés. Il gagne le rang 3 de la voie du Compagnon animal (voir page 170). S’il possède déjà cette capacité ‒ ou venait à l’acquérir par la suite ‒, son compagnon gagne un bonus de +2 en initiative, en DEF, en attaque et aux DM.'),
+('con-heroique', 'Constitution héroïque', 0, 0, NULL, 'Le PJ augmente son score de CON de +2 et peut désormais lancer deux d20 à chaque fois qu’un test de CON lui est demandé et conserver le meilleur résultat.'),
+('confusion', 'Confusion', 0, 1, NULL, 'En réussissant un test d’attaque magique opposée (portée : 20 m), le PJ désoriente sa cible pendant [3 + Mod. de SAG] tours. Chaque tour, lancez 1d6'),
+('conn-cosmopolites', 'Connaissances cosmopolites', 0, 0, 'cult', 'Le PJ est habitué à négocier avec des humanoïdes issus de toutes les régions du monde. Les us et coutumes des peuples d’Arran n’ont pas de secrets pour lui. Il gagne un bonus de +5 à tous les tests pour négocier, argumenter, mentir ou convaincre un non-humain.'),
+('conquerant', 'Conquérant', 0, 0, 'cult', 'Le PJ augmente ses valeurs de DEX et CON de +2.'),
+('conspirateur', 'Conspirateur', 0, 0, 'cult', 'Le PJ connaît beaucoup de monde dans les Terres d’Arran. Une fois par aventure, il peut faire appel à un ami ou contact pour en obtenir un service, une information ou sceller une alliance. Pour cela, il doit réussir un test de CHA difficulté 10 si le service est du domaine de la routine, de 15 si le service est difficile à rendre ou s’il peut présenter un risque pour le contact, et de 20 si le service fait appel à une information secrète ou s’il met ouvertement l’allié en danger. En cas d’échec, l’ami peut malgré tout accorder son aide, mais elle ne sera pas gratuite...'),
+('coup-de-bouclier', 'Coup de bouclier', 1, 0, NULL, 'Le PJ peut effectuer à chaque tour une attaque au bouclier avec un d12 au lieu du d20 (action gratuite) qui inflige [1d4 + Mod. de FOR] DM.'),
+('cri-de-guerre', 'Cri de guerre', 0, 0, NULL, 'Une fois par combat, pour une action d’attaque, le PJ pousse un hurlement qui effraie ses adversaires. Tout ennemi dont la FOR ou les PV maximaux sont inférieurs à ceux du PJ subit un malus de -2 à ses tests d’attaque au contact contre le PJ pour le reste du combat. Capacité avancée : la capacité ne nécessite plus qu’une action de mouvement.'),
+('critique-brutal', 'Critique brutal', 0, 0, 'cult', 'Les DM du PJ sont multipliés par 3 (au lieu de 2) lorsqu’il obtient une réussite critique sur une attaque au contact.'),
+('croc-en-jambe', 'Croc-en-jambe', 0, 0, NULL, 'Lorsqu’il obtient un score de 17 à 20 sur son d20 en attaque au contact, le PJ fait chuter son adversaire en plus de lui infliger des DM normaux. Un score de 19 ou 20 est nécessaire pour une créature quadrupède.'),
+('croyances-pa\"iennes', 'Croyances païennes', 0, 0, 'race', 'Le PJ arbore désormais un tatouage mystique qui améliore ses performances physiques. Au choix : taureau (+5 aux tests de FOR), ours (+5 aux tests de CON), panthère (+5 aux tests de DEX) ou chouette (+5 aux tests de SAG).'),
+('dans-le-mille', 'Dans le mille', 1, 0, NULL, 'Pour une attaque à distance, le PJ peut choisir d’utiliser 1d12 en attaque au lieu du d20 habituel (et il ajoute normalement son score d’attaque à distance). Si l’attaque est réussie, il ajoute 2d6 aux DM. Cette capacité peut par exemple être utilisée avec Tir Rapide ou Flèche de mort (le bonus de 2d6 aux DM n’est pas doublé).'),
+('debrouillard', 'Débrouillard', 0, 0, NULL, 'Le PJ obtient un bonus de +5 à tous ses tests de survie en nature et aux tests de profession et d’artisanat (forge, charpentier, etc.).'),
+('dedoublement', 'Dédoublement', 0, 1, NULL, 'Sur une attaque magique réussie (portée : 20 m), le PJ crée un double translucide de la cible pendant [5 + Mod. de SAG] tours. Le double est sous le contrôle du PJ. Il possède les mêmes caractéristiques que l’original mais seulement la moitié de ses PV, et tous les DM qu’il inflige sont divisés par deux. Il disparaît si ses PV tombent à 0. Une créature ne peut être dédoublée qu’une fois par combat.'),
+('deguisement', 'Déguisement', 0, 0, NULL, 'Avec beaucoup d’ingéniosité, un jeu d’acteur hors pair et en disposant des accessoires adéquats, le PJ parvient à prendre l’apparence de n’importe quelle créature de taille à peu près équivalente (avec une marge d’environ 50 cm). S’il subit un examen minutieux, l’aventurier doit réussir un test opposé de CHA contre SAG pour ne pas être découvert. Il a besoin de vingt minutes pour se préparer et le déguisement peut servir pendant deux heures avant que le maquillage ne commence à s’altérer.'),
+('delivrance', 'Délivrance', 0, 1, NULL, 'En touchant sa cible, le PJ annule les pénalités infligées par les sorts, les malédictions, la pétrification et les capacités spéciales d’autres personnages ou de créatures (douleur, mutilation, poisons, etc.).'),
+('deluge-de-coups', 'Déluge de coups', 1, 0, NULL, 'Lors de son tour, le PJ peut effectuer deux attaques à mains nues sur des cibles de son choix ou deux attaques avec une arme. Alternativement, il peut choisir de porter trois attaques en utilisant un d12 en attaque pour chacune d’elles (au lieu d’un d20).'),
+('depassement', 'Dépassement', 0, 0, 'race', 'Le PJ augmente la valeur d’une Carac. au choix de +2.'),
+('dernier-rempart', 'Dernier rempart', 1, 0, NULL, 'Le PJ effectue uniquement une attaque au contact durant ce tour. En contrepartie, il bénéficie d’une attaque supplémentaire contre tout ennemi qui se déplace pour venir à son contact. Un adversaire blessé par cette attaque voit son déplacement stoppé.'),
+('desarmer', 'Désarmer', 1, 0, NULL, 'Le PJ réalise une attaque au contact et sa victime doit faire un test d’attaque opposé. Si le PJ obtient le plus haut score, l’arme de son adversaire tombe au sol (une action de mouvement doit être employée pour la ramasser). Si le PJ réussit son test avec au moins 10 points de plus que son adversaire, il empêche celui-ci de récupérer son arme (en posant le pied dessus, en l’envoyant hors de portée, etc.). Cette capacité est évidemment sans effet sur les armes naturelles (griffes, crocs, épine dorsale, etc.). Les adversaires qui utilisent des armes à deux mains sont plus difficiles à désarmer, infligeant un malus de -5 au test. \r\nCapacité avancée : la capacité peut être utilisé pour une action d’attaque au lieu d’une action limitée.'),
+('detecter-les-pieges', 'Détecter les pièges', 0, 0, NULL, 'En réussissant un test d’INT difficulté 10, le PJ peut détecter (et ensuite contourner sans danger) les pièges (avant qu’ils ne se déclenchent bien entendu). Les pièges magiques exigent un test d’INT de difficulté 15. \r\nCapacité avancée : la détection des pièges non magiques est réussie de façon automatique.'),
+('detection-invisible', 'Détection de l&#39;invisible', 0, 1, NULL, 'Pendant [5 + Mod. de SAG] tours, le PJ détecte les créatures invisibles ou cachées à moins de 30 mètres et perçoit si un sort de Clairvoyance affecte l’endroit. Aveuglé ou dans le noir, ce sort lui permet de voir normalement. \r\nCapacité avancée : le PJ peut lancer ce sort en action de mouvement au lieu d’une action d’attaque mais ne peut user de concentration dans ces conditions.'),
+('detection-magie', 'Détection de la magie', 0, 1, 'tmag', 'Pour une action d’attaque, le mystique se concentre et détecte la présence de toute inscription, aura ou objet magique situé(e) dans la pièce où il se trouve (ou dans les 15 mètres autour de lui).'),
+('dex-heroique', 'Dextérité héroïque', 0, 0, NULL, 'Le PJ augmente son score de DEX de +2 et peut désormais lancer deux d20 à chaque fois qu’un test de DEX lui est demandé et conserver le meilleur résultat.'),
+('discretion', 'Discrétion', 0, 0, NULL, 'Quand il essaie de passer inaperçu, le PJ bénéficie d’un bonus de +5 à son test de DEX. \r\nCapacité avancée : le bonus passe à +10.'),
+('doigts-agiles', 'Doigts agiles', 0, 0, NULL, 'Le PJ reçoit un bonus de +5 pour tous ses tests de DEX liés à la précision : crocheter une serrure, désamorcer un piège, faire les poches de quelqu’un… \r\nCapacité avancée'),
+('domination', 'Domination', 0, 1, NULL, 'En réussissant un test d’attaque magique (portée : 20 m) en opposition contre un test d’attaque magique de la cible (si la créature n’a pas d’attaque magique, on utilise alors son attaque au contact en appliquant un malus de -3), le PJ prend contrôle de son esprit pendant [1d4 + Mod. de SAG] minutes. Son propre corps devient inactif. La victime peut résister au sort avec un test de SAG difficulté [10 + Mod. d’INT] à chaque fois qu’elle subit des DM. Si la créature meurt pendant la domination, le PJ réintègre son corps et subit 1d6 DM.'),
+('double-attaque', 'Double attaque', 1, 0, NULL, 'Le PJ peut tenter deux attaques au contact durant ce tour avec un malus de -2 à chacune.'),
+('double-peine', 'Double peine', 1, 0, NULL, 'Si les deux armes du PJ atteignent la cible lors d’un même tour, le personnage obtient un effet de combo qui ajoute +1d6 DM à l’une des deux attaques selon son choix.'),
+('elixir-de-guerison', 'Élixir de guérison', 0, 0, NULL, 'Le PJ peut préparer un élixir qui soigne [3d6 + Mod. d’INT] PV, un empoisonnement ou une hémorragie.'),
+('elixirs-protection', 'Elixirs de protection', 0, 0, NULL, 'Le PJ peut préparer une potion de Peau d’écorce (rang 1 de la voie des forêts), d’Image décalée (rang 1 de la voie des illusions) ou de Protection contre les éléments (rang 3 de la voie de la magie élémentaliste). Les effets de ces potions ne sont pas cumulables.'),
+('empathie-animale', 'Empathie animale', 0, 0, NULL, 'Le PJ peut parler aux animaux. De plus, lorsqu’il dépense un PR pour récupérer des PV, son loup regagne également un nombre de PV égal à [1d8 + Mod. CON du loup + niveau du PJ].'),
+('empathie-elfique', 'Empathie elfique', 0, 0, 'race', 'Le PJ connaît instinctivement la direction à suivre pour retrouver les personnes qui lui sont chères et intimes, quelle que soit la distance qui les sépare. De plus, il ressent, comme une forme de pressentiment, leur état de santé physique et psychologique. Enfin, il perçoit également si un danger les guette.'),
+('endurant', 'Endurant', 0, 0, 'race', 'Le maximum de PR de l’Ogre est de 6 – et non de 5 comme pour les autres races.'),
+('enfant-de-la-foret', 'Enfant de la forêt', 0, 0, 'cult', 'Le PJ choisit une caste, religieuse ou guerrière. Traditionnellement, les individus féminins choisissent la première, les individus masculins la seconde mais la nouvelle génération fait fi de ces conventions. Le choix est donc totalement ouvert. L’Elfe gagne alors une capacité de rang 1 ou 2 de de la voie des arts druidiques ou voie des forêts pour la caste religieuse ou une capacité de rang 1 ou 2 de de la voie de l’archerie et de la voie du compagnon animal pour la caste guerrière. Au rang 4 de cette voie culturelle, il gagne une capacité supplémentaire de rang 1 ou 2 de sa caste (voie des arts druidiques ou voie des forêts, voie de l’archerie et de la voie du compagnon animal).'),
+('ennemis-jures', 'Ennemis jurés', 1, 0, NULL, 'Après avoir tué une créature, le PJ peut décider que tous ceux de sa race sont devenus des ennemis jurés. Contre ces créatures, il bénéficie désormais d’un bonus égal à son Mod. de SAG pour ses attaques et il inflige +1d6 de DM. Au niveau 8, Il peut choisir un second ennemi juré. Le PJ peut changer d’ennemi juré une fois au cours de chaque niveau.'),
+('enorme', 'Énorme', 0, 0, 'cult', 'Le PJ peut manier d’une seule main les grandes armes qui nécessitent normalement l’usage des deux mains. Il souffre d’un malus de -2 aux tests d’attaque. Pour les armes traditionnelles ogres, ce malus est augmenté de 1 par niveau de magie (une arme exceptionnelle à deux mains impose un malus de -5 si elle est maniée à une seule main).'),
+('enseigne-du-temple', 'Enseigne du Temple', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de la maîtrise des armes ou de la voie du mysticisme. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie de la maîtrise des armes ou de la voie du mysticisme.'),
+('enseignement-exo', 'Enseignement exotique', 0, 0, 'race', 'Le PJ choisit l’une des formations martiales maîtrisées par son personnage ainsi qu’une tradition d’un des peuples des Terres d’Arran : le PJ peut porter et utiliser uniquement les armes ou armures qu’il maîtrise, forgées dans cette tradition. Voir à ce sujet la marge Armes et armures traditionnelles, page 71.'),
+('enseignements-eau', 'Enseignements de l&#39;eau', 0, 0, 'cult', 'Le PJ peut retenir sa respiration sous l’eau pendant 15 minutes. De plus, au plus profond des océans, il n’a pas besoin de la lumière du soleil pour se guider. Il peut aussi supporter les températures glaciales et la pression sans problème.'),
+('equilibre-parfait', 'Équilibre parfait', 0, 0, 'cult', 'Habitué aux fluctuations des vagues, le PJ a acquis une coordination hors du commun. Se relever constitue pour lui une action gratuite et il bénéficie d’un bonus de +5 aux tests d’équilibre.'),
+('erudition', 'Érudition', 0, 0, 'cult', 'Le PJ sait lire et écrire et gagne +5 aux tests relatifs à un domaine de son choix : histoire et géographie, occultisme et magie, sciences et techniques, plantes et créatures ou langues anciennes.'),
+('esquive-acrobatique', 'Esquive acrobatique', 0, 0, NULL, 'Une fois par tour, le PJ peut réaliser une esquive en réussissant un test d’attaque à distance contre une difficulté égale au score obtenu par son adversaire lors de son attaque. En cas de réussite, le PJ ne subit aucun DM. Si cette attaque était un critique, il subit tout de même des DM normaux (et annule donc l’effet critique « dégâts doublés »).'),
+('essence-magique', 'Essence magique', 0, 0, 'race', 'Le PJ est naturellement lié à l’essence du monde. Il obtient un bonus de +2 en DEF contre les attaques magiques et à tous les tests destinés à résister à la magie. Ce bonus passe à +4 au rang 4 atteint dans cette voie.'),
+('etudes-arcaniques', 'Études arcaniques', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de la magie élémentaliste ou de la voie des illusions. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie de la magie élémentaliste ou de la voie des illusions.'),
+('exemplaire', 'Exemplaire', 1, 0, NULL, 'Une fois par tour, le PJ permet à un allié qui combat le même adversaire que lui de relancer le d20 d’un test d’attaque s’il s’agissait d’un d’échec.'),
+('expert-en-filouterie', 'Expert en filouterie', 0, 0, 'cult', 'Le PJ augmente ses valeurs de DEX et CHA de +2.'),
+('expertise-des-haches', 'Expertise des haches', 0, 0, 'cult', 'Le PJ gagne un bonus de +1 en attaque et aux DM lorsqu’il manie une hache. De plus, il est formé au maniement de la grande hache de bûcheron.'),
+('feinte', 'Feinte', 1, 0, NULL, 'Le PJ effectue une attaque fictive pour déséquilibrer son adversaire et réaliser ensuite une attaque mortelle. Faites un test d’attaque normal lors de ce tour mais n’infligez aucun DM. Au tour suivant, si vous attaquez le même adversaire, vous profiterez d’un bonus de +5 en attaque et, si votre feinte était réussie, de +2d6 aux DM. Au rang 5 atteint dans cette voie, le bonus d’attaque de la feinte passe à +10.'),
+('feu-gregeois', 'Feu grégeois', 0, 0, NULL, 'Le PJ lance la fiole à une distance maximum de 10 m grâce à une action d’attaque (réussite automatique). Le contenu explose dans un rayon de 3 m en infligeant 1d6 DM par rang atteint dans cette voie. Un test de DEX difficulté [10 + Mod. d’INT] réussi permet aux victimes de diviser les DM par deux. \r\nCapacité avancée : les flammes du feu grégeois persistent pendant un tour, infligeant 1 DM de feu par rang atteint dans cette voie à toute cible commençant son tour ou traversant la zone. La réussite d’un test de DEX difficulté [10 + Mod. d’INT] permet d’annuler les DM.'),
+('fidele-monture', 'Fidèle monture', 0, 0, NULL, 'Le PJ possède un puissant destrier (un cheval de guerre ou un cochon de combat). À dos de monture, il peut ajouter un déplacement de 10 m avant ou après une action normale (par exemple faire 10 m et une action limitée). La monture n’attaque que si elle est elle-même attaquée au contact par une créature.\r\nFidèle monture : FOR +4, DEX +0, CON +4, INT -2, SAG +0, CHA +0, Init. 10, DEF 13, PV 15, ruade +5, DM 1d6+4\r\nCapacité avancée'),
+('flamme', 'Flamme', 0, 1, 'tmag', 'Pour une action gratuite, le mystique fait apparaître dans la paume de sa main une petite flamme, à peine assez intense pour éclairer une zone dans un rayon de 5 mètres. Il peut l’utiliser pour mettre le feu à des matières inflammables ou porter une attaque de contact ‒ pour une action d’attaque ‒ à un adversaire en utilisant son score d’attaque magique et infligeant 1d6 DM.'),
+('fleche-de-mort', 'Flèche de mort', 1, 0, NULL, 'Le PJ lance deux d20 pour son attaque et conserve le meilleur résultat. Les dégâts de la flèche sont doublés.'),
+('for-heroique', 'Force héroïque', 0, 0, NULL, 'Le PJ augmente son score de FOR de +2 et peut désormais lancer deux d20 à chaque fois qu’un test de FOR lui est demandé et conserver le meilleur résultat.'),
+('force-de-la-nature', 'Force de la nature', 0, 0, 'cult', 'Le PJ gagne un bonus de +5 à tous les tests de FOR et ajoute son [Mod. de FOR] à son score total de PV.'),
+('forgeron', 'Forgeron', 0, 1, NULL, 'Le PJ obtient un bonus de +5 aux tests d’orfèvrerie ou de forge. Au prix d’une action de mouvement, il peut enflammer son arme pour une durée de [5 + Mod. de SAG] tours et gagne alors un bonus aux DM de +1 par rang atteint dans cette voie avec cette arme (DM de feu). \r\nCapacité avancée : le bonus aux tests passe à +10 et enflammer son arme ne nécessite plus qu’une action gratuite au lieu d’une action de mouvement.'),
+('forgeron-runique', 'Forgeron runique', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de de la voie d’alchimie ou de la voie de la magie runique. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 dans la voie d’alchimie ou de la voie de la magie runique.'),
+('formation-militaire', 'Formation militaire', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie du bastion ou de la voie du commandement. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie du bastion ou de la voie du commandement.'),
+('fortifiant', 'Fortifiant', 0, 0, NULL, 'Un breuvage étrange qui guérit [1d4 + rang] PV et permet de gagner un bonus de +3 aux [rang + 1] prochains tests effectués (dans une limite de temps de 12 heures). Boire un fortifiant nécessite une action de mouvement. \r\nCapacité avancée : le PJ dispose de deux fortifiants en plus des élixirs qu’il peut normalement préparer chaque jour.'),
+('frappe-chirurgicale', 'Frappe chirurgicale', 1, 0, NULL, 'Par sa science de l’escrime (et de la fourberie), le PJ augmente de manière permanente ses chances de porter des coups critiques. Il retranche désormais son Mod. d’INT au score nécessaire pour obtenir un critique en attaque au contact.'),
+('frappe-deloyale', 'Frappe déloyale', 0, 0, 'race', 'Une fois par adversaire, après avoir manqué une attaque de contact, le PJ peut annoncer que cette attaque était en réalité une frappe déloyale : le coup avait pour objectif de détourner l’attention de l’adversaire, le temps pour le PJ de placer un coup vicieux. À l’issue d’un test opposé dont la nature est précisée ci-dessous, le personnage peut réaliser l’une des manoeuvres suivantes'),
+('fuite-interdite', 'Fuite interdite', 0, 0, 'cult', 'Le PJ tient toujours sa position, jusqu’à la mort. Lorsqu’un adversaire à son contact utilise une action de mouvement pour s’éloigner de lui, il peut immédiatement lui porter une attaque de contact en tant qu’action gratuite. En cas de réussite, l’attaque n’inflige aucun DM mais le déplacement de l’adversaire est annulé.'),
+('grace-elfique', 'Grâce elfique', 0, 0, 'race', 'Le PJ gagne +5 à tous les tests de CHA et de déplacement silencieux.'),
+('grace-feline', 'Grâce féline', 0, 0, NULL, 'Le PJ ajoute son Mod. de CHA en DEF et en initiative (en plus du Mod. habituel de DEX). \r\nCapacité avancée : le PJ ajoute son Mod. de CHA à tous les tests de discrétion et d’esquive.'),
+('grosse-tete', 'Grosse tête', 0, 0, 'cult', 'Le PJ remplace la force brutale par la réflexion. Il peut effectuer un test d’INT au lieu d’un test de FOR (exemple : il utilise un levier pour déplacer une lourde charge). Il obtient un bonus de +5 à tous les tests de bricolage ou de science.'),
+('hemorragie', 'Hémorragie', 0, 1, NULL, 'Si le PJ réussit un test d’attaque magique (portée : 10 m), la victime saigne à la moindre blessure. tous les DM des attaques sanglantes infligées à la cible (arme blanche, griffe, saignement, etc.) augmentent de 1d6 pendant [5 + Mod. de SAG] tours. Ce sort ignore la RD d’une cible mais les créatures qui ne saignent pas y sont immunisées (telles que les créatures non vivantes, les goules ou encore les dryades).'),
+('heros-tribal', 'Héros tribal', 0, 0, 'race', 'Le PJ peut utiliser 1 PC pour annuler un coup critique à son encontre et le transformer en coup normal. Une fois par jour, il peut utiliser 2 PC pour transformer un test réussi à son encontre en échec. N.B. : il n’est pas possible d’annuler une réussite critique.'),
+('homme-des-cites', 'Homme des cités', 0, 0, 'cult', 'Le PJ est à l’aise dans les foules et les cités bondées. Il gagne un bonus de +5 pour tous les tests liés à la perception dans une foule, ainsi que pour trouver l’adresse d’une personne ou l’emplacement d’un lieu précis en zone urbaine.'),
+('homme-des-clans', 'Homme des clans', 0, 0, 'cult', 'Le PJ a acquis un tel statut au sein de son clan qu’il dispose maintenant d’un homme de main à son service qui combat à ses côtés et assure ses arrières sur le champ de bataille. Ce dernier lui est totalement fidèle et peut être de plus affecté à quelques basses besognes, telles que l’entretien des armes ou encore l’intendance. Grâce à lui, les armes du personnage sont parfaitement entretenues et infligent des critiques sur un résultat de 19 ou 20. \r\nBras droit : DEF 16, PV [niveau du PJ x 6], attaque [niveau du PJ], DM 1d8+2. FOR +2, DEX +0, CON +2, INT +0, SAG +0, CHA +0. Il agit à l’initiative du PJ. S’il venait à mourir, le PJ pourrait prendre un autre bras droit à son service au niveau suivant.'),
+('huile-instable', 'Huile instable', 0, 0, NULL, 'Une fois à l’air libre, l’huile prend feu spontanément et brûle intensément. Il est possible, au prix d’une action limitée, de l’appliquer sur une arme pour bénéficier d’un bonus de +1d6 DM de feu pendant [5 + Mod d’INT] minutes. L’huile peut également être appliquée sur des carreaux d’arbalète ou des pointes de flèche, à raison d’une action d’attaque par lot de projectiles, une dose permettant d’enflammer environ cinq projectiles.'),
+('hyperconscience', 'Hyperconscience', 0, 1, NULL, 'Le PJ augmente ses valeurs de SAG et d’INT de +2. Il peut désormais lancer deux d20 à chaque fois qu’un test de SAG ou d’INT lui est demandé et garder le meilleur résultat.'),
+('image-decalee', 'Image décalée', 0, 1, NULL, 'Pendant [5 + Mod. de SAG] tours, lorsqu’une attaque le touche, le PJ lance 1d6 : sur 5-6, il ne subit pas les DM. Les DM et effets de zone s’appliquent normalement. \r\nCapacité avancée'),
+('imitation', 'Imitation', 0, 1, NULL, 'Le PJ peut prendre l’apparence d’une créature de taille proche (+ ou – 50 cm) qu’il voit au moment de l’incantation. Durée [5 + Mod. de SAG] minutes. Toucher le PJ (par une attaque ou non) met fin au sort.'),
+('immortalite', 'Immortalité', 0, 0, 'race', 'Le PJ augmente sa valeur de CON de +2 et ses blessures guérissent plus vite. Lorsqu’il dépense 1 PR, il regagne [2 x DV + niv + Mod. CON].'),
+('imperturbable', 'Imperturbable', 0, 0, 'cult', 'Le PJ gagne un bonus de +5 aux tests visant à résister aux effets mentaux (tels que la peur, l’intimidation ou les sorts d’envoûtement). De plus, il gagne un bonus de +3 en Initiative.'),
+('injonction', 'Injonction', 0, 1, NULL, 'Le PJ donne à une cible un ordre simple (mais pas dangereux pour elle) que cette dernière doit pouvoir comprendre. Il doit réussir un test d’attaque magique opposé contre la cible (si la créature n’a pas d’attaque magique, on utilise alors son attaque au contact en appliquant un malus de -3) à une portée de 20 mètres. En cas d’échec, la cible exécutera l’ordre pendant son prochain tour. \r\nCapacité avancée : le PJ bénéficie d’un bonus de +2 à son test d’attaque magique.'),
+('insignifiant', 'Insignifiant', 0, 0, 'cult', 'Le PJ bénéficie d’une étrange faculté à se faire oublier ou à détourner l’attention. Une fois par combat, alors qu’il était pris pour cible par un ennemi, il peut invoquer cette capacité pour reporter l’attention de son assaillant sur une autre cible ennemie. L’ennemi ne s’en prendra plus au Gobelin, à moins que ce dernier ne l’attaque de nouveau. De plus, le Gobelin bénéficie d’un bonus de +5 à tous les tests visant à se fondre dans la masse.'),
+('inspiration', 'Inspiration', 0, 1, 'tmag', 'Au prix d’une action d’attaque, le mystique désigne un allié à moins de 10 mètres et lui octroie un bonus de +1 à tous ses tests pendant [2 + Mod. SAG] tours. Il peut lancer une inspiration à chaque tour mais ne peut maintenir plus de [1 + Mod. INT] inspirations à la fois (minimum 1).'),
+('instinct-de-survie', 'Instinct de survie', 0, 0, 'race', 'Lorsqu’une attaque devrait amener le PJ à 0 PV, les DM qu’elle inflige sont divisés par deux (minimum 1).'),
+('int-heroique', 'Intelligence héroïque', 0, 0, NULL, 'Le PJ augmente sa valeur d’INT de +2. Il peut désormais lancer deux d20 à chaque fois qu’un test d’INT lui est demandé et conserver le meilleur résultat.'),
+('intelligence-combat', 'Intelligence du combat', 0, 0, NULL, 'Le PJ ajoute son Mod. d’INT en initiative et en DEF en plus de son Mod. de DEX. \r\nCapacité avancée : s’il le souhaite, le PJ peut remplacer le Mod. de FOR aux DM par son Mod. d’INT.'),
+('intuable', 'Intuable', 0, 0, 'cult', 'Au moment de tomber à 0 PV, le PJ peut décider de ne pas sombrer dans l’inconscience et de continuer à se battre. Il peut encore être blessé, ses PV étant alors décomptés négativement. Il peut descendre jusqu’à un montant égal à sa valeur de Constitution, au-delà de laquelle il meurt. Tant que ses PV sont inférieurs à 0, il ne peut bénéficier d’aucun soin à moins qu’il ne dépense 1 PR.'),
+('invention-etrange', 'Invention étrange', 0, 0, 'cult', 'Le PJ invente ‒ ou reçoit en présent de la part d’un collègue ingénieur ‒ une arbalète à répétition. Il gagne la maîtrise des armes de tir ‒ incluant la maîtrise de cette arme.'),
+('invocation-dun-demon', 'Invocation d’un démon', 0, 1, NULL, 'Une fois par combat, en sacrifiant 1d6 PV, le PJ invoque un démon qui entre alors à son service pour [5 + Mod. de SAG] tours. Le démon est une grande silhouette noire d’environ 2,30 m, aux contours brumeux et indéterminés et aux yeux larges et écarlates. Le démon divise par deux tous les DM non magiques qu’il subit, les sorts et les armes magiques lui infligent des DM normaux. Il est capable de voler à une vitesse équivalente à un déplacement normal. Lorsque le PJ atteint le niveau 10, le démon devient capable d’attaquer deux fois par tour au prix d’une action limitée. \r\nDémon : FOR +5*, DEX +2, CON +4*, INT +2, SAG +2, CHA +0, Init. 16, DEF 17, PV [niveau du PJ x 5], attaque au contact = [niveau du PJ], DM 1d8+5'),
+('joli-coup', 'Joli coup !', 0, 0, NULL, 'Le PJ ignore les pénalités normalement appliquées lorsque la cible est à couvert (généralement -2 à -5). \r\nCapacité avancée : le PJ ajoute +1 aux DM de l’arme tant qu’il l’utilise à une portée optimale.'),
+('la-loge-noire', 'Loge noire', 0, 0, 'cult', 'Le PJ, en raison de sa richesse et de son importance au sein de l’ordre, est à présent protégé par un garde. Ce dernier confère un bonus de +3 en DEF à son employeur lorsqu’il est à son contact. Une fois par tour, il peut faire échouer une attaque qui vise le PJ en réussissant un test d’attaque avec un résultat au moins égal à la DEF atteinte par l’attaquant. Le garde est totalement loyal au PJ. S’il vient à mourir, il est possible d’en engager un nouveau en dépensant 500 pa ou lors du passage au niveau suivant. \r\nLe garde : DEF 16, PV [niveau du PJ x 6], attaque [niveau du PJ], DM 1d8+2. FOR +2, DEX +0, CON +2, INT +0, SAG +0, CHA +0. Il agit à l’initiative du PJ.'),
+('lanceur-de-couteau', 'Lanceur de couteau', 0, 0, NULL, 'Une fois par tour, en plus de ses autres actions, le PJ peut lancer un couteau ou une dague sur une cible à distance (portée maximale : 10 m) en réussissant un test d’attaque à distance. Cette attaque est une action gratuite. Elle occasionne [1d4 + Mod. de DEX] de DM.'),
+('lancier-delite', 'Lancier d’élite', 0, 0, 'cult', 'Le PJ ignore les malus liés à l’usage des armes d’hast. Il gagne la maîtrise des armes d’hast. Il gagne également un bonus de +1 aux tests d’attaque et aux DM avec une arme d’hast.'),
+('langage-des-animaux', 'Langage des animaux', 0, 0, NULL, 'Le PJ peut communiquer avec les animaux qui, en général, se comportent avec lui de manière amicale. Il gagne un bonus de +5 à tous les tests destinés à influencer un animal. La communication reste primitive et limitée à l’intelligence de l’animal et à son point de vue (prédateur, proie, etc.). \r\nCapacité avancée : en réussissant un test d’INT difficulté 20 (le bonus de la capacité s’applique à ce test), le PJ peut réussir à entretenir une conversation beaucoup plus poussée avec l’animal, lui prêtant des raisonnements humanoïdes.'),
+('le-chant-de-la-terre', 'Le chant de la Terre', 0, 0, 'cult', 'Le PJ bénéficie d’un bonus de +5 aux tests de DEX et SAG lorsqu’il est en forêt.');
+INSERT INTO `cota_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('le-guetteur', 'Le guetteur', 0, 1, NULL, 'Le PJ reçoit un oiseau de proie comme compagnon animal. Il possède un lien télépathique avec lui et peut percevoir par ses sens avec un bonus de +5 aux tests fondés sur la perception. Oiseau de proie : Init. 15, DEF 15, PV [niveau du PJ x 3]. Attaque de contact = [attaque magique du PJ], DM 1d4.'),
+('loup-parmi-les-loups', 'Loup parmi les loups', 0, 0, 'race', 'Le PJ gagne +1 aux DM lorsqu’il combat un adversaire humanoïde. Ce bonus passe à +2 au rang 4 de cette voie.'),
+('lumiere-des-etoiles', 'Lumière des étoiles', 0, 0, 'race', 'Pour un Elfe, l’obscurité de la nuit sous la lumière des étoiles n’est que de la pénombre, où seuls les petits détails lui échappent.'),
+('lumieres-dansantes', 'Lumières dansantes', 0, 1, 'tmag', 'Au prix d’une action de mouvement, le mystique fait apparaître trois petites sphères de lumière de la couleur de son choix lévitant autour de son corps. Elles éclairent une zone dans un rayon de 20 mètres et persistent aussi longtemps que le mystique le souhaite. Le moindre DM subi rompt la concentration et les fait disparaître.'),
+('mage', 'Mage', 0, 0, 'cult', 'Le PJ augmente ses valeurs d’INT et SAG de +2.'),
+('maitre-arme-sauvage', 'Maîtrise des armes sauvages', 0, 0, 'race', 'Le PJ a appris à utiliser aux mieux les traditions étranges de son peuple. Il peut porter et utiliser les armes et armures traditionnelles de son peuple pour lesquelles il possède la formation martiale. Pour les Aberrations (cf. page 97), la nature de la tradition est définie par la Voie culturelle (par exemple une Aberration ayant la Voie culturelle de l’Ogre peut prétendre à la maîtrise des armes traditionnelles ogres). Voir à ce sujet la marge Armes et armures traditionnelles, page 71.'),
+('maitre-artisan', 'Maître artisan', 0, 0, 'cult', 'Le PJ augmente ses valeurs de DEX et INT de +2.'),
+('maitre-du-temple', 'Maître du temple', 0, 0, 'cult', 'Le PJ augmente ses valeurs de CON et INT de +2.'),
+('maitre-marchand', 'Maître marchand', 0, 0, 'cult', 'Le PJ augmente ses valeurs d’INT et CHA de +2.'),
+('maitrise-armes-elfes', 'Maîtrise des armes elfiques', 0, 0, 'race', 'Le PJ a appris à manier l’artisanat raffiné de son peuple. Il peut porter et utiliser armes et armures de la tradition elfique, pour lesquels il possède la formation martiale. Voir à ce sujet la marge Armes et armures traditionnelles.'),
+('maitrise-armes-runes', 'Maîtrise des armes runiques', 0, 0, 'race', 'Le PJ a appris à tirer parti de la puissance des runes gravées par les artisans de l’ordre de la Forge. Il peut porter et utiliser les armes et armures de la tradition naine pour lesquelles il possède la formation martiale. Voir à ce sujet la marge Armes et armures traditionnelles, page 71.'),
+('malediction', 'Malédiction', 0, 1, NULL, 'Le PJ effectue un test d’attaque magique contre une cible située à moins de 20 mètres. En cas de succès, la victime réalise tous ses tests avec deux d20 et garde le résultat le plus faible. Le sort prend fin dès qu’elle aura raté trois tests (il n’y a aucune limite de temps pour effectuer ces tests). Si la cible possède une capacité lui permettant de lancer deux dés et de garder le meilleur, elle ne lance plus qu’un seul dé. Une seule cible à la fois peut être affectée par une malédiction.  \r\nCapacité avancée : le PJ peut affecter un total de [Mod INT] cibles (minimum 1). Le sort doit être lancé pour chaque cible.'),
+('marteler-le-metal', 'Marteler le métal', 0, 0, 'cult', 'Le PJ gagne un bonus de +1 en attaque et aux DM lorsqu’il manie un bâton ferré, un marteau de guerre ou un marteau à deux mains.'),
+('masque-du-predateur', 'Masque du prédateur', 0, 1, NULL, 'Lorsqu’il est sous l’effet de ce sort, le PJ prend les traits d’un fauve ou d’un loup. Il gagne son Mod. d’INT en initiative, en attaque et aux DM et peut voir dans la nuit (comme un Elfe) pendant [5 + Mod. de SAG] tours.'),
+('massacrer-pietaille', 'Massacrer la piétaille', 0, 0, NULL, 'Lorsqu’il est en selle, le PJ ajoute +1d6 aux DM contre la piétaille. S’il y a au moins quatre créatures aux statistiques semblables impliquées dans le combat, elles sont assimilées à de la piétaille (même si leur nombre est par la suite réduit à moins de quatre au cours du combat). Les grandes créatures et les cavaliers ne sont jamais considérés comme de la piétaille.'),
+('meme-pas-mal', 'Même pas mal', 1, 0, NULL, 'Lorsqu’il subit un coup critique, cela a pour effet de décupler la rage du PJ. Il peut immédiatement entrer en rage (action gratuite) et gagne un bonus de +1d6 aux DM de ses attaques au contact pour les trois prochains tours. Le joueur note les DM supplémentaires de l’attaque critique à part : le PJ ne perdra ces PV qu’à la fin de la rage.'),
+('memoire-du-monde', 'Mémoire du monde', 0, 0, 'cult', 'Le PJ bénéficie d’un bonus de +5 aux tests d’INT relatifs aux connaissances et à l’érudition.'),
+('mirage', 'Mirage', 0, 1, NULL, 'Le PJ crée une illusion visuelle et sonore immobile d’une durée de [5 + Mod. de SAG] minutes (ou tours si l’illusion est animée). Le volume maximal de l’illusion est de 10 m de côté par rang atteint dans cette voie (portée : 500 m). Divisez ces paramètres par 10 si l’illusion est animée. Interagir avec l’illusion la fait disparaître. \r\nCapacité avancée'),
+('modernisme', 'Modernisme', 0, 0, 'cult', 'Le PJ gagne un bonus de +1 en attaque et aux DM lorsqu’il manie une arbalète. De plus, il gagne la maîtrise des armes de tir.'),
+('moins-que-rien', 'Moins que rien', 0, 0, 'cult', 'Le PJ subit un malus de -5 aux tests d’interaction sociale avec les gens de la bonne société, quelle qu’en soit le peuple. En revanche, il gagne un bonus de +5 aux tests auprès des miséreux, là aussi quelle qu’en soit le peuple. Il obtient également un bonus de +5 aux tests de discrétion et on ne se rappelle généralement pas de lui.'),
+('monstre', 'Monstre', 0, 0, 'cult', 'Le PJ augmente ses valeurs de FOR et de CON de +2.'),
+('monture-fantastique', 'Monture fantastique', 0, 0, NULL, 'Le PJ obtient une monture volante (aspic, dragon, guivre, griffon ou wampür).\r\nFOR +4, DEX +2, CON +4, INT -2, SAG +1, CHA +0, Init. 15, DEF 16, PV [5 × niveau], attaque +8, DM 1d6+4.\r\nLorsqu’il est en selle, le PJ peut faire attaquer sa monture une fois par tour (action gratuite), lors du même tour que lui, avec un score d’attaque égal à son niveau +3. En vol, la monture couvre une distance de 30 m par action de mouvement.'),
+('natif-delsemur', 'Natif d’Elsémur', 0, 0, 'cult', 'Le PJ choisit une caste, religieuse ou guerrière. Traditionnellement, les individus féminins choisissent la première, les individus masculins la seconde mais la nouvelle génération fait fi de ces conventions. Le choix est donc totalement ouvert. Il gagne alors une capacité de rang 1 ou 2 de de la voie de la divination ou voie du mysticisme pour la caste religieuse ou une capacité de rang 1 ou 2 de de la voie de la guerre ou voie du combat à deux armes pour la caste guerrière. Au rang 4 de cette voie culturelle, il gagne une capacité supplémentaire de rang 1 ou 2 de sa caste (voie de la divination ou voie du mysticisme, voie de la guerre ou voie du combat à deux armes).'),
+('nature-nourriciere', 'Nature nourricière', 0, 0, NULL, 'Si le PJ passe une heure en forêt, il trouve de quoi nourrir deux personnes (pour une journée) pour chaque rang atteint dans cette voie. En passant 1d6 heures et en réussissant un test de SAG difficulté 10, le PJ trouve des plantes médicinales qui lui permettent de soigner 1d6 PV par rang atteint dans cette voie. Ces plantes doivent être utilisées immédiatement. Ces soins peuvent toutefois être répartis sur plusieurs patients : le joueur décide combien de d6 il alloue à chaque patient . \r\nCapacité avancée'),
+('noir-comme-le-sang', 'Noir comme le sang', 0, 0, 'cult', 'La noirceur qui coule dans les veines de l’Elfe noir est un fardeau, mais peut aussi se révéler salvatrice dans les pires moments. Une fois par combat, lorsqu’il tombe à 0 PV, le PJ peut continuer à agir normalement mais une nouvelle attaque réussie infligeant au moins 1 point de DM finira par l’achever. Tant qu’il reste à 0 PV, il bénéficie d’un bonus de +2 à tous ses tests.'),
+('nuee-dinsectes', 'Nuée d’insectes', 0, 1, NULL, 'En réussissant un test d’attaque magique (portée 20 m), le PJ libère sur sa cible une nuée d’insectes volants qui piquent, aveuglent et la suivent pendant [5 + Mod. de SAG] tours. La victime subit 1 point de DM par tour et un malus de -2 à toutes ses actions. Les DM de zone détruisent la nuée. \r\nCapacité avancée : la victime subit 2 DM par tour et un malus de -3 à toutes ses actions.'),
+('odorat', 'Odorat', 0, 0, NULL, 'Le loup du PJ détecte les odeurs des animaux et des créatures là où ils sont passés. Le PJ obtient un bonus de +5 aux tests de SAG pour pister et suivre des traces. \r\nCapacité avancée : le loup peut aider le PJ à débusquer les faux-semblants et les illusions. Il ajoute son bonus aux tests pour ne pas être trompé par ces subterfuges.'),
+('ombre-mouvante', 'Ombre mouvante', 1, 0, 'cult', 'En réussissant un test de DEX difficulté 10, le PJ peut se déplacer (sur une distance maximale de 20 m maximum) jusqu’à une zone ténébreuse ou à l’abri des regards (derrière un mur, dans un buisson ou sous une calèche par exemple, du moment que personne ne peut voir précisément la zone) et disparaître à son tour. Il ne réapparaît qu’au tour suivant, au cours de sa phase d’initiative. Aucun adversaire ne peut l’attaquer pendant qu’il a disparu dans les ombres, mais il peut subir des DM de zone. Le Gobelin réapparaît à une distance maximale de 10 m de sa position initiale. S’il a l’initiative sur un adversaire qu’il prend pour cible au contact, il bénéficie d’un bonus de +2d6 DM à son attaque.'),
+('ordre-de-bataille', 'Ordre de bataille', 1, 0, NULL, 'Le PJ donne des ordres tactiques pertinents au coeur de la bataille. Une fois par tour, il octroie une action supplémentaire gratuite à un allié en vue (une action de mouvement ou une action d’attaque, mais pas une action limitée).'),
+('pacte-sanglant', 'Pacte sanglant', 0, 1, NULL, 'Par une action gratuite, le PJ sacrifie 1d4 PV et gagne immédiatement +3 sur un jet de d20 de son choix ou en DEF contre une attaque. À partir du rang 5 atteint dans cette voie, il peut sacrifier 2d4 PV pour faire passer ce bonus à +5.'),
+('parade-croisee', 'Parade croisée', 1, 0, NULL, 'Au cours d’un tour complet, le PJ obtient un bonus en DEF de +2. Il ne réalise qu’une attaque à ce tour. Si le résultat du dé d’attaque est pair, la main principale porte le coup ; si le résultat est impair, c’est la main secondaire. Capacité avancée : le bonus de DEF passe à +4.'),
+('parangon-elfe-blanc', 'Parangon elfe blanc', 0, 0, 'cult', 'Le PJ augmente ses valeurs d’INT et SAG de +2.'),
+('parangon-elfe-bleu', 'Parangon elfe bleu', 0, 0, 'cult', 'Le PJ augmente ses valeurs de CON et SAG de +2.'),
+('parangon-elfe-noir', 'Parangon elfe noir', 0, 0, 'cult', 'Le PJ augmente ses valeurs de DEX et CHA de +2.'),
+('parangon-elfe-vert', 'Parangon elfe vert', 0, 0, 'cult', 'Le PJ augmente ses valeurs de DEX et SAG de +2.'),
+('passe-revolu', 'Passé révolu', 0, 0, 'cult', 'Le PJ n’a peut-être pas toujours été extérieur à un ordre, ou bien peut-être a-t-il reçu l’enseignement d’un nain déchu ? Il peut choisir une capacité de rang 1 de la voie de l’alchimie, de la voie de la magie runique, de la voie du bohème, de la voie de la fourberie, de la voie de la maîtrise des armes, de la voie du mysticisme, de la voie du bastion ou de la voie du commandement. Au rang 4 de cette voie il peut choisir une nouvelle capacité de rang 2 de la voie de l’alchimie, de la voie de la magie runique, de la voie du bohème, de la voie de la fourberie, de la voie de la maîtrise des armes, de la voie du mysticisme, de la voie du bastion ou de la voie du commandement. Ces capacités ne peuvent devenir des capacités supérieures.'),
+('paysan-aguerri', 'Paysan aguerri', 0, 0, 'cult', 'Le PJ gagne un bonus de +1 en attaque et aux DM lorsqu’il manie une arme de paysan. De plus, il est formé au maniement de la grande hache de bûcheron (voir page 157).'),
+('peau-dacier', 'Peau d’acier', 0, 0, NULL, 'Le PJ ne sent plus la douleur et ignore les égratignures, il réduit tous les DM subis de 2 points. Il subit toujours au moins 1 point de DM de chaque attaque reçue.'),
+('peau-de-pierre', 'Peau de pierre', 0, 0, NULL, 'Le PJ est particulièrement endurci, il reçoit un bonus de DEF égal à son Mod. de CON. \r\nCapacité avancée : le bonus de DEF passe à [Mod. de CON +1].'),
+('peau-decorce', 'Peau d’écorce', 0, 1, NULL, 'La peau du PJ prend la consistance de l’écorce. Il gagne +2 en DEF pendant [5 + Mod. de SAG] tours. Ce bonus passe à +4 au rang 4 de cette voie. \r\nCapacité avancée : le PJ applique le bonus de DEF à tous les tests de CON pour résister aux poisons.'),
+('perception-hero\"ique', 'Perception héroïque', 1, 0, NULL, 'Le PJ augmente sa valeur de SAG de +2 et il peut désormais lancer deux d20 à chaque fois qu’un test de SAG lui est demandé et conserver le meilleur résultat.'),
+('pied-marin', 'Pied marin', 0, 0, 'cult', 'Le PJ obtient un bonus de +5 aux tests de navigation, de natation et d’équilibre.'),
+('plein-aux-as', 'Plein aux as', 0, 0, 'cult', 'Le PJ n’est jamais à court de liquidités et obtient pour ses dépenses courantes 25 pièces d’argent (pa) par jour pour chaque rang atteint dans cette voie. S’il n’est pas dépensé, cet argent n’est pas comptabilisé dans les économies du personnage.'),
+('poings-de-fer', 'Poings de fer', 0, 0, NULL, 'Lorsqu’il combat à mains nues, le PJ peut (s’il le souhaite) utiliser son score d’attaque à distance au lieu de celui d’attaque au contact. Au rang 1 de cette voie, il inflige [1d6 + Mod. de FOR] DM létaux. Ces DM passent à 1d8 au rang 3 et à 1d10 au rang 5. \r\nCapacité avancée : la valeur du dé des DM est augmentée d’une catégorie, jusqu’au d12 au rang 5.'),
+('posture-de-combat', 'Posture de combat', 0, 0, NULL, 'Au début de son tour, le PJ peut choisir d’appliquer jusqu’à -1 par rang atteint dans cette voie en attaque, en DEF ou aux DM et obtenir l’équivalent en bonus au choix en attaque, en DEF ou aux DM jusqu’à son prochain tour. \r\nCapacité avancée : le PJ peut accorder le bonus à l’initiative de son prochain tour.'),
+('pot-de-vin', 'Pot-de-vin', 0, 0, 'cult', 'En y mettant le prix, le PJ arrive généralement à obtenir ce qu’il veut. Lorsqu’il rate un test de CHA, il peut obtenir un bonus de +1 autant de fois qu’il paye 10 pa (pour un montant maximal de 100 pa) afin de transformer son échec en réussite.'),
+('pour-lhonneur', 'Pour l’honneur', 0, 0, 'race', 'Les peaux vertes sont des parias aux yeux des autres peuples des Terres d’Arran mais, au sein de leurs clans, leurs victoires et leurs faits d’armes forgent leurs légendes. Le PJ gagne un bonus de +5 aux tests de Carac. pour toute interaction sociale avec d’autres Peaux vertes.'),
+('predispo-arcaniques', 'Prédispositions arcaniques', 0, 0, 'cult', 'À force d’études et d’expérimentations, le PJ dispose de ressources arcaniques plus importantes. Il ajoute son Mod. de CHA à son total de PM (ce bonus n’est pas doublé pour la classe des mystiques).'),
+('predispo-magique', 'Prédispositions magiques', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de l’envoûtement ou de la voie de la magie élémentaliste. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 dans la voie de l’envoûtement ou de la voie de la magie élémentaliste.'),
+('prescience', 'Prescience', 0, 1, NULL, 'Une fois par combat, à la fin d’un tour, le PJ peut décider que tout ce qui s’est passé durant ce tour n’était que la vision d’un futur possible. On rejoue alors le tour depuis le début : les autres PJ, créatures et PNJ ne peuvent pas changer leurs actions, contrairement au PJ qui bénéficie d’un bonus de +10 en initiative et en DEF.'),
+('prison-vegetale', 'Prison végétale', 0, 1, NULL, 'Le PJ peut commander à la végétation de pousser et bloquer ses ennemis (mais pas ses alliés) dans une zone de 10 m de diamètre (portée : 20 m) pendant [5 + Mod. de SAG] tours. Entravées, les cibles subissent un malus de -2 en attaque et en DEF et ne peuvent pas se déplacer. Chaque tour, une créature peut se libérer avec un test de FOR difficulté [10 + Mod. d’INT]. \r\nCapacité avancée'),
+('proche-de-la-nature', 'Proche de la nature', 0, 0, NULL, 'Le PJ obtient un bonus de +5 aux tests de survie, de discrétion ou d’observation en milieu naturel. \r\nCapacité avancée : le bonus passe à +10.'),
+('projectile-de-force', 'Projectile de force', 0, 1, 'tmag', 'Pour une action d’attaque, le mystique choisit une cible visible à moins de 50 mètres et projette une onde de choc qui la touche automatiquement, lui infligeant 1d4 DM. Le projectile de force est presque invisible et n’émet aucun son lorsqu’il file dans l’air.'),
+('protection-mal', 'Protection contre le mal', 0, 1, NULL, 'Le PJ peut lancer ce sort sur lui ou sur tout allié (portée : au contact) pour la durée d’un combat. La cible obtient alors un bonus de +2 en DEF et pour tous les tests de résistance contre les attaques des morts-vivants, des démons, des élémentaires et des créatures conjurées (appelées d’un autre plan par magie). \r\nCapacité avancée'),
+('proteger-un-allie', 'Protéger un allié', 0, 0, NULL, 'Le PJ accorde le Mod. de DEF de son bouclier à un compagnon de son choix qui se trouve juste à côté de lui (il conserve ce bonus pour lui-même aussi). Il peut changer de compagnon à chaque tour durant sa phase d’initiative. C’est une action gratuite. Capacité avancée'),
+('prouesse', 'Prouesse', 0, 0, NULL, 'Le PJ réussit souvent des exploits physiques hors norme. Une fois par tour, vous pouvez sacrifier 1d4 PV pour obtenir +5 sur un test de FOR ou de DEX. Vous pouvez annoncer l’utilisation de cette capacité après avoir pris connaissance du résultat du test de caractéristique.'),
+('provocation', 'Provocation', 1, 0, NULL, 'Le PJ maîtrise l’art de se rendre désagréable, voire insupportable. Par un test opposé de CHA contre l’INT de la victime, il peut forcer celle-ci à l’attaquer pendant ce tour. Le PJ peut immédiatement riposter par une attaque gratuite. \r\nCapacité avancée : si la cible de la provocation rate le PJ, il peut doubler les DM de son attaque gratuite.'),
+('rage-du-berserk', 'Rage du berserk', 1, 0, NULL, 'Le PJ entre dans une rage de berserk pour le reste du combat, ce qui le rend particulièrement dangereux. Il obtient un bonus de +2 en attaque et +1d6 aux DM à toutes ses attaques au contact, mais perd 4 en DEF et ne peut fuir ou attaquer à distance. S’il veut stopper la rage avant d’avoir éliminé tous ses ennemis, le PJ doit réussir un test de SAG difficulté 13 (un seul essai par tour).'),
+('regeneration', 'Régénération', 0, 1, NULL, 'La cible touchée par le PJ guérit 3 PV par tour pendant [niveau du PJ + Mod. de SAG] tours. Ce sort ne peut pas affecter une créature plus d’une fois par jour.'),
+('rejeton-sang-meles', 'Rejeton de la cité des Sang-mêlés', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie du charme ou de la voie de la fourberie. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie du charme ou de la voie de la fourberie.'),
+('resistance', 'Résistance', 0, 0, 'race', 'Le PJ gagne un bonus de +5 à tous les tests de CON.'),
+('resistance-magie', 'Résistance à la magie', 0, 0, 'race', 'Chaque fois que le PJ est la cible d’un sort (à l’exception d’un sort de zone), le joueur lance 1d4 : sur un résultat supérieur au rang du sort, il peut en ignorer les effets.'),
+('riposte', 'Riposte', 1, 0, NULL, 'En plus de ses actions normales, une fois par tour, lorsqu’un adversaire rate une attaque de contact contre le PJ, ce dernier obtient une attaque supplémentaire contre cet adversaire.'),
+('rites-funeraires', 'Rites funéraires', 1, 0, 'cult', 'Le PJ est capable de sentir les âmes des défunts et de communiquer avec elles. Le rituel nécessite une concentration de cinq minutes. L’échange peut prendre des formes variables, qu’il s’agisse d’un dialogue direct, le recours à un support manuscrit ou encore une lecture des vibrations d’une mare d’eau stagnante par exemple. Les défunts s’expriment toujours de façon instinctive et confuse et il peut être délicat de démêler le vrai de l’allégorie ou du cauchemar. De plus, le PJ peut tenter de chasser les esprits vengeurs ou agressifs : au prix d’une action limitée et en réussissant un test d’INT difficulté 15, il inflige 2d6 DM à tous les esprits dans la zone.'),
+('rituel-de-puissance', 'Rituel de puissance', 0, 1, NULL, 'Sur une attaque magique, le PJ peut utiliser un d12 en attaque au lieu du d20 habituel. Si l’attaque est réussie, il ajoute 2d6 aux DM. Cette capacité s’utilise uniquement avec les sorts nécessitant un test d’attaque et infligeant des DM. Si les DM sont répartis sur plusieurs tours, seuls les DM initiaux sont modifiés.'),
+('robustesse', 'Robustesse', 0, 0, NULL, 'En prenant cette capacité, le PJ gagne 3 PV supplémentaires au rang 1, puis 3 PV de plus au rang 3 atteint dans cette voie et, enfin, 3 PV au rang 5. \r\nCapacité avancée : le bonus de PV passe à 4.'),
+('rochassier', 'Rochassier', 1, 0, 'cult', 'Le PJ peut se mouvoir sur les surfaces verticales avec la même aisance que sur une surface horizontale. Il a besoin d’utiliser ses quatre membres pour se déplacer normalement. Cependant, avec trois membres seulement mobilisés, il peut rester immobile ou se déplacer à la moitié de sa vitesse normale (donc 10 m par action de mouvement).'),
+('rumeurs-et-legendes', 'Rumeurs et légendes', 0, 0, NULL, 'À force de voyager, le PJ a appris toutes sortes de choses. Il obtient un bonus de +5 aux tests d’INT pour se « souvenir » d’une information historique, politique, géographique ou occulte qui pourrait lui être utile. Ce bonus peut être appliqué aux tests d’identification des objets légendaires. \r\nCapacité avancée : le bonus passe à +10.'),
+('rune-de-garde', 'Rune de garde', 0, 1, NULL, 'Le PJ inscrit une rune lumineuse dans les airs (visible pour la durée du sort) et piège une zone allant de 2 à 10 m de diamètre. Toute créature (de taille au moins très petite) qui entre dans la zone déclenche un effet choisi parmi trois au moment où le sort est lancé. \r\n• Alarme : un puissant gong retentit. \r\n• Feu'),
+('rune-de-puissance', 'Rune de puissance', 0, 1, NULL, 'En réalisant un rituel de cinq minutes, le PJ enchante une arme pour 24 h. Celle-ci permet d’infliger des DM maximaux, donc sans avoir à jeter le dé, une fois par combat.'),
+('rune-de-tradition', 'Rune de tradition', 0, 1, NULL, 'Le PJ peut enchanter des objets. Il peut créer une arme ou une armure dont le niveau de magie est égal au maximum de son [niveau / 3] arrondi au supérieur. Il peut enchanter l’objet à partir des enchantements traditionnels de son peuple (exception : les Humains doivent choisir une tradition parmi celles des Elfes, Nains, Ogres, Orcs et Gobelins). À partir du niveau 8, le PJ peut également utiliser les enchantements légendaires. Tout doit se faire en accord avec le MJ. Plus d’informations au chapitre &#34;Les objets de traditions et légendaires&#34; du Livre du meneur. Il faut un mois de travail et la dépense de 100 po par niveau de magie pour créer l’objet. Le PJ doit insuffler un peu d’énergie vitale dans l’objet'),
+('rune-denergie', 'Rune d’énergie', 0, 1, NULL, 'En réalisant un rituel de cinq minutes, le PJ enchante un bijou pour 24 h. Celui-ci permet de relancer un d20 une fois par combat sur un test d’attaque, de FOR, DEX ou CON. Un seul bijou de ce type peut être porté. \r\nCapacité avancée : chaque jour, la première rune d’énergie créée par le PJ ne lui coûte aucun PM.'),
+('runes-de-defense', 'Runes de défense', 0, 0, 'cult', 'Le PJ grave des runes de protection sur l’ensemble de son équipement et parfois même sur sa peau. Il obtient un bonus de +2 en DEF.'),
+('sagesse-heroique', 'Sagesse héroïque', 0, 1, NULL, 'Le PJ augmente son score de SAG de +2 et peut désormais lancer deux d20 à chaque fois qu’un test de SAG lui est demandé et conserver le meilleur résultat.'),
+('saignements', 'Saignements', 0, 1, NULL, 'Le PJ doit réussir un test d’attaque magique (portée : 10 m). Du sang s’écoule de la bouche, du nez, des oreilles et même des yeux de la victime, qui subit 1d6 DM par tour pendant [rang atteint dans la voie] tours. Ce sort ignore la RD d’une cible mais les créatures qui ne saignent pas y sont immunisées (telles que les créatures non vivantes, les goules ou encore les dryades). Les DM passent à 1d8 au rang 4 atteint dans cette voie.  \r\nCapacité avancée'),
+('sanctuaire', 'Sanctuaire', 0, 1, NULL, 'Quand le PJ lance ce sort, tous les adversaires qui veulent l’attaquer doivent d’abord réussir un test de SAG difficulté 15. S’ils échouent, ils ne peuvent pas l’attaquer. Les effets de ce sort durent [5 + Mod de SAG] tours, mais s’il tente la moindre attaque, le sort prend fin immédiatement.'),
+('science-du-critique', 'Science du critique', 0, 0, NULL, 'Le PJ inflige des critiques sur un résultat de 19 ou 20 (18 ou 20 lorsqu’il emploie une rapière). \r\nCapacité avancée : le PJ obtient un bonus de +1d6 aux DM lorsqu’il inflige un coup critique.'),
+('seigneur-du-talion', 'Seigneur du Talion', 0, 0, 'cult', 'Le PJ augmente ses valeurs d’INT et CHA de +2.'),
+('sens-affutes', 'Sens affûtés', 0, 0, NULL, 'Le PJ gagne un bonus de +5 à tous ses tests de SAG sollicitant sa la perception (vue, ouïe, vigilance, etc.). De plus, il ajoute son Mod. de SAG aux dégâts qu’il inflige avec un arc. \r\nCapacité avancée : le PJ ajoute son bonus de SAG à l’initiative.'),
+('sens-des-affaires', 'Sens des affaires', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de de la voie du bohème ou de la voie de la fourberie. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie du bohème ou de la voie de la fourberie.'),
+('sentir-la-magie', 'Sentir la magie', 0, 0, 'cult', 'Le PJ a développé pour sa survie un sens hors du commun pour repérer les lanceurs de sorts – et mieux les fuir ! En réussissant un test de SAG difficulté 15, il sent immédiatement si son interlocuteur est versé dans les arts mystiques – c’est-à-dire s’il maîtrise au moins une voie de la famille des mystiques ou une voie de créature associée à des sorts. De plus, il bénéficie d’un bonus de +5 aux tests visant à résister aux effets magiques.'),
+('sixieme-sens', 'Sixième sens', 0, 0, NULL, 'Le PJ sait toujours légèrement en avance ce qui va arriver. Il gagne un bonus de +2 en initiative et en DEF, ainsi qu’un bonus de +5 à tous les tests pour éviter d’être surpris. \r\nCapacité avancée : le bonus en initiative et en DEF passe à +3. Le bonus pour éviter d’être surpris passe à +10.'),
+('solidarite-errants', 'Solidarité des Errants', 0, 0, 'cult', 'Les Errants et les miséreux se reconnaissent instinctivement et font parfois preuve d’un grand sens du sacrifice pour leurs semblables. Lorsqu’un autre miséreux a la possibilité d’aider le PJ, lancez 1d6. De 1 à 4, le PNJ apporte son aide totale et inconditionnelle (sans attendre de rémunération et sans tenir compte du danger). Il peut faire jouer ses propres contacts et alliés pour mener à bien la tâche si nécessaire, mais ces intermédiaires peuvent avoir des exigences que les PJ devront peut-être satisfaire. Cependant, le MJ lance également 1d6 en secret : sur un 6, le PNJ fomente en réalité un sale coup afin de se faire un peu d’argent…'),
+('solide-comme-un-roc', 'Solide comme un roc', 0, 0, 'race', 'Le PJ réduit tous les DM subis de 1 point (mais il subit toujours au moins 1 point de DM par attaque reçue). Ce bonus est cumulable avec d’autres sources de réduction des DM.'),
+('sommeil', 'Sommeil', 0, 1, NULL, '[1d6 + Mod. d’INT] cibles vivantes dans une zone de 10 m de diamètre (portée : 20 m) et dont le score actuel de PV ne dépasse pas le score d’attaque magique du PJ* sombrent dans l’inconscience pendant [5 + Mod. de SAG] minutes. Il est possible de les réveiller en les giflant (action d’attaque). * Les créatures dont les PV sont compris entre le score d’attaque magique du PJ et le double de celui-ci peuvent faire un test de SAG difficulté [10 + Mod. d’INT] pour résister au sort. Les créatures avec des PV supérieurs ne sont pas affectées. \r\nCapacité avancée'),
+('sous-tension', 'Sous tension', 0, 1, NULL, 'Le PJ se charge d’énergie électrique pour [5 + Mod. de SAG] tours. Toute créature qui le blesse au contact ou le touche reçoit une décharge infligeant 1d6 DM. Il peut également délivrer une décharge électrique (attaque magique, portée : 10 m) infligeant [1d6 + Mod. d’INT] DM. Au rang 4 de cette voie, les DM passent à 2d6.  Capacité avancée'),
+('specialisation', 'Spécialisation', 0, 0, NULL, 'Lorsque le PJ emploie son arme de prédilection, il gagne un bonus de +2 aux DM.'),
+('suggestion', 'Suggestion', 1, 0, NULL, 'Une fois par jour, le PJ peut suggérer une action à une créature en réussissant un test opposé de CHA contre la SAG de sa cible. En cas de réussite la créature fera tout son possible pour satisfaire sa demande pendant 24 heures. Elle évitera les actions suicidaires (ce qui lui donnerait immédiatement un test d’INT difficulté 10 pour échapper au sort). Si l’action suggérée est trop incongrue, la cible bénéficie d’un bonus de +5 à son test pour résister.'),
+('surprise', 'Surprise', 1, 0, NULL, 'Le PJ n’est jamais surpris. Il peut réaliser une Attaque sournoise en utilisant une action d’attaque plutôt qu’une action limitée contre un adversaire surpris.'),
+('surveillance', 'Surveillance', 0, 0, NULL, 'Le loup est constamment sur ses gardes. Le PJ a donc un temps d’avance quand des ennemis essaient de l’attaquer par surprise, il obtient un bonus de +5 pour les tests de surprise (SAG) ainsi qu’en initiative. Lorsqu’il n’est pas surpris, il peut faire une attaque simple à distance avant que ne débute le premier tour de combat. \r\nCapacité avancée : le PJ ne peut plus être surpris.'),
+('symetrie', 'Symétrie', 1, 0, NULL, 'Le PJ n’est plus obligé de manier une arme légère dans sa main secondaire. S’il le souhaite, il peut utiliser une arme aussi lourde que dans sa main principale (d8). S’il utilise deux armes légères (1d6 de DM au maximum), il gagne un bonus de +1 en attaque.'),
+('talent-pour-violence', 'Talent pour la violence', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie de la férocité ou de la voie de la puissance. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie de la férocité ou de la voie de la puissance.'),
+('teigneux', 'Teigneux', 1, 0, 'cult', 'Le PJ augmente ses valeurs de DEX et de INT de +2.'),
+('tenacite-naine', 'Ténacité naine', 0, 0, 'race', 'Une fois par jour, lorsque le PJ tombe à 0 PV, il peut immédiatement consommer 1 PR et en appliquer les effets. De plus, il augmente sa valeur de SAG de +2.'),
+('tir-aveugle', 'Tir aveugle', 1, 0, NULL, 'Le PJ peut attaquer à distance un ennemi qu’il ne voit pas (par exemple invisible ou dissimulé dans le noir total), mais dont il connaît l’existence et la position approximative, comme s’il le voyait, donc sans le malus causé par le fait qu’il ne le voit pas. \r\nCapacité avancée : l’utilisation de la capacité nécessite une action d’attaque au lieu d’une action limitée.'),
+('tir-double', 'Tir double', 1, 0, NULL, 'Le PJ est capable de tirer avec une arbalète de poing dans chaque main sans pénalité. Si le PJ décharge simultanément ses deux armes sur la même cible, il fait un seul test à +2 en attaque (mais il lance séparément les DM). Le joueur peut choisir de ne pas réaliser les deux tirs simultanément, afin, par exemple, de pouvoir tirer sur une autre cible s’il tue la première. Dans ce cas, il n’obtient pas de bonus en attaque.'),
+('tir-mortel', 'Tir mortel', 1, 0, NULL, 'Pour une attaque à distance, le PJ peut choisir d’utiliser un d12 pour son attaque au lieu du d20 habituel (et il ajoute normalement son score d’attaque). Si l’attaque est réussie, il ajoute +2d6 aux DM.'),
+('tir-rapide', 'Tir rapide', 1, 0, NULL, 'Le PJ peut porter deux attaques à distance pendant ce tour.'),
+('touche-a-tout', 'Touche-à-tout', 0, 0, NULL, 'Le PJ peut choisir n’importe quelle capacité de rang 1 à 3 de son choix au sein d’une autre voie de combattant ou d’aventurier.'),
+('tour-de-force', 'Tour de force', 0, 0, NULL, 'Le PJ peut temporairement décupler ses ressources physiques pour faire usage d’une force prodigieuse. Il peut ainsi soulever une charge incroyable, briser une épée, tordre des barreaux ou défoncer une porte d’un seul coup de poing. Il obtient un bonus de +10 à son test de FOR, mais cela lui coûte 1d4 PV. \r\nCapacité avancée : une fois par combat, le PJ peut asséner un coup d’une violence incroyable. Il gagne un bonus de 2d6 DM mais cela lui coûte 2d4 PV.'),
+('tradition-progres', 'Entre tradition et progrès', 0, 0, 'cult', 'Le PJ choisit une capacité de rang 1 ou 2 de la voie du combat monté ou de la voie de l’arbalétrie. Au rang 4 de cette voie, il gagne une capacité supplémentaire de rang 1 ou 2 de la voie du combat monté ou de la voie voie de l’arbalétrie.'),
+('tueur-fantasmagoriq', 'Tueur fantasmagorique', 0, 0, NULL, 'Ce sort invoque les pires terreurs d’une créature vivante et lui fait croire à sa propre mort. Le PJ doit réussir un test d’attaque magique (portée : 20 m) en opposition à un test d’attaque magique de la cible (si la créature n’a pas d’attaque magique, on utilise alors son attaque au contact en appliquant un malus de -3). La victime fait un test de SAG difficulté [10 + Mod. d’INT] pour résister. En cas d’échec, elle tombe à 0 PV. En cas de succès, elle perd l’équilibre et tombe par terre. Une créature ne peut être la cible de ce sort qu’une fois par jour, et le PJ ne peut pas affecter un personnage ou une créature de niveau supérieur au sien.'),
+('veilleur-du-roi', 'Veilleur du roi', 0, 0, 'cult', 'Le PJ augmente ses valeurs de FOR et CHA de +2.'),
+('versatile', 'Versatile', 0, 0, 'race', 'Le PJ choisit une capacité de rang 1 ou 2 de n’importe quelle voie de profil.'),
+('vision-dans-le-noir', 'Vision dans le noir', 0, 0, 'race', 'Dans le noir total, le Gobelin voit comme dans la pénombre à 30 m.'),
+('vitalite-debordante', 'Vitalité débordante', 1, 0, NULL, 'Le PJ guérit à une vitesse presque surnaturelle. Tant qu’il lui reste au moins 1 PV, il récupère 1d6 PV par heure, de nuit comme de jour.'),
+('volonte-hero\"ique', 'Volonté héroïque', 0, 0, 'cult', 'Le PJ augmente ses valeurs de CON et SAG de +2.');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_capacites_voies`
+--
+
+DROP TABLE IF EXISTS `cota_capacites_voies`;
+CREATE TABLE IF NOT EXISTS `cota_capacites_voies` (
+  `voie` varchar(20) NOT NULL,
+  `rang` varchar(1) NOT NULL,
+  `capacite` varchar(20) NOT NULL,
+  PRIMARY KEY (`voie`,`rang`),
+  KEY `cota_capacites_voies_voie` (`voie`),
+  KEY `cota_capacites_voies_capacite` (`capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_capacites_voies`
+--
+
+INSERT INTO `cota_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
+('commandement', '2', 'a-couvert'),
+('commandement', '1', 'action-concertee'),
+('humain', '1', 'adaptable'),
+('gobelin', '2', 'agile-et-sournois'),
+('escrime', '4', 'ambidextrie'),
+('envoutement', '4', 'amitie'),
+('compagnon-animal', '5', 'animal-fabuleux'),
+('forets', '4', 'animation-dun-arbre'),
+('elfe-noir', '2', 'apprenti-de-slurce'),
+('elfe-sylvain', '3', 'archer-emerite'),
+('puissance', '1', 'argument-de-taille'),
+('boheme', '2', 'argumenter'),
+('maitrise-des-armes', '1', 'arme-de-predilection'),
+('elfe-noir', '3', 'armes-secretes'),
+('magie-elementaliste', '3', 'armure-de-terre'),
+('bravoure', '2', 'armure-naturelle'),
+('ordre-de-la-forge', '1', 'artisan-de-la-forge'),
+('elfe-noir', '1', 'artiste-de-lombre'),
+('arbaletrie', '4', 'as-de-la-gachette'),
+('puissance', '3', 'attaque-brutale'),
+('bastion', '4', 'attaque-circulaire'),
+('guerre', '4', 'attaque-circulaire'),
+('chasse', '3', 'attaque-eclair'),
+('escrime', '1', 'attaque-en-finesse'),
+('fourberie', '5', 'attaque-en-traitre'),
+('charme', '3', 'attaque-flamboyante'),
+('ogre', '3', 'attaque-massive'),
+('fourberie', '4', 'attaque-paralysante'),
+('maitrise-des-armes', '4', 'attaque-parfaite'),
+('bastion', '5', 'attaque-puissante'),
+('guerre', '5', 'attaque-puissante'),
+('acrobatie', '4', 'attaque-sanglante'),
+('assassinat', '2', 'attaque-sournoise'),
+('ferocite', '5', 'attaque-tourbillon'),
+('empires-austraux', '3', 'autorite-culturelle'),
+('forets', '3', 'baies-magiques'),
+('ruines-nordiques', '2', 'barbare'),
+('mysticisme', '1', 'benediction'),
+('elfe-blanc', '4', 'blancheur-immaculee'),
+('escrime', '5', 'botte-mortelle'),
+('assassinat', '5', 'botte-secrete'),
+('magie-elementaliste', '4', 'boule-de-feu'),
+('puissance', '4', 'briseur-dos'),
+('magie-elementaliste', '1', 'brumes'),
+('ogre', '2', 'brute'),
+('arbaletrie', '2', 'cadence-de-tir'),
+('ordre-du-bouclier', '3', 'capitaine-bouclier'),
+('combat-monte', '2', 'cavalier-emerite'),
+('combat-monte', '4', 'charge'),
+('commandement', '5', 'charge-fantastique'),
+('ferocite', '2', 'charge-ferocite'),
+('charme', '5', 'charisme-hero\"ique'),
+('charme', '1', 'charmant'),
+('terres-orientales', '4', 'chevaucheur-dragons'),
+('divination', '3', 'clairvoyance'),
+('acrobatie', '5', 'colosse'),
+('compagnon-animal', '3', 'combat'),
+('combat-a-deux-armes', '5', 'combat-2a-parfait'),
+('combat-a-deux-armes', '1', 'combat-a-deux-armes'),
+('ordre-du-bouclier', '1', 'combat-en-phalange'),
+('elfe-sylvain', '4', 'compagnon-animal-sup'),
+('bravoure', '5', 'con-heroique'),
+('envoutement', '3', 'confusion'),
+('terres-orientales', '1', 'conn-cosmopolites'),
+('ruines-nordiques', '5', 'conquerant'),
+('mitan', '4', 'conspirateur'),
+('ferocite', '1', 'cri-de-guerre'),
+('acrobatie', '3', 'critique-brutal'),
+('fourberie', '3', 'croc-en-jambe'),
+('peaux-vertes', '4', 'croyances-pa\"iennes'),
+('archerie', '5', 'dans-le-mille'),
+('boheme', '3', 'debrouillard'),
+('illusions', '4', 'dedoublement'),
+('boheme', '4', 'deguisement'),
+('mysticisme', '3', 'delivrance'),
+('pugilat', '4', 'deluge-de-coups'),
+('humain', '5', 'depassement'),
+('bravoure', '4', 'dernier-rempart'),
+('bastion', '2', 'desarmer'),
+('guerre', '2', 'desarmer'),
+('fourberie', '2', 'detecter-les-pieges'),
+('divination', '2', 'detection-invisible'),
+('assassinat', '1', 'discretion'),
+('fourberie', '1', 'doigts-agiles'),
+('envoutement', '5', 'domination'),
+('bastion', '3', 'double-attaque'),
+('guerre', '3', 'double-attaque'),
+('combat-a-deux-armes', '4', 'double-peine'),
+('alchimie', '4', 'elixir-de-guerison'),
+('alchimie', '5', 'elixirs-protection'),
+('compagnon-animal', '4', 'empathie-animale'),
+('elfe', '4', 'empathie-elfique'),
+('elfe-sylvain', '2', 'enfant-de-la-foret'),
+('chasse', '4', 'ennemis-jures'),
+('ogre', '1', 'enorme'),
+('ordre-du-temple', '2', 'enseigne-du-temple'),
+('humain', '3', 'enseignement-exo'),
+('elfe-bleu', '4', 'enseignements-eau'),
+('elfe-bleu', '1', 'equilibre-parfait'),
+('empires-austraux', '1', 'erudition'),
+('elfe', '2', 'essence-magique'),
+('empires-austraux', '2', 'etudes-arcaniques'),
+('commandement', '3', 'exemplaire'),
+('terres-orientales', '5', 'expert-en-filouterie'),
+('ruines-nordiques', '3', 'expertise-des-haches'),
+('escrime', '3', 'feinte'),
+('alchimie', '2', 'feu-gregeois'),
+('combat-monte', '1', 'fidele-monture'),
+('archerie', '4', 'fleche-de-mort'),
+('pugilat', '5', 'for-heroique'),
+('acrobatie', '1', 'force-de-la-nature'),
+('magie-runique', '1', 'forgeron'),
+('ordre-de-la-forge', '2', 'forgeron-runique'),
+('ordre-du-bouclier', '2', 'formation-militaire'),
+('alchimie', '1', 'fortifiant'),
+('assassinat', '3', 'frappe-chirurgicale'),
+('peaux-vertes', '2', 'frappe-deloyale'),
+('ordre-du-bouclier', '4', 'fuite-interdite'),
+('elfe', '1', 'grace-elfique'),
+('ordre-du-temple', '1', 'grosse-tete'),
+('sombres-savoirs', '4', 'hemorragie'),
+('peaux-vertes', '5', 'heros-tribal'),
+('mitan', '1', 'homme-des-cites'),
+('ruines-nordiques', '4', 'homme-des-clans'),
+('alchimie', '3', 'huile-instable'),
+('divination', '5', 'hyperconscience'),
+('illusions', '1', 'image-decalee'),
+('illusions', '3', 'imitation'),
+('elfe', '5', 'immortalite'),
+('elfe-bleu', '3', 'imperturbable'),
+('envoutement', '1', 'injonction'),
+('gobelin', '1', 'insignifiant'),
+('magie-elementaliste', '5', 'int-heroique'),
+('escrime', '2', 'intelligence-combat'),
+('ogre', '4', 'intuable'),
+('ordre-du-temple', '3', 'invention-etrange'),
+('sombres-savoirs', '5', 'invocation-dun-demon'),
+('arbaletrie', '1', 'joli-coup'),
+('ordre-du-talion', '4', 'la-loge-noire'),
+('elfe-blanc', '3', 'lancier-delite'),
+('arts-druidiques', '1', 'langage-des-animaux'),
+('elfe-sylvain', '1', 'le-chant-de-la-terre'),
+('arts-druidiques', '3', 'le-guetteur'),
+('humain', '2', 'loup-parmi-les-loups'),
+('empires-austraux', '5', 'mage'),
+('peaux-vertes', '3', 'maitre-arme-sauvage'),
+('ordre-de-la-forge', '5', 'maitre-artisan'),
+('ordre-du-temple', '5', 'maitre-du-temple'),
+('mitan', '5', 'maitre-marchand'),
+('elfe', '3', 'maitrise-armes-elfes'),
+('nain', '3', 'maitrise-armes-runes'),
+('sombres-savoirs', '2', 'malediction'),
+('ordre-de-la-forge', '3', 'marteler-le-metal'),
+('arts-druidiques', '4', 'masque-du-predateur'),
+('combat-monte', '3', 'massacrer-pietaille'),
+('ferocite', '4', 'meme-pas-mal'),
+('elfe-blanc', '1', 'memoire-du-monde'),
+('illusions', '2', 'mirage'),
+('mitan', '3', 'modernisme'),
+('ordre-des-errants', '1', 'moins-que-rien'),
+('ogre', '5', 'monstre'),
+('combat-monte', '5', 'monture-fantastique'),
+('elfe-bleu', '2', 'natif-delsemur'),
+('chasse', '2', 'nature-nourriciere'),
+('elfe-noir', '4', 'noir-comme-le-sang'),
+('arts-druidiques', '2', 'nuee-dinsectes'),
+('compagnon-animal', '1', 'odorat'),
+('gobelin', '3', 'ombre-mouvante'),
+('commandement', '4', 'ordre-de-bataille'),
+('sombres-savoirs', '3', 'pacte-sanglant'),
+('combat-a-deux-armes', '2', 'parade-croisee'),
+('elfe-blanc', '5', 'parangon-elfe-blanc'),
+('elfe-bleu', '5', 'parangon-elfe-bleu'),
+('elfe-noir', '5', 'parangon-elfe-noir'),
+('elfe-sylvain', '5', 'parangon-elfe-vert'),
+('ordre-des-errants', '2', 'passe-revolu'),
+('ordre-des-errants', '3', 'paysan-aguerri'),
+('pugilat', '3', 'peau-dacier'),
+('pugilat', '2', 'peau-de-pierre'),
+('forets', '1', 'peau-decorce'),
+('chasse', '5', 'perception-hero\"ique'),
+('ruines-nordiques', '1', 'pied-marin'),
+('ordre-du-talion', '1', 'plein-aux-as'),
+('pugilat', '1', 'poings-de-fer'),
+('bastion', '1', 'posture-de-combat'),
+('guerre', '1', 'posture-de-combat'),
+('ordre-du-talion', '3', 'pot-de-vin'),
+('peaux-vertes', '1', 'pour-lhonneur'),
+('empires-austraux', '4', 'predispo-arcaniques'),
+('elfe-blanc', '2', 'predispo-magique'),
+('divination', '4', 'prescience'),
+('forets', '2', 'prison-vegetale'),
+('chasse', '1', 'proche-de-la-nature'),
+('mysticisme', '2', 'protection-mal'),
+('bravoure', '3', 'prouesse'),
+('charme', '2', 'provocation'),
+('ferocite', '3', 'rage-du-berserk'),
+('forets', '5', 'regeneration'),
+('terres-orientales', '2', 'rejeton-sang-meles'),
+('nain', '1', 'resistance'),
+('nain', '4', 'resistance-magie'),
+('maitrise-des-armes', '5', 'riposte'),
+('ordre-du-temple', '4', 'rites-funeraires'),
+('mysticisme', '5', 'rituel-de-puissance'),
+('bravoure', '1', 'robustesse'),
+('gobelin', '4', 'rochassier'),
+('boheme', '1', 'rumeurs-et-legendes'),
+('magie-runique', '4', 'rune-de-garde'),
+('magie-runique', '3', 'rune-de-puissance'),
+('magie-runique', '5', 'rune-de-tradition'),
+('magie-runique', '2', 'rune-denergie'),
+('ordre-de-la-forge', '4', 'runes-de-defense'),
+('arts-druidiques', '5', 'sagesse-heroique'),
+('sombres-savoirs', '1', 'saignements'),
+('mysticisme', '4', 'sanctuaire'),
+('maitrise-des-armes', '2', 'science-du-critique'),
+('ordre-du-talion', '5', 'seigneur-du-talion'),
+('archerie', '1', 'sens-affutes'),
+('ordre-du-talion', '2', 'sens-des-affaires'),
+('terres-orientales', '3', 'sentir-la-magie'),
+('divination', '1', 'sixieme-sens'),
+('ordre-des-errants', '4', 'solidarite-errants'),
+('nain', '2', 'solide-comme-un-roc'),
+('envoutement', '2', 'sommeil'),
+('magie-elementaliste', '2', 'sous-tension'),
+('maitrise-des-armes', '3', 'specialisation'),
+('charme', '4', 'suggestion'),
+('assassinat', '4', 'surprise'),
+('compagnon-animal', '2', 'surveillance'),
+('combat-a-deux-armes', '3', 'symetrie'),
+('acrobatie', '2', 'talent-pour-violence'),
+('gobelin', '5', 'teigneux'),
+('nain', '5', 'tenacite-naine'),
+('archerie', '2', 'tir-aveugle'),
+('arbaletrie', '3', 'tir-double'),
+('arbaletrie', '5', 'tir-mortel'),
+('archerie', '3', 'tir-rapide'),
+('boheme', '5', 'touche-a-tout'),
+('puissance', '2', 'tour-de-force'),
+('mitan', '2', 'tradition-progres'),
+('illusions', '5', 'tueur-fantasmagoriq'),
+('ordre-du-bouclier', '5', 'veilleur-du-roi'),
+('humain', '4', 'versatile'),
+('puissance', '5', 'vitalite-debordante'),
+('ordre-des-errants', '5', 'volonte-hero\"ique');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_categories_equipement`
+--
+
+DROP TABLE IF EXISTS `cota_categories_equipement`;
+CREATE TABLE IF NOT EXISTS `cota_categories_equipement` (
+  `code` varchar(20) NOT NULL,
+  `libelle` varchar(50) NOT NULL,
+  `parent` varchar(20) DEFAULT NULL,
+  `sequence` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`code`),
+  KEY `cota_fk_categorie_parente_idx` (`parent`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_categories_equipement`
+--
+
+INSERT INTO `cota_categories_equipement` (`code`, `libelle`, `parent`, `sequence`) VALUES
+('armes-a-distance', 'Armes à distance', NULL, '0010'),
+('armes-de-contact', 'Armes de contact', NULL, '0005'),
+('armes-de-duel', 'Armes de duel', 'armes-de-contact', '0025'),
+('armes-de-guerre', 'Armes de guerre', 'armes-de-contact', '0010'),
+('armes-de-jet', 'Armes de jet', 'armes-a-distance', '0010'),
+('armes-de-paysan', 'Armes de paysan', 'armes-de-contact', '0005'),
+('armes-de-tir', 'Armes de tir', 'armes-a-distance', '0025'),
+('armes-de-trait', 'Armes de trait', 'armes-a-distance', '0020'),
+('armes-dhast', 'Armes d&#39;hast', 'armes-de-contact', '0020'),
+('armes-dhast-cad', 'Armes d&#39;hast', 'armes-a-distance', '0015'),
+('armes-guerre-lourdes', 'Armes de guerre lourdes', 'armes-de-contact', '0015'),
+('armes-paysan-cad', 'Armes de paysan', 'armes-a-distance', '0005'),
+('armures-legeres', 'Armures légères', 'boucliers-et-armures', '0005'),
+('armures-lourdes', 'Armures lourdes', 'boucliers-et-armures', '0010'),
+('auberge', 'Auberge', 'divers', '0010'),
+('boucliers-et-armures', 'Boucliers et armures', NULL, '0015'),
+('divers', 'Divers', NULL, '0020'),
+('immobilier', 'Immobilier', 'divers', '0015'),
+('materiel', 'Matériel', 'divers', '0005'),
+('poisons', 'Poisons', 'divers', '0025'),
+('soins', 'Soins', 'divers', '0020');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_categories_proprietes`
+--
+
+DROP TABLE IF EXISTS `cota_categories_proprietes`;
+CREATE TABLE IF NOT EXISTS `cota_categories_proprietes` (
+  `code_categorie` varchar(20) NOT NULL,
+  `code_propriete` varchar(20) NOT NULL,
+  PRIMARY KEY (`code_categorie`,`code_propriete`),
+  KEY `cota_categories_proprietes_categorie` (`code_categorie`),
+  KEY `cota_categories_proprietes_propriete` (`code_propriete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_categories_proprietes`
+--
+
+INSERT INTO `cota_categories_proprietes` (`code_categorie`, `code_propriete`) VALUES
+('poisons', 'type-poison'),
+('poisons', 'virulence');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_equipement`
+--
+
+DROP TABLE IF EXISTS `cota_equipement`;
+CREATE TABLE IF NOT EXISTS `cota_equipement` (
+  `code` varchar(20) NOT NULL,
+  `designation` varchar(50) NOT NULL,
+  `categorie` varchar(20) NOT NULL,
+  `sequence` varchar(5) DEFAULT NULL,
+  `prix` decimal(16,2) DEFAULT NULL,
+  `notes` mediumtext,
+  PRIMARY KEY (`code`),
+  KEY `cota_fk_categorie_equipement_idx` (`categorie`),
+  KEY `cota_equipement_sequence_idx` (`sequence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_equipement`
+--
+
+INSERT INTO `cota_equipement` (`code`, `designation`, `categorie`, `sequence`, `prix`, `notes`) VALUES
+('test', 'Test', 'poisons', NULL, '6.00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_equipement_profils`
+--
+
+DROP TABLE IF EXISTS `cota_equipement_profils`;
+CREATE TABLE IF NOT EXISTS `cota_equipement_profils` (
+  `profil` varchar(20) NOT NULL,
+  `sequence` tinyint(4) NOT NULL,
+  `equipement` varchar(20) NOT NULL,
+  `nombre` tinyint(1) NOT NULL DEFAULT '1',
+  `special` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`profil`,`sequence`),
+  KEY `cota_equipement_profils_profil` (`profil`),
+  KEY `cota_equipement_profils_equipement` (`equipement`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_equipement_proprietes`
+--
+
+DROP TABLE IF EXISTS `cota_equipement_proprietes`;
+CREATE TABLE IF NOT EXISTS `cota_equipement_proprietes` (
+  `code_equipement` varchar(20) NOT NULL,
+  `code_propriete` varchar(20) NOT NULL,
+  `valeur` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`code_equipement`,`code_propriete`),
+  KEY `cota_equipement_proprietes_equipement` (`code_equipement`),
+  KEY `cota_equipement_proprietes_propriete` (`code_propriete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_familles`
+--
+
+DROP TABLE IF EXISTS `cota_familles`;
+CREATE TABLE IF NOT EXISTS `cota_familles` (
+  `famille` varchar(20) NOT NULL,
+  `description` varchar(50) NOT NULL,
+  PRIMARY KEY (`famille`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_familles`
+--
+
+INSERT INTO `cota_familles` (`famille`, `description`) VALUES
+('aventuriers', 'Aventuriers'),
+('combattants', 'Combattants'),
+('mystiques', 'Mystiques');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_profils`
+--
+
+DROP TABLE IF EXISTS `cota_profils`;
+CREATE TABLE IF NOT EXISTS `cota_profils` (
+  `profil` varchar(20) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `description` text,
+  `famille` varchar(20) NOT NULL,
+  `type` char(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`profil`),
+  KEY `cota_profils_famille` (`famille`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_profils`
+--
+
+INSERT INTO `cota_profils` (`profil`, `nom`, `description`, `famille`, `type`) VALUES
+('alchimiste', 'Alchimiste', 'L’alchimiste ‒ sous ses airs de savante folle ou d’hérétique ‒ ne cherche qu’une seule chose : repousser les limites du possible et dompter les règles de la matière et de la vie. Pour le meilleur ou pour le pire.', 'mystiques', '0'),
+('ancien', 'Ancien', '« Ancien » ne désigne pas forcément une personne expérimentée ou âgée. C’est un titre transmis par un mystique à son apprenti en même temps que l’enseignement de traditions arcaniques séculaires. Si les anciens sont respectés pour la puissance de leurs pouvoirs, ils doivent également faire leurs preuves pour justifier leur statut au sein de leur tribu.', 'mystiques', '0'),
+('apothicaire', 'Apothicaire', 'Également appelé guérisseur, médecin ou charlatan au sein des divers peuples d’Arran, l’apothicaire utilise la science ou les traditions pour produire médicaments et décoctions en vue de guérir les maux du corps. Il a également développé des notions de combat pour se défendre des mauvais payeurs.', 'aventuriers', '0'),
+('archer', 'Archer', 'Combattante spécialisée dans l’usage de l’arc, l’archère est capable de dispenser la mort à distance et d’achever les adversaires qui auraient le malheur de la provoquer au corps-à-corps. Les escouades d’archères gobelines sont réputées pour leur efficacité et les ravages qu’elles peuvent causer. ', 'combattants', '0'),
+('assassin', 'Assassin', 'La pénombre est la compagne funèbre de l’assassine. Elle n’accepte de la quitter qu’une fraction de seconde, le temps de porter un coup fatal à sa cible avant de disparaître de nouveau. Experte dans l’art du crochetage, rares sont les portes capables de l’empêcher d’arriver à ses fins.', 'aventuriers', '0'),
+('aumonier', 'Aumonier', 'L’aumônière est une mystique ayant fait le choix surprenant de combattre sur le champ de bataille. Soutenant ses alliés avec de complexes incantations, elle est également capable de foudroyer ses ennemis à l’aide des éléments. Les loges les plus obscures et inavouables ont recours à la magie du sang.', 'mystiques', '0'),
+('barbare', 'Barbare', 'Le barbare est un guerrier qui affronte la mort avec courage, mu par une soif inaltérable de gloire et de renommée. Jugé rustre par les populations plus civilisées, il impressionne par son stoïcisme et sa robustesse.', 'combattants', '0'),
+('castagneur', 'Castagneur', 'Pour la castagneuse, la force de ses poings est capable de venir à bout de tous les problèmes et de toutes les situations. En cas d’échec, c’est qu’elle n’a pas frappé assez fort. Le plus important est d’être toujours debout à la fin.  ', 'combattants', '0'),
+('chasseur', 'Chasseur', 'Le chasseur est un élément vital à la plupart des communautés tribales et rurales des Terres d’Arran. Chargé de traquer le gibier pour nourrir les siens, il n’est pas rare qu’il se retrouve à protéger la communauté face à des périls plus grands. On jauge sa valeur à la taille ou la dangerosité de ses proies.', 'aventuriers', '0'),
+('conseiller', 'Conseiller', 'Le conseiller est naturellement ouvert aux autres cultures et utilise ses connaissances et sa soif de rencontres pour lier les peuples et les individus. Diplomate, ambassadeur ou émissaire, ses discours sont capables d’éteindre des incendies ou de déclencher des guerres.', 'mystiques', '0'),
+('courtisan', 'Courtisan', 'Experte dans l’art du langage, de la diplomatie et des faux-semblants, la courtisane évolue dans les hautes sphères des cités les plus civilisées des Terres d’Arran. Ses sourires sont aussi mortels que la pointe de sa rapière.', 'aventuriers', '0'),
+('druide', 'Druide', 'La druidesse est une sage des forêts. Respectueuse de la nature, elle apporte conseil et soutien aux peuples pour maintenir l’équilibre de la vie, quitte à déchaîner une magie impétueuse sur quiconque viendrait à le menacer.', 'mystiques', '0'),
+('eclaireur', 'Eclaireur', 'Bien qu’opérant en général au sein d’une armée ou d’un groupe de mercenaires, l’éclaireur accomplit ses missions en solitaire : chargé de la tâche périlleuse consistant à anticiper les dangers et à dresser l’état des lieux des forces en présence, la responsabilité d’une victoire éclatante ou d’une défaite implacable repose souvent sur ses épaules.', 'aventuriers', '0'),
+('elementaliste', 'Elementaliste', 'L’élémentaliste est un mystique raffiné, généralement un Elfe blanc, capable d’allier la puissance des magies élémentaires avec celle de l’acier raffiné des lames de duellistes.', 'mystiques', '0'),
+('ensorceleur', 'Ensorceleur', 'L’ensorceleuse mobilise son charme ainsi que des rituels magiques pour envoûter les gens et altérer leurs émotions, désamorcer des conflits ou rallier des individus à sa cause contre leur volonté. Elle dissimule souvent ses dons, par crainte du rejet qu’ils provoquent. Cela dit, on la retrouve fréquemment dans le premier cercle des puissants de ce monde.', 'mystiques', '0'),
+('ermite', 'Ermite', 'L’ermite est un étrange individu vivant seul et isolé du monde, souvent pour des motifs spirituels. Lorsque les événements l’exigent, il peut arriver qu’il quitte sa retraite pour rejoindre la civilisation et partager ses dons.', 'mystiques', '0'),
+('escroc', 'Escroc', 'Évoluant dans les bas-fonds des cités, l’escroc utilise son bagout et son charme pour se sortir des guêpiers dans lesquels elle finit inlassablement par replonger, toujours à l’affût de l’affaire du siècle qui lui permettra de s’extraire enfin un jour de sa condition. ', 'aventuriers', '0'),
+('espion', 'Espion', 'L’espionne vit de la revente d’informations sensibles. Au coeur des cours des plus grandes cités, dans des environnements plus mortels que le plus violent des champs de bataille, elle ne doit sa survie qu’à la finesse de son esprit et aux poids de ses contacts.', 'mystiques', '0'),
+('executeur', 'Executeur', 'L’exécuteur maîtrise les lames avec brio, que ce soit les dagues, les épées ou les rapières. Bien que moins représenté que les assassins au sein des Elfes noirs en raison de son manque de discrétion, il n’en reste pas moins extrêmement dangereux et d’une grande aide face aux menaces les plus brutales.', 'combattants', '0'),
+('explorateur', 'Explorateur', 'Parcourant le monde pour étudier les mystères des Terres d’Arran ou établir de nouvelles cartographies, l’explorateur est un aventurier itinérant débrouillard et astucieux, capable de se sortir de bien des situations.', 'aventuriers', '0'),
+('fauconnier', 'Fauconnier', 'Le fauconnier est un individu - généralement issu de la haute société des cités-États du Tarascon - ayant suivi un enseignement occulte pour tisser un lien particulier avec un oiseau de proie. Archer d’exception, il peut servir dans les milices ou armées locales à des postes d’officier ou simplement jouir de l’opulence des soirées mondaines auxquelles il est régulièrement convié.', 'mystiques', '0'),
+('forestier', 'Forestier', 'Parcourant les forêts et les paysages naturels des Terres d’Arran comme si elle en connaissait les moindres sentiers, la forestière vit en harmonie avec le monde sauvage. Protectrice de la nature, elle ne se sent dans son élément qu’avec le ciel pour seul toit.', 'aventuriers', '0'),
+('forgeron', 'Forgeron', 'Plus qu’un art, le travail du métal est un véritable mode de vie pour la forgeronne. Ne se sentant jamais mieux que dans la chaleur étouffante de sa forge ou dans les arènes à éprouver le fruit de son oeuvre, elle est respectée partout où la guerre se fait par les armes.', 'combattants', '0'),
+('garde-des-sceaux', 'Garde des sceaux', 'Le garde des sceaux est le bras armé du peuple, celui que l’on envoie contrer les menaces ésotériques lorsque la force est le seul remède.', 'combattants', '0'),
+('garde-du-corps', 'Garde du corps', 'Les gardes du corps existent dans la majorité des communautés plus ou moins civilisées des Terres d’Arran sans pour autant toujours recevoir ce titre. C’est ainsi que l’on entend parler de bras droit, femme de confiance, premier bouclier, etc. Dans tous les cas, il s’agit d’individus rares et précieux auxquels les puissants du monde confient leur vie.', 'combattants', '0'),
+('guerrier-tribal', 'Guerrier tribal', 'Le guerrier tribal est un combattant primitif, proche de ses instincts. Véritable force de la nature que rien ne peut arrêter, il suit généralement un code propre à celui de son clan ou de sa tribu, que ce soit le respect de lois ancestrales ou un culte voué à un dieu païen.', 'combattants', '0'),
+('ingenieur', 'Ingénieur', 'L’ingénieur utilise ses connaissances pour faire chaque jour de nouvelles découvertes scientifiques, améliorer la vie de ses congénères ou réaliser l’impossible. Les esprits chagrins clament qu’ils aiment jouer avec des forces qui le dépassent, ce qui n’est pas forcément inexact...', 'aventuriers', '0'),
+('mage', 'Mage', 'La mage voue sa vie à l’apprentissage et la maîtrise des forces surnaturelles qui régissent ce monde. Prise dans une lutte de chaque instant pour ne pas sombrer et laisser sa soif de puissance la consumer, elle inspire crainte et respect partout sur les Terres d’Arran.', 'mystiques', '0'),
+('marchand', 'Marchand', 'L’art du commerce est ancestral mais n’a jamais été aussi influent et déterminant qu’aujourd’hui. Des guerres éclatent pour ouvrir des routes commerciales tandis que les royaumes ont besoin de fonds pour entretenir leurs armées. La cheville ouvrière essentielle de toute l’économie est la marchande.', 'aventuriers', '0'),
+('marin', 'Marin', 'Ayant fait de la mer son foyer et des embruns son parfum, le marin passe l’essentiel de sa vie sur les flots. Il ne reste jamais bien longtemps sur la terre ferme et retourne rapidement vers les océans, que ce soit à bord d’un navire marchand, d’un bateau de pêche ou d’un bâtiment militaire.', 'aventuriers', '0'),
+('mercenaire', 'Mercenaire', 'La mercenaire est une combattante qui loue ses talents martiaux contre quelques pièces d’or. Polyvalente, elle a développé de nombreux styles de combat pour s’adapter au mieux au danger.', 'combattants', '0'),
+('milicien', 'Milicien', 'Combattant d’élite capable de défendre les positions retranchées des plus hauts remparts ou de semer la mort depuis les ponts des navires.', 'combattants', '0'),
+('monteur-de-cochon', 'Monteur de cochon', 'Parcourant les plaines à dos de cochon de combat, la monteuse est une farouche combattante capable de prouesses admirables à en faire rougir d’humilité les cavaliers les plus prestigieux.', 'combattants', '0'),
+('necromancien', 'Nécromancien', 'Rares sont les arts mystiques aussi répudiés que ceux en rapport avec la mort. C’est pourtant vers cette discipline que s’est tourné le nécromancien, pour des raisons qui n’appartiennent qu’à lui, le condamnant à une vie solitaire de paria.', 'mystiques', '0'),
+('noble', 'Noble', 'Le noble est un aristocrate, membre de la caste dirigeante de son peuple, aussi prompt à commander depuis la cours d’un château que sur le champ de bataille.', 'combattants', '0'),
+('ombre-lame', 'Ombre-lame', 'L’ombre-lame serait une assassine qui utiliserait la magie pour parvenir à ses fins. Personne n’a la preuve que cette caste existe vraiment et le fait qu’on dit que seuls les Elfes noirs suivent cette voie ne fait qu’épaissir les rumeurs à ce sujet.', 'mystiques', '0'),
+('pelerin', 'Pélerin', 'Le pèlerin erre sur les routes des Terres d’Arran en quête de spiritualité. Il est particulièrement commun dans l’empire nain où il voyage entre les campagnes et fermes des Errants pour apporter aide et réconfort.', 'mystiques', '0'),
+('pirate', 'Pirate', 'Voguant sur les océans à la recherche d’aventures, de terres sauvages à explorer, de ruines oubliées ou de navires marchands à piller, le pirate est un combattant qui n’aspire qu’à la liberté. Il s’affranchit des contraintes et vit chaque jour comme si c’était le dernier.', 'aventuriers', '0'),
+('pisteur', 'Pisteur', 'Les pisteuses sont des combattantes choisies par les Elfes blancs pour parcourir le monde, recueillir des reliques et sauvegarder les héritages menacés de disparition des Terres d’Arran. À la fois voyageuses, exploratrices et guerrières, elles jouissent d’un statut prestigieux au sein de leur communauté.', 'aventuriers', '0'),
+('porte-bouclier', 'Porte-bouclier', 'Le porte-bouclier est un titre qui désigne traditionnellement les guerriers nains chargés de défendre les frontières des cités-forteresses. Lourdement armés, ils gardent la ligne de front et ne reculent devant rien.', 'combattants', '0'),
+('porte-etendard', 'Porte-étendard', 'La porte-étendard (ou porte-bannière) est un soutien singulier au milieu du champ de bataille. Haranguant les troupes, elle gonfle les coeurs et peut inverser le cours d’un combat. Au sein des tribus ogres, la porte-étendard est même initiée à certains rites mystiques pour inciter les forces naturelles à servir sa cause.', 'aventuriers', '0'),
+('pretre', 'Prêtre', 'OEuvrant pour un culte, la prêtresse soulage les maux des communautés et rend la justice. Son statut social varie en fonction des civilisations mais elle est toujours respectée et écoutée.', 'mystiques', '0'),
+('prophete', 'Prophète', 'Guide mystérieux, le prophète lit l’avenir dans le fil de l’eau, le chant de la terre ou la course des nuages. La plupart du temps, il utilise ses enseignements pour comprendre les événements mais, en de très rares exceptions, il peut rompre ses voeux pour tenter de changer l’avenir.', 'mystiques', '0'),
+('protecteur', 'Protecteur', 'La protectrice est une combattante chargée de protéger les cités elfiques. Première ligne de défense contre les menaces, agent de la loi, protecteur de la veuve et de l’orphelin, elle se doit d’être exemplaire en toutes circonstances.', 'combattants', '0'),
+('rodeur', 'Rôdeur', 'La rôdeuse est une combattante calme et méthodique, proche de la nature et capable de bénéficier de ses bienfaits. Elle traque également tout ennemi ou proie ayant mérité son courroux.', 'combattants', '0'),
+('sanguinaire', 'Sanguinaire', 'Le sanguinaire n’est que violence, rage et puissance à l’état brut. Souvent présent au sein des cultures primitives, il peut également incarner un mode de vie volontaire et assumé par les combattants ayant décidé de mobiliser leurs instincts comme des armes plutôt qu’un fardeau.', 'combattants', '0'),
+('shaman', 'Shaman', 'La chaman utilise les forces occultes de la nature pour endurcir son corps et affronter les ennemis de son peuple sans craindre la mort. Suivant les préceptes d’une entité totémique, elle est aussi sage que féroce.', 'mystiques', '0'),
+('soldat', 'Soldat', 'Toujours l’arme au poing, la soldate est une combattante qui a fait de la guerre son gagnepain. Que ce soit pour défendre une ville, un pays ou un idéal, c’est sur le champ de bataille qu’elle vit pleinement.', 'combattants', '0'),
+('trappeur', 'Trappeur', 'Le trappeur est un chasseur spécialisé dans la pose et le désamorçage des pièges. Utile à toutes les communautés rurales, il n’est pas rare que les milices ou groupes de mercenaires fassent appel à ses talents pour renforcer les défenses d’un site à protéger ou s’assurer qu’aucun mécanisme mortel ne provoque des pertes inutiles.', 'aventuriers', '0'),
+('voleur', 'Voleur', 'La voleuse se faufile dans les ombres ou dans les foules pour s’approprier les biens d’autrui, que ce soit pour son propre compte ou celui d’une tierce personne. Elle est particulièrement à l’aise dans les cités cosmopolites où elle évolue comme un poisson dans l’eau. Peuple privilégié : Gobelin Formations martiales : armures légères, armes de duel', 'aventuriers', '0'),
+('voyageur', 'Voyageur', 'Le voyageur arpente les Terres d’Arran, se nourrissant des rencontres et de la richesse ethnique du monde. S’il est capable d’embrasser des causes qui lui tiennent à coeur pendant un temps, il finira par reprendre la route une fois son devoir accompli, l’appel du voyage restant le plus fort.\r\nPeuple privilégié : Semi-Elfe\r\nFormations martiales : armes de trait, Armes de duel', 'aventuriers', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_profils_maitrises`
+--
+
+DROP TABLE IF EXISTS `cota_profils_maitrises`;
+CREATE TABLE IF NOT EXISTS `cota_profils_maitrises` (
+  `profil` varchar(20) NOT NULL,
+  `equipement` varchar(20) NOT NULL,
+  PRIMARY KEY (`profil`,`equipement`),
+  KEY `cota_profils_maitrises_profil` (`profil`),
+  KEY `cota_profils_maitrises_equipement` (`equipement`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_profils_traits`
+--
+
+DROP TABLE IF EXISTS `cota_profils_traits`;
+CREATE TABLE IF NOT EXISTS `cota_profils_traits` (
+  `profil` varchar(20) NOT NULL,
+  `sequence` tinyint(4) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`profil`,`sequence`),
+  KEY `cota_profils_traits_profil` (`profil`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_profils_traits`
+--
+
+INSERT INTO `cota_profils_traits` (`profil`, `sequence`, `intitule`, `description`) VALUES
+('alchimiste', 1, 'Peuple privilégié', 'Nain de l’ordre de la Forge'),
+('alchimiste', 2, 'Formation martiale', 'armures légères'),
+('alchimiste', 3, 'Talent magique', 'Lumières dansantes'),
+('apothicaire', 1, 'Peuple privilégié', 'Nain de l’ordre de la Forge'),
+('apothicaire', 2, 'Formations martiales', 'armures légères, armes de tir'),
+('archer', 1, 'Peuple privilégié', 'Gobelin'),
+('archer', 2, 'Formations martiales', 'armures légères, armes de guerre, armes de trait'),
+('assassin', 1, 'Peuple privilégié', 'Elfe noir'),
+('assassin', 2, 'Formations martiales', 'armures légères, armes de duel'),
+('barbare', 1, 'Peuple privilégié', 'Humain des ruines nordiques'),
+('barbare', 2, 'Formations martiales', 'armures légères, armes de guerre, armes de guerre lourdes'),
+('castagneur', 1, 'Peuple privilégié', 'Humain des Terres orientales'),
+('castagneur', 2, 'Formations martiales', 'armures légères, armes de jet, armes de tir'),
+('chasseur', 1, 'Peuple privilégié', 'Orc'),
+('chasseur', 2, 'Formations martiales', 'armures légères, armes de trait'),
+('courtisan', 1, 'Peuple privilégié', 'Humain des cités du Mitan'),
+('courtisan', 2, 'Formations martiales', 'armures légères, armes de duel'),
+('eclaireur', 1, 'Peuple privilégié', 'Nain de l’ordre du Bouclier'),
+('eclaireur', 2, 'Formations martiales', 'armures légères, armes de trait'),
+('escroc', 1, 'Peuple privilégié', 'Humain des Terres orientales'),
+('escroc', 2, 'Formations martiales', 'armures légères, armes de duel'),
+('executeur', 1, 'Peuple privilégié', 'Elfe noir'),
+('executeur', 2, 'Formations martiales', 'armures lourdes, armes de duel, armes de guerre'),
+('explorateur', 1, 'Peuple privilégié', 'Humain des empires austraux'),
+('explorateur', 2, 'Formations martiales', 'armures légères, armes de guerre'),
+('forestier', 1, 'Peuple privilégié', 'Elfe sylvain'),
+('forestier', 2, 'Formations martiales', 'armures légères, armes de trait'),
+('forgeron', 1, 'Peuple privilégié', 'Nain de l’ordre de la Forge'),
+('forgeron', 2, 'Formations martiales', 'armures lourdes, armes de guerre, armes de guerre lourdes'),
+('garde-des-sceaux', 1, 'Peuple privilégié', 'Nain de l’ordre du Temple'),
+('garde-des-sceaux', 2, 'Formations martiales', 'armures légères, armes de guerre, armes de tir'),
+('garde-du-corps', 1, 'Peuple privilégié', 'Nain de l’ordre du Talion'),
+('garde-du-corps', 2, 'Formations martiales', 'armures lourdes, armes de guerre, armes de tir'),
+('guerrier-tribal', 1, 'Peuple privilégié', 'Orc'),
+('guerrier-tribal', 2, 'Formations martiales', 'armures légères, armes de guerre, armes de guerre lourdes'),
+('ingenieur', 1, 'Peuple privilégié', 'Nain de l’ordre du Temple'),
+('ingenieur', 2, 'Formations martiales', 'armures légères, armes de tir'),
+('marchand', 1, 'Peuple privilégié', 'Nain de l’ordre du Talion'),
+('marchand', 2, 'Formations martiales', 'armures légères, armes de tir'),
+('marin', 1, 'Peuple privilégié', 'Elfe bleu'),
+('marin', 2, 'Formations martiales', 'armures légères, armes de trait'),
+('mercenaire', 1, 'Peuple privilégié', 'Semi-Elfe'),
+('mercenaire', 2, 'Formations martiales', 'armures légères, armes de guerre, armes de trait'),
+('milicien', 1, 'Peuple privilégié', 'Humain des cités du Mitan'),
+('milicien', 2, 'Formations martiales', 'armures lourdes, armes de tir, armes de guerre'),
+('monteur-de-cochon', 1, 'Peuple privilégié', 'Nain de l’ordre des Errants'),
+('monteur-de-cochon', 2, 'Formations martiales', 'armures légères, armes d’hast, armes de jet'),
+('noble', 1, 'Peuple privilégié', 'Elfe blanc'),
+('noble', 2, 'Formations martiales', 'armures lourdes, armes de guerre lourde, armes d’hast'),
+('pirate', 1, 'Peuple privilégié', 'Humain des ruines nordiques'),
+('pirate', 2, 'Formations martiales', 'armes de guerre, armes de tir'),
+('pisteur', 1, 'Peuple privilégié', 'Elfe blanc'),
+('pisteur', 2, 'Formations martiales', 'armures légères, armes de guerre'),
+('porte-bouclier', 1, 'Peuple privilégié', 'Nain de l’ordre du Bouclier'),
+('porte-bouclier', 2, 'Formations martiales', 'armures lourdes, armes de guerre, armes de guerre lourdes'),
+('porte-etendard', 1, 'Peuple privilégié', 'Ogre'),
+('porte-etendard', 2, 'Formations martiales', 'armures légères, armes de guerre'),
+('protecteur', 1, 'Peuple privilégié', 'Elfe bleu'),
+('protecteur', 2, 'Formations martiales', 'armures lourdes, armes de guerre, armes de trait'),
+('rodeur', 1, 'Peuple privilégié', 'Elfe sylvain'),
+('rodeur', 2, 'Formations martiales', 'armures lourdes, armes de guerre, armes de jet'),
+('sanguinaire', 1, 'Peuple privilégié', 'Ogre'),
+('sanguinaire', 2, 'Formations martiales', 'armures légères, armes de guerre lourdes, armes de jet'),
+('soldat', 1, 'Peuple privilégié', 'Humain des empires austraux'),
+('soldat', 2, 'Formations martiales', 'armures lourdes, armes de guerre, armes de guerres lourdes'),
+('trappeur', 1, 'Peuple privilégié', 'Nain de l’ordre des Errants'),
+('trappeur', 2, 'Formations martiales', 'armures légères, armes de guerre');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_proprietes_equipement`
+--
+
+DROP TABLE IF EXISTS `cota_proprietes_equipement`;
+CREATE TABLE IF NOT EXISTS `cota_proprietes_equipement` (
+  `code` varchar(20) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `defaut` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_proprietes_equipement`
+--
+
+INSERT INTO `cota_proprietes_equipement` (`code`, `intitule`, `defaut`) VALUES
+('critique', 'Critique', '20'),
+('def', 'DEF', NULL),
+('dm1m', 'DM 1 main', NULL),
+('dm2m', 'DM 2 mains', NULL),
+('for-mini', 'FOR mini', NULL),
+('maitrise', 'Maitrise', NULL),
+('portee', 'Portée', NULL),
+('recharge', 'Recharge', 'M'),
+('type-poison', 'Type poison', '[Affaiblissant,Paralysant,Tétanisant,Aveuglant,Lent,Rapide,Violent]'),
+('virulence', 'Virulence', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_races`
+--
+
+DROP TABLE IF EXISTS `cota_races`;
+CREATE TABLE IF NOT EXISTS `cota_races` (
+  `race` varchar(20) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `mod_for` tinyint(4) DEFAULT NULL,
+  `mod_dex` tinyint(4) DEFAULT NULL,
+  `mod_con` tinyint(4) DEFAULT NULL,
+  `mod_int` tinyint(4) DEFAULT NULL,
+  `mod_sag` tinyint(4) DEFAULT NULL,
+  `mod_cha` tinyint(4) DEFAULT NULL,
+  `age_base` smallint(6) DEFAULT NULL,
+  `esperance_vie` smallint(6) DEFAULT NULL,
+  `taille_min` decimal(3,2) DEFAULT NULL,
+  `taille_max` decimal(3,2) DEFAULT NULL,
+  `poids_min` smallint(6) DEFAULT NULL,
+  `poids_max` smallint(6) DEFAULT NULL,
+  `type_race` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`race`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_races`
+--
+
+INSERT INTO `cota_races` (`race`, `intitule`, `mod_for`, `mod_dex`, `mod_con`, `mod_int`, `mod_sag`, `mod_cha`, `age_base`, `esperance_vie`, `taille_min`, `taille_max`, `poids_min`, `poids_max`, `type_race`) VALUES
+('elfe', 'Elfe', -2, NULL, NULL, NULL, NULL, 2, 80, NULL, '1.65', '1.90', 50, 80, NULL),
+('gobelin', 'Gobelin', -2, 2, -2, 2, NULL, NULL, 12, 30, '1.00', '1.20', 20, 40, NULL),
+('humain', 'Humain', NULL, NULL, NULL, NULL, NULL, NULL, 18, 70, '1.50', '2.00', 40, 120, NULL),
+('nain', 'Nain', NULL, -2, 2, NULL, NULL, NULL, 40, 250, '1.15', '1.35', 50, 100, NULL),
+('ogre', 'Ogre', 2, -4, 4, -2, NULL, -2, 15, 60, '2.00', '2.50', 200, 340, NULL),
+('orc', 'Orc', 2, NULL, 2, -2, NULL, -2, 15, 50, '1.70', '2.20', 70, 170, NULL),
+('peaux-vertes', 'Peau verte', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('semi-elfe', 'Semi-elfe', NULL, NULL, NULL, NULL, NULL, NULL, 20, 150, '1.50', '1.90', 40, 80, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_races_capacites`
+--
+
+DROP TABLE IF EXISTS `cota_races_capacites`;
+CREATE TABLE IF NOT EXISTS `cota_races_capacites` (
+  `race` varchar(20) NOT NULL,
+  `capacite` varchar(20) NOT NULL,
+  PRIMARY KEY (`race`,`capacite`),
+  KEY `cota_races_capacites_race` (`race`),
+  KEY `cota_races_capacites_capacite` (`capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_races_capacites`
+--
+
+INSERT INTO `cota_races_capacites` (`race`, `capacite`) VALUES
+('elfe', 'lumiere-des-etoiles'),
+('gobelin', 'vision-dans-le-noir'),
+('nain', 'instinct-de-survie'),
+('ogre', 'endurant'),
+('orc', 'instinct-de-survie');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_races_traits`
+--
+
+DROP TABLE IF EXISTS `cota_races_traits`;
+CREATE TABLE IF NOT EXISTS `cota_races_traits` (
+  `race` varchar(20) NOT NULL,
+  `sequence` tinyint(4) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`race`,`sequence`),
+  KEY `cota_races_traits_race` (`race`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_races_traits`
+--
+
+INSERT INTO `cota_races_traits` (`race`, `sequence`, `intitule`, `description`) VALUES
+('elfe', 1, 'Généralités', 'Selon les légendes, les Elfes sont des esprits immortels, seconds enfants d’Arran venus au monde après les dragons et avant les Hommes. Installés partout sur les Terres d’Arran, ils vivent en communautés relativement fermées. Leur immortalité est un don autant qu’une malédiction : elle leur confère une sagesse infinie et en même temps les détache lentement du sort du monde, les entraînant dans une sorte de torpeur.\r\nEn dépit de la nature immortelle des individus qui les composent, la plupart des grandes communautés comptent en leur sein des sages, prophètes ou vénérables à la peau flétrie et l’âge abyssal. Les rumeurs prétendent que le corps et l’âme d’un Elfe sont si intimement liés qu’ils sont le reflet l’un de l’autre, ce qui expliquerait que certains Elfes fatigués ou las paraîtraient bien plus âgés que d’autres.'),
+('elfe', 2, 'Noms typiques', 'Noms féminins : Adoraa, Amarie, Aril’em, Bi’leth, Dilya, Eelmyra, Faetris, Fin’nea, Ilimys, Ilsewël, Inaëra, Keydi, Li’erin, Mylaelä, Nälaea, Nue’leth, Phivaaris, Reywarin, Saëli’hn, Selussa, Shaë’len, Sihanien, Teriiani, Tisha, Yes’rieth, Yllagwyn, Yn’asel. \r\nNoms masculins : Arel, Ayen, Carfell, Dae’kalyn, Daemys, Eldaeren, Eld’uin, Elluin, Erolwen, Faardan, Faeren, Ianjyr, Iewin, Ilthur, Kerr’yth, Khaa’ris, Lathaïen, Liagwyn, Mlartlar, Nael, Nar’wen, Nyll, Preswë, Qiro, Rilatar, Tanithil, Yelg’wyn, Ylyn, Waera, Wysalei.'),
+('gobelin', 1, 'Généralités', 'Petits, frêles mais rusés, les Gobelins ont pu survivre à la violence des Terres d’Arran et à de nombreux conflits armés l’asservissement par les Orcs ou l’appétit vénal des esclavagistes grâce à deux capacités uniques : une faculté d’adaptation extraordinaire et une propension presque surnaturelle à tirer leur épingle d’un jeu dont ils nient les règles en permanence.\r\nOrganisés en tribus, ils sont capables de mener des guérillas mortelles à l’aide d’escadrons d’archers d’élite ou encore de s’associer avec des groupes d’Ogres ou d’Orcs pour mener des sièges usants et de nature à faire tomber les villes les plus fortifiées.\r\nAu final, le Gobelin reste aventureux. Si la vie de groupe présente des atouts évidents, elle constitue également un frein à l’épanouissement personnel. De nombreux Gobelins ont quitté le mode de vie tribal pour rejoindre de grandes cités humaines et y mener des carrières de brigand et de voleur avec plus ou moins de réussite. Qu’importe, la vie est courte et elle mérite d’être vécue pleinement.'),
+('gobelin', 2, 'Noms typiques', 'Noms féminins : Bhui, Elxia, Etolki, Fell, Clyrt, Kiria, Kle, Lluia, Mazzia, Og, Ovyf, Pra, Pyho, Ruir, Selsi, Shee, Sria, Strotha, Ufla, Uggi, Yzzia, Viee. \r\nNoms masculins : Ald, Biek, Brom, Cla’as, Ciz, Dekz, Draam, Fra’asm, Gribs, Iebsic, Iolrirm, Iord, Kabkoic, Kliq, Rerr, Siarkin, Slobs, Vos, Vres, Zral, Zren.'),
+('humain', 1, 'Généralités', 'Les Humains constituent un peuple très hétéroclite et très commun sur les Terres d’Arran. Leur installation se fait souvent au détriment des autres peuples. Ils ont colonisé les steppes nordiques hostiles pour fonder la cité d’Aspen en Borduria et ont rendu habitables les terres arides aux marges de la Terre des Ogres pour bâtir l’immense empire Assanide. Les forêts de Duhann et de Daëdenn cèdent chaque année de plus en plus de terrain au développement des cités-Etats de Tarascon et il n’y a guère que les Nains cloîtrés dans leurs imprenables Forteresses-Etats qui ne semblent pas menacés par cette expansion. Pas encore en tout cas.  Les Humains n’ont certes pas la longévité des Elfes ni la robustesse des Nains, mais ils compensent par leur incroyable capacité d’adaptation et une fécondité impressionnante.\r\nCapables du meilleur comme du pire, les sociétés humaines sont variées et il est impossible de les réduire à une définition générale. Les peuples d’Arran victimes de leur xénophobie n’ont souvent connu que les mauvais côtés de certaines communautés humaines. Mais d’autres peuplades, quelques frontières plus loin, vivent en respectant des valeurs et des traditions tout à fait inverses.'),
+('humain', 2, 'Noms typiques', 'Noms féminins : Aethria, Aales, Ann, Aphra, Ashae, Ayfara, Bryde, Clymoni, Daeira, Dalleira, Dhesah, Elianora, Elise, Emelyne, Egelina, Gaynore, Helleori, Ianthe, Inle, Jehane, Jivete, Malie, Mareona, Mattie, Melisenda, Merily, Nota, Phaio, Ptelera, Rose, Ulshee, Ysabea.\r\nNoms masculins : Alvan, Ancelm, Daue, Iohannes, Gallien, Geffery, Geoff, Gerald, Hamo, Herry, Herval, Joa, Joscell, Jun, Maina, Mauklom, Nicoll, Niel, Oenus, Raimn, Ran, Ranort, Robb, Roff, Rullo, Simm, Teebald, Tericio, Thomme, Vinlam, Yvoe.'),
+('nain', 1, 'Généralités', 'Les Nains sont petits mais musclés et dotés d’une constitution à toute épreuve. Peuple guerrier par excellence, ce sont également des artisans, architectes, médecins et savants d’exception. Leur empire éclaté, majoritairement situé au nord et au sud de l’Ourann, est organisé en ordres rigoureusement cloisonnés et chargés de maintenir la cohésion de forteresses-États. Le plus grand malheur d’un Nain est d’être déchu de son ordre et de devenir un Errant. Une fois atteint l’âge de raison, la plupart des individus masculins arborent une barbe dense, soigneusement coiffée ou tressée et parfois agrémentée d’anneaux en métal. Seules exceptions, notables, les savants et ingénieurs arborent souvent un visage glabre ‒ tantôt par volonté de se démarquer des valeurs guerrières de leurs semblables, tantôt simplement pour des questions pratiques, la pilosité développée pouvant interférer avec l’exercice de leur métier.  Les individus féminins sont tout aussi robustes et vifs d’esprit que leurs homologues masculins mais doivent généralement se faire une place en faisant preuve de caractère dans ces communautés dominées par des traditions patriarcales. La nouvelle génération est en train de bousculer cette construction sociale et, désormais, aucun parcours n’est impossible à une Naine qui voudrait vraiment s’y engager.'),
+('nain', 2, 'Noms typiques', 'Noms féminins : Allya, Aravug, Axeel, Damanel, Dey, Dhoki, Dhran, Druseel, Elka, Hazura, Hilde, Hulda, Juvaan, Kimeen, Luzy, Lynn, Lyv, Makrell, Marrea, Meel, Mudd, Oolra, Sapphir, Skodae, Sweel, Thaniss, Tyreen, Uminn, Uriss, Yvren, Zae.\r\nNoms masculins : Alfoldrul, Barikk, Bokhil, Brann, Brarberlug, Damoth, Delver, Caven, Granroc, Flintmaul, Folonor, Grim, Grorroun, Grurrig, Horngut, Komn, Krosseac, Loddoic, Mumdoc, Nalmod, Saggad, Sivras, Thabral, Thunfrak, Warbane.'),
+('ogre', 1, 'Généralités', 'Les ogres comptent parmi les humanoïdes les plus grands et puissants des Terres d’Arran. Massifs, musclés, arborant de larges cornes sur leur crâne et souvent disgracieux, ils sont rarement aperçus en dehors des régions du sud, de l’Orient ou des frontières les plus orientales de l’Ourann. Ils sont tellement craints que la plupart des communautés les chassent à vue.\r\nCependant, il arrive que des sociétés commerciales fassent appel à ces êtres d’exception en tant que main-d’oeuvre ou mercenaire. Leur vie n’est pas forcément facile au milieu de la civilisation, mais un simple regard ou grognement suffit à taire toute forme de velléité à leur encontre.\r\nSur le champ de bataille, l’ogre fait partie des adversaires les plus grands : bien que sa taille en fasse une cible facile, toute personne en ayant déjà combattu un – et survécu pour en parler – livrera le témoignage glaçant d’une force de la nature capable de combattre et de tuer malgré des blessures manifestement mortelles.'),
+('ogre', 2, 'Noms typiques', 'Les noms ogres sont assez mixtes. Pour les autres peuples, il est impossible de faire la différence entre une femelle et un mâle sur la simple base du prénom. \r\nAnozur, Arog, Brakik, Broukork, Daduzar, Droozug, Gaarag, Glarok, Grezog, Klikor, Murag, Muzig, Nezig, Nizir, Treirig, Uzur, Vaukag, Vrork, Vrigruk, Vroxarag, Vrugark, Xakohr, Xogark, Vrokurek, Wigrut.'),
+('orc', 1, 'Généralités', 'Les Orcs sont de grandes créatures incroyablement musclées. Leur visage, généralement considéré comme disgracieux par les autres peuples, n’attire guère la sympathie. Il faut avouer que leurs canines inférieures proéminentes leur confèrent un air perpétuellement féroce. \r\nLe clan ou le groupe est souvent au centre de la vie des Orcs, symbole de stabilité mais aussi synonyme de survie dans un monde qui leur particulièrement hostile. C’est pourquoi, malgré les mésententes ou les conflits, rien n’est plus important que la loyauté envers le clan ou la famille. Dans ce type de communauté, le statut social de l’Orc est lié à sa force, sa capacité à prendre la place du dominant ou bien ses exploits, qu’ils soient liés à la guerre ou à la chasse. \r\nÀ l’extérieur des territoires de leurs clans, les Orcs sont craints pour leur puissance et leurs capacités de combat. Ils sont de ce fait bien souvent traqués comme des bêtes dangereuses.'),
+('orc', 2, 'Noms typiques', 'Noms féminins : Bashuk, Batul, Boora, Deleeg, Dura, Durgat, Durz, Elisha, Gashnakh, Kharza, Lambee, Melash, Morn, Olaan, Rysha, Shag’dub, Shel, Shena, Thabel, Tuzel, Urzeel, Usha’an, Yshela, Zera’an.\r\nNoms masculins : Atulg, Cuba, Gorgo, Horr, Igubat, Knah, Krug, Kul’gha, Naguk, Narod, Pomg, Rilug, Saba, Slogh, Ulag, Ur’am, Urlgan, Verr, Viggu, Vitgut, Yakha, Yam, Yogg.'),
+('peaux-vertes', 1, 'Généralités', 'Les Peaux vertes forment un grand peuple qui regroupe plusieurs ethnies très différentes les unes des autres, que ce soit morphologiquement ou culturellement. Cependant, à l’échelle des Terres d’Arran, toutes sont souvent considérées de la même façon par les autres peuples en raison de la couleur de leur peau et du danger que peuvent représenter les clans organisés aux frontières de la civilisation. Il est vrai que toutes les Peaux vertes ont des choses en commun. Depuis les temps immémoriaux, les Orcs semblent être en guerre permanente contre la plupart des peuples des Terres d’Arran. Au nord-est, les Ogres menacent dangereusement les forteresses-États naines tandis que souvent les Gobelins prolifèrent dans les bas-fonds des plus grandes villes ou bien s’organisent en tribus de pillards dans les contrées sauvages.\r\nS’il est vrai que les Peaux vertes sont craintes et méprisées, il n’est pas rare pour autant de les croiser en nombre restreint dans certaines villes cosmopolites, négociant leurs services en tant que mercenaires, voleurs ou gardes du corps, la nature les ayant pourvues de formidables capacités physiques prêtes à être monnayées. ');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_types_capacite`
+--
+
+DROP TABLE IF EXISTS `cota_types_capacite`;
+CREATE TABLE IF NOT EXISTS `cota_types_capacite` (
+  `type_capacite` varchar(5) NOT NULL,
+  `type_capacite_intitule` varchar(50) NOT NULL,
+  `type_capacite_config` text,
+  PRIMARY KEY (`type_capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_types_capacite`
+--
+
+INSERT INTO `cota_types_capacite` (`type_capacite`, `type_capacite_intitule`, `type_capacite_config`) VALUES
+('cult', 'Culturelle', NULL),
+('prest', 'Prestige', NULL),
+('race', 'Peuple', NULL),
+('tmag', 'Talent magique', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_types_races`
+--
+
+DROP TABLE IF EXISTS `cota_types_races`;
+CREATE TABLE IF NOT EXISTS `cota_types_races` (
+  `type_race` varchar(5) NOT NULL,
+  `type_race_intitule` varchar(50) NOT NULL,
+  `type_race_config` text,
+  PRIMARY KEY (`type_race`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_types_voie`
+--
+
+DROP TABLE IF EXISTS `cota_types_voie`;
+CREATE TABLE IF NOT EXISTS `cota_types_voie` (
+  `type_voie` varchar(5) NOT NULL,
+  `type_voie_intitule` varchar(50) NOT NULL,
+  `type_voie_config` text,
+  PRIMARY KEY (`type_voie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_types_voie`
+--
+
+INSERT INTO `cota_types_voie` (`type_voie`, `type_voie_intitule`, `type_voie_config`) VALUES
+('cult', 'Culturelle', NULL),
+('prest', 'Prestige', NULL),
+('race', 'Peuple', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_voies`
+--
+
+DROP TABLE IF EXISTS `cota_voies`;
+CREATE TABLE IF NOT EXISTS `cota_voies` (
+  `voie` varchar(20) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `notes` varchar(1024) DEFAULT NULL,
+  `type` varchar(5) DEFAULT NULL,
+  `pfx_deladu` char(1) NOT NULL,
+  PRIMARY KEY (`voie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_voies`
+--
+
+INSERT INTO `cota_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
+('acrobatie', 'Acrobatie', NULL, NULL, '2'),
+('alchimie', 'Alchimie', 'Les élixirs alchimiques sont des décoctions instables. Chaque jour, le PJ peut créer jusqu’à deux élixirs par rang atteint dans cette voie. Produire un lot d’élixirs prend une heure, quel qu’en soit le nombre. Ce sont des mélanges instables qui deviennent inopérants après 24 h. Si le PJ ne dispose pas du local ou du matériel adéquat, il peut quand même tenter de préparer des élixirs – avec l’accord du MJ – mais produit, au choix : soit la moitié des élixirs prévus soit des élixirs de qualité médiocre (toutes les variables sont divisées par deux, arrondies à l’inférieur avec une valeur minimale de 1).', NULL, '2'),
+('arbaletrie', 'Arbalètrie', 'Pour utiliser les capacités suivantes, le PJ doit obligatoirement manier une arme de tir.', NULL, '2'),
+('archerie', 'Archerie', NULL, NULL, '2'),
+('arts-druidiques', 'Arts druidiques', NULL, NULL, '3'),
+('assassinat', 'Assassinat', NULL, NULL, '2'),
+('bastion', 'Bastion', 'Pour utiliser les capacités suivantes, le PJ doit obligatoirement manier un bouclier.', NULL, '0'),
+('boheme', 'Bohème', NULL, NULL, '0'),
+('bravoure', 'Bravoure', NULL, NULL, '1'),
+('charme', 'Charme', NULL, NULL, '0'),
+('chasse', 'Chasse', NULL, NULL, '1'),
+('combat-a-deux-armes', 'Combat à deux armes', NULL, NULL, '0'),
+('combat-monte', 'Combat monté', NULL, NULL, '0'),
+('commandement', 'Commandement', NULL, NULL, '0'),
+('compagnon-animal', 'Compagnon animal', NULL, NULL, '0'),
+('divination', 'Divination', NULL, NULL, '1'),
+('elfe', 'Elfe', NULL, 'race', '2'),
+('elfe-blanc', 'Elfe blanc', NULL, 'cult', '2'),
+('elfe-bleu', 'Elfe bleu', NULL, 'cult', '2'),
+('elfe-noir', 'Elfe noir', NULL, 'cult', '2'),
+('elfe-sylvain', 'Elfe sylvain', NULL, 'cult', '2'),
+('empires-austraux', 'Humains des Empires austraux', NULL, 'cult', '3'),
+('envoutement', 'Envoûtement', 'Si une victime résiste à un sort de cette voie, elle y est immunisée pendant 24 h.', NULL, '2'),
+('escrime', 'Escrime', NULL, NULL, '2'),
+('ferocite', 'Férocité', NULL, NULL, '1'),
+('forets', 'Forêts', NULL, NULL, '3'),
+('fourberie', 'Fourberie', NULL, NULL, '1'),
+('gobelin', 'Gobelin', NULL, 'cult', '0'),
+('guerre', 'Guerre', NULL, NULL, '1'),
+('humain', 'Humain', NULL, 'race', '2'),
+('illusions', 'Illusions', NULL, NULL, '3'),
+('magie-elementaliste', 'Magie élémentaliste', NULL, NULL, '1'),
+('magie-runique', 'Magie runique', 'Aucun des sorts de la voie de la magie runique ne peut bénéficier des effets d’une concentration.', NULL, '1'),
+('maitrise-des-armes', 'Maitrise des armes', NULL, NULL, '1'),
+('mitan', 'Humains du Mitan', NULL, 'cult', '3'),
+('mysticisme', 'Mysticisme', NULL, NULL, '0'),
+('nain', 'Nain', NULL, 'race', '0'),
+('ogre', 'Ogre', NULL, 'cult', '2'),
+('orc', 'Orc', NULL, 'cult', '2'),
+('ordre-de-la-forge', 'Ordre de la Forge', NULL, 'cult', '2'),
+('ordre-des-errants', 'Ordre des Errants', NULL, 'cult', '2'),
+('ordre-du-bouclier', 'Ordre du Bouclier', NULL, 'cult', '2'),
+('ordre-du-talion', 'Ordre du Talion', NULL, 'cult', '2'),
+('ordre-du-temple', 'Ordre du Temple', NULL, 'cult', '2'),
+('peaux-vertes', 'Peaux-vertes', NULL, 'race', '3'),
+('pugilat', 'Pugilat', NULL, NULL, '0'),
+('puissance', 'Puissance', NULL, NULL, '1'),
+('ruines-nordiques', 'Humains des Ruines nordiques', NULL, 'cult', '3'),
+('sombres-savoirs', 'Sombres savoirs', NULL, NULL, '3'),
+('terres-orientales', 'Humains des Terres orientales', NULL, 'cult', '3');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cota_voies_profils`
+--
+
+DROP TABLE IF EXISTS `cota_voies_profils`;
+CREATE TABLE IF NOT EXISTS `cota_voies_profils` (
+  `profil` varchar(20) NOT NULL,
+  `voie` varchar(20) NOT NULL,
+  PRIMARY KEY (`profil`,`voie`),
+  KEY `cota_voies_profils_profil` (`profil`),
+  KEY `cota_voies_profils_voie` (`voie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cota_voies_profils`
+--
+
+INSERT INTO `cota_voies_profils` (`profil`, `voie`) VALUES
+('alchimiste', 'alchimie'),
+('alchimiste', 'magie-runique'),
+('alchimiste', 'sombres-savoirs'),
+('ancien', 'forets'),
+('ancien', 'magie-elementaliste'),
+('ancien', 'sombres-savoirs'),
+('apothicaire', 'alchimie'),
+('apothicaire', 'arbaletrie'),
+('apothicaire', 'bravoure'),
+('archer', 'archerie'),
+('archer', 'bravoure'),
+('archer', 'maitrise-des-armes'),
+('assassin', 'assassinat'),
+('assassin', 'escrime'),
+('assassin', 'fourberie'),
+('aumonier', 'commandement'),
+('aumonier', 'magie-elementaliste'),
+('aumonier', 'sombres-savoirs'),
+('barbare', 'bravoure'),
+('barbare', 'ferocite'),
+('barbare', 'puissance'),
+('castagneur', 'bravoure'),
+('castagneur', 'fourberie'),
+('castagneur', 'pugilat'),
+('chasseur', 'archerie'),
+('chasseur', 'chasse'),
+('chasseur', 'guerre'),
+('conseiller', 'boheme'),
+('conseiller', 'divination'),
+('conseiller', 'envoutement'),
+('courtisan', 'boheme'),
+('courtisan', 'charme'),
+('courtisan', 'escrime'),
+('druide', 'arts-druidiques'),
+('druide', 'compagnon-animal'),
+('druide', 'forets'),
+('eclaireur', 'archerie'),
+('eclaireur', 'chasse'),
+('eclaireur', 'combat-monte'),
+('elementaliste', 'escrime'),
+('elementaliste', 'magie-elementaliste'),
+('elementaliste', 'magie-runique'),
+('ensorceleur', 'charme'),
+('ensorceleur', 'envoutement'),
+('ensorceleur', 'illusions'),
+('ermite', 'divination'),
+('ermite', 'illusions'),
+('ermite', 'pugilat'),
+('escroc', 'assassinat'),
+('escroc', 'charme'),
+('escroc', 'escrime'),
+('espion', 'alchimie'),
+('espion', 'fourberie'),
+('espion', 'illusions'),
+('executeur', 'combat-a-deux-armes'),
+('executeur', 'guerre'),
+('executeur', 'maitrise-des-armes'),
+('explorateur', 'boheme'),
+('explorateur', 'compagnon-animal'),
+('explorateur', 'fourberie'),
+('fauconnier', 'archerie'),
+('fauconnier', 'arts-druidiques'),
+('fauconnier', 'mysticisme'),
+('forestier', 'archerie'),
+('forestier', 'arts-druidiques'),
+('forestier', 'compagnon-animal'),
+('forgeron', 'guerre'),
+('forgeron', 'magie-runique'),
+('forgeron', 'puissance'),
+('garde-des-sceaux', 'arbaletrie'),
+('garde-des-sceaux', 'combat-a-deux-armes'),
+('garde-des-sceaux', 'guerre'),
+('garde-du-corps', 'bastion'),
+('garde-du-corps', 'maitrise-des-armes'),
+('garde-du-corps', 'puissance'),
+('guerrier-tribal', 'bastion'),
+('guerrier-tribal', 'ferocite'),
+('guerrier-tribal', 'guerre'),
+('ingenieur', 'arbaletrie'),
+('ingenieur', 'magie-runique'),
+('ingenieur', 'maitrise-des-armes'),
+('mage', 'envoutement'),
+('mage', 'illusions'),
+('mage', 'magie-elementaliste'),
+('marchand', 'boheme'),
+('marchand', 'charme'),
+('marchand', 'fourberie'),
+('marin', 'acrobatie'),
+('marin', 'archerie'),
+('marin', 'pugilat'),
+('mercenaire', 'archerie'),
+('mercenaire', 'combat-a-deux-armes'),
+('mercenaire', 'maitrise-des-armes'),
+('milicien', 'arbaletrie'),
+('milicien', 'commandement'),
+('milicien', 'maitrise-des-armes'),
+('monteur-de-cochon', 'bravoure'),
+('monteur-de-cochon', 'combat-monte'),
+('monteur-de-cochon', 'guerre'),
+('necromancien', 'bravoure'),
+('necromancien', 'divination'),
+('necromancien', 'sombres-savoirs'),
+('noble', 'combat-monte'),
+('noble', 'commandement'),
+('noble', 'guerre'),
+('ombre-lame', 'assassinat'),
+('ombre-lame', 'envoutement'),
+('ombre-lame', 'sombres-savoirs'),
+('pelerin', 'combat-monte'),
+('pelerin', 'illusions'),
+('pelerin', 'mysticisme'),
+('pirate', 'acrobatie'),
+('pirate', 'arbaletrie'),
+('pirate', 'ferocite'),
+('pisteur', 'boheme'),
+('pisteur', 'chasse'),
+('pisteur', 'maitrise-des-armes'),
+('porte-bouclier', 'bastion'),
+('porte-bouclier', 'bravoure'),
+('porte-bouclier', 'commandement'),
+('porte-etendard', 'arts-druidiques'),
+('porte-etendard', 'chasse'),
+('porte-etendard', 'commandement'),
+('pretre', 'commandement'),
+('pretre', 'divination'),
+('pretre', 'mysticisme'),
+('prophete', 'divination'),
+('prophete', 'envoutement'),
+('prophete', 'mysticisme'),
+('protecteur', 'acrobatie'),
+('protecteur', 'combat-a-deux-armes'),
+('protecteur', 'guerre'),
+('rodeur', 'chasse'),
+('rodeur', 'combat-a-deux-armes'),
+('rodeur', 'maitrise-des-armes'),
+('sanguinaire', 'ferocite'),
+('sanguinaire', 'guerre'),
+('sanguinaire', 'puissance'),
+('shaman', 'alchimie'),
+('shaman', 'forets'),
+('shaman', 'pugilat'),
+('soldat', 'bastion'),
+('soldat', 'guerre'),
+('soldat', 'maitrise-des-armes'),
+('trappeur', 'chasse'),
+('trappeur', 'compagnon-animal'),
+('trappeur', 'fourberie'),
+('voleur', 'acrobatie'),
+('voleur', 'escrime'),
+('voleur', 'fourberie'),
+('voyageur', 'archerie'),
+('voyageur', 'boheme'),
+('voyageur', 'escrime');
+
 --
 -- Contraintes pour les tables déchargées
 --
@@ -17898,6 +19476,85 @@ ALTER TABLE `cof_races_traits`
 ALTER TABLE `cof_voies_profils`
   ADD CONSTRAINT `cof_fk_voies_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cof_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `cof_fk_voies_profils_voie` FOREIGN KEY (`voie`) REFERENCES `cof_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_capacites_voies`
+--
+ALTER TABLE `cota_capacites_voies`
+  ADD CONSTRAINT `cota_fk_capacites_voies_capacite` FOREIGN KEY (`capacite`) REFERENCES `cota_capacites` (`capacite`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_capacites_voies_voie` FOREIGN KEY (`voie`) REFERENCES `cota_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_categories_equipement`
+--
+ALTER TABLE `cota_categories_equipement`
+  ADD CONSTRAINT `cota_fk_categorie_parente` FOREIGN KEY (`parent`) REFERENCES `cota_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_categories_proprietes`
+--
+ALTER TABLE `cota_categories_proprietes`
+  ADD CONSTRAINT `cota_fk_categories_proprietes_categorie` FOREIGN KEY (`code_categorie`) REFERENCES `cota_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_categories_proprietes_propriete` FOREIGN KEY (`code_propriete`) REFERENCES `cota_proprietes_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_equipement`
+--
+ALTER TABLE `cota_equipement`
+  ADD CONSTRAINT `cota_fk_categorie_equipement` FOREIGN KEY (`categorie`) REFERENCES `cota_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_equipement_profils`
+--
+ALTER TABLE `cota_equipement_profils`
+  ADD CONSTRAINT `cota_fk_equipement_profils_equipement` FOREIGN KEY (`equipement`) REFERENCES `cota_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_equipement_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cota_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_equipement_proprietes`
+--
+ALTER TABLE `cota_equipement_proprietes`
+  ADD CONSTRAINT `cota_fk_equipement_proprietes_equipement` FOREIGN KEY (`code_equipement`) REFERENCES `cota_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_equipement_proprietes_propriete` FOREIGN KEY (`code_propriete`) REFERENCES `cota_proprietes_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_profils`
+--
+ALTER TABLE `cota_profils`
+  ADD CONSTRAINT `cota_fk_profils_famille` FOREIGN KEY (`famille`) REFERENCES `cota_familles` (`famille`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_profils_maitrises`
+--
+ALTER TABLE `cota_profils_maitrises`
+  ADD CONSTRAINT `cota_fk_profils_maitrises_equipement` FOREIGN KEY (`equipement`) REFERENCES `cota_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_profils_maitrises_profil` FOREIGN KEY (`profil`) REFERENCES `cota_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_profils_traits`
+--
+ALTER TABLE `cota_profils_traits`
+  ADD CONSTRAINT `cota_fk_profils_traits_profil` FOREIGN KEY (`profil`) REFERENCES `cota_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_races_capacites`
+--
+ALTER TABLE `cota_races_capacites`
+  ADD CONSTRAINT `cota_fk_races_capacites_capacite` FOREIGN KEY (`capacite`) REFERENCES `cota_capacites` (`capacite`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_races_capacites_race` FOREIGN KEY (`race`) REFERENCES `cota_races` (`race`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_races_traits`
+--
+ALTER TABLE `cota_races_traits`
+  ADD CONSTRAINT `cota_fk_races_traits_race` FOREIGN KEY (`race`) REFERENCES `cota_races` (`race`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cota_voies_profils`
+--
+ALTER TABLE `cota_voies_profils`
+  ADD CONSTRAINT `cota_fk_voies_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cota_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cota_fk_voies_profils_voie` FOREIGN KEY (`voie`) REFERENCES `cota_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
