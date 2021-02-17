@@ -64,14 +64,14 @@ class FormField
 
   /**
    * FormField constructor.
-   * @param string $name
-   * @param string $label
+   * @param string|null $name
+   * @param string|null $label
    * @param int $filter
    * @param bool $required
-   * @param object $defaultValue
-   * @param string $errorMessage
-   * @param string $controlType
-   * @param string $cssClass
+   * @param object|null $defaultValue
+   * @param string|null $errorMessage
+   * @param string|null $controlType
+   * @param string|null $cssClass
    * @param bool $primeKey
    * @param array $valueList
    * @param array $size
@@ -179,7 +179,7 @@ class FormField
   /**
    * @return mixed
    */
-  public function getDefaultValue()
+  public function getDefaultValue(): ?object
   {
     return $this->defaultValue;
   }
@@ -188,7 +188,7 @@ class FormField
    * @param mixed $defaultValue
    * @return FormField
    */
-  public function setDefaultValue($defaultValue)
+  public function setDefaultValue($defaultValue): FormField
   {
     $this->defaultValue = $defaultValue;
     return $this;

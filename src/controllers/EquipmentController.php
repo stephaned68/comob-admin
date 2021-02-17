@@ -179,14 +179,34 @@ class EquipmentController extends AbstractController
 
     $propsForm = new FormManager();
     foreach ($propertyList as $property) {
-      $propsForm->addField(
-        [
-          "name" => $property["code"],
-          "label" => $property["intitule"],
-          "errorMessage" => $property["intitule"] . " non saisi(e.s)",
-          "defaultValue" => $property["defaut"]
-        ]
-      );
+      $default = $property["defaut"];
+      if (strpos($default,"[") == 0
+        && strpos($default,"]") == strlen($default) - 1) {
+        $valueList = explode(",", substr($default,1, -1));
+        $valueList = array_combine(
+          [ "", ...$valueList ],
+          [ "Choisir...", ...$valueList ]
+        );
+        $propsForm->addField(
+          [
+            "name" => $property["code"],
+            "label" => $property["intitule"],
+            "controlType" => "select",
+            "valueList" => $valueList,
+            "errorMessage" => $property["intitule"] . " non saisi(e.s)",
+            "defaultValue" => ""
+          ]
+        );
+      } else {
+        $propsForm->addField(
+          [
+            "name" => $property["code"],
+            "label" => $property["intitule"],
+            "errorMessage" => $property["intitule"] . " non saisi(e.s)",
+            "defaultValue" => $default
+          ]
+        );
+      }
     }
 
     if (FormManager::isSubmitted()) {
