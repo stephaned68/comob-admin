@@ -7,7 +7,7 @@ namespace framework;
 class Tools
 {
 
-  public static $themeList =
+  public static array $themeList =
     [
       "cerulean",
       "cosmo",
@@ -32,7 +32,11 @@ class Tools
       "yeti"
     ];
 
-  public static function pluralize($singular)
+  /**
+   * @param string $singular
+   * @return string
+   */
+  public static function pluralize(string $singular): string
   {
     $last_letter = $singular[strlen($singular)-1];
     switch ($last_letter) {
@@ -49,7 +53,7 @@ class Tools
    * @param string $str
    * @return string|string[]|null
    */
-  public static function pascalize($str)
+  public static function pascalize(string $str)
   {
     $pattern = "#(\_|-| )?([a-zA-Z0-9])+#";
     return preg_replace_callback(
@@ -69,14 +73,18 @@ class Tools
    * @param string $str
    * @return string
    */
-  public static function camelize($str)
+  public static function camelize(string $str): string
   {
     $temp = self::pascalize($str);
     return strtolower(substr($temp, 0, 1))
       . substr($temp, 1);
   }
 
-  public static function snakeCase($str)
+  /**
+   * @param string $str
+   * @return string
+   */
+  public static function snakeCase(string $str): string
   {
     $temp = str_split($str);
     $result = "";
@@ -139,7 +147,7 @@ class Tools
    * @param bool $showValue
    * @return array
    */
-  public static function select($list, $valueField, $labelField, $showValue = false)
+  public static function select(array $list, string $valueField, string $labelField, $showValue = false): array
   {
     $select = [];
     foreach ($list as $item) {
@@ -156,7 +164,7 @@ class Tools
    * @param $labelField
    * @return array
    */
-  public static function selectGroup($list, $groupField, $valueField, $labelField)
+  public static function selectGroup($list, $groupField, $valueField, $labelField): array
   {
     $groups = [];
     foreach ($list as $item) {

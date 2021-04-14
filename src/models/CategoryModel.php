@@ -5,13 +5,14 @@ namespace app\models;
 
 use framework\Database;
 use framework\QueryBuilder;
+use PDO;
 
 class CategoryModel
 {
 
-  public static $table = "categories_equipement";
+  public static string $table = "categories_equipement";
 
-  public static function getAll()
+  public static function getAll(): array
   {
     $all = [];
     $pdo = Database::getPDO();
@@ -19,13 +20,13 @@ class CategoryModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $all;
   }
 
-  public static function getAllMain()
+  public static function getAllMain(): array
   {
     $qb = new QueryBuilder(Database::table(self::$table));
     $qb
@@ -37,13 +38,13 @@ class CategoryModel
     $pdo = Database::getPDO();
     if ($pdo) {
       $rs = $pdo->query($qb->getQuery());
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $all;
   }
 
-  public static function getAllWithMain()
+  public static function getAllWithMain(): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -63,13 +64,13 @@ class CategoryModel
     $pdo = Database::getPDO();
     if ($pdo) {
       $rs = $pdo->query($qb->getQuery());
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $all;
   }
 
-  public static function getAllSubWithMain()
+  public static function getAllSubWithMain(): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -91,7 +92,7 @@ class CategoryModel
     $pdo = Database::getPDO();
     if ($pdo) {
       $rs = $pdo->query($qb->getQuery());
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $all;
@@ -111,13 +112,13 @@ class CategoryModel
         )
       );
       $statement->execute([$id]);
-      $category = $statement->fetch(\PDO::FETCH_ASSOC);
+      $category = $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     return $category;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -138,7 +139,7 @@ class CategoryModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($data)
+  public static function deleteOne($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
@@ -151,7 +152,7 @@ class CategoryModel
     return $statement->execute([ $data ]);
   }
 
-  public static function getProperties($id)
+  public static function getProperties($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -162,10 +163,10 @@ class CategoryModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public static function getPropertyList($id)
+  public static function getPropertyList($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -180,7 +181,7 @@ class CategoryModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveProperties($data)

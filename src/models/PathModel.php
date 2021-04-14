@@ -4,13 +4,14 @@
 namespace app\models;
 
 use framework\Database;
+use PDO;
 use PDOException;
 
 class PathModel
 {
-  public static $table = "voies";
+  public static string $table = "voies";
 
-  public static function getTypes()
+  public static function getTypes(): array
   {
     return Database::getTypes(
       "types_voie",
@@ -32,7 +33,7 @@ class PathModel
         )
       );
       $statement->execute([$id]);
-      $type = $statement->fetch(\PDO::FETCH_ASSOC);
+      $type = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $type;
   }
@@ -45,7 +46,7 @@ class PathModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -69,7 +70,23 @@ class PathModel
       } else {
         $statement->execute([$type]);
       }
-      $all = $statement->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    return $all;
+  }
+
+  public static function getAllButType($type): array
+  {
+    $qb = Database::getAll(self::$table);
+    $qb->where("type <> ?");
+
+    $all = [];
+    $pdo = Database::getPDO();
+    if ($pdo)
+    {
+      $statement = $pdo->prepare($qb->getQuery());
+      $statement->execute([$type]);
+      $all = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -88,12 +105,12 @@ class PathModel
         )
       );
       $statement->execute([ $id ]);
-      $path = $statement->fetch(\PDO::FETCH_ASSOC);
+      $path = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $path;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -101,7 +118,7 @@ class PathModel
     return $statement->execute($data);
   }
 
-  public static function update($data)
+  public static function update($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
@@ -114,7 +131,7 @@ class PathModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($id)
+  public static function deleteOne($id): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
@@ -127,7 +144,7 @@ class PathModel
     return $statement->execute([ $id ]);
   }
 
-  public static function getAbilities($id)
+  public static function getAbilities($id): array
   {
     $sql = implode(" ",
       [
@@ -136,7 +153,7 @@ class PathModel
       ]);
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveAbilities($data)

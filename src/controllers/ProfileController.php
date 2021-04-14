@@ -12,6 +12,7 @@ use framework\Tools;
 use app\models\FamilyModel;
 use app\models\PathModel;
 use app\models\ProfileModel;
+use PDOException;
 
 class ProfileController extends AbstractController
 {
@@ -30,7 +31,7 @@ class ProfileController extends AbstractController
       } else {
         $profileList = ProfileModel::getAll();
       }
-    } catch (\PDOException $ex) {
+    } catch (PDOException $ex) {
       Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
     }
 
@@ -181,7 +182,7 @@ class ProfileController extends AbstractController
       [
         "profile" => $profile,
         "voies" => $paths,
-        "pathList" => Tools::select(PathModel::getAllForType(""), "voie", "nom"),
+        "pathList" => Tools::select(PathModel::getAllButType("prest"), "voie", "nom"),
         "prestList" => Tools::select(PathModel::getAllForType("prest"), "voie", "nom"),
         "fm" => $form,
       ]);

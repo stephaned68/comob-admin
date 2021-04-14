@@ -31,6 +31,7 @@ use \framework\Router;
     <table class="table table-bordered table-striped">
       <thead>
       <tr class="text-center">
+        <th>#</th>
         <th>Intitulé</th>
         <th>Propriétés</th>
         <th>Type</th>
@@ -38,8 +39,10 @@ use \framework\Router;
       </tr>
       </thead>
       <tbody>
-      <?php foreach ($abilityList as $ability) : ?>
+      <?php $ix = 0;
+      foreach ($abilityList as $ability) : ?>
         <tr>
+          <td><?= ++$ix ?></td>
           <td>
             <a href="<?= Router::route(['ability', 'edit', $ability['capacite']]) ?>"
             ><?= $ability["nom"] ?></a>

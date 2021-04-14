@@ -4,13 +4,14 @@ namespace app\models;
 
 use framework\Database;
 use framework\QueryBuilder;
+use PDO;
 
 class RaceModel
 {
 
-  public static $table = "races";
+  public static string $table = "races";
 
-  public static function getTypes()
+  public static function getTypes(): array
   {
     return Database::getTypes(
       "types_races",
@@ -20,7 +21,7 @@ class RaceModel
 
   }
 
-  public static function getAll()
+  public static function getAll(): array
   {
     $all = [];
     $pdo = Database::getPDO();
@@ -28,7 +29,7 @@ class RaceModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -47,12 +48,12 @@ class RaceModel
         )
       );
       $statement->execute([ $id ]);
-      $race = $statement->fetch(\PDO::FETCH_ASSOC);
+      $race = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $race;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -60,7 +61,7 @@ class RaceModel
     return $statement->execute($data);
   }
 
-  public static function update($data)
+  public static function update($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
@@ -73,7 +74,7 @@ class RaceModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($data)
+  public static function deleteOne($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
@@ -86,7 +87,7 @@ class RaceModel
     return $statement->execute([ $data ]);
   }
 
-  public static function getTraits($id)
+  public static function getTraits($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -101,7 +102,7 @@ class RaceModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveTraits($data)
@@ -149,7 +150,7 @@ class RaceModel
     $pdo->commit();
   }
 
-  public static function getAbilities($id)
+  public static function getAbilities($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -161,7 +162,7 @@ class RaceModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveAbilities($data)

@@ -5,13 +5,14 @@ namespace app\models;
 
 use framework\Database;
 use framework\QueryBuilder;
+use PDO;
 
 class PropertyModel
 {
 
-  public static $table = "proprietes_equipement";
+  public static string $table = "proprietes_equipement";
 
-  public static function getAll()
+  public static function getAll(): array
   {
     $all = [];
     $pdo = Database::getPDO();
@@ -19,7 +20,7 @@ class PropertyModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -38,12 +39,12 @@ class PropertyModel
         )
       );
       $statement->execute([ $id ]);
-      $property = $statement->fetch(\PDO::FETCH_ASSOC);
+      $property = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $property;
   }
 
-  public static function getByCategory($id)
+  public static function getByCategory($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -59,10 +60,10 @@ class PropertyModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -70,7 +71,7 @@ class PropertyModel
     return $statement->execute($data);
   }
 
-  public static function update($data)
+  public static function update($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
@@ -83,7 +84,7 @@ class PropertyModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($data)
+  public static function deleteOne($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(

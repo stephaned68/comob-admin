@@ -5,12 +5,13 @@ namespace app\models;
 
 use framework\Database;
 use framework\QueryBuilder;
+use PDO;
 
 class EquipmentModel
 {
-  public static $table = "equipement";
+  public static string $table = "equipement";
 
-  public static function getAll()
+  public static function getAll(): array
   {
     $all = [];
     $pdo = Database::getPDO();
@@ -18,12 +19,12 @@ class EquipmentModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
 
-  public static function getByCategory($category=null)
+  public static function getByCategory($category=null): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -48,12 +49,12 @@ class EquipmentModel
     $pdo = Database::getPDO();
     if ($pdo) {
       $rs = Database::getPDO()->query($sql);
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
 
-  public static function getByCategoryWithProps($category=null)
+  public static function getByCategoryWithProps($category=null): array
   {
 
     $qb = new QueryBuilder();
@@ -88,7 +89,7 @@ class EquipmentModel
     if ($pdo) {
       $pdo->exec("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
       $rs = $pdo->query($sql);
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -107,12 +108,12 @@ class EquipmentModel
         )
       );
       $statement->execute([ $id ]);
-      $equipment = $statement->fetch(\PDO::FETCH_ASSOC);
+      $equipment = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $equipment;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -120,7 +121,7 @@ class EquipmentModel
     return $statement->execute($data);
   }
 
-  public static function update($data)
+  public static function update($data): bool
   {
       $statement = Database::getPDO()->prepare(
         Database::updateQuery(
@@ -133,7 +134,7 @@ class EquipmentModel
       return $statement->execute($data);
   }
 
-  public static function deleteOne($data)
+  public static function deleteOne($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
@@ -146,7 +147,7 @@ class EquipmentModel
     return $statement->execute([$data]);
   }
 
-  public static function getProperties($id)
+  public static function getProperties($id): array
   {
 
     $qb = new QueryBuilder();
@@ -158,7 +159,7 @@ class EquipmentModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveProperties($data)

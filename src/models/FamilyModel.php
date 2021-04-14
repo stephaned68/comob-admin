@@ -3,13 +3,14 @@
 namespace app\models;
 
 use framework\Database;
+use PDO;
 
 class FamilyModel
 {
 
-  public static $table = "familles";
+  public static string $table = "familles";
 
-  public static function getAll()
+  public static function getAll(): array
   {
     $all = [];
     $pdo = Database::getPDO();
@@ -17,7 +18,7 @@ class FamilyModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -36,12 +37,12 @@ class FamilyModel
         )
       );
       $statement->execute([$id]);
-      $family = $statement->fetch(\PDO::FETCH_ASSOC);
+      $family = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $family;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -49,7 +50,7 @@ class FamilyModel
     return $statement->execute($data);
   }
 
-  public static function update($data)
+  public static function update($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
@@ -62,7 +63,7 @@ class FamilyModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($id)
+  public static function deleteOne($id): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(

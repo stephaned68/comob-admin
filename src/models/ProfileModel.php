@@ -5,12 +5,13 @@ namespace app\models;
 
 use framework\Database;
 use framework\QueryBuilder;
+use PDO;
 
 class ProfileModel
 {
-  public static $table = "profils";
+  public static string $table = "profils";
 
-  public static function getTypes()
+  public static function getTypes(): array
   {
     return [
       "0" => "Base",
@@ -18,7 +19,7 @@ class ProfileModel
     ];
   }
 
-  private static function getProfiles($family = "")
+  private static function getProfiles($family = ""): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -49,17 +50,17 @@ class ProfileModel
         $rs = $pdo->query($sql);
       }
 
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
 
-  public static function getAll()
+  public static function getAll(): array
   {
     return self::getProfiles();
   }
 
-  public static function getAllForFamily($family)
+  public static function getAllForFamily($family): array
   {
     return self::getProfiles($family);
   }
@@ -78,12 +79,12 @@ class ProfileModel
         )
       );
       $statement->execute([ $id ]);
-      $profile = $statement->fetch(\PDO::FETCH_ASSOC);
+      $profile = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $profile;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -91,7 +92,7 @@ class ProfileModel
     return $statement->execute($data);
   }
 
-  public static function update($data)
+  public static function update($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::updateQuery(
@@ -104,7 +105,7 @@ class ProfileModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($id)
+  public static function deleteOne($id): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(
@@ -117,7 +118,7 @@ class ProfileModel
     return $statement->execute([ $id ]);
   }
 
-  public static function getPaths($id)
+  public static function getPaths($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -129,7 +130,7 @@ class ProfileModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function savePaths($data)
@@ -169,7 +170,7 @@ class ProfileModel
     $pdo->commit();
   }
 
-  public static function getEquipments($id)
+  public static function getEquipments($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -187,7 +188,7 @@ class ProfileModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveEquipments($data)
@@ -237,7 +238,7 @@ class ProfileModel
     $pdo->commit();
   }
 
-  public static function getTraits($id)
+  public static function getTraits($id): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -252,7 +253,7 @@ class ProfileModel
 
     $statement = Database::getPDO()->prepare($sql);
     $statement->execute([ $id ]);
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function saveTraits($data)

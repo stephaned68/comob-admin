@@ -4,13 +4,14 @@
 namespace app\models;
 
 use framework\Database;
+use PDO;
 
 class AbilityModel
 {
 
-  public static $table = "capacites";
+  public static string $table = "capacites";
 
-  public static function getTypes()
+  public static function getTypes(): array
   {
     return Database::getTypes(
       "types_capacite",
@@ -20,7 +21,7 @@ class AbilityModel
 
   }
 
-  public static function getAll()
+  public static function getAll(): array
   {
     $all = [];
     $pdo = Database::getPDO();
@@ -28,12 +29,12 @@ class AbilityModel
       $rs = $pdo->query(
         Database::getAllQuery(self::$table)
       );
-      $all = $rs->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $rs->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
 
-  public static function getAllForType($type)
+  public static function getAllForType($type): array
   {
     $qb = Database::getAll(self::$table);
     if ($type == "" || $type == null) {
@@ -52,7 +53,7 @@ class AbilityModel
       } else {
         $statement->execute([$type]);
       }
-      $all = $statement->fetchAll(\PDO::FETCH_ASSOC);
+      $all = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     return $all;
   }
@@ -71,12 +72,12 @@ class AbilityModel
         )
       );
       $statement->execute([$id]);
-      $ability = $statement->fetch(\PDO::FETCH_ASSOC);
+      $ability = $statement->fetch(PDO::FETCH_ASSOC);
     }
     return $ability;
   }
 
-  public static function insert($data)
+  public static function insert($data): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::insertQuery(self::$table)
@@ -97,7 +98,7 @@ class AbilityModel
     return $statement->execute($data);
   }
 
-  public static function deleteOne($id)
+  public static function deleteOne($id): bool
   {
     $statement = Database::getPDO()->prepare(
       Database::deleteOneQuery(

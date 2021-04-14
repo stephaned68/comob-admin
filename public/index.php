@@ -11,33 +11,32 @@ define("VIEWS_PATH", dirname(__DIR__) . "/src/views");
 define("CONTROLLERS_PATH", dirname(__DIR__) . "/src/controllers");
 define("PUBLIC_PATH", dirname(__DIR__) . "/public");
 
-define("DATABASE", "comobdb");
+const DATABASE = "comobdb";
 
-define("DSN", "mysql:host=localhost;dbname=" . DATABASE . ";charset=UTF8");
+const DSN = "mysql:host=localhost;dbname=" . DATABASE . ";charset=UTF8";
 
-define ("DATASETS",
-  [
-    "cof" => [
-      "name" => "Fantasy"
-    ],
-    "cota" => [
-      "name" => "Terres d'Arran"
-    ],
-    "coct" => [
-      "name" => "Cthulhu"
-    ],
-    "coc" => [
-      "name" => "Contemporain"
-    ],
-    "cocy" => [
-      "name" => "Cyberpunk"
-    ],
-    "cga" => [
-      "name" => "Galactique"
-    ]
-  ]);
+const DATASETS = [
+  "cof" => [
+    "name" => "Fantasy"
+  ],
+  "cota" => [
+    "name" => "Terres d'Arran"
+  ],
+  "coct" => [
+    "name" => "Cthulhu"
+  ],
+  "coc" => [
+    "name" => "Contemporain"
+  ],
+  "cocy" => [
+    "name" => "Cyberpunk"
+  ],
+  "cga" => [
+    "name" => "Galactique"
+  ]
+];
 
-define("PAGINATION_AT", 12);
+const PAGINATION_AT = 12;
 
 require ROOT_PATH . "/vendor/autoload.php";
 
