@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mer. 17 fév. 2021 à 16:08
+-- Généré le : lun. 02 août 2021 à 05:49
 -- Version du serveur :  5.7.24
 -- Version de PHP : 7.4.7
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `comobdb`
 --
+CREATE DATABASE IF NOT EXISTS `comobdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `comobdb`;
 
 -- --------------------------------------------------------
 
@@ -38,6 +40,22 @@ CREATE TABLE IF NOT EXISTS `cga_capacites` (
   PRIMARY KEY (`capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `cga_capacites`
+--
+
+INSERT INTO `cga_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('chance-des-misereux', 'Chance des miséreux', 0, 0, 'cult', 'Vu ses origines, c’est un miracle que le personnage n’ait pas déjà été victime de maladie, de violence ou d’un simple accident. Il obtient 1 PC supplémentaire à chaque rang impair dans cette voie.'),
+('coup-etourdissant', 'Coup étourdissant', 0, 0, 'cult', 'Lorsqu’on se bat pour sa vie, il faut souvent parer au plus pressé sans faire dans la dentelle. Le personnage cherche à neutraliser son adversaire le plus vite possible. Il effectue une attaque normale. Si elle réussit, la cible n’encaisse pas de DM mais est étourdie pendant 1 round.'),
+('coup-vicieux', 'Coup vicieux', 1, 0, 'cult', 'Dans les bas-fonds, le combat est rarement honorable, et le personnage a appris à ignorer les règles traditionnelles. Une fois par combat, il peut asséner un coup vicieux. Si l’attaque est réussie, en plus des DM infligés, la DEF de la cible est pénalisée d’un malus de situation de -1 par rang pour le reste du combat.'),
+('cour-des-miracles', 'Cour des miracles', 0, 0, 'cult', 'Le personnage a acquis une certaine réputation dans le monde interlope et, lorsqu’il se trouve dans une zone populeuse, il peut à tout moment disparaître et échapper à ses poursuivants, et avec lui ses compagnons. Il peut obtenir en 1d6 heures des faux papiers et de fausses identités qui leur permettront d’échapper aux contrôles des forces de l’ordre tant que le groupe n’attire pas trop l’attention. De plus, une fois par aventure, il peut obtenir un objet sans tenir compte du fait qu’il soit d’accès restreint ou pas. Enfin, il bénéficie d’un bonus de compétence de +5 à tous ses tests d’interaction sociale avec ceux qui évoluent en marge de la société.'),
+('influence', 'Influence', 0, 0, 'cult', 'Glisser le bon billet dans la bonne poche ou simplement faire étalage de son influence permet souvent de réduire les difficultés rencontrées. Une fois par session, le personnage dispose d’un bonus de matériel de +5 sur un test opposé de CHA contre un individu dont le niveau de vie est inférieur au sien, y compris après avoir pris connaissance du résultat de l’action.'),
+('pied-a-terre', 'Pied-à-terre', 0, 0, 'cult', 'Le personnage a accès à un logement de qualité sur la plupart des planètes et stations importantes. Il s’agit généralement de quartiers appartenant à un ami ou un allié (ou bien une de leurs sociétés). L’endroit peut être discret ou ostentatoire, au gré du joueur. Il peut aussi inclure du personnel et donner accès à de l’équipement en rapport avec sa fonction, y compris de l’armement ou d’autres produits illégaux (à la discrétion du MJ).5. Relations : Une fois par session, avec l’accord du MJ, le personnage peut faire jouer ses relations et son influence pour obtenir un avantage important. Obtenir un rendez-vous avec un personnage en vue, ralentir (ou accélérer) une enquête en cours, emprunter une grosse somme, etc. 6'),
+('relations', 'Relations', 0, 0, 'cult', 'Une fois par session, avec l’accord du MJ, le personnage peut faire jouer ses relations et son influence pour obtenir un avantage important. Obtenir un rendez-vous avec un personnage en vue, ralentir (ou accélérer) une enquête en cours, emprunter une grosse somme, etc.'),
+('rente', 'Rente', 0, 0, 'cult', 'Au début de chaque aventure, vous percevez les rentes de quelque affaire dont vous avez la charge. Vous pouvez faire l’acquisition d’un bien supplémentaire correspondant à votre niveau de vie. Lorsque vous utilisez cette capacité, lancez 1d6. Sur un 1, l’objet vous attire des ennuis : dette, bien volé ou qui intéresse des concurrents ou bien des criminels, etc.'),
+('sens-de-la-confrerie', 'Sens de la confrérie', 1, 0, 'cult', 'Une fois par aventure, le personnage peut faire appel à son réseau de contacts ou tout simplement à la solidarité de ceux qui, comme lui, ont grandi dans les rues. Cette solidarité peut lui permettre de se sortir d’un mauvais pas, de bénéficier d’un coup de pouce inattendu ou d’une information vitale, ou bien encore de récupérer de ses blessures sans l’intervention d’un médecin.'),
+('vehicule-prive', 'Véhicule privé', 0, 0, 'cult', 'Une fois par aventure, le personnage peut obtenir les services temporaires d’un vaisseau de transport. Ce vaisseau appartient à un ami ou un allié (ou bien une de leurs sociétés). Il peut s’agir d’un vaisseau corporatiste ou de luxe, au gré du joueur. Toutefois, le vaisseau n’est pas armé. Il inclut les services d’un équipage. Cet équipage refuse de participer à toute action illégale ou ouvertement violente.');
+
 -- --------------------------------------------------------
 
 --
@@ -53,6 +71,22 @@ CREATE TABLE IF NOT EXISTS `cga_capacites_voies` (
   KEY `cga_capacites_voies_voie` (`voie`),
   KEY `cga_capacites_voies_capacite` (`capacite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cga_capacites_voies`
+--
+
+INSERT INTO `cga_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
+('bas-fonds', '1', 'chance-des-misereux'),
+('bas-fonds', '4', 'coup-etourdissant'),
+('bas-fonds', '2', 'coup-vicieux'),
+('bas-fonds', '5', 'cour-des-miracles'),
+('aristocratie', '2', 'influence'),
+('aristocratie', '4', 'pied-a-terre'),
+('aristocratie', '5', 'relations'),
+('aristocratie', '1', 'rente'),
+('bas-fonds', '3', 'sens-de-la-confrerie'),
+('aristocratie', '3', 'vehicule-prive');
 
 -- --------------------------------------------------------
 
@@ -205,6 +239,57 @@ CREATE TABLE IF NOT EXISTS `cga_profils` (
   PRIMARY KEY (`profil`),
   KEY `cga_profils_famille` (`famille`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cga_profils`
+--
+
+INSERT INTO `cga_profils` (`profil`, `nom`, `description`, `famille`, `type`) VALUES
+('activiste', 'Activiste', NULL, 'reflexion', '0'),
+('adepte', 'Adepte', NULL, 'action', '1'),
+('agent', 'Agent', NULL, 'aventure', '0'),
+('aristocrate', 'Aristocrate', NULL, 'reflexion', '0'),
+('artilleur', 'Artilleur', NULL, 'action', '0'),
+('artiste', 'Artiste', NULL, 'reflexion', '0'),
+('assassin', 'Assassin', NULL, 'action', '0'),
+('asteromineur', 'Astéromineur', NULL, 'aventure', '0'),
+('astrocommando', 'Astrocommando', NULL, 'action', '0'),
+('astroingenieur', 'Astroingénieur', NULL, 'reflexion', '0'),
+('astronavigateur', 'Astronavigateur', NULL, 'aventure', '0'),
+('biogeneticien', 'Biogénéticien', NULL, 'reflexion', '1'),
+('bureaucrate', 'Bureaucrate', NULL, 'reflexion', '0'),
+('chasseur-de-primes', 'Chasseur de primes', NULL, 'action', '0'),
+('colon', 'Colon', NULL, 'aventure', '0'),
+('commercant', 'Commerçant', NULL, 'aventure', '0'),
+('contrebandier', 'Contrebandier', NULL, 'aventure', '0'),
+('diplomate', 'Diplomate', NULL, 'reflexion', '0'),
+('erudit', 'Erudit', NULL, 'reflexion', '0'),
+('escroc', 'Escroc', NULL, 'aventure', '0'),
+('explorateur', 'Explorateur', NULL, 'aventure', '0'),
+('fantassin', 'Fantassin', NULL, 'action', '0'),
+('ganger', 'Ganger', NULL, 'action', '0'),
+('garde-du-corps', 'Garde du corps', NULL, 'action', '0'),
+('hacker', 'Hacker', NULL, 'reflexion', '0'),
+('hors-la-loi', 'Hors-la-loi', NULL, 'action', '0'),
+('journaliste', 'Journaliste', NULL, 'reflexion', '0'),
+('limier', 'Limier', NULL, 'action', '1'),
+('mecanicien', 'Mécanicien', NULL, 'action', '0'),
+('medecin', 'Médecin', NULL, 'reflexion', '0'),
+('mentat', 'Mentat', NULL, 'aventure', '1'),
+('mercenaire', 'Mercenaire', NULL, 'aventure', '0'),
+('missionnaire', 'Missionnaire', NULL, 'reflexion', '0'),
+('pilote-de-chasse', 'Pilote de chasse', NULL, 'action', '0'),
+('pirate', 'Pirate', NULL, 'action', '0'),
+('prescient', 'Prescient', NULL, 'reflexion', '1'),
+('psiker', 'Psiker', NULL, 'aventure', '1'),
+('psion', 'Psion', NULL, 'reflexion', '1'),
+('psitech', 'Psitech', NULL, 'aventure', '1'),
+('recuperateur', 'Récupérateur', NULL, 'aventure', '0'),
+('spectre', 'Spectre', NULL, 'action', '1'),
+('sportif-pro', 'Sportif professionnel', NULL, 'action', '0'),
+('technicien', 'Technicien', NULL, 'aventure', '0'),
+('xenoarcheologue', 'Xénoarchéologue', NULL, 'aventure', '0'),
+('xenobiologiste', 'Xénobiologiste', NULL, 'reflexion', '0');
 
 -- --------------------------------------------------------
 
@@ -393,7 +478,59 @@ CREATE TABLE IF NOT EXISTS `cga_voies` (
 --
 
 INSERT INTO `cga_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
-('humains', 'Humains', NULL, 'espe', '3');
+('aeriens', 'Aériens', NULL, 'espe', '3'),
+('androide', 'Androïde', NULL, 'espe', '2'),
+('anthropomorphes', 'Anthropomorphes', NULL, 'espe', '3'),
+('aquatiques', 'Aquatiques', NULL, 'espe', '3'),
+('arachnides', 'Arachnides', NULL, 'espe', '3'),
+('aristocratie', 'Aristocratie', NULL, 'cult', '2'),
+('armes-a-feu', 'Armes à feu', NULL, 'savf', '3'),
+('armes-energetiques', 'Armes énergétiques', NULL, 'savf', '3'),
+('armes-lourdes', 'Armes lourdes', NULL, 'savf', '3'),
+('arts', 'Arts', NULL, 'savf', '3'),
+('arts-martiaux', 'Arts martiaux', NULL, 'savf', '3'),
+('bagarre', 'Bagarre', NULL, 'savf', '1'),
+('bas-fonds', 'Bas-fonds', NULL, 'cult', '3'),
+('biokinesie', 'Biokinésie', NULL, 'psych', '1'),
+('bioorg', 'Bioorg', NULL, 'augm', '0'),
+('chronokinesie', 'Chronokinésie', NULL, 'psych', '1'),
+('clairvoyance', 'Clairvoyance', NULL, 'psych', '1'),
+('classe-moyenne', 'Classe moyenne', NULL, 'cult', '1'),
+('corporations', 'Corporations', NULL, 'cult', '3'),
+('cosmokinesie', 'Cosmokinésie', NULL, 'psych', '1'),
+('cyborg', 'Cyborg', NULL, 'augm', '0'),
+('discours', 'Discours', NULL, 'savf', '0'),
+('electrokinesie', 'Electrokinésie', NULL, 'psych', '2'),
+('electronique', 'Electronique', NULL, 'savf', '2'),
+('espace', 'Espace', NULL, 'cult', '2'),
+('exploits-physiques', 'Exploits physiques', NULL, 'savf', '3'),
+('exploration', 'Exploration', NULL, 'savf', '2'),
+('furtivite', 'Furtivité', NULL, 'savf', '1'),
+('humains', 'Humains', NULL, 'espe', '3'),
+('hybride', 'Hybride', NULL, 'augm', '2'),
+('ia', 'I.A.', NULL, 'espe', '2'),
+('insectoides', 'Insectoïdes', NULL, 'espe', '3'),
+('investigation', 'Investigation', NULL, 'savf', '2'),
+('luminescents', 'Luminescents', NULL, 'espe', '3'),
+('medecine', 'Médecine', NULL, 'savf', '1'),
+('mineraux', 'Minéraux', NULL, 'espe', '3'),
+('moteurs', 'Moteurs', NULL, 'savf', '3'),
+('panacee', 'Panacée', NULL, 'augm', '1'),
+('parasites', 'Parasites', NULL, 'espe', '3'),
+('photokinesie', 'Photokinésie', NULL, 'psych', '1'),
+('pilotage', 'Pilotage', NULL, 'savf', '0'),
+('posthumain', 'Posthumain', NULL, 'augm', '0'),
+('psychokinesie', 'Psychokinésie', NULL, 'psych', '1'),
+('psychologie', 'Psychologie', NULL, 'savf', '1'),
+('psychomachie', 'Psychomachie', NULL, 'psych', '1'),
+('quantakinesie', 'Quantakinésie', NULL, 'psych', '1'),
+('reparation', 'Réparation', NULL, 'savf', '1'),
+('reptiloides', 'Reptiloïdes', NULL, 'espe', '3'),
+('robot', 'Robot', NULL, 'espe', '0'),
+('systeme-d', 'Système D', NULL, 'cult', '0'),
+('telepathie', 'Télépathie', NULL, 'psych', '1'),
+('universitaire', 'Universitaire', NULL, 'cult', '2'),
+('vegetaux', 'Végétaux', NULL, 'espe', '3');
 
 -- --------------------------------------------------------
 
@@ -409,6 +546,147 @@ CREATE TABLE IF NOT EXISTS `cga_voies_profils` (
   KEY `cga_voies_profils_profil` (`profil`),
   KEY `cga_voies_profils_voie` (`voie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cga_voies_profils`
+--
+
+INSERT INTO `cga_voies_profils` (`profil`, `voie`) VALUES
+('activiste', 'classe-moyenne'),
+('activiste', 'discours'),
+('activiste', 'investigation'),
+('adepte', 'aristocratie'),
+('adepte', 'psychokinesie'),
+('adepte', 'psychomachie'),
+('agent', 'classe-moyenne'),
+('agent', 'electronique'),
+('agent', 'furtivite'),
+('aristocrate', 'aristocratie'),
+('aristocrate', 'arts-martiaux'),
+('aristocrate', 'discours'),
+('artilleur', 'armes-lourdes'),
+('artilleur', 'corporations'),
+('artilleur', 'reparation'),
+('artiste', 'arts'),
+('artiste', 'psychologie'),
+('artiste', 'universitaire'),
+('assassin', 'arts-martiaux'),
+('assassin', 'corporations'),
+('assassin', 'furtivite'),
+('asteromineur', 'bagarre'),
+('asteromineur', 'reparation'),
+('asteromineur', 'systeme-d'),
+('astrocommando', 'armes-energetiques'),
+('astrocommando', 'armes-lourdes'),
+('astrocommando', 'espace'),
+('astroingenieur', 'electronique'),
+('astroingenieur', 'moteurs'),
+('astroingenieur', 'universitaire'),
+('astronavigateur', 'investigation'),
+('astronavigateur', 'pilotage'),
+('astronavigateur', 'universitaire'),
+('biogeneticien', 'biokinesie'),
+('biogeneticien', 'medecine'),
+('biogeneticien', 'universitaire'),
+('bureaucrate', 'corporations'),
+('bureaucrate', 'electronique'),
+('bureaucrate', 'investigation'),
+('chasseur-de-primes', 'armes-energetiques'),
+('chasseur-de-primes', 'espace'),
+('chasseur-de-primes', 'investigation'),
+('colon', 'bagarre'),
+('colon', 'exploration'),
+('colon', 'systeme-d'),
+('commercant', 'corporations'),
+('commercant', 'discours'),
+('commercant', 'psychologie'),
+('contrebandier', 'armes-energetiques'),
+('contrebandier', 'espace'),
+('contrebandier', 'pilotage'),
+('diplomate', 'aristocratie'),
+('diplomate', 'discours'),
+('diplomate', 'psychologie'),
+('erudit', 'discours'),
+('erudit', 'exploration'),
+('erudit', 'universitaire'),
+('escroc', 'bagarre'),
+('escroc', 'corporations'),
+('escroc', 'discours'),
+('explorateur', 'espace'),
+('explorateur', 'exploration'),
+('explorateur', 'pilotage'),
+('fantassin', 'armes-energetiques'),
+('fantassin', 'corporations'),
+('fantassin', 'exploits-physiques'),
+('ganger', 'bagarre'),
+('ganger', 'bas-fonds'),
+('ganger', 'furtivite'),
+('garde-du-corps', 'armes-energetiques'),
+('garde-du-corps', 'corporations'),
+('garde-du-corps', 'psychologie'),
+('hacker', 'electronique'),
+('hacker', 'furtivite'),
+('hacker', 'systeme-d'),
+('hors-la-loi', 'armes-a-feu'),
+('hors-la-loi', 'reparation'),
+('hors-la-loi', 'systeme-d'),
+('journaliste', 'corporations'),
+('journaliste', 'furtivite'),
+('journaliste', 'investigation'),
+('limier', 'corporations'),
+('limier', 'investigation'),
+('limier', 'psychomachie'),
+('mecanicien', 'classe-moyenne'),
+('mecanicien', 'moteurs'),
+('mecanicien', 'reparation'),
+('medecin', 'medecine'),
+('medecin', 'psychologie'),
+('medecin', 'universitaire'),
+('mentat', 'chronokinesie'),
+('mentat', 'psychologie'),
+('mentat', 'systeme-d'),
+('mercenaire', 'armes-energetiques'),
+('mercenaire', 'armes-lourdes'),
+('mercenaire', 'bas-fonds'),
+('missionnaire', 'classe-moyenne'),
+('missionnaire', 'discours'),
+('missionnaire', 'medecine'),
+('pilote-de-chasse', 'armes-lourdes'),
+('pilote-de-chasse', 'espace'),
+('pilote-de-chasse', 'pilotage'),
+('pirate', 'armes-a-feu'),
+('pirate', 'espace'),
+('pirate', 'exploration'),
+('prescient', 'chronokinesie'),
+('prescient', 'clairvoyance'),
+('prescient', 'classe-moyenne'),
+('psiker', 'bas-fonds'),
+('psiker', 'cosmokinesie'),
+('psiker', 'quantakinesie'),
+('psion', 'clairvoyance'),
+('psion', 'corporations'),
+('psion', 'telepathie'),
+('psitech', 'electrokinesie'),
+('psitech', 'electronique'),
+('psitech', 'espace'),
+('recuperateur', 'espace'),
+('recuperateur', 'exploration'),
+('recuperateur', 'reparation'),
+('spectre', 'furtivite'),
+('spectre', 'photokinesie'),
+('spectre', 'systeme-d'),
+('sportif-pro', 'arts-martiaux'),
+('sportif-pro', 'exploits-physiques'),
+('sportif-pro', 'universitaire'),
+('technicien', 'classe-moyenne'),
+('technicien', 'electronique'),
+('technicien', 'reparation'),
+('xenoarcheologue', 'arts'),
+('xenoarcheologue', 'investigation'),
+('xenoarcheologue', 'universitaire'),
+('xenobiologiste', 'espace'),
+('xenobiologiste', 'exploration'),
+('xenobiologiste', 'medecine');
 
 -- --------------------------------------------------------
 
@@ -6196,8 +6474,8 @@ CREATE TABLE IF NOT EXISTS `coc_profils` (
 
 INSERT INTO `coc_profils` (`profil`, `nom`, `description`, `famille`, `type`) VALUES
 ('activiste', 'Activiste', NULL, 'coc-reflexion', '0'),
-('alchimiste', 'Alchimiste', NULL, 'magie', '0'),
-('ange', 'Ange', 'Les voies angéliques permettent de jouer un envoyé des cieux, un ange incarné sur Terre pour veiller à l’application de la loi divine, lutter contre les forces des ténèbres qui tentent de corrompre le monde et de le faire basculer dans les ténèbres. \r\nLes anges utilisent leur Mod. de CHA pour calculer leur score d’attaque magique. Les anges utilisent la règle pulp optionnelle des points de récupération (PR).', 'surhumains', '0'),
+('alchimiste', 'Alchimiste', NULL, 'magie', '1'),
+('ange', 'Ange', 'Les voies angéliques permettent de jouer un envoyé des cieux, un ange incarné sur Terre pour veiller à l’application de la loi divine, lutter contre les forces des ténèbres qui tentent de corrompre le monde et de le faire basculer dans les ténèbres. \r\nLes anges utilisent leur Mod. de CHA pour calculer leur score d’attaque magique. Les anges utilisent la règle pulp optionnelle des points de récupération (PR).', 'surhumains', '1'),
 ('archeologue', 'Archéologue', NULL, 'coc-aventure', '0'),
 ('artiste', 'Artiste', NULL, 'coc-reflexion', '0'),
 ('artiste-de-cirque', 'Artiste de cirque', NULL, 'coc-action', '0'),
@@ -6212,45 +6490,45 @@ INSERT INTO `coc_profils` (`profil`, `nom`, `description`, `famille`, `type`) VA
 ('commando', 'Commando', NULL, 'coc-action', '0'),
 ('criminel', 'Criminel', NULL, 'coc-action', '0'),
 ('dandy', 'Dandy', NULL, 'coc-reflexion', '0'),
-('demon', 'Démon', 'Les démons sont le reflet négatif des anges. D’ailleurs, ces derniers seraient beaucoup moins drôles à jouer si leurs ennemis jurés n’existaient pas. Les questions fondamentales qui s’appliquent à l’incarnation des anges - corps occupés, souvenirs, supérieurs hiérarchiques - se posent de façon similaire pour les forces du mal. Le débat autour de l’origine du mal est également un sujet de discussion intéressant. Dans la version la plus classique, le grand Satan luimême est un ange déchu.\r\nLes démons utilisent le Mod. de CHA pour calculer leur score d’attaque magique.', 'surhumains', '0'),
+('demon', 'Démon', 'Les démons sont le reflet négatif des anges. D’ailleurs, ces derniers seraient beaucoup moins drôles à jouer si leurs ennemis jurés n’existaient pas. Les questions fondamentales qui s’appliquent à l’incarnation des anges - corps occupés, souvenirs, supérieurs hiérarchiques - se posent de façon similaire pour les forces du mal. Le débat autour de l’origine du mal est également un sujet de discussion intéressant. Dans la version la plus classique, le grand Satan luimême est un ange déchu.\r\nLes démons utilisent le Mod. de CHA pour calculer leur score d’attaque magique.', 'surhumains', '1'),
 ('dilettante', 'Dilettante', NULL, 'coc-reflexion', '0'),
 ('ecrivain', 'Ecrivain', NULL, 'coc-reflexion', '0'),
-('elementaliste', 'Elementaliste', NULL, 'magie', '0'),
+('elementaliste', 'Elementaliste', NULL, 'magie', '1'),
 ('erudit', 'Erudit', NULL, 'coc-reflexion', '0'),
 ('espion', 'Espion', NULL, 'coc-aventure', '0'),
-('etre-feerique', 'Être féerique', 'Les êtres féeriques sont les plus discrets de tous les Surhumains. Il est difficile de les reconnaître et encore plus difficile pour le commun des mortels de se souvenir d’eux. Lorsqu’il traverse le voile pour exister dans le monde des hommes, un être féerique dissimule son ascendance en prenant forme humaine. Chaque ascendance féerique détermine des pouvoirs particuliers, mais seuls les êtres féeriques les plus puissants sont capables de les exprimer dans le monde ordinaire.\r\nUn personnage féerique est caractérisé de façon normale par sa voie première de Surhumain : la Voie du voile. Puis chaque être féerique possède une ascendance unique qui correspond à la race ancienne qui coule dans ses veines. Le joueur ne peut choisir qu’une seule des voies d’ascendance décrites ci-après. La troisième voie de Surhumain est une voie arcanique, l’antique magie des êtres féeriques, adaptée pour exister dans le monde des hommes. Chacune d’elle correspond à une des couleurs principales de l’héraldique (or : jaune, argent : blanc, azur : bleu, sinople : vert, gueules : rouge, sable : noir).', 'surhumains', '0'),
-('exorciste', 'Exorciste', NULL, 'magie', '0'),
+('etre-feerique', 'Être féerique', 'Les êtres féeriques sont les plus discrets de tous les Surhumains. Il est difficile de les reconnaître et encore plus difficile pour le commun des mortels de se souvenir d’eux. Lorsqu’il traverse le voile pour exister dans le monde des hommes, un être féerique dissimule son ascendance en prenant forme humaine. Chaque ascendance féerique détermine des pouvoirs particuliers, mais seuls les êtres féeriques les plus puissants sont capables de les exprimer dans le monde ordinaire.\r\nUn personnage féerique est caractérisé de façon normale par sa voie première de Surhumain : la Voie du voile. Puis chaque être féerique possède une ascendance unique qui correspond à la race ancienne qui coule dans ses veines. Le joueur ne peut choisir qu’une seule des voies d’ascendance décrites ci-après. La troisième voie de Surhumain est une voie arcanique, l’antique magie des êtres féeriques, adaptée pour exister dans le monde des hommes. Chacune d’elle correspond à une des couleurs principales de l’héraldique (or : jaune, argent : blanc, azur : bleu, sinople : vert, gueules : rouge, sable : noir).', 'surhumains', '1'),
+('exorciste', 'Exorciste', NULL, 'magie', '1'),
 ('explorateur', 'Explorateur', NULL, 'coc-aventure', '0'),
 ('garde-du-corps', 'Garde du corps', NULL, 'coc-action', '0'),
-('guerisseur', 'Guérisseur', NULL, 'magie', '0'),
-('herboriste', 'Herboriste', NULL, 'magie', '0'),
+('guerisseur', 'Guérisseur', NULL, 'magie', '1'),
+('herboriste', 'Herboriste', NULL, 'magie', '1'),
 ('humanitaire', 'Humanitaire', NULL, 'coc-aventure', '0'),
-('illusionniste', 'Illusionniste', NULL, 'magie', '0'),
+('illusionniste', 'Illusionniste', NULL, 'magie', '1'),
 ('inspecteur', 'Inspecteur', NULL, 'coc-aventure', '0'),
 ('inventeur', 'Inventeur', NULL, 'coc-aventure', '0'),
-('invocateur', 'Invocateur', NULL, 'magie', '0'),
+('invocateur', 'Invocateur', NULL, 'magie', '1'),
 ('journaliste', 'Journaliste', NULL, 'coc-aventure', '0'),
 ('linguiste', 'Linguiste', NULL, 'coc-reflexion', '0'),
-('loup-garou', 'Loup-garou', 'Les loups-garous naturels sont porteurs du don lunaire depuis leur naissance car un de leur parent était lui-même un loup-garou. L’enfant né d’un loup-garou ne montre pas de signe particulier jusqu’à la puberté, puis vient la nuit de sa première transformation en loup. Cette nuit revêt un caractère important puisque de la phase de la lune ce jour-là dépendront ses pouvoirs et sa fonction dans le clan. En effet, les loups-garous ont tendance à se regrouper en groupes très hiérarchisés, l’équivalent d’une meute de loups.\r\nTous les personnages loups-garous obtiennent la voie première du loup-garou. Ensuite, le joueur doit choisir un aspect lunaire parmi les cinq existants, chaque aspect correspond à la phase de la lune pendant laquelle le personnage s’est transformé pour la première fois en loup. Pour terminer, il choisit une voie parmi les six voies de lycanthrope. \r\nLe MJ peut aussi décider de déterminer l’aspect lunaire de chaque loup-garou au hasard. Lancez 1d8 : 1. Nouvelle lune, 2-3. Croissant de lune. 4-5. Quartier de lune. 6-7. Lune gibbeuse. 8. Pleine lune. \r\nLes loups-garous utilisent leur Mod. de PER pour calculer leur score d’attaque magique.', 'surhumains', '0'),
+('loup-garou', 'Loup-garou', 'Les loups-garous naturels sont porteurs du don lunaire depuis leur naissance car un de leur parent était lui-même un loup-garou. L’enfant né d’un loup-garou ne montre pas de signe particulier jusqu’à la puberté, puis vient la nuit de sa première transformation en loup. Cette nuit revêt un caractère important puisque de la phase de la lune ce jour-là dépendront ses pouvoirs et sa fonction dans le clan. En effet, les loups-garous ont tendance à se regrouper en groupes très hiérarchisés, l’équivalent d’une meute de loups.\r\nTous les personnages loups-garous obtiennent la voie première du loup-garou. Ensuite, le joueur doit choisir un aspect lunaire parmi les cinq existants, chaque aspect correspond à la phase de la lune pendant laquelle le personnage s’est transformé pour la première fois en loup. Pour terminer, il choisit une voie parmi les six voies de lycanthrope. \r\nLe MJ peut aussi décider de déterminer l’aspect lunaire de chaque loup-garou au hasard. Lancez 1d8 : 1. Nouvelle lune, 2-3. Croissant de lune. 4-5. Quartier de lune. 6-7. Lune gibbeuse. 8. Pleine lune. \r\nLes loups-garous utilisent leur Mod. de PER pour calculer leur score d’attaque magique.', 'surhumains', '1'),
 ('majordome', 'Majordome', NULL, 'coc-reflexion', '0'),
-('manipulateur', 'Manipulateur', NULL, 'magie', '0'),
+('manipulateur', 'Manipulateur', NULL, 'magie', '1'),
 ('medecin', 'Médecin', NULL, 'coc-reflexion', '0'),
 ('militaire', 'Militaire', NULL, 'coc-action', '0'),
 ('missionnaire', 'Missionnaire', NULL, 'coc-reflexion', '0'),
-('musicien', 'Musicien', NULL, 'magie', '0'),
-('mutant-endogene', 'Mutant endogène', 'Les mutants endogènes exercent leurs pouvoirs sur eux-mêmes.\r\nIls utilisent leur Mod. de CHA pour calculer leur score d’attaque magique.', 'surhumains', '0'),
-('mutant-exogene', 'Mutant exogène', 'Les mutants exogènes exercent leurs pouvoirs sur l’environnement.\r\nIls utilisent leur Mod. de PER pour calculer leur score d’attaque magique.', 'surhumains', '0'),
-('mutant-psychogene', 'Mutant psychogène', 'Les mutants psychogènes exercent leur pouvoir sur l’esprit.\r\nIls utilisent leur Mod. d’INT pour calculer leur score d’attaque magique.', 'surhumains', '0'),
+('musicien', 'Musicien', NULL, 'magie', '1'),
+('mutant-endogene', 'Mutant endogène', 'Les mutants endogènes exercent leurs pouvoirs sur eux-mêmes.\r\nIls utilisent leur Mod. de CHA pour calculer leur score d’attaque magique.', 'surhumains', '1'),
+('mutant-exogene', 'Mutant exogène', 'Les mutants exogènes exercent leurs pouvoirs sur l’environnement.\r\nIls utilisent leur Mod. de PER pour calculer leur score d’attaque magique.', 'surhumains', '1'),
+('mutant-psychogene', 'Mutant psychogène', 'Les mutants psychogènes exercent leur pouvoir sur l’esprit.\r\nIls utilisent leur Mod. d’INT pour calculer leur score d’attaque magique.', 'surhumains', '1'),
 ('ouvrier', 'Ouvrier', NULL, 'coc-aventure', '0'),
 ('pilote', 'Pilote', NULL, 'coc-action', '0'),
 ('pompier', 'Pompier', NULL, 'coc-action', '0'),
-('savant', 'Savant', NULL, 'magie', '0'),
+('savant', 'Savant', NULL, 'magie', '1'),
 ('scientifique', 'Scientifique', NULL, 'coc-reflexion', '0'),
-('sorcier', 'Sorcier', NULL, 'magie', '0'),
+('sorcier', 'Sorcier', NULL, 'magie', '1'),
 ('specialiste-milieux-', 'Spécialiste des milieux extrêmes', NULL, 'coc-action', '0'),
 ('sportif-haut-niveau', 'Sportif de haut niveau', NULL, 'coc-action', '0'),
-('vampire', 'Vampire', 'Un être humain qui s’est entièrement fait drainer de ses fluides vitaux et a subi le baiser vampirique se transforme en vampire. Il présente tous les signes de la mort, mais sortira de la tombe à la prochaine nuit tombée. Pour se relever comme vampire, il faut impérativement disposer d’un point dans la Voie du vampire (un personnage peut gagner cette capacité immédiatement pour en bénéficier en jeu et payer le point de capacité au prochain passage de niveau).\r\nLes vampires utilisent leur Mod. d’INT pour calculer leur score d’attaque magique.', 'surhumains', '0'),
-('voyante', 'Voyante', NULL, 'magie', '0');
+('vampire', 'Vampire', 'Un être humain qui s’est entièrement fait drainer de ses fluides vitaux et a subi le baiser vampirique se transforme en vampire. Il présente tous les signes de la mort, mais sortira de la tombe à la prochaine nuit tombée. Pour se relever comme vampire, il faut impérativement disposer d’un point dans la Voie du vampire (un personnage peut gagner cette capacité immédiatement pour en bénéficier en jeu et payer le point de capacité au prochain passage de niveau).\r\nLes vampires utilisent leur Mod. d’INT pour calculer leur score d’attaque magique.', 'surhumains', '1'),
+('voyante', 'Voyante', NULL, 'magie', '1');
 
 -- --------------------------------------------------------
 
@@ -11563,7 +11841,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('armure-sainte-de-bro', 'Armure sainte de bronze', 0, 0, 'prest', 'Le moine acquiert son armure sainte. Celle-ci se présente sous la forme d\'un cube de métal d\'environ 50 cm d\'arête pour 10 kg, portant son symbole. Sur un simple mot de commande (Action Limitée), l\'armure se déploie et recouvre le corps du moine. Elle lui octroie un bonus de DEF de +4 et ne lui inflige aucune pénalité d\'encombrement. Ce bonus ne se cumule pas à Peau de Fer.'),
 ('armure-sur-mesure', 'Armure sur mesure', 0, 0, '', 'L\'armure du chevalier est parfaitement ajustée, aussi il n\'ajoute que la moitié de sa DEF à la difficulté des tests pour lesquels l\'armure inflige une pénalité (de même pour les casques).'),
 ('arret-du-temps', 'Arrêt du temps', 1, 1, '', 'Le magicien arrête le temps pendant [1d6 + Mod. d\'INT] tours. Seul le magicien peut agir à sa guise pendant cette période, lancer des sorts sur lui-même, se déplacer et déplacer des objets, tant qu\'il ne touche pas un être vivant ou n\'interagit pas avec lui (en lui lançant un sort par exemple). Dans le cas d\'un contact (même magique), le temps reprend instantanément son cours normal.'),
-('artefact-etrange', 'Artéfact étrange', 0, 0, '', 'Le forgesort crée un artéfact qu\'il est le seul à pouvoir utiliser et dont la description est laissée au soin du joueur. L\'artéfact permet d\'utiliser les capacités suivantes chacune une fois par jour : Téléportation (Rang 4, Voie des arcanes), Arrêt du temps (Rang 5, Voie de la magie protectrice), Forme éthérée (Rang 5, Voie de l\'air), Prescience (Rang 4, Voie de la divination).'),
+('artefact-etrange', 'Artefact étrange', 0, 0, '', 'Le forgesort crée un artefact qu\'il est le seul à pouvoir utiliser et dont la description est laissée au soin du joueur. L\'artefact permet d\'utiliser les capacités suivantes chacune une fois par jour : Téléportation (Rang 4, Voie des arcanes), Arrêt du temps (Rang 5, Voie de la magie protectrice), Forme éthérée (Rang 5, Voie de l\'air), Prescience (Rang 4, Voie de la divination).'),
 ('artefacts-d-exceptio', 'Artefacts d\'exception', 0, 0, 'prest', 'Les Voies de forgesort ne permettent pas de créer d\'objet avec un niveau de magie supérieur à 5. Désormais, le personnage peut cumuler sur un même objet les effets des capacités Artefact majeur, Rune de pouvoir ou encore Propriétés étranges pour un niveau de magie total égal au maximum à son niveau divisé par 2.'),
 ('as-de-la-gachette', 'As de la gâchette', 0, 0, '', 'Lorsqu\'il atteint une DEF de 25 ou plus sur son attaque à distance avec une arme à poudre ou une arbalète, l\'arquebusier ajoute +1d6 aux DM de son attaque.'),
 ('ascendance-draconiqu', 'Ascendance draconique', 0, 0, 'prest', 'Choisissez une couleur de dragon pour l\'ascendance de votre personnage. L\'ensorceleur obtient une réduction des DM de 5 points correspondant au type d\'énergie utilisé par le souffle du dragon. Cette résistance passe à 10 au Rang 4 de la Voie.'),
@@ -12006,7 +12284,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('lien-de-sang', 'Lien de sang', 1, 1, '', 'En réussissant un test d\'attaque magique (portée 20 m), le nécromancien tisse un lien avec sa victime. Pendant [5 + Mod. d\'INT] tours, la moitié des DM reçus par le nécromancien sont également subis par la cible et le nécromancien peut lui lancer un sort sans la voir.'),
 ('lien-epique', 'Lien épique', 0, 0, 'epic', 'Au moins deux personnages doivent choisir simultanément cette capacité, réservée à ceux qui ont traversé de nombreuses épreuves ensemble et progressé du statut de jeune aventurier à celui de héros en s\'épaulant mutuellement. À travers un rituel magique, ils deviennent indéfectiblement liés. Ils peuvent communiquer par télépathie, se guérir mutuellement en se touchant et en transférant les DM (action de mouvement) et enfin se téléporter auprès d\'un compagnon lié une fois par jour (action limitée). En combat, chacun d\'eux obtient un bonus de +1d6 DM lorsqu\'ils attaquent la même cible avec la même initiative.'),
 ('lien-magique', 'Lien magique', 0, 0, '', 'L’invocateur peut communiquer par télépathie avec son entité, quelle que soit la distance qui les sépare. Lorsque l’entité subit des DM, l’invocateur peut choisir de\nsacrifer ses propres PV pour protéger son entité. Inversement, si l’invocateur subit des DM, il peut les transférer à son entité, mais dans ce cas, les DM subis par celle-ci sont doublés. Enfin, grâce au lien avec l’invocateur, la créature peut toucher et attaquer des cibles protégées normalement du contact des créatures invoquées.'),
-('lien-magique-amelior', 'Lien magique amélioré', 0, 0, '', 'Le lien entre l’invocateur et l’entité est tel qu’ils peuvent se téléporter ou échanger leurs places. Au prix d’une action de mouvement, l’invocateur peut utiliser une action de son choix : téléporter son entité à son contact, se téléporter au contact de son entité ou enfn, échanger sa place avec son entité.'),
+('lien-magique-amelior', 'Lien magique amélioré', 0, 0, '', 'Le lien entre l’invocateur et l’entité est tel qu’ils peuvent se téléporter ou échanger leurs places. Au prix d’une action de mouvement, l’invocateur peut utiliser une action de son choix : téléporter son entité à son contact, se téléporter au contact de son entité ou enfin, échanger sa place avec son entité.'),
 ('lien-spirituel', 'Lien spirituel', 0, 0, 'prest', 'Le personnage est lié à son arme par une puissante magie. Une fois par jour, où qu’elle soit, il peut rappeler l’arme à lui par une action de mouvement, elle se téléporte alors immédiatement dans sa main. Si une autre créature tient l’arme en main à ce moment-là, il doit emporter un test d’attaque au contact opposé. En cas d’échec, l’arme reste en possession de la créature.'),
 ('lilliputien', 'Lilliputien', 1, 1, '', 'Le personnage rapetisse jusqu’à devenir plus petit que son familier (entre 10 et 30 cm, minuscule ou très petit). La transformation dans un sens ou dans l’autre demande 1 tour complet. Sa durée est illimitée. Sous cette forme, le personnage obtient la même réduction aux DM que le familier (RD 5), il gagne un bonus de +10 aux tests de discrétion et peut passer dans des espaces très réduits. En revanche, ses DM sont réduits à 1 point par attaque réussie et ses sorts n’affectent aucune créature de taille supérieure à Très Petite. Ses déplacements sont réduits à 10 m par action de mouvement, sauf s’il chevauche son familier. Le familier est très endurant et lui permet de couvrir une distance de 5 km par heure pendant un maximum de 10 heures par jour (pour un total de 50 km/jour) quel que soit le terrain. Cette distance est doublée si le familier est une créature volante (100 km/jour).'),
 ('lire-les-pensees', 'Lire les pensées', 0, 0, 'epic', 'S\'il réussit un test d\'attaque magique opposé contre une créature de niveau inférieur au sien, le personnage entend les pensées de la cible, pendant [1d6 + Mod. d\'INT] tours (portée 20 m). Il ne peut fouiller dans sa mémoire, seulement savoir ce qu\'elle pense à ce moment là. En combat, le personnage obtient un bonus de +5 en DEF contre les attaques portées par la cible du sort.'),
@@ -12068,7 +12346,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('moins-que-rien', 'Moins que rien', 0, 0, '', 'Le personnage subit un malus de -5 aux tests d\'interaction sociale avec les gens de la bonne société et gagne un bonus de +5 pour ses tests auprès des autres miséreux. Il obtient également un bonus de +5 aux tests de discrétion et on ne se rappelle généralement pas de lui. Tous les misérables se ressemblent, non ?'),
 ('moment-de-gloire', 'Moment de gloire', 0, 0, 'epic', 'Une fois par aventure, le personnage peut accéder à un état second qui lui permet de réussir des exploits improbables que l\'on contera dans les chansons de gestes. Pendant un combat complet, soit jusqu\'à la destruction de tous ses ennemis ou sa propre défaite, il bénéficie d\'un bonus de +5 à tous les résultats de ses dés (d\'attaque, de tests de caractéristiques, de DM) et divise par deux tous les DM subis.'),
 ('moment-de-perfection', 'Moment de perfection', 0, 0, '', 'Une fois par combat, le moine peut choisir de réussir toutes ses attaques automatiquement et d\'esquiver toutes celles qui le prennent pour cible pendant un tour. Tout semble aller au ralenti autour de lui...'),
-('moment-zen', 'Moment zen', 0, 0, '', 'Le seigneur est capable d’atteindre la paix intérieure même dans les moments les plus stressants. Désormais, il est capable de prendre 10, même en situation stressante et il lui faut seulement 2d6 tours (au lieu de 2d6 minutes). Il lui faut seulement 2d6 minutes pour prendre 20 (au lieu de 2d6 heures). De plus, lorsqu’il prend 10, il ajoute toujours son Mod. de SAG au résultat en plus du Mod. de Carac. prévu initialement pour le test. Le seigneur est enfn capable de prendre 10 sur une action d’attaque au prix d’une action limitée (L) jusqu’à 3 fois par combat.'),
+('moment-zen', 'Moment zen', 0, 0, '', 'Le seigneur est capable d’atteindre la paix intérieure même dans les moments les plus stressants. Désormais, il est capable de prendre 10, même en situation stressante et il lui faut seulement 2d6 tours (au lieu de 2d6 minutes). Il lui faut seulement 2d6 minutes pour prendre 20 (au lieu de 2d6 heures). De plus, lorsqu’il prend 10, il ajoute toujours son Mod. de SAG au résultat en plus du Mod. de Carac. prévu initialement pour le test. Le seigneur est enfin capable de prendre 10 sur une action d’attaque au prix d’une action limitée (L) jusqu’à 3 fois par combat.'),
 ('monture-epique', 'Monture épique', 0, 0, 'epic', 'Le personnage obtient une monture extraordinaire dont le NC ne doit pas dépasser la moitié de son niveau. La monture comprend des ordres simples en fonction de son intelligence. Lorsque le personnage chevauche sa monture, il peut la faire attaquer au prix d\'une action de mouvement à sa propre initiative. Si le personnage est un chevalier et qu\'il possède des Rangs dans la Voie du cavalier, il applique les avantages de toutes ses capacités à cette monture et peut ajouter son Rang dans la Voie au NC maximum de sa monture.'),
 ('monture-fantastique', 'Monture fantastique', 0, 0, '', 'Le chevalier obtient une monture volante (pégase, griffon, hippogriffe, drake, etc.). Lorsqu\'il est en selle, le chevalier peut faire attaquer sa monture une fois par tour (action gratuite), à la même Initiative que lui, avec un score d\'attaque égal à son niveau +3. En vol, la monture couvre une distance de 50 m par action de déplacement. Les capacités de la Monture magique s\'appliquent également.Monture fantastique : Init 15, DEF 16, PV 20 + [2 x niveau], Att +8, DM 1d6+4'),
 ('monture-feerique', 'Monture féerique', 1, 0, 'race', 'Le personnage apprivoise un animal qui lui sert de monture, souvent une monture volante comme un aigle pour un lutin et une monture terrestre comme un loup ou une panthère pour une fée.'),
@@ -13869,7 +14147,7 @@ INSERT INTO `cof_equipement_proprietes` (`code_equipement`, `code_propriete`, `v
 ('petoire', 'recharge', '1 action limitée'),
 ('pique', 'critique', '20'),
 ('pique', 'dm2m', '1d8'),
-('plaque-complete', 'def', '8'),
+('plaque-complete', 'def', '7'),
 ('rapiere', 'critique', '19'),
 ('rapiere', 'dm1m', '1d6'),
 ('sabre-de-bois', 'critique', '19'),
