@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : lun. 02 août 2021 à 05:49
--- Version du serveur :  5.7.24
--- Version de PHP : 7.4.7
+-- Généré le : sam. 18 juin 2022 à 16:16
+-- Version du serveur : 5.7.24
+-- Version de PHP : 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,673 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `comobdb`
 --
-CREATE DATABASE IF NOT EXISTS `comobdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `comobdb`;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_capacites`
---
-
-DROP TABLE IF EXISTS `cga_capacites`;
-CREATE TABLE IF NOT EXISTS `cga_capacites` (
-  `capacite` varchar(20) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `limitee` tinyint(1) DEFAULT NULL,
-  `sort` tinyint(1) DEFAULT NULL,
-  `type` varchar(5) DEFAULT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_capacites`
---
-
-INSERT INTO `cga_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
-('chance-des-misereux', 'Chance des miséreux', 0, 0, 'cult', 'Vu ses origines, c’est un miracle que le personnage n’ait pas déjà été victime de maladie, de violence ou d’un simple accident. Il obtient 1 PC supplémentaire à chaque rang impair dans cette voie.'),
-('coup-etourdissant', 'Coup étourdissant', 0, 0, 'cult', 'Lorsqu’on se bat pour sa vie, il faut souvent parer au plus pressé sans faire dans la dentelle. Le personnage cherche à neutraliser son adversaire le plus vite possible. Il effectue une attaque normale. Si elle réussit, la cible n’encaisse pas de DM mais est étourdie pendant 1 round.'),
-('coup-vicieux', 'Coup vicieux', 1, 0, 'cult', 'Dans les bas-fonds, le combat est rarement honorable, et le personnage a appris à ignorer les règles traditionnelles. Une fois par combat, il peut asséner un coup vicieux. Si l’attaque est réussie, en plus des DM infligés, la DEF de la cible est pénalisée d’un malus de situation de -1 par rang pour le reste du combat.'),
-('cour-des-miracles', 'Cour des miracles', 0, 0, 'cult', 'Le personnage a acquis une certaine réputation dans le monde interlope et, lorsqu’il se trouve dans une zone populeuse, il peut à tout moment disparaître et échapper à ses poursuivants, et avec lui ses compagnons. Il peut obtenir en 1d6 heures des faux papiers et de fausses identités qui leur permettront d’échapper aux contrôles des forces de l’ordre tant que le groupe n’attire pas trop l’attention. De plus, une fois par aventure, il peut obtenir un objet sans tenir compte du fait qu’il soit d’accès restreint ou pas. Enfin, il bénéficie d’un bonus de compétence de +5 à tous ses tests d’interaction sociale avec ceux qui évoluent en marge de la société.'),
-('influence', 'Influence', 0, 0, 'cult', 'Glisser le bon billet dans la bonne poche ou simplement faire étalage de son influence permet souvent de réduire les difficultés rencontrées. Une fois par session, le personnage dispose d’un bonus de matériel de +5 sur un test opposé de CHA contre un individu dont le niveau de vie est inférieur au sien, y compris après avoir pris connaissance du résultat de l’action.'),
-('pied-a-terre', 'Pied-à-terre', 0, 0, 'cult', 'Le personnage a accès à un logement de qualité sur la plupart des planètes et stations importantes. Il s’agit généralement de quartiers appartenant à un ami ou un allié (ou bien une de leurs sociétés). L’endroit peut être discret ou ostentatoire, au gré du joueur. Il peut aussi inclure du personnel et donner accès à de l’équipement en rapport avec sa fonction, y compris de l’armement ou d’autres produits illégaux (à la discrétion du MJ).5. Relations : Une fois par session, avec l’accord du MJ, le personnage peut faire jouer ses relations et son influence pour obtenir un avantage important. Obtenir un rendez-vous avec un personnage en vue, ralentir (ou accélérer) une enquête en cours, emprunter une grosse somme, etc. 6'),
-('relations', 'Relations', 0, 0, 'cult', 'Une fois par session, avec l’accord du MJ, le personnage peut faire jouer ses relations et son influence pour obtenir un avantage important. Obtenir un rendez-vous avec un personnage en vue, ralentir (ou accélérer) une enquête en cours, emprunter une grosse somme, etc.'),
-('rente', 'Rente', 0, 0, 'cult', 'Au début de chaque aventure, vous percevez les rentes de quelque affaire dont vous avez la charge. Vous pouvez faire l’acquisition d’un bien supplémentaire correspondant à votre niveau de vie. Lorsque vous utilisez cette capacité, lancez 1d6. Sur un 1, l’objet vous attire des ennuis : dette, bien volé ou qui intéresse des concurrents ou bien des criminels, etc.'),
-('sens-de-la-confrerie', 'Sens de la confrérie', 1, 0, 'cult', 'Une fois par aventure, le personnage peut faire appel à son réseau de contacts ou tout simplement à la solidarité de ceux qui, comme lui, ont grandi dans les rues. Cette solidarité peut lui permettre de se sortir d’un mauvais pas, de bénéficier d’un coup de pouce inattendu ou d’une information vitale, ou bien encore de récupérer de ses blessures sans l’intervention d’un médecin.'),
-('vehicule-prive', 'Véhicule privé', 0, 0, 'cult', 'Une fois par aventure, le personnage peut obtenir les services temporaires d’un vaisseau de transport. Ce vaisseau appartient à un ami ou un allié (ou bien une de leurs sociétés). Il peut s’agir d’un vaisseau corporatiste ou de luxe, au gré du joueur. Toutefois, le vaisseau n’est pas armé. Il inclut les services d’un équipage. Cet équipage refuse de participer à toute action illégale ou ouvertement violente.');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_capacites_voies`
---
-
-DROP TABLE IF EXISTS `cga_capacites_voies`;
-CREATE TABLE IF NOT EXISTS `cga_capacites_voies` (
-  `voie` varchar(20) NOT NULL,
-  `rang` varchar(1) NOT NULL,
-  `capacite` varchar(20) NOT NULL,
-  PRIMARY KEY (`voie`,`rang`),
-  KEY `cga_capacites_voies_voie` (`voie`),
-  KEY `cga_capacites_voies_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_capacites_voies`
---
-
-INSERT INTO `cga_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
-('bas-fonds', '1', 'chance-des-misereux'),
-('bas-fonds', '4', 'coup-etourdissant'),
-('bas-fonds', '2', 'coup-vicieux'),
-('bas-fonds', '5', 'cour-des-miracles'),
-('aristocratie', '2', 'influence'),
-('aristocratie', '4', 'pied-a-terre'),
-('aristocratie', '5', 'relations'),
-('aristocratie', '1', 'rente'),
-('bas-fonds', '3', 'sens-de-la-confrerie'),
-('aristocratie', '3', 'vehicule-prive');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_categories_equipement`
---
-
-DROP TABLE IF EXISTS `cga_categories_equipement`;
-CREATE TABLE IF NOT EXISTS `cga_categories_equipement` (
-  `code` varchar(20) NOT NULL,
-  `libelle` varchar(50) NOT NULL,
-  `parent` varchar(20) DEFAULT NULL,
-  `sequence` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`code`),
-  KEY `cga_categories_equipemet_parent` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_categories_equipement`
---
-
-INSERT INTO `cga_categories_equipement` (`code`, `libelle`, `parent`, `sequence`) VALUES
-('armes', 'Armes', NULL, '0005'),
-('armes-a-feu', 'Armes à feu', 'armes', '0015'),
-('armes-archaiques', 'Armes archaïques', 'armes', '0005'),
-('armes-de-contact', 'Armes de contact', 'armes', '0010'),
-('armes-ioniques', 'Armes ioniques', 'armes', '0020'),
-('armes-laser', 'Armes laser', 'armes', '0025'),
-('armes-lourdes', 'Armes lourdes', 'armes', '0035'),
-('armes-plasma', 'Armes plasma', 'armes', '0025'),
-('armes-soniques', 'Armes soniques', 'armes', '0030'),
-('armures', 'Armures', 'protections', '0005'),
-('augmentations', 'Augmentations', NULL, '0020'),
-('champs-de-force', 'Champs de force', 'protections', '0010'),
-('combinaisons', 'Combinaisons', 'protections', '0015'),
-('divers', 'Divers', NULL, '0015'),
-('drogues', 'Drogues', NULL, '0025'),
-('drones', 'Drones', 'divers', '0035'),
-('logement', 'Logement', 'divers', '0010'),
-('medical', 'Medical', 'divers', '0025'),
-('nourriture', 'Nourriture', 'divers', '0015'),
-('protections', 'Protections', NULL, '0010'),
-('robots', 'Robots', 'divers', '0030'),
-('utilitaires', 'Utilitaires', 'divers', '0020'),
-('vetements', 'Vêtements', 'divers', '0005');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_categories_proprietes`
---
-
-DROP TABLE IF EXISTS `cga_categories_proprietes`;
-CREATE TABLE IF NOT EXISTS `cga_categories_proprietes` (
-  `code_categorie` varchar(20) NOT NULL,
-  `code_propriete` varchar(20) NOT NULL,
-  PRIMARY KEY (`code_categorie`,`code_propriete`),
-  KEY `cga_categories_proprietes_categorie` (`code_categorie`),
-  KEY `cga_categories_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_equipement`
---
-
-DROP TABLE IF EXISTS `cga_equipement`;
-CREATE TABLE IF NOT EXISTS `cga_equipement` (
-  `code` varchar(20) NOT NULL,
-  `designation` varchar(50) NOT NULL,
-  `categorie` varchar(20) NOT NULL,
-  `sequence` varchar(5) DEFAULT NULL,
-  `prix` decimal(16,2) DEFAULT NULL,
-  `notes` mediumtext,
-  PRIMARY KEY (`code`),
-  KEY `cga_equipement_categorie` (`categorie`),
-  KEY `cga_equipement_sequence_idx` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_equipement_profils`
---
-
-DROP TABLE IF EXISTS `cga_equipement_profils`;
-CREATE TABLE IF NOT EXISTS `cga_equipement_profils` (
-  `profil` varchar(20) NOT NULL,
-  `sequence` tinyint(4) NOT NULL,
-  `equipement` varchar(20) NOT NULL,
-  `nombre` tinyint(1) NOT NULL DEFAULT '1',
-  `special` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`profil`,`sequence`),
-  KEY `cga_equipement_profils_equipement` (`equipement`),
-  KEY `cga_equipement_profils_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_equipement_proprietes`
---
-
-DROP TABLE IF EXISTS `cga_equipement_proprietes`;
-CREATE TABLE IF NOT EXISTS `cga_equipement_proprietes` (
-  `code_equipement` varchar(20) NOT NULL,
-  `code_propriete` varchar(20) NOT NULL,
-  `valeur` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`code_equipement`,`code_propriete`),
-  KEY `cga_equipement_proprietes_equipement` (`code_equipement`),
-  KEY `cga_equipement_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_familles`
---
-
-DROP TABLE IF EXISTS `cga_familles`;
-CREATE TABLE IF NOT EXISTS `cga_familles` (
-  `famille` varchar(20) NOT NULL,
-  `description` varchar(50) NOT NULL,
-  PRIMARY KEY (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_familles`
---
-
-INSERT INTO `cga_familles` (`famille`, `description`) VALUES
-('action', 'Action'),
-('aventure', 'Aventure'),
-('reflexion', 'Réflexion');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_profils`
---
-
-DROP TABLE IF EXISTS `cga_profils`;
-CREATE TABLE IF NOT EXISTS `cga_profils` (
-  `profil` varchar(20) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `description` text,
-  `famille` varchar(20) NOT NULL,
-  `type` char(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`profil`),
-  KEY `cga_profils_famille` (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_profils`
---
-
-INSERT INTO `cga_profils` (`profil`, `nom`, `description`, `famille`, `type`) VALUES
-('activiste', 'Activiste', NULL, 'reflexion', '0'),
-('adepte', 'Adepte', NULL, 'action', '1'),
-('agent', 'Agent', NULL, 'aventure', '0'),
-('aristocrate', 'Aristocrate', NULL, 'reflexion', '0'),
-('artilleur', 'Artilleur', NULL, 'action', '0'),
-('artiste', 'Artiste', NULL, 'reflexion', '0'),
-('assassin', 'Assassin', NULL, 'action', '0'),
-('asteromineur', 'Astéromineur', NULL, 'aventure', '0'),
-('astrocommando', 'Astrocommando', NULL, 'action', '0'),
-('astroingenieur', 'Astroingénieur', NULL, 'reflexion', '0'),
-('astronavigateur', 'Astronavigateur', NULL, 'aventure', '0'),
-('biogeneticien', 'Biogénéticien', NULL, 'reflexion', '1'),
-('bureaucrate', 'Bureaucrate', NULL, 'reflexion', '0'),
-('chasseur-de-primes', 'Chasseur de primes', NULL, 'action', '0'),
-('colon', 'Colon', NULL, 'aventure', '0'),
-('commercant', 'Commerçant', NULL, 'aventure', '0'),
-('contrebandier', 'Contrebandier', NULL, 'aventure', '0'),
-('diplomate', 'Diplomate', NULL, 'reflexion', '0'),
-('erudit', 'Erudit', NULL, 'reflexion', '0'),
-('escroc', 'Escroc', NULL, 'aventure', '0'),
-('explorateur', 'Explorateur', NULL, 'aventure', '0'),
-('fantassin', 'Fantassin', NULL, 'action', '0'),
-('ganger', 'Ganger', NULL, 'action', '0'),
-('garde-du-corps', 'Garde du corps', NULL, 'action', '0'),
-('hacker', 'Hacker', NULL, 'reflexion', '0'),
-('hors-la-loi', 'Hors-la-loi', NULL, 'action', '0'),
-('journaliste', 'Journaliste', NULL, 'reflexion', '0'),
-('limier', 'Limier', NULL, 'action', '1'),
-('mecanicien', 'Mécanicien', NULL, 'action', '0'),
-('medecin', 'Médecin', NULL, 'reflexion', '0'),
-('mentat', 'Mentat', NULL, 'aventure', '1'),
-('mercenaire', 'Mercenaire', NULL, 'aventure', '0'),
-('missionnaire', 'Missionnaire', NULL, 'reflexion', '0'),
-('pilote-de-chasse', 'Pilote de chasse', NULL, 'action', '0'),
-('pirate', 'Pirate', NULL, 'action', '0'),
-('prescient', 'Prescient', NULL, 'reflexion', '1'),
-('psiker', 'Psiker', NULL, 'aventure', '1'),
-('psion', 'Psion', NULL, 'reflexion', '1'),
-('psitech', 'Psitech', NULL, 'aventure', '1'),
-('recuperateur', 'Récupérateur', NULL, 'aventure', '0'),
-('spectre', 'Spectre', NULL, 'action', '1'),
-('sportif-pro', 'Sportif professionnel', NULL, 'action', '0'),
-('technicien', 'Technicien', NULL, 'aventure', '0'),
-('xenoarcheologue', 'Xénoarchéologue', NULL, 'aventure', '0'),
-('xenobiologiste', 'Xénobiologiste', NULL, 'reflexion', '0');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_profils_maitrises`
---
-
-DROP TABLE IF EXISTS `cga_profils_maitrises`;
-CREATE TABLE IF NOT EXISTS `cga_profils_maitrises` (
-  `profil` varchar(20) NOT NULL,
-  `equipement` varchar(20) NOT NULL,
-  PRIMARY KEY (`profil`,`equipement`),
-  KEY `cga_profils_maitrises_profil` (`profil`),
-  KEY `cga_profils_maitrises_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_profils_traits`
---
-
-DROP TABLE IF EXISTS `cga_profils_traits`;
-CREATE TABLE IF NOT EXISTS `cga_profils_traits` (
-  `profil` varchar(20) NOT NULL,
-  `sequence` tinyint(4) NOT NULL,
-  `intitule` varchar(50) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`profil`,`sequence`),
-  KEY `cga_profils_traits_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_proprietes_equipement`
---
-
-DROP TABLE IF EXISTS `cga_proprietes_equipement`;
-CREATE TABLE IF NOT EXISTS `cga_proprietes_equipement` (
-  `code` varchar(20) NOT NULL,
-  `intitule` varchar(50) NOT NULL,
-  `defaut` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_races`
---
-
-DROP TABLE IF EXISTS `cga_races`;
-CREATE TABLE IF NOT EXISTS `cga_races` (
-  `race` varchar(20) NOT NULL,
-  `intitule` varchar(50) NOT NULL,
-  `mod_for` tinyint(4) DEFAULT NULL,
-  `mod_dex` tinyint(4) DEFAULT NULL,
-  `mod_con` tinyint(4) DEFAULT NULL,
-  `mod_int` tinyint(4) DEFAULT NULL,
-  `mod_sag` tinyint(4) DEFAULT NULL,
-  `mod_cha` tinyint(4) DEFAULT NULL,
-  `age_base` smallint(6) DEFAULT NULL,
-  `esperance_vie` smallint(6) DEFAULT NULL,
-  `taille_min` decimal(3,2) DEFAULT NULL,
-  `taille_max` decimal(3,2) DEFAULT NULL,
-  `poids_min` smallint(6) DEFAULT NULL,
-  `poids_max` smallint(6) DEFAULT NULL,
-  `type_race` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_races_capacites`
---
-
-DROP TABLE IF EXISTS `cga_races_capacites`;
-CREATE TABLE IF NOT EXISTS `cga_races_capacites` (
-  `race` varchar(20) NOT NULL,
-  `capacite` varchar(20) NOT NULL,
-  PRIMARY KEY (`race`,`capacite`),
-  KEY `cga_races_capacites_race` (`race`),
-  KEY `cga_races_capacites_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_races_traits`
---
-
-DROP TABLE IF EXISTS `cga_races_traits`;
-CREATE TABLE IF NOT EXISTS `cga_races_traits` (
-  `race` varchar(20) NOT NULL,
-  `sequence` tinyint(4) NOT NULL,
-  `intitule` varchar(50) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`race`,`sequence`),
-  KEY `cga_races_traits_race` (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_types_capacite`
---
-
-DROP TABLE IF EXISTS `cga_types_capacite`;
-CREATE TABLE IF NOT EXISTS `cga_types_capacite` (
-  `type_capacite` varchar(5) NOT NULL,
-  `type_capacite_intitule` varchar(50) NOT NULL,
-  `type_capacite_config` text,
-  PRIMARY KEY (`type_capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_types_capacite`
---
-
-INSERT INTO `cga_types_capacite` (`type_capacite`, `type_capacite_intitule`, `type_capacite_config`) VALUES
-('augm', 'Augmentations', NULL),
-('cult', 'Culturelle', NULL),
-('espe', 'Espèce', NULL),
-('psych', 'PSI', NULL),
-('savf', 'Savoir-faire', NULL);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_types_races`
---
-
-DROP TABLE IF EXISTS `cga_types_races`;
-CREATE TABLE IF NOT EXISTS `cga_types_races` (
-  `type_race` varchar(5) NOT NULL,
-  `type_race_intitule` varchar(50) NOT NULL,
-  `type_race_config` text,
-  PRIMARY KEY (`type_race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_types_voie`
---
-
-DROP TABLE IF EXISTS `cga_types_voie`;
-CREATE TABLE IF NOT EXISTS `cga_types_voie` (
-  `type_voie` varchar(5) NOT NULL,
-  `type_voie_intitule` varchar(50) NOT NULL,
-  `type_voie_config` text,
-  PRIMARY KEY (`type_voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_types_voie`
---
-
-INSERT INTO `cga_types_voie` (`type_voie`, `type_voie_intitule`, `type_voie_config`) VALUES
-('augm', 'Augmentations', NULL),
-('cult', 'Culturelle', NULL),
-('espe', 'Espèce', NULL),
-('psych', 'PSI', NULL),
-('savf', 'Savoir-faire', NULL);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_voies`
---
-
-DROP TABLE IF EXISTS `cga_voies`;
-CREATE TABLE IF NOT EXISTS `cga_voies` (
-  `voie` varchar(20) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `notes` varchar(1024) DEFAULT NULL,
-  `type` varchar(5) DEFAULT NULL,
-  `pfx_deladu` char(1) NOT NULL,
-  PRIMARY KEY (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_voies`
---
-
-INSERT INTO `cga_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
-('aeriens', 'Aériens', NULL, 'espe', '3'),
-('androide', 'Androïde', NULL, 'espe', '2'),
-('anthropomorphes', 'Anthropomorphes', NULL, 'espe', '3'),
-('aquatiques', 'Aquatiques', NULL, 'espe', '3'),
-('arachnides', 'Arachnides', NULL, 'espe', '3'),
-('aristocratie', 'Aristocratie', NULL, 'cult', '2'),
-('armes-a-feu', 'Armes à feu', NULL, 'savf', '3'),
-('armes-energetiques', 'Armes énergétiques', NULL, 'savf', '3'),
-('armes-lourdes', 'Armes lourdes', NULL, 'savf', '3'),
-('arts', 'Arts', NULL, 'savf', '3'),
-('arts-martiaux', 'Arts martiaux', NULL, 'savf', '3'),
-('bagarre', 'Bagarre', NULL, 'savf', '1'),
-('bas-fonds', 'Bas-fonds', NULL, 'cult', '3'),
-('biokinesie', 'Biokinésie', NULL, 'psych', '1'),
-('bioorg', 'Bioorg', NULL, 'augm', '0'),
-('chronokinesie', 'Chronokinésie', NULL, 'psych', '1'),
-('clairvoyance', 'Clairvoyance', NULL, 'psych', '1'),
-('classe-moyenne', 'Classe moyenne', NULL, 'cult', '1'),
-('corporations', 'Corporations', NULL, 'cult', '3'),
-('cosmokinesie', 'Cosmokinésie', NULL, 'psych', '1'),
-('cyborg', 'Cyborg', NULL, 'augm', '0'),
-('discours', 'Discours', NULL, 'savf', '0'),
-('electrokinesie', 'Electrokinésie', NULL, 'psych', '2'),
-('electronique', 'Electronique', NULL, 'savf', '2'),
-('espace', 'Espace', NULL, 'cult', '2'),
-('exploits-physiques', 'Exploits physiques', NULL, 'savf', '3'),
-('exploration', 'Exploration', NULL, 'savf', '2'),
-('furtivite', 'Furtivité', NULL, 'savf', '1'),
-('humains', 'Humains', NULL, 'espe', '3'),
-('hybride', 'Hybride', NULL, 'augm', '2'),
-('ia', 'I.A.', NULL, 'espe', '2'),
-('insectoides', 'Insectoïdes', NULL, 'espe', '3'),
-('investigation', 'Investigation', NULL, 'savf', '2'),
-('luminescents', 'Luminescents', NULL, 'espe', '3'),
-('medecine', 'Médecine', NULL, 'savf', '1'),
-('mineraux', 'Minéraux', NULL, 'espe', '3'),
-('moteurs', 'Moteurs', NULL, 'savf', '3'),
-('panacee', 'Panacée', NULL, 'augm', '1'),
-('parasites', 'Parasites', NULL, 'espe', '3'),
-('photokinesie', 'Photokinésie', NULL, 'psych', '1'),
-('pilotage', 'Pilotage', NULL, 'savf', '0'),
-('posthumain', 'Posthumain', NULL, 'augm', '0'),
-('psychokinesie', 'Psychokinésie', NULL, 'psych', '1'),
-('psychologie', 'Psychologie', NULL, 'savf', '1'),
-('psychomachie', 'Psychomachie', NULL, 'psych', '1'),
-('quantakinesie', 'Quantakinésie', NULL, 'psych', '1'),
-('reparation', 'Réparation', NULL, 'savf', '1'),
-('reptiloides', 'Reptiloïdes', NULL, 'espe', '3'),
-('robot', 'Robot', NULL, 'espe', '0'),
-('systeme-d', 'Système D', NULL, 'cult', '0'),
-('telepathie', 'Télépathie', NULL, 'psych', '1'),
-('universitaire', 'Universitaire', NULL, 'cult', '2'),
-('vegetaux', 'Végétaux', NULL, 'espe', '3');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cga_voies_profils`
---
-
-DROP TABLE IF EXISTS `cga_voies_profils`;
-CREATE TABLE IF NOT EXISTS `cga_voies_profils` (
-  `profil` varchar(20) NOT NULL,
-  `voie` varchar(20) NOT NULL,
-  PRIMARY KEY (`profil`,`voie`),
-  KEY `cga_voies_profils_profil` (`profil`),
-  KEY `cga_voies_profils_voie` (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cga_voies_profils`
---
-
-INSERT INTO `cga_voies_profils` (`profil`, `voie`) VALUES
-('activiste', 'classe-moyenne'),
-('activiste', 'discours'),
-('activiste', 'investigation'),
-('adepte', 'aristocratie'),
-('adepte', 'psychokinesie'),
-('adepte', 'psychomachie'),
-('agent', 'classe-moyenne'),
-('agent', 'electronique'),
-('agent', 'furtivite'),
-('aristocrate', 'aristocratie'),
-('aristocrate', 'arts-martiaux'),
-('aristocrate', 'discours'),
-('artilleur', 'armes-lourdes'),
-('artilleur', 'corporations'),
-('artilleur', 'reparation'),
-('artiste', 'arts'),
-('artiste', 'psychologie'),
-('artiste', 'universitaire'),
-('assassin', 'arts-martiaux'),
-('assassin', 'corporations'),
-('assassin', 'furtivite'),
-('asteromineur', 'bagarre'),
-('asteromineur', 'reparation'),
-('asteromineur', 'systeme-d'),
-('astrocommando', 'armes-energetiques'),
-('astrocommando', 'armes-lourdes'),
-('astrocommando', 'espace'),
-('astroingenieur', 'electronique'),
-('astroingenieur', 'moteurs'),
-('astroingenieur', 'universitaire'),
-('astronavigateur', 'investigation'),
-('astronavigateur', 'pilotage'),
-('astronavigateur', 'universitaire'),
-('biogeneticien', 'biokinesie'),
-('biogeneticien', 'medecine'),
-('biogeneticien', 'universitaire'),
-('bureaucrate', 'corporations'),
-('bureaucrate', 'electronique'),
-('bureaucrate', 'investigation'),
-('chasseur-de-primes', 'armes-energetiques'),
-('chasseur-de-primes', 'espace'),
-('chasseur-de-primes', 'investigation'),
-('colon', 'bagarre'),
-('colon', 'exploration'),
-('colon', 'systeme-d'),
-('commercant', 'corporations'),
-('commercant', 'discours'),
-('commercant', 'psychologie'),
-('contrebandier', 'armes-energetiques'),
-('contrebandier', 'espace'),
-('contrebandier', 'pilotage'),
-('diplomate', 'aristocratie'),
-('diplomate', 'discours'),
-('diplomate', 'psychologie'),
-('erudit', 'discours'),
-('erudit', 'exploration'),
-('erudit', 'universitaire'),
-('escroc', 'bagarre'),
-('escroc', 'corporations'),
-('escroc', 'discours'),
-('explorateur', 'espace'),
-('explorateur', 'exploration'),
-('explorateur', 'pilotage'),
-('fantassin', 'armes-energetiques'),
-('fantassin', 'corporations'),
-('fantassin', 'exploits-physiques'),
-('ganger', 'bagarre'),
-('ganger', 'bas-fonds'),
-('ganger', 'furtivite'),
-('garde-du-corps', 'armes-energetiques'),
-('garde-du-corps', 'corporations'),
-('garde-du-corps', 'psychologie'),
-('hacker', 'electronique'),
-('hacker', 'furtivite'),
-('hacker', 'systeme-d'),
-('hors-la-loi', 'armes-a-feu'),
-('hors-la-loi', 'reparation'),
-('hors-la-loi', 'systeme-d'),
-('journaliste', 'corporations'),
-('journaliste', 'furtivite'),
-('journaliste', 'investigation'),
-('limier', 'corporations'),
-('limier', 'investigation'),
-('limier', 'psychomachie'),
-('mecanicien', 'classe-moyenne'),
-('mecanicien', 'moteurs'),
-('mecanicien', 'reparation'),
-('medecin', 'medecine'),
-('medecin', 'psychologie'),
-('medecin', 'universitaire'),
-('mentat', 'chronokinesie'),
-('mentat', 'psychologie'),
-('mentat', 'systeme-d'),
-('mercenaire', 'armes-energetiques'),
-('mercenaire', 'armes-lourdes'),
-('mercenaire', 'bas-fonds'),
-('missionnaire', 'classe-moyenne'),
-('missionnaire', 'discours'),
-('missionnaire', 'medecine'),
-('pilote-de-chasse', 'armes-lourdes'),
-('pilote-de-chasse', 'espace'),
-('pilote-de-chasse', 'pilotage'),
-('pirate', 'armes-a-feu'),
-('pirate', 'espace'),
-('pirate', 'exploration'),
-('prescient', 'chronokinesie'),
-('prescient', 'clairvoyance'),
-('prescient', 'classe-moyenne'),
-('psiker', 'bas-fonds'),
-('psiker', 'cosmokinesie'),
-('psiker', 'quantakinesie'),
-('psion', 'clairvoyance'),
-('psion', 'corporations'),
-('psion', 'telepathie'),
-('psitech', 'electrokinesie'),
-('psitech', 'electronique'),
-('psitech', 'espace'),
-('recuperateur', 'espace'),
-('recuperateur', 'exploration'),
-('recuperateur', 'reparation'),
-('spectre', 'furtivite'),
-('spectre', 'photokinesie'),
-('spectre', 'systeme-d'),
-('sportif-pro', 'arts-martiaux'),
-('sportif-pro', 'exploits-physiques'),
-('sportif-pro', 'universitaire'),
-('technicien', 'classe-moyenne'),
-('technicien', 'electronique'),
-('technicien', 'reparation'),
-('xenoarcheologue', 'arts'),
-('xenoarcheologue', 'investigation'),
-('xenoarcheologue', 'universitaire'),
-('xenobiologiste', 'espace'),
-('xenobiologiste', 'exploration'),
-('xenobiologiste', 'medecine');
 
 -- --------------------------------------------------------
 
@@ -11817,7 +11150,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('archer-emerite', 'Archer émérite', 0, 0, 'race', 'Lorsqu\'il utilise un arc, l\'elfe sylvain obtient une réussite critique sur un résultat de 19-20 au d20. Il sait utiliser les arcs quel que soit son profil.'),
 ('archere-emerite', 'Archère émérite', 0, 0, 'prest', 'Lorsqu\'elle utilise un arc court, l\'amazone peut décocher une flèche au prix d\'une action de mouvement, elle utilise alors un d12 à son test d\'attaque.'),
 ('argument-de-taille', 'Argument de taille', 0, 0, '', 'Le barbare ajoute son Rang à son score de PV maximum ainsi qu\'à ses tests de CHA et à ceux de ses alliés au contact pour les tests de négociation, de persuasion ou INTimidation. Allez savoir pourquoi, sa simple présence donne de la force aux arguments de ses alliés...'),
-('argumentation', 'Argumentation', 0, 0, '', 'L\'érudit peut mettre sa logique et son éducation au service de sa force de persuasion. Il obtient un bonus de +5 aux tests de CHA visant à convaincre.'),
+('argumentation', 'Argumentation', 0, 0, 'prof', 'L&#039;&eacute;rudit peut mettre sa logique et son &eacute;ducation au service de sa force de persuasion. Il obtient un bonus de +5 aux tests de CHA visant &agrave; convaincre.'),
 ('arme-benie', 'Arme bénie', 0, 0, '', 'Le prêtre bénit son arme sacrée. S\'il obtient un résultat de 1 sur son dé de DM, il relance le dé et garde le second résultat. Les DM de l\'arme sont considérés comme magiques.'),
 ('arme-d-argent', 'Arme d\'argent', 1, 1, '', 'Ce miracle crée pour la durée du combat une arme d\'argent et de lumière que seul le prêtre peut utiliser. Cette arme inflige [1d6 + Mod. de SAG] DM. Contre les démons et les mort-vivants, elle offre un bonus de +2 en attaque et ajoute +1d6 aux DM.'),
 ('arme-dansante', 'Arme dansante', 1, 1, '', 'Le sort crée une lame d\'énergie lumineuse pendant [5 + Mod. de CHA] tours. Dès le premier tour, l\'ensorceleur peut lui ordonner d\'attaquer une cible de son choix (action gratuite, portée 20 m). Lame dansante : Attaque Magique [personnage], [1d8 + Mod de CHA] DM'),
@@ -11883,8 +11216,8 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('attaque-traitre-crea', 'Attaque en traitre', 1, 0, 'creat', 'Si la créature attaque en même temps qu’un allié (elle peut volontairement retarder son initiative), de dos ou par surprise, elle réalise une attaque sournoise avec un bonus de +5 en attaque et +2d6 aux DM.'),
 ('attaque-vicieuse', 'Attaque vicieuse', 0, 0, 'race', 'Lorsqu’il attaque par surprise ou s’il combat le même ennemi que d’autres alliés à son contact, le kobold obtient +2 en attaque et +1d6 aux DM. Cette capacité peut être cumulée à une attaque sournoise.'),
 ('au-dessus-de-la-mele', 'Au dessus de la mêlée', 0, 0, 'epic', 'Le héros a atteint un niveau d\'expertise au combat tel qu\'il résiste désormais plus facilement aux attaques des plus faibles : les sous-fifres et autres créatures mineures ont du mal à le blesser sérieusement. Le personnage divise par deux tous les DM provoqués par des créatures dont le NC est inférieur ou égal à la moitié de son niveau.'),
-('au-dessus-des-lois', 'Au-dessus des lois', 0, 0, '', 'L\'argent permet bien des excentricités et parfois même d\'ignorer la loi. Lorsque le personnage commet une action illégale, il peut faire un test de CHA pour échapper à la justice, avec une difficulté de 10 pour un délit, 15 pour un crime et 20 pour un acte odieux. Si l\'action contrarie un puissant, la difficulté augmente de 5. Si la victime du crime ou du délit est un personnage important, cette capacité est inefficace. Si le personnage utilise cette capacité plusieurs fois dans la même semaine, la difficulté du test de CHA augmente de 5 à chaque fois. Il n\'est pas possible d\'utiliser Pot-de-vin pour améliorer le résultat de ce test.'),
-('autorite-culturelle', 'Autorité culturelle', 0, 0, '', 'L\'érudit dégage une impression de confiance, de sagesse et une force de caractère peu commune. Il obtient un bonus égal à son Mod. de CHA en Initiative et en DEF. Au lieu de cette capacité, le joueur peut, s\'il le veut, choisir un nouveau domaine d\'érudition pour son personnage (capacité de Rang 1).'),
+('au-dessus-des-lois', 'Au-dessus des lois', 0, 0, 'prof', 'L&#039;argent permet bien des excentricit&eacute;s et parfois m&ecirc;me d&#039;ignorer la loi. Lorsque le personnage commet une action ill&eacute;gale, il peut faire un test de CHA pour &eacute;chapper &agrave; la justice, avec une difficult&eacute; de 10 pour un d&eacute;lit, 15 pour un crime et 20 pour un acte odieux. Si l&#039;action contrarie un puissant, la difficult&eacute; augmente de 5. Si la victime du crime ou du d&eacute;lit est un personnage important, cette capacit&eacute; est inefficace. Si le personnage utilise cette capacit&eacute; plusieurs fois dans la m&ecirc;me semaine, la difficult&eacute; du test de CHA augmente de 5 &agrave; chaque fois. Il n&#039;est pas possible d&#039;utiliser Pot-de-vin pour am&eacute;liorer le r&eacute;sultat de ce test.'),
+('autorite-culturelle', 'Autorit&eacute; culturelle', 0, 0, 'prof', 'L&#039;&eacute;rudit d&eacute;gage une impression de confiance, de sagesse et une force de caract&egrave;re peu commune. Il obtient un bonus &eacute;gal &agrave; son Mod. de CHA en Initiative et en DEF. Au lieu de cette capacit&eacute;, le joueur peut, s&#039;il le veut, choisir un nouveau domaine d&#039;&eacute;rudition pour son personnage (capacit&eacute; de Rang 1).'),
 ('autorite-naturelle', 'Autorité naturelle', 0, 0, '', 'Le chevalier obtient un bonus égal à [1 + Mod. de CHA] en Initiative et en DEF. De plus, il bénéficie d\'un bonus de +5 aux tests de CHA réalisés pour donner des ordres ou intimider.'),
 ('baies-magiques', 'Baies magiques', 1, 1, '', 'Le druide doit se trouver devant un buisson ou un arbre vivant. Son incantation fait pousser [1d6 + Mod. de SAG] fruits qu\'il peut cueillir. Chaque fruit offre l\'équivalent d\'un repas et rend [1d6 + niveau du druide] PV à celui qui le consomme. Les effets de ces fruits ne fonctionnent qu\'une fois par jour et par personnage.'),
 ('baionnette', 'Baïonnette', 1, 0, 'prest', 'Le personnage adapte une lame à l’extrémité de son arme (attaque au contact, 1d4 + Mod de FOR max pour une pétoire, 1d6 DM + Mod. de FOR pour un mousquet) et développe les techniques de combat adéquates. Au prix d’une action limitée, il peut faire une attaque à distance et une attaque de contact avec la baïonnette. S’il dispose d’une dague ou d’une épée courte magique, il peut l’adapter sur son arme et bénéficier des DM correspondants pour les attaques à la baïonnette (1d4 ou 1d6 plus bonus de magie en attaque et aux DM). S’il possède la capacité cadence de tir, il peut de plus recharger son arme dans le même tour.'),
@@ -11939,7 +11272,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('charge-minotaure', 'Charge', 1, 0, 'race', 'Le minotaure se déplace en ligne droite d’au moins 5 mètres (20 mètres au maximum) et il réalise une attaque avec +2 au test et +1d6 DM en cas de réussite. Cette capacité peut se cumuler à la charge du barbare.'),
 ('charger', 'Charger', 1, 0, 'creat', 'La créature parcourt une distance maximum de 30 mètres et réalise une attaque, lancez deux d20 et gardez le meilleur résultat. Si l’attaque est réussie, en plus des DM normaux, une victime de taille inférieure ou égale à la créature, doit faire un test opposé de FOR ou être Renversée. Dans ce cas, la créature piétine (ou embroche) sa victime et les DM sont doublés.'),
 ('charisme-heroique', 'CHArisme héroïque', 0, 0, '', 'Le personnage augmente sa valeur de CHA de +2. Il peut de plus lancer deux d20 à chaque fois qu\'un test de CHA lui est demandé et conserver le meilleur résultat.'),
-('charmant', 'Charmant', 0, 0, '', 'Le courtisan obtient un bonus de +2 par Rang atteint dans cette Voie pour tous ses tests de CHA visant à séduire, baratiner ou mentir. S\'il obtient à nouveau cette capacité (par la Voie de la séduction du profil de barde), ce bonus passe à +3 par Rang (et non +4).'),
+('charmant', 'Charmant', 0, 0, 'prof', 'Le courtisan obtient un bonus de +2 par Rang atteint dans cette Voie pour tous ses tests de CHA visant &agrave; s&eacute;duire, baratiner ou mentir. S&#039;il obtient &agrave; nouveau cette capacit&eacute; (par la Voie de la s&eacute;duction du profil de barde), ce bonus passe &agrave; +3 par Rang (et non +4).'),
 ('charmant-barde', 'Charmant', 0, 0, '', 'Le barde obtient un bonus de +2 par rang atteint dans cette voie pour tous ses tests de CHA visant à séduire, baratiner ou mentir.'),
 ('chasseur-de-sorciere', 'Chasseur de sorcière', 0, 0, 'prest', 'Le rôdeur gagne +2 en DEF contre toutes les attaques magiques et +2 aux DM contre les nécromanciens ou les prêtres d\'une religion maléfique (et tous ceux qui pratiquent la magie noire).'),
 ('chasseur-emerite', 'Chasseur émérite', 0, 0, '', 'Le rôdeur obtient un bonus de +2 en attaque et aux DM lorsqu\'il combat des animaux et un bonus de +2 par Rang dans cette Voie pour pister ou retrouver leurs traces.'),
@@ -11987,7 +11320,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('corps-de-pierre', 'Corps de pierre', 1, 0, 'prest', 'Le moine donne à son corps la texture de la pierre pendant [1d6 + Mod. de SAG] tours. Dans cet état, il retranche 5 points à tous les DM subis par des armes. Les créatures qui l\'attaquent avec des armes naturelles subissent 1 DM par attaque et celles qui utilisent des armes manufacturées Voient leur arme se briser s\'ils obtiennent un résultat de 1 au DM. Les armes magiques ne risquent pas de se briser. Le personnage peut utiliser cette capacité pour mettre fin à tout effet de pétrification qui l\'affecte en 1d6 tours.'),
 ('corps-elastique', 'Corps élastique', 0, 0, 'prest', 'Le barde sait accompagner les coups et les chutes, il obtient une réduction des DM de 3 contre toutes les sources de DM physiques (armes, chutes mais pas énergie ou magie).'),
 ('corps-enflamme', 'Corps enflammé', 1, 0, 'creat', 'La créature est nimbée d’une aura de feu ou peut la faire surgir à volonté. Elle inflige +1d6 DM de feu par attaque de contact réussie. Une créature qui l’attaque au contact subit 1d6 DM pour chaque attaque réussie. Si une victime est saisie ou agrippée par la créature, elle subit à chaque tour +1d6 de feu supplémentaire. Lorsqu’elle est au contact d’une source de feu importante, la créature régénère 5 PV par tour.'),
-('corveable-a-merci', 'Corvéable à merci', 0, 0, '', 'Le miséreux exécute généralement les taches et les métiers les plus ingrats et éreintants. Il gagne 5 PV supplémentaires et un bonus de +5 à tous les tests de CON et de FOR.'),
+('corveable-a-merci', 'Corv&eacute;able &agrave; merci', 0, 0, 'prof', 'Le mis&eacute;reux ex&eacute;cute g&eacute;n&eacute;ralement les taches et les m&eacute;tiers les plus ingrats et &eacute;reintants. Il gagne 5 PV suppl&eacute;mentaires et un bonus de +5 &agrave; tous les tests de CON et de FOR.'),
 ('couleuvrine', 'Couleuvrine', 1, 0, '', 'L\'arquebusier obtient une couleuvrine, un petit canon portatif qui nécessite la mise en place d\'un trépied (ou d\'un appui). Utiliser cette arme demande une action limitée et ne peut avoir lieu qu\'une seule fois par combat. Sur un test d\'attaque à distance réussi, elle inflige [4d6 + Mod. de DEX] DM. La portée maximale de cette arme est de 100 mètres et sa portée minimale de 10 mètres.'),
 ('coup-de-bouclier', 'Coup de bouclier', 0, 0, '', 'Le chevalier peut effectuer à chaque tour une attaque au bouclier avec un d12 au lieu du d20 (action gratuite) qui inflige [1d4 + Mod. de FOR] DM.'),
 ('coup-de-corne', 'Coup de corne', 0, 0, 'race', 'Un minotaure peut réaliser une attaque de corne qui inflige [1d6 + Mod. de FOR] DM à la place d’une attaque normale. Au prix d’une action limitée, il peut faire une attaque normale avec une arme de contact plus une attaque de corne.'),
@@ -12018,7 +11351,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('defaut-de-la-cuirass', 'Défaut de la cuirasse', 1, 0, '', 'L\'arquebusier passe un tour complet à analyser le point faible de son adversaire et à viser. Au tour suivant, il peut faire ses attaques à distance sur cette cible contre une DEF de [10 + Mod. de DEX de la cible]. Au lieu de cela, le joueur peut aussi choisir d\'ignorer la réduction des DM (RD) d\'une créature (dans ce cas la DEF n\'est pas modifiée).'),
 ('defense-intuitive', 'Défense intuitive', 0, 0, '', 'En combat, le psionique est capable d’anticiper les mouvements de ses adversaires. Il bénéficie d’un bonus de DEF égal à son Mod. de SAG'),
 ('defi', 'Défi', 1, 0, 'prest', 'Une fois par combat, le personnage peut défier une cible de son choix (portée 30 mètres). Il obtient un bonus de +2 en attaque et en DEF pour le reste du combat contre cette cible.'),
-('defi-seigneur', 'Défi (seigneur)', 1, 0, '', 'Le seigneur défie un ennemi par une action limitée. Il obtient un bonus aux DM égal au rang atteint dans la Voie contre cet adversaire jusqu’à la fn du combat. Le seigneur peut défier un seul adversaire par scène de combat.'),
+('defi-seigneur', 'Défi (seigneur)', 1, 0, NULL, 'Le seigneur défie un ennemi par une action limitée. Il obtient un bonus aux DM égal au rang atteint dans la Voie contre cet adversaire jusqu’à la fin du combat. Le seigneur peut défier un seul adversaire par scène de combat.'),
 ('defier-la-mort', 'Défier la mort', 0, 0, '', 'Lorsque le barbare subit des DM d\'une attaque qui devrait l\'amener à 0 PV, il peut effectuer un test de CON difficulté 10. En cas de réussite, il conserve 1 PV. La difficulté augmente de 10 pour chaque blessure supplémentaire reçue par la suite. S\'il est enragé il obtient un bonus de +10 à ces tests.'),
 ('deguisement', 'Déguisement', 1, 1, '', 'Ce sort permet au barde de prendre l\'apparence de n\'importe quelle créature de taille à peu près équivalente (avec une marge d\'environ 50 cm). S\'il veut imiter une personne en particulier, il lui faudra réussir un test de CHA difficulté 15 (20 s\'il ne la connaît pas mais l\'a seulement vue, 10 s\'il la connaît très bien). Le sort a une durée de 10 minutes.'),
 ('delivrance', 'Délivrance', 1, 1, '', 'En touchant sa cible, le prêtre annule les pénalités infligées par les sorts, les malédictions et les capacités spéciales d\'autres personnages ou de créatures (douleur, mutilation, poisons, etc.).'),
@@ -12093,7 +11426,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('ensevelissement', 'Ensevelissement', 1, 1, '', 'Une fois par combat, si le nécromancien réussit un test d\'attaque magique (portée 20 m), le sol s\'ouvre sous les pieds d\'une cible de taille moyenne et l\'enterre vivante. Tant qu\'elle est ensevelie, elle subit 2d6 DM par tour, ne peut agir ni être la cible d\'attaques extérieures. À son tour, elle peut tenter de sortir de terre en réussissant un test de FOR ou de DEX (au choix) difficulté [13 + Mod. d\'INT]. Si elle tombe à 0 PV, elle reste enterrée et décède au tour suivant. Chaque personne qui creuse pour l\'aider lui octroie un bonus de +2 sur son test.'),
 ('epee-celeste', 'Epée céleste', 0, 0, 'prest', 'Lorsqu\'il est en forme d\'ange, le prêtre bénéficie automatiquement du sort Arme d\'argent pour la même durée. Il est aussi immunisé à tous les pouvoirs de drain ou d\'affaiblissement des mort-vivants (ombre, vampire, goule, etc.).'),
 ('epee-de-feu', 'Epée de feu', 1, 0, 'prest', 'Le chevalier peut enflammer son épée pour [5 + Mod. de CHA] tours. Elle inflige dès lors +1d6 DM de feu.'),
-('erudition', 'Erudition', 0, 0, '', 'L\'érudit sait lire et écrire, il gagne +2 par Rang dans un domaine de son choix : histoire et géographie, occultisme et magie, sciences et techniques, plantes et créatures, langues anciennes et modernes (dans ce cas, il apprend aussi une langue étrangère par Rang atteint).'),
+('erudition', 'Erudition', 0, 0, 'prof', 'L&#039;&eacute;rudit sait lire et &eacute;crire, il gagne +2 par Rang dans un domaine de son choix : histoire et g&eacute;ographie, occultisme et magie, sciences et techniques, plantes et cr&eacute;atures, langues anciennes et modernes (dans ce cas, il apprend aussi une langue &eacute;trang&egrave;re par Rang atteint).'),
 ('esprit-vide', 'Esprit vide', 0, 0, '', 'Le seigneur gagne +3 en Initiative, ce bonus passe à +5 au rang 4 de la Voie.'),
 ('esquive', 'Esquive', 0, 0, '', 'Le voleur est très vif et bénéficie d\'un bonus de +1 par Rang dans cette Voie à sa DEF et à tous ses tests de DEX destinés à esquiver.'),
 ('esquive-acrobatique', 'Esquive acrobatique', 0, 0, '', 'Une fois par tour, le barde peut réaliser une esquive en réussissant un test d\'Attaque à Distance contre une Difficulté égale au score obtenu par son adversaire lors de son attaque. En cas de réussite, le barde ne subit aucun DM. Si cette attaque était un critique, il subit tout de même des DM normaux (et annule donc l\'effet critique  DM doublés ).'),
@@ -12106,7 +11439,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('exosquelette', 'Exosquelette', 0, 0, 'prest', 'Le mécanicien fabrique un exosquelette qui lui permet d\'augmenter son Mod. de FOR et sa DEF de +2. De plus cela lui permet d\'emporter un chargeur à bande : l\'arbalète automatique n\'a plus besoin d\'être rechargée, vous pouvez considérer les munitions illimitées.'),
 ('exosquelette-superie', 'Exosquelette supérieur', 0, 0, 'prest', 'Le mécanicien améliore son exosquelette, il le dote d\'un jet-pack qui lui permet de voler pendant [1d6 + Mod. d\'INT] tours et de respirer en autonomie (sous l\'eau par exemple) pendant [1d6 + Mod. d\'INT] heures. Après une telle utilisation, l\'exosquelette nécessite dix minutes de maintenance pour pouvoir assurer à nouveau la même fonction. Le Mod. de DEF et de FOR passe à +3.'),
 ('expert-en-survie', 'Expert en survie', 0, 0, 'prest', 'L\'arquebusier augmente son score de CON de +2 et obtient un bonus de +5 à tous les tests de survie en nature.'),
-('expertise', 'Expertise', 0, 0, '', 'Le personnage a atteint un tel niveau de compétence qu\'il mérite vraiment le titre d\'expert en son domaine. Désormais, il lance deux d20 pour chaque test en rapport avec son métier et garde le meilleur résultat. Il lui faut deux fois moins de temps qu\'à un professionnel ordinaire pour obtenir le même résultat lorsqu\'il exerce son métier.'),
+('expertise', 'Expertise', 0, 0, 'prof', 'Le personnage a atteint un tel niveau de comp&eacute;tence qu&#039;il m&eacute;rite vraiment le titre d&#039;expert en son domaine. D&eacute;sormais, il lance deux d20 pour chaque test en rapport avec son m&eacute;tier et garde le meilleur r&eacute;sultat. Il lui faut deux fois moins de temps qu&#039;&agrave; un professionnel ordinaire pour obtenir le m&ecirc;me r&eacute;sultat lorsqu&#039;il exerce son m&eacute;tier.'),
 ('expertise-du-bouclie', 'Expertise du bouclier', 0, 0, 'prest', 'Le personnage augmente sa DEF de +1 lorsqu’il peut utiliser son bouclier. Ce bonus passe à +2 au rang 3 de la Voie et +3 au rang 5.'),
 ('expertise-du-combat', 'Expertise du combat', 0, 0, 'prest', 'Le personnage fait l’acquisition de deux dés d’expertise (d6) par rang acquis dans la Voie. À tout moment durant le combat, il peut ajouter le résultat d’un seul dé d’expertise au résultat d’un test d’attaque ou à sa DEF contre une seule attaque (même après avoir vu le résultat des dés). Il ne peut pas utiliser plus d’un dé d’expertise par tour et il ne peut pas utiliser de dé d’expertise tant qu’il n’a pas déjà agi une fois durant un combat. Il lui faut 5 minutes de repos ou d’activité modérée (hors combat) pour récupérer tous les dés d’expertise dépensés.'),
 ('expertise-majeure', 'Expertise majeure', 0, 0, 'prest', 'Désormais, le personnage peut utiliser jusqu’à 3 dés d’expertise par tour, répartis à sa guise, sur une ou plusieurs actions de son choix.'),
@@ -12177,7 +11510,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('furie-bestiale', 'Furie bestiale', 0, 0, 'prest', 'Le rôdeur gagne la capacité Rage du berserk de la Voie de la rage du barbare. Il ne peut pas annuler sa transformation lycanthropique tant qu\'il est sous l\'influence de la Furie bestiale.'),
 ('furie-du-berserk', 'Furie du berserk', 0, 0, '', 'Au lieu de la Rage du berserk, le barbare peut entrer s\'il le souhaite en Furie du berserk, qui lui donne +3 en attaque et +2d6 aux DM pour une pénalité en DEF de -6. La difficulté du test de SAG pour sortir prématurément de cet état passe à 16.'),
 ('galop', 'Galop', 0, 0, 'race', 'Le centaure se déplace de 30 mètres par action de mouvement lorsqu’il est dans un espace suffisamment dégagé.'),
-('garde-du-corps', 'Garde du corps', 0, 0, '', 'Tant de richesse finit par attirer la convoitise et le nanti doit à présent être protégé par un garde. Celui-ci lui offre un bonus de +3 en DEF lorsqu\'il est au contact. Une fois par tour, il peut faire échouer une attaque qui vise le nanti en réussissant un test d\'attaque opposé à celui de l\'agresseur. Si le garde vient à mourir, il est possible d\'en engager un nouveau en dépensant 500 pa ou lors du passage au niveau suivant. Garde : Init [personnage] DEF 16, PV [niveau x6], Attaque [niveau], DM 1d8+2, FOR +2, DEX +0, CON +2, INT +0, SAG +0, CHA +0'),
+('garde-du-corps', 'Garde du corps', 0, 0, 'prof', 'Tant de richesse finit par attirer la convoitise et le nanti doit &agrave; pr&eacute;sent &ecirc;tre prot&eacute;g&eacute; par un garde. Celui-ci lui offre un bonus de +3 en DEF lorsqu&#039;il est au contact. Une fois par tour, il peut faire &eacute;chouer une attaque qui vise le nanti en r&eacute;ussissant un test d&#039;attaque oppos&eacute; &agrave; celui de l&#039;agresseur. Si le garde vient &agrave; mourir, il est possible d&#039;en engager un nouveau en d&eacute;pensant 500 pa ou lors du passage au niveau suivant. Garde : Init [personnage] DEF 16, PV [niveau x6], Attaque [niveau], DM 1d8+2, FOR +2, DEX +0, CON +2, INT +0, SAG +0, CHA +0'),
 ('gardes-d-elite', 'Gardes d\'élite', 0, 0, 'epic', 'Le personnage possède une garde rapprochée (élémentaires, tueurs prêts à surgir des ombres ou troupe de chevaliers) qui le suit et peut intervenir une fois par jour pour le protéger. Les gardes infligent automatiquement 2d6 DM par tour à chaque créature qui attaque le personnage. Lorsqu\'il est la cible d\'une attaque à distance ou au contact réussie, lancez 1d6, sur un résultat de 1 à 3, les gardes l\'interceptent. Dans ce cas, lancez les DM et comptabilisez les à part. Après avoir intercepté plus de [10 x niveau] DM, les gardes sont mis hors de combat et ne sont plus d\'aucune utilité avant le lendemain.'),
 ('garou', 'Garou', 1, 0, 'race', 'Le personnage se transforme maintenant en forme hybride loup-garou sans aucune restriction de temps. Sous cette forme il a les capacités suivantes : bonus de +1 au Mod. de DEX (Init +2, DEF +1) et +2 au Mod. de FOR (Att et DM +2). A chaque tour, il peut attaquer avec une arme et faire une attaque de griffes ou de crocs (action limitée). Sous cette forme, le personnage ne peut parler qu\'avec grande difficulté, il subit un malus de -10 à tous les tests de CHA, mais un bonus de +5 pour les tentatives d\'intimidation.'),
 ('gibier-royal', 'Gibier royal', 0, 0, 'prest', 'Le chevalier met un point d\'honneur à traquer et tuer les créatures les plus dangereuses. Il gagne un bonus de +1d6 aux DM à ses attaques contre les prédateurs (ours, lion, prédateurs fantastiques comme les animaux préhistoriques) et gagne +2d6 aux DM du gibier le plus noble qui soit : les dragons !'),
@@ -12222,9 +11555,9 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('homme-des-montagnes', 'Homme des montagnes', 0, 0, 'race', 'Le montagnard reçoit un bonus de +5 aux tests de CON pour résister au froid et à la fatigue, ainsi qu\'aux tests de SAG pour détecter les dangers en montagne (avalanches, orages, chutes de pierres, etc.).'),
 ('hommefemme-de-la-sit', 'Homme/Femme de la situation', 0, 0, 'prest', 'Une fois par aventure, vous pouvez demander au MJ de vous donner une idée lumineuse ou de vous indiquer la moins mauvaise solution pour sauver une situation ou au moins limiter les dégâts.'),
 ('honorable', 'Honorable', 0, 0, '', 'Le seigneur a une réputation d’honorabilité sans faille. Il peut mettre en jeu son honneur pour garantir sa parole et la justesse de ses actions. Il bénéficie d’un bonus de +5 à tous les tests où sa bonne foi est en jeu. Il est considéré comme une référence en matière de justice, ce qui lui accorde le même bonus pour rendre justice, apaiser une foule en colère ou infléchir la décision d’un dirigeant.'),
-('hourras', 'Hourras', 0, 0, 'prest', 'Le barde peut utiliser cette capacité une fois par tour lorsqu\'un événement positif pour lui et ses alliés se produit. Tous les alliés à portée de voix profitent alors d\'un bonus de +3 pour leur prochaine action similaire. Si le groupe doit par exemple franchir une crevasse, lorsqu\'un premier personnage a réussi, le barde encourage le suivant par ses hourras et il obtient un bonus de +3 à son test. En combat, pour chaque ennemi neutralisé, le barde peut utiliser cette capacité et donner un bonus de +3 (non-cumulable) à ses alliés pour leur prochain test d\'attaque.'),
-('hyperconscience', 'Hyperconscience', 0, 0, '', 'L\'ensorceleur augmente ses valeurs de SAG et INT de +2. Il peut désormais lancer deux d20 à chaque fois qu\'un test de SAG ou INT lui ait demandé et conserver le meilleur résultat.');
+('hourras', 'Hourras', 0, 0, 'prest', 'Le barde peut utiliser cette capacité une fois par tour lorsqu\'un événement positif pour lui et ses alliés se produit. Tous les alliés à portée de voix profitent alors d\'un bonus de +3 pour leur prochaine action similaire. Si le groupe doit par exemple franchir une crevasse, lorsqu\'un premier personnage a réussi, le barde encourage le suivant par ses hourras et il obtient un bonus de +3 à son test. En combat, pour chaque ennemi neutralisé, le barde peut utiliser cette capacité et donner un bonus de +3 (non-cumulable) à ses alliés pour leur prochain test d\'attaque.');
 INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('hyperconscience', 'Hyperconscience', 0, 0, '', 'L\'ensorceleur augmente ses valeurs de SAG et INT de +2. Il peut désormais lancer deux d20 à chaque fois qu\'un test de SAG ou INT lui ait demandé et conserver le meilleur résultat.'),
 ('ignorer-la-douleur', 'Ignorer la douleur', 0, 0, '', 'Une fois par combat, le chevalier peut noter à part les DM subit par une attaque. Il n\'en subira les effets que lorsque le combat sera terminé.'),
 ('image-decalee', 'Image décalée', 1, 1, '', 'Pendant [5 + Mod. de CHA] tours, lorsqu\'une attaque le touche, l\'ensorceleur lance 1d6 : sur 5 -6, il ne subit pas les DM.'),
 ('imitateur', 'Imitateur', 0, 0, 'prest', 'Cette capacité permet au barde d\'imiter parfaitement la voix d\'une créature qu\'il a précédemment entendu. Il peut également imiter différents cris d\'animaux.'),
@@ -12245,6 +11578,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('inspiration-celeste', 'Inspiration céleste', 0, 0, 'race', 'La nature céleste du personnage le transcende et le rend littéralement éblouissant, il augmente ses valeurs de SAG et de CHA de +2.'),
 ('instinct-de-survie', 'Instinct de survie', 0, 0, 'race', 'Lorsqu\'une attaque devrait amener le personnage à 0 PV, les DM qu\'elle inflige sont divisés par 2 (minimum 1).'),
 ('instinct-survie-crea', 'Instinct de survie', 0, 0, 'creat', 'La créature est passée maître dans l’art de se faufiler et de se mettre à couvert. Une fois par tour, au moment de son choix, le PNJ peut utiliser une action de mouvement supplémentaire pour se déplacer. Si un effet ou une créature le paralyse, le ralenti ou restreint ses mouvements, il a droit à un test d’INT ou de DEX au choix difficulté 10 pour s’en débarrasser une fois par tour. Il gagne +5 en DEF lorsqu’il lui reste moins de [NCx5] PV.'),
+('int-heroique-erudit', 'Intelligence h&eacute;ro&iuml;que', 0, 0, 'prof', 'L&rsquo;&eacute;rudit augmente sa valeur d&rsquo;INT de +2 et il peut d&eacute;sormais lancer deux d20 &agrave; chaque fois qu&rsquo;un test d&rsquo;INT lui est demand&eacute; ; il conserve ensuite le meilleur r&eacute;sultat.'),
 ('intelligence-du-comb', 'Intelligence du combat', 0, 0, '', 'Le barde ajoute son Mod. d\'INT en Initiative et en DEF en plus de son Mod. de DEX.'),
 ('intelligence-heroiqu', 'INTelligence héroïque', 0, 0, '', 'Le personnage augmente sa valeur d\'INT de +2 et il peut désormais lancer deux d20 à chaque fois qu\'un test INT lui est demandé '),
 ('intercepter', 'Intercepter', 0, 0, '', 'Une fois par tour, le chevalier peut encaisser un coup à la place d\'un allié à ses cotés. Il utilise sa DEF plutôt que celle de la cible initiale et retranche aux DM son Rang dans la Voie.'),
@@ -12257,16 +11591,16 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('invocation-d-entite', 'Invocation d\'une entité', 1, 1, '', 'L’invocateur appelle une créature d’un autre plan qui entre alors à son service. Personne d’autre que l’invocateur ne peut renvoyer l’entité sur son plan d’origine. Lorsque l’entité est réduite à 0 PV, elle disparaît immédiatement. Dans ce cas, ou si l\'invocateur la renvoie (par une action de mouvement), l’invocateur devra attendre 12 heures avant de pouvoir la convoquer de nouveau. L’entité revient en jeu avec ses PV au maximum et débarrassée de tout effet préjudiciable dont elle pouvait être victime au moment de sa disparition. En dehors de son plan, l’entité ne guérit pas naturellement, mais elle peut bénéfcier de sorts de soins. L’entité est totalement dévouée à son invocateur, elle agit au mieux pour respecter les ordres qui lui sont donnés, en fonction de son Mod. d’INT. Elle parle la langue de l’invocateur. L’apparence physique de l’entité est déterminée lors de sa première invocation (un animal, une créature fantastique ou une créature humanoïde), mais elle doit s’inspirer des Mod. de Carac. choisis par le joueur. Elle ne peut pas imiter précisément l’apparence d’un personnage ou d’une créature en particulier. Une fois que le joueur a déterminé son apparence, la créature la conserve pour toujours. L’entité arbore quelque part sur son corps une rune lumineuse qui la maintient sur le plan de l’invocateur.\nCréer son entité : Le joueur doit répartir 4 points entre les Mod. de FOR et de DEX, puis 2 points entre INT, SAG et CHA (minimum +0). Enfin, le Mod. de CON est égal à +2. La DEF de l’entité est égale à [12 + Mod. de DEX], son score d’attaque est égal à [Niveau de l’invocateur + Mod. de FOR ou de DEX de l’entité] et ses DM sont égaux à [1d6 + Mod. de FOR]. Ses PV sont égaux à [Niveau de l\'invocateur x5].'),
 ('invocation-d-un-demo', 'Invocation d\'un démon', 1, 1, '', 'Une fois par combat, en sacrifiant 1d6 PV, le nécromancien invoque pendant [5 + Mod. d\'INT] tours un démon qui a l\'apparence d\'un Balor de 2m30. Il ne subit que la moitié des DM non magiques, les DM des sorts et armes magiques sont normaux, et il peut voler 20 m/tour. Au niveau 10, il peut attaquer deux fois (action limitée).Démon : Init 16, DEF 17, PV [niveau x 5], Attaque Contact [niveau], DM 1d8+5, FOR +5*, DEX +2, CON +4*, INT +2, SAG +2, CHA +0'),
 ('invulnerable', 'Invulnérable', 0, 0, '', 'Le moine ne reçoit que la moitié des DM de toutes les sources  élémentaires  : feu, froid, foudre, acide... Il ne subit aucun DM des poisons ou des maladies.'),
-('j-ai-un-ami...', 'J\'ai un ami...', 0, 0, '', 'Le courtisan connait du monde, beaucoup de monde. Il est capable d\'obtenir un rendez-vous ou une information avec bien des personnes, plus ou moins puissantes. Une fois par jour, en réussissant un test de CHA difficulté 10, il peut obtenir une entrevue avec une personne d\'importance moyenne (le bras droit d\'un maître de guilde, le chef de la pègre local, un patron d\'une des plus grandes maisons de plaisir de la cité...). Avec un test de CHA difficulté 15, il est capable d\'obtenir une entrevue avec les plus grands représentants des milieux qu\'il fréquente.'),
-('j-ai-un-pote-qui-m-a', 'J\'ai un pote qui m\'a dit...', 0, 0, '', 'Attentif aux ragots, le personnage peut ajouter un bonus de +2 par Rang atteint dans cette Voie pour ses tests d\'INT visant à se souvenir d\'une rumeur ou à connaître des détails sur une personne ou une personnalité.'),
+('j-ai-un-ami', 'J&#039;ai un ami...', 0, 0, 'prof', 'Le courtisan connait du monde, beaucoup de monde. Il est capable d&#039;obtenir un rendez-vous ou une information avec bien des personnes, plus ou moins puissantes. Une fois par jour, en r&eacute;ussissant un test de CHA difficult&eacute; 10, il peut obtenir une entrevue avec une personne d&#039;importance moyenne (le bras droit d&#039;un ma&icirc;tre de guilde, le chef de la p&egrave;gre local, un patron d&#039;une des plus grandes maisons de plaisir de la cit&eacute;...). Avec un test de CHA difficult&eacute; 15, il est capable d&#039;obtenir une entrevue avec les plus grands repr&eacute;sentants des milieux qu&#039;il fr&eacute;quente.'),
+('j-ai-un-pote-qui-m-a', 'J&#039;ai un pote qui m&#039;a dit...', 0, 0, 'prof', 'Attentif aux ragots, le personnage peut ajouter un bonus de +2 par Rang atteint dans cette Voie pour ses tests d&#039;INT visant &agrave; se souvenir d&#039;une rumeur ou &agrave; conna&icirc;tre des d&eacute;tails sur une personne ou une personnalit&eacute;.'),
 ('jet-prismatique', 'Jet prismatique', 1, 0, 'prest', 'Un rayon de lumière polychromatique (arc-en-ciel) émane de la main du magicien et va frapper une cible à une distance maximum de 10 m sur un test d\'attaque magique réussi. Les effets du sort dépendent du niveau de la cible (ou NC pour une créature). Niveau 1 ou moins : Inconsciente pendant 1d6 tours. Niveau 3 ou moins : Aveuglée pendant 1d6 tours. Niveau 4 et plus : Affaiblie pendant 1d6 tours.'),
 ('jeune-worg', 'Jeune worg', 0, 0, 'race', 'Le gobelin dresse un jeune worg et il peut le chevaucher. À dos de worg, il peut agir normalement sans pénalité. Il peut donner l’ordre à sa monture d’attaquer au prix d’une action de mouvement (il peut utiliser sa seconde action pour la faire se déplacer de 20 mètres ou pour faire lui-même une action d’attaque). Jeune worg'),
 ('joli-coup-!', 'Joli coup !', 0, 0, '', 'L\'arquebusier ignore les pénalités normalement appliquées lorsque la cible est à couvert (généralement -2 à -5).'),
 ('jusqu-a-bon-port', 'Jusqu\'à bon port', 0, 0, 'prest', 'Le messager peut voyager deux fois plus longtemps qu\'un autre personnage sans fatigue et il bénéficie d\'un bonus de +5 aux tests d\'équitation. Il obtient aussi un bonus de +5 aux tests destinés à détecter les embuscades et les pièges sur son chemin.'),
 ('juste-toi-et-moi', 'Juste toi et moi', 0, 0, 'prest', 'A chaque tour où il attaque la cible qu\'il a défié, le personnage obtient un bonus en DEF de +1 par Rang atteint dans la Voie contre toutes les attaques provenant d\'autres adversaires.'),
 ('kiai', 'Kiai', 0, 0, '', 'Une fois par combat, lorsqu’il a réussi une attaque (à distance ou au contact), le seigneur peut libérer son énergie sous la forme d’un puissant cri issu du ventre. Il obtient les DM maximum. Au rang 5 de la Voie, il peut utiliser son Kiai une seconde fois, au minimum 1d6 tours plus tard.'),
-('l-energie-du-desespo', 'L\'énergie du désespoir', 0, 0, '', 'Lorsque son total de PV est réduit de moitié, le miséreux lance deux d20 pour tous ses tests de FOR, DEX ou CON, et garde le meilleur résultat. De plus, lorsqu\'il tombe à 0 PV, il reste conscient et peut encore accomplir une action de mouvement par tour (sauf s\'il est mort évidemment !). À chaque fois qu\'il subit à nouveau des DM, il doit cependant réussir un test de CON difficulté [15 + DM]  ou sombrer dans l\'inconscience.'),
-('la-vie-est-dure', 'La vie est dure', 0, 0, '', 'Le personnage gagne un bonus de +1 par Rang atteint dans cette Voie pour tous les tests concernant la résistance physique et l\'endurance.'),
+('l-energie-du-desespo', 'L&#039;&eacute;nergie du d&eacute;sespoir', 0, 0, 'prof', 'Lorsque son total de PV est r&eacute;duit de moiti&eacute;, le mis&eacute;reux lance deux d20 pour tous ses tests de FOR, DEX ou CON, et garde le meilleur r&eacute;sultat. De plus, lorsqu&#039;il tombe &agrave; 0 PV, il reste conscient et peut encore accomplir une action de mouvement par tour (sauf s&#039;il est mort &eacute;videmment !). &Agrave; chaque fois qu&#039;il subit &agrave; nouveau des DM, il doit cependant r&eacute;ussir un test de CON difficult&eacute; [15 + DM]  ou sombrer dans l&#039;inconscience.'),
+('la-vie-est-dure', 'La vie est dure', 0, 0, 'prof', 'Le personnage gagne un bonus de +1 par Rang atteint dans cette Voie pour tous les tests concernant la r&eacute;sistance physique et l&#039;endurance.'),
 ('laissez-le-moi-!', 'Laissez-le-moi !', 0, 0, '', 'Le chevalier met un point d\'honneur à combattre le leader ennemi. Lorsqu\'il peut aisément être identifié dans un groupe d\'au moins 4 créatures, le chevalier lui inflige +1d6 DM par attaque.'),
 ('lame-de-lignee', 'Lame de lignée', 0, 0, '', 'Le seigneur possède un sabre (ou une paire de sabre s’il possède la capacité lames jumelles) qui se transmet dans sa famille depuis des générations et qui symbolise l’honneur des siens. Entre ses mains, cette arme devient magique et lui confère un bonus de +1 en attaque au contact (mais pas aux DM) tous les 3 niveaux : +1 au niveau 3, +2 au niveau 6, +3 au niveau 9, etc. En accord avec le MJ, l’arme obtient un pouvoir supplémentaire lorsque le seigneur atteint le rang 5 de la Voie (+1 niveau de magie : affutée, fléau ou DM élémentaires). S’il perd son arme, le seigneur subit un malus de -1 à tous ses tests tant qu’il ne la retrouve pas. L’arme est réputée incassable, mais si elle venait à être détruite, ce malus s’estomperait au bout d’un an. Il faudrait une année entière pour forger une nouvelle arme de famille.'),
 ('lames-jumelles', 'Lames jumelles', 1, 0, '', 'Si le seigneur possède un Mod. de FOR au moins égal à +2, il peut utiliser le sabre d’une main et la demi-lame de l’autre sans pénalité. Il fait un test d’attaque normal pour chaque arme, mais ne bénéficie pas de son bonus de technique du sabre sur son attaque à la demi-lame. Si son Mod. de FOR est inférieur à +2, il subit une pénalité de -1 en attaque sur chaque attaque par point manquant.'),
@@ -12274,7 +11608,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('langage-animaux-fee', 'Langage des animaux', 0, 0, 'race', 'Le personnage obtient la capacité de druide langage des animaux (Voie des animaux). S’il possède déjà cette capacité, il obtient une capacité de rôdeur de rang 1 de son choix.'),
 ('langage-des-animaux', 'Langage des animaux', 0, 0, '', 'Le druide peut communiquer avec les animaux qui, en général, se comportent avec lui de manière amicale. Il gagne un bonus de +2 par Rang à tous les tests destinés à influencer un animal. La communication reste primitive et limitée à l\'intelligence de l\'animal et à son point de vue (prédateur, proie, etc.).'),
 ('langue-fourchue', 'Langue fourchue', 0, 0, 'race', 'L\'ophidien est maître dans l\'art de mentir et d\'insinuer le doute dans l\'esprit de son interlocuteur. Il obtient un bonus de +5 à tous les tests de CHA en rapport avec le mensonge, le bluff ou pour soutirer des informations à son interlocuteur.'),
-('le-diable-est-dans-l', 'Le diable est dans les détails', 0, 0, '', 'Le courtisan est à l\'affut du moindre détail. Il obtient un bonus de +5 pour tous les tests de perception visuelle et pour ceux visant à percer un mensonge. De plus, il reçoit le même bonus pour tous les tests destinés à décoder le langage corporel d\'une personne.'),
+('le-diable-est-dans-l', 'Le diable est dans les d&eacute;tails', 0, 0, 'prof', 'Le courtisan est &agrave; l&#039;affut du moindre d&eacute;tail. Il obtient un bonus de +5 pour tous les tests de perception visuelle et pour ceux visant &agrave; percer un mensonge. De plus, il re&ccedil;oit le m&ecirc;me bonus pour tous les tests destin&eacute;s &agrave; d&eacute;coder le langage corporel d&#039;une personne.'),
 ('le-poids-des-mots', 'Le poids des mots', 1, 0, 'prest', 'Le barde déforme la réalité et la plie à sa volonté par la force du conte, tant qu\'elle n\'a pas été révélée de manière définitive. Par exemple, il peut déclarer qu\'une porte n\'est pas verrouillée. Il effectue un test de CHA dont la difficulté est laissée à l\'appréciation du MJ. Dans l\'exemple précédent, 10 pour une maison, 15 pour un lieu important et 20 pour le coffre du trésor. Le barde insuffle un peu de lui dans la trame du monde et sacrifie 1 PV lorsqu\'il utilise cette capacité. Il n\'a droit qu\'à un seul essai, s\'il n\'a pas réussi à modifier la réalité, le résultat est définitif.'),
 ('lenteur', 'Lenteur', 1, 0, 'prest', 'Le magicien prend pour cible une créature située à moins de 30 m. La cible doit réussir un test de CON difficulté [10 + Mod. d\'INT] ou elle ne peut plus réaliser qu\'une action par tour : soit un déplacement, soit attaquer mais elle ne peut plus utiliser une Capacité Limitée. Le sort a une durée de 1d6 tours.'),
 ('levitation', 'Lévitation', 1, 0, '', 'En se concentrant, le moine peut léviter à une vitesse de 10 m par tour.'),
@@ -12310,7 +11644,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('mains-d-energie', 'Mains d\'énergie', 1, 0, '', 'Par un effort de concentration, le moine peut rendre ses mains intangibles et ignorer le bonus d\'armure de sa cible pour ce tour s\'il accomplit une attaque à mains nues normale. De plus, toutes les attaques à mains nues du moine sont considérées comme magiques (même lorsqu\'il n\'utilise pas Mains d\'énergie).'),
 ('maitre-de-guerre', 'Maître de guerre', 0, 0, 'epic', 'Cette capacité est réservée aux héros qui ont dirigée une force armée à la victoire et sont reconnus comme des meneurs d\'homme. Lorsque le personnage entraîne une armée pendant au moins 3 mois, tous ses éléments gagnent l\'équivalent d\'un niveau. Lorsqu\'il mène une troupe armée, le MJ doit la considérer comme si elle était 20% plus nombreuse qu\'elle ne l\'est réellement. Enfin, lorsqu\'il combat dans le cadre d\'une manoeuvre militaire ou d\'une bataille à grande échelle, le personnage gagne un bonus de +5 en DEF et +1d6 aux DM.'),
 ('maitre-de-la-survie', 'Maître de la survie', 0, 0, '', 'Le druide obtient un bonus de +2 par Rang dans la Voie à tous les tests basés sur la survie en milieu naturel (survie, vigilance, discrétion, etc.).'),
-('maitre-en-son-domain', 'Maître en son domaine', 0, 0, '', 'L\'expert est reconnu par ses pairs comme un maître en son domaine et il acquiert une influence sociale hors du commun. Grâce à son réseau de connaissances ou par l\'intermédiaire de ses pairs, le personnage peut obtenir de nombreux avantages. Un test de CHA difficulté 10 lui suffit pour obtenir une entrevue avec n\'importe quel personnage puissant à tout moment. Un test de difficulté 15 peut lui permettre d\'obtenir un service, par exemple une lettre de recommandation, un renseignement réservé à l\'élite, des billets pour un bal privé, ou même une escorte armée pour l\'aider à se rendre dans un endroit dangereux.'),
+('maitre-en-son-domain', 'Ma&icirc;tre en son domaine', 0, 0, 'prof', 'L&#039;expert est reconnu par ses pairs comme un ma&icirc;tre en son domaine et il acquiert une influence sociale hors du commun. Gr&acirc;ce &agrave; son r&eacute;seau de connaissances ou par l&#039;interm&eacute;diaire de ses pairs, le personnage peut obtenir de nombreux avantages. Un test de CHA difficult&eacute; 10 lui suffit pour obtenir une entrevue avec n&#039;importe quel personnage puissant &agrave; tout moment. Un test de difficult&eacute; 15 peut lui permettre d&#039;obtenir un service, par exemple une lettre de recommandation, un renseignement r&eacute;serv&eacute; &agrave; l&#039;&eacute;lite, des billets pour un bal priv&eacute;, ou m&ecirc;me une escorte arm&eacute;e pour l&#039;aider &agrave; se rendre dans un endroit dangereux.'),
 ('maitre-vermine', 'Maître Vermine', 0, 0, 'prest', 'Le druide obtient le titre de Maître Vermine. Il peut désormais communiquer avec les vermines en tout genre et celles-ci le considèrent plutôt comme une créature amicale, sauf si elles sont sous l\'emprise d\'un autre druide plus puissant ou sous contrôle magique. En plus de cette capacité de communication, le druide peut désormais monter sur son compagnon animal. La créature obtient ses actions normales (déplacement et /ou attaque) et le druide peut agir normalement depuis sa position (action limitée ou action d\'attaque).'),
 ('maitrise-de-la-ruade', 'Maîtrise de la ruade', 0, 0, 'race', 'Désormais, le centaure peut réaliser une attaque de sabot en action gratuite s’il ne s’est pas déplacé à ce tour.'),
 ('maitrise-des-arbalet', 'Maîtrise des arbalètes', 0, 0, 'race', 'Lorsqu\'il utilise une arbalète de poing ou légère, l\'elfe noir obtient une réussite critique sur un résultat de 19-20. Il sait manier ces arbalètes quel que soit son profil.'),
@@ -12343,19 +11677,19 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('miam', 'Miam', 0, 0, 'race', 'Un gobelin est capable de manger tout et n’importe quoi, une chaussure, une armure de cuir, l’écorce d’un arbre et, bien entendu, des mets avariés. Il obtient un bonus de +5 à tous les tests pour résister aux poisons et aux toxines ingérées et il ne souffre de pénalité pour cause de faim que si aucune matière organique n’est disponible. Enfin, à la place d’une attaque à mains nues, il peut infliger une attaque de morsure qui inflige [1d4 + Mod. de FOR] DM létaux.'),
 ('mirage', 'Mirage', 1, 1, '', 'L\'ensorceleur crée une illusion visuelle et sonore immobile d\'une durée de [5 + Mod. de CHA] minutes (ou tours si l\'illusion est animée). Le volume maximum de l\'illusion est de 10 m de coté par Rang dans la Voie (portée 500 m). Divisez ces paramètres par 10 si l\'illusion est animée. Interagir avec l\'illusion la fait disparaître.'),
 ('mise-a-mort', 'Mise à mort', 1, 0, 'prest', 'Après une attaque réussie de sa meute de chiens, le chevalier peut exécuter une attaque contre la victime acculée. Il double les DM de cette attaque et, si elle est effectuée à l\'épieu, il obtient en plus un bonus de +5 en attaque. Toutefois si la cible n\'est pas tuée par cette attaque, elle gagne immédiatement une action d\'attaque gratuite contre le chevalier.'),
-('moins-que-rien', 'Moins que rien', 0, 0, '', 'Le personnage subit un malus de -5 aux tests d\'interaction sociale avec les gens de la bonne société et gagne un bonus de +5 pour ses tests auprès des autres miséreux. Il obtient également un bonus de +5 aux tests de discrétion et on ne se rappelle généralement pas de lui. Tous les misérables se ressemblent, non ?'),
+('moins-que-rien', 'Moins que rien', 0, 0, 'prof', 'Le personnage subit un malus de -5 aux tests d&#039;interaction sociale avec les gens de la bonne soci&eacute;t&eacute; et gagne un bonus de +5 pour ses tests aupr&egrave;s des autres mis&eacute;reux. Il obtient &eacute;galement un bonus de +5 aux tests de discr&eacute;tion et on ne se rappelle g&eacute;n&eacute;ralement pas de lui. Tous les mis&eacute;rables se ressemblent, non ?'),
 ('moment-de-gloire', 'Moment de gloire', 0, 0, 'epic', 'Une fois par aventure, le personnage peut accéder à un état second qui lui permet de réussir des exploits improbables que l\'on contera dans les chansons de gestes. Pendant un combat complet, soit jusqu\'à la destruction de tous ses ennemis ou sa propre défaite, il bénéficie d\'un bonus de +5 à tous les résultats de ses dés (d\'attaque, de tests de caractéristiques, de DM) et divise par deux tous les DM subis.'),
 ('moment-de-perfection', 'Moment de perfection', 0, 0, '', 'Une fois par combat, le moine peut choisir de réussir toutes ses attaques automatiquement et d\'esquiver toutes celles qui le prennent pour cible pendant un tour. Tout semble aller au ralenti autour de lui...'),
 ('moment-zen', 'Moment zen', 0, 0, '', 'Le seigneur est capable d’atteindre la paix intérieure même dans les moments les plus stressants. Désormais, il est capable de prendre 10, même en situation stressante et il lui faut seulement 2d6 tours (au lieu de 2d6 minutes). Il lui faut seulement 2d6 minutes pour prendre 20 (au lieu de 2d6 heures). De plus, lorsqu’il prend 10, il ajoute toujours son Mod. de SAG au résultat en plus du Mod. de Carac. prévu initialement pour le test. Le seigneur est enfin capable de prendre 10 sur une action d’attaque au prix d’une action limitée (L) jusqu’à 3 fois par combat.'),
 ('monture-epique', 'Monture épique', 0, 0, 'epic', 'Le personnage obtient une monture extraordinaire dont le NC ne doit pas dépasser la moitié de son niveau. La monture comprend des ordres simples en fonction de son intelligence. Lorsque le personnage chevauche sa monture, il peut la faire attaquer au prix d\'une action de mouvement à sa propre initiative. Si le personnage est un chevalier et qu\'il possède des Rangs dans la Voie du cavalier, il applique les avantages de toutes ses capacités à cette monture et peut ajouter son Rang dans la Voie au NC maximum de sa monture.'),
 ('monture-fantastique', 'Monture fantastique', 0, 0, '', 'Le chevalier obtient une monture volante (pégase, griffon, hippogriffe, drake, etc.). Lorsqu\'il est en selle, le chevalier peut faire attaquer sa monture une fois par tour (action gratuite), à la même Initiative que lui, avec un score d\'attaque égal à son niveau +3. En vol, la monture couvre une distance de 50 m par action de déplacement. Les capacités de la Monture magique s\'appliquent également.Monture fantastique : Init 15, DEF 16, PV 20 + [2 x niveau], Att +8, DM 1d6+4'),
 ('monture-feerique', 'Monture féerique', 1, 0, 'race', 'Le personnage apprivoise un animal qui lui sert de monture, souvent une monture volante comme un aigle pour un lutin et une monture terrestre comme un loup ou une panthère pour une fée.'),
-('monture-loyale', 'Monture loyale', 0, 0, '', 'Le seigneur s’attache les services d’un fidèle destrier capable de l’amener au cœur des batailles. Lorsque qu’il combat à cheval, il gagne +1 en attaque (au contact et à distance) et en DEF.'),
+('monture-loyale', 'Monture loyale', 0, 0, '', 'Le seigneur s’attache les services d’un fidèle destrier capable de l’amener au cœur des batailles. Lorsque qu’il combat à cheval, il gagne +1 en attaque (au contact et à distance) et en DEF.');
+INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
 ('monture-magique', 'Monture magique', 0, 0, '', 'Le chevalier obtient une monture magique, qui peut apparaître et disparaître depuis un autre plan à volonté. Il peut l\'invoquer à tout moment (c\'est une action limitée) et elle apparaît alors pour se mettre à son service. Lorsqu\'il la laisse au moins une heure dans son plan d\'origine, elle guérit l\'ensemble de ses PV.'),
 ('monture-puissante', 'Monture puissante', 0, 0, 'prest', 'Le drake monté par le chevalier atteint sa pleine maturité, il augmente ses capacités offensives. Drake : Init 15, DEF 18, PV 20 + [4 x niveau], Att +12, DM 2d6+7 (FOR et CON +7).'),
 ('monumental', 'Monumental', 0, 0, 'race', 'Le demi-ogre est une montagne de muscle, il augmente ses valeurs de CON et de FOR de +2.'),
-('morsure', 'Morsure', 0, 0, 'race', 'Un kobold peut remplacer une attaque à main nue par une morsure qui inflige [1d4 + Mod. de FOR] DM létaux. Lorsqu’il réussit une attaque de morsure, le kobold peut choisir de ne pas lâcher prise, dans ce cas il utilise une action limitée à chaque tour pour infliger automatiquement des DM de morsure. Toutefois, le Kobold subit une pénalité de -2 en DEF tant qu’il ne lâche pas prise.');
-INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('morsure', 'Morsure', 0, 0, 'race', 'Un kobold peut remplacer une attaque à main nue par une morsure qui inflige [1d4 + Mod. de FOR] DM létaux. Lorsqu’il réussit une attaque de morsure, le kobold peut choisir de ne pas lâcher prise, dans ce cas il utilise une action limitée à chaque tour pour infliger automatiquement des DM de morsure. Toutefois, le Kobold subit une pénalité de -2 en DEF tant qu’il ne lâche pas prise.'),
 ('morsure-du-serpent', 'Morsure du serpent', 0, 0, '', 'Le moine obtient des DM critiques (multipliés par 2) sur un résultat de 19 à 20 au d20 du test d\'attaque à mains nues ou avec une arme de contact, et sur des résultats de 18 et 20 avec une rapière ou une vivelame.'),
 ('mort-de-rire', 'Mort de rire', 1, 0, 'prest', 'Si le barde réussit un test d\'attaque magique (portée de 10 mètres), la victime est prise d\'un fou rire incontrôlable qui lui tord l\'abdomen et la fait s\'étouffer progressivement. Elle souffre d\'un malus de -2 en attaque et en DEF et subit 1d6 DM par tour jusqu\'à ce qu\'elle réussisse un test de SAG difficulté [12+Mod. de CHA] pour mettre fin au sort (un essai à la fin de chaque tour du barde) ou en meurt ! Ce sort n\'affecte que les créatures humanoïdes.'),
 ('mot-de-mort', 'Mot de mort', 1, 1, '', 'Le nécromancien doit réussir un test d\'attaque magique contre le score max de PV de sa cible (portée 10 m). La victime doit réussir un test de CON difficulté [10 + Mod. d\'INT] ou tomber à 0 PV.'),
@@ -12373,8 +11707,8 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('mutation-serpentine', 'Mutation serpentine', 1, 0, 'race', 'Le personnage peut révéler sa vrai nature, sa tête devient celle d\'un énorme serpent et son cou s\'allonge jusqu\'à mesurer un mètre. Sous cette forme, en plus de ses actions normales, l\'ophidien peut effectuer une attaque de morsure qui inflige 1d4 DM. La cible doit réussir un test de CON difficulté 12 contre le poison ou subir 2d6 DM supplémentaires. Le personnage peut garder cette forme aussi longtemps qu\'il le souhaite, revenir à sa forme humaine est une action limitée.'),
 ('nature-nourriciere', 'Nature nourricière', 0, 0, '', 'Si le rôdeur passe 1 heure en forêt, il trouve de quoi nourrir deux personnes (pour une journée) pour chaque Rang qu\'il possède dans cette Voie. En passant 1d6 heure(s) et en réussissant un test de SAG difficulté 10, le rôdeur trouve des plantes médicinales qui lui permettent de soigner 1d6 PV par Rang. Ces plantes doivent être utilisées immédiatement. Ces soins peuvent toutefois être répartis sur plusieurs patients : le joueur alloue les d6 correspondant aux plantes médicinales à sa guise.'),
 ('ni-chaud-ni-froid', 'Ni chaud ni froid', 0, 0, 'prest', 'Le personnage est habitué aux températures froides, il obtient un bonus de +5 à tous les tests de survie en milieu froid et aux tests pour résister au froid. Il peu supporter des températures de 0°C en étant habillé d\'un simple pagne et il retranche 5 points à tous les DM de froid subis (RD 5).'),
-('ni-vu,-ni-connu', 'Ni vu, ni connu', 0, 0, '', 'L\'homme du peuple se fond dans la foule sans aucun soucis. En effectuant un test de CHA difficulté 10, il disparaît dans la foule et ne peut plus être retrouvé, sauf Voie de profil particulière.'),
-('novice', 'Novice', 0, 0, '', '\"L\'érudit dispose d\'un novice à son service qui s\'occupe de son équipement, prend soin de ses documents, panse les blessures, etc. Grâce à lui, tous les sorts de Rang 1 connus ne nécessitent plus qu\'une action d\'attaque et toutes les durées de recherche documentaire sont divisées par 2. Enfin, il peut soigner un personnage jusqu\'à 3 fois par jour avec des effets équivalents à l\'utilisation d\'un PR. Tous les frais sont pris en charge par la capacité. Si le novice vient à mourir, l\'érudit en prend un autre à son service lors de son passage au niveau suivant. Novice : Init 10, DEF 11, PV 10, Att +1, DM 1d6\"'),
+('ni-vu,-ni-connu', 'Ni vu, ni connu', 0, 0, 'prof', 'L&#039;homme du peuple se fond dans la foule sans aucun soucis. En effectuant un test de CHA difficult&eacute; 10, il dispara&icirc;t dans la foule et ne peut plus &ecirc;tre retrouv&eacute;, sauf Voie de profil particuli&egrave;re.'),
+('novice', 'Novice', 0, 0, 'prof', 'L&rsquo;&eacute;rudit dispose d&rsquo;un novice &agrave; son service. Celui-ci est absolument loyal &agrave; son ma&icirc;tre et tient les r&ocirc;les de serviteur et d&rsquo;assistant. Il s&rsquo;occupe de son &eacute;quipement, trie ses documents et en prend soin, panse les blessures, etc. Gr&acirc;ce au novice, les capacit&eacute;s limit&eacute;es (L) de tous les sorts de rang 1 que sait lancer le personnage ne n&eacute;cessitent plus qu&rsquo;une action d&rsquo;attaque et toutes les dur&eacute;es de recherche documentaire sont divis&eacute;es par 2. Enfin, le novice peut effectuer les premiers soins sur un personnage jusqu&rsquo;&agrave; 3 fois par jour ; les effets sont dans ce cas &eacute;quivalent &agrave; l&rsquo;utilisation d&rsquo;une r&eacute;cup&eacute;ration (10 minutes pour [1 DV + niveau + Mod. de CON] PV). Tous les frais sont pris en charge par la capacit&eacute;. Si le novice vient &agrave; mourir, l&rsquo;&eacute;rudit en prend un autre &agrave; son service lors de son passage au niveau suivant. Novice : Init 10, DEF 11, PV 10, Att +1, DM 1d6'),
 ('nuee-d-insectes', 'Nuée d\'insectes', 1, 1, '', 'En réussissant un test d\'attaque magique (portée 20 m), le druide libère sur sa cible une nuée d\'insectes volants qui piquent, aveuglent et la suivent pendant [5 + Mod. de SAG] tours. La victime subit 1 point de DM par tour et un malus de -2 à toutes ses actions. Les DM de zone détruisent la nuée.'),
 ('nuees-de-criquets', 'Nuées de Criquets', 1, 0, 'prest', 'Cette capacité remplace la capacité Nuée d\'insectes. En réussissant un test d\'attaque magique (portée 20 m), le druide libère sur sa cible une nuée de criquet affamés qui la dévorent à petit feu pendant [5 + Mod de SAG.] tours. La victime subit 2 points de DM par tour et un malus de -3 à toutes ses actions. Les DM de zone détruisent la nuée.'),
 ('objet-epique', 'Objet épique', 0, 0, 'epic', 'En accord avec le MJ, le personnage choisit un objet magique en sa possession et lui insuffle une part de lui-même. L\'objet restera à jamais associé à son nom, il devient quasiment indestructible et le personnage obtient la capacité de le téléporter vers lui ou sur lui (pour une armure) par une action de mouvement. L\'objet gagne 1 niveau de magie que le joueur peut utiliser pour choisir une propriété magique ou une augmentation de bonus de son choix. Au niveau 15, son niveau de magie augmente de 1 pour un total de +2. Aux niveaux 17 et 19, il passe respectivement à +3 puis +4.'),
@@ -12383,8 +11717,8 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('odorat', 'Odorat', 0, 0, '', 'Le loup du rôdeur détecte les odeurs des animaux et des créatures là où ils sont passés. Le rôdeur obtient un bonus de +5 aux tests de SAG pour pister et suivre des traces.'),
 ('ombre-mortelle', 'Ombre mortelle', 1, 1, '', 'L\'ombre de la cible du nécromancien attaque son propriétaire pendant [3 + Mod. d\'INT] tours (portée 20 m). L\'ombre poursuit sa cible partout où elle se réfugie. Ombre : Attaque (une par tour) [attaque de la cible], DM [DM de la cible divisés par 2]'),
 ('ombre-mouvante', 'Ombre mouvante', 1, 0, '', 'En réussissant un test de DEX difficulté 10, le voleur peut disparaître dans les ombres à son tour et ne réapparaître qu\'au tour suivant durant sa phase d\'initiative. Aucun adversaire ne peut l\'attaquer pendant qu\'il a disparu dans les ombres, mais il peut subir des DM de zone. Le voleur réapparait à une distance maximum de 10 m de sa position initiale, et si il a l\'initiative, il peut réaliser une Attaque sournoise.'),
-('on-m-la-fait-pas-a-m', 'On m\'la fait pas à moi !', 0, 0, '', 'L\'homme du peuple est méfiant, et il est difficile de lui embrouiller l\'esprit ou de le baratiner. Il gagne un bonus de +5 à tous les tests effectués pour résister à une illusion, au baratin, à une négociation ou à tout autre moyen d\'influencer l\'esprit (qu\'il soit magique ou non).'),
-('on-ne-prete-qu-aux-r', 'On ne prête qu\'aux riches', 0, 0, '', 'Si le personnage souhaite faire l\'acquisition d\'un objet ou d\'un bien de grande valeur et qu\'il n\'a pas l\'argent nécessaire sur lui, on lui fait crédit sans problème. Il a un mois devant lui pour payer. Ensuite, il peut faire un test de CHA difficulté 15 pour prolonger ce délai d\'un mois supplémentaire, et peut renouveler ce test plusieurs mois d\'affilée si nécessaire.'),
+('on-m-la-fait-pas-a-m', 'On m&#039;la fait pas &agrave; moi !', 0, 0, 'prof', 'L&#039;homme du peuple est m&eacute;fiant, et il est difficile de lui embrouiller l&#039;esprit ou de le baratiner. Il gagne un bonus de +5 &agrave; tous les tests effectu&eacute;s pour r&eacute;sister &agrave; une illusion, au baratin, &agrave; une n&eacute;gociation ou &agrave; tout autre moyen d&#039;influencer l&#039;esprit (qu&#039;il soit magique ou non).'),
+('on-ne-prete-qu-aux-r', 'On ne pr&ecirc;te qu&#039;aux riches', 0, 0, 'prof', 'Si le personnage souhaite faire l&#039;acquisition d&#039;un objet ou d&#039;un bien de grande valeur et qu&#039;il n&#039;a pas l&#039;argent n&eacute;cessaire sur lui, on lui fait cr&eacute;dit sans probl&egrave;me. Il a un mois devant lui pour payer. Ensuite, il peut faire un test de CHA difficult&eacute; 15 pour prolonger ce d&eacute;lai d&#039;un mois suppl&eacute;mentaire, et peut renouveler ce test plusieurs mois d&#039;affil&eacute;e si n&eacute;cessaire.'),
 ('onde-de-choc', 'Onde de choc', 1, 1, '', 'Une fois par combat, le psionique peut produire une vague de force à 360 degrés autour de lui dans un rayon maximum de 10 mètres, moins s’il le souhaite. Toutes les créatures dans la zone d’effet subissent [2d6 + Mod. de CHA] DM et doivent réussir un test de FOR [10 + Mod. de CHA]+ ou être renversées. Les DM passent à 3d6 au rang 5 de la Voie.'),
 ('or-des-fous', 'Or des fous', 1, 0, 'prest', 'Le prêtre crée de la monnaie illusoire, jusqu\'à 10 pa par Rang avec une durée de 1d6 heures ou jusqu\'à 10 po par Rang pour une durée de 1d6 minutes.'),
 ('orateur-hors-pair', 'Orateur hors-pair', 0, 0, 'prest', 'Le barde obtient un bonus de +5 à tous les tests pour discourir, convaincre ou pour conter. Il connaît tous les contes et légendes célèbres et, dans le doute, un test INT difficulté 10 permet de confirmer sa connaissance d\'une légende plus confidentielle.'),
@@ -12436,8 +11770,8 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('piege-improvise', 'Piège improvisé', 0, 0, 'race', 'Le kobold est capable de construire des pièges en un instant. Il peut en installer un au prix d’une action limitée en réussissant un test de DEX difficulté 15 (ou Diff. 10 avec le bonus racial de +5). S’il prend dix minutes, le succès est automatique. Le piège affecte une surface de 2 mètres de côté et une créature qui pénètre dans la zone piégée doit faire un test de DEX ou de SAG (au choix) difficulté [10 + Mod. d’INT du kobold] pour l’éviter. En cas d’échec, elle est victime d’un effet parmi les trois suivants (à indiquer lorsque le piège est posé)'),
 ('piqures-d-insecte', 'Piqures d\'insecte', 0, 0, '', 'Lorsqu\'il porte une armure lourde (demi-plaques ou plus), le chevalier réduit les DM subis par les attaques à distance d\'un montant égal au Rang atteint dans cette Voie.'),
 ('pirouettes', 'Pirouettes', 0, 0, 'prest', 'Les pas de danse rendent le personnage insaisissable, il gagne +1 en DEF par Rang atteint dans la Voie. Il gagne un bonus de +5 à tous les tests de danse et d\'acrobatie.'),
-('plein-aux-as', 'Plein aux as', 0, 0, '', 'Le personnage n\'est jamais à cours de liquidité, et obtient pour ses dépenses courantes 20 pa par jour pour chaque Rang atteint dans la Voie. S\'il n\'est pas dépensé, cet argent n\'est pas comptabilisé dans les économies du personnage.'),
-('plus-d-une-corde-a-s', 'Plus d\'une corde à son arc', 0, 0, '', 'Le courtisan sait que pour survivre, il ne peut pas seulement se reposer sur sa langue habile et ses relations. Il peut choisit une capacité de Rang 1 à 3 de son choix dans n\'importe quel profil.'),
+('plein-aux-as', 'Plein aux as', 0, 0, 'prof', 'Le personnage n&#039;est jamais &agrave; cours de liquidit&eacute;, et obtient pour ses d&eacute;penses courantes 20 pa par jour pour chaque Rang atteint dans la Voie. S&#039;il n&#039;est pas d&eacute;pens&eacute;, cet argent n&#039;est pas comptabilis&eacute; dans les &eacute;conomies du personnage.'),
+('plus-d-une-corde-a-s', 'Plus d&#039;une corde &agrave; son arc', 0, 0, 'prof', 'Le courtisan sait que pour survivre, il ne peut pas seulement se reposer sur sa langue habile et ses relations. Il peut choisit une capacit&eacute; de Rang 1 &agrave; 3 de son choix dans n&#039;importe quel profil.'),
 ('plus-vite-que-son-om', 'Plus vite que son ombre', 0, 0, '', 'Si son arme à poudre est prête (chargée et tenue en main), l\'arquebusier peut tirer avec un bonus de +10 à son Initiative.'),
 ('poigne-de-fer', 'Poigne de fer', 0, 0, 'prest', 'Le personnage peut utiliser une arme à 2 mains à une seule main (épée ou hache à 2 mains). À deux mains, il peut utiliser une arme prévue pour une créature de taille Grande qui inflige 2d8 DM au lieu de 2d6.'),
 ('poing-de-fer', 'Poing de fer', 0, 0, '', 'Lorsqu\'il combat à mains nues, le moine peut s\'il le souhaite utiliser son score d\'attaque à distance au lieu de celui d\'attaque au contact. Au Rang 1 de cette Voie, il inflige [1d6 + Mod. de FOR] DM létaux. Ces DM passent à 1d8 au Rang 3 et à 1d10 au Rang 5.'),
@@ -12453,7 +11787,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('porteur-de-poisse', 'Porteur de poisse', 0, 0, 'creat', 'Toutes les attaques et tous les tests effectués contre le PNJ sont réalisés avec deux dés, seul le plus mauvais résultat est pris en compte. À chaque fois qu’un joueur utilise 1 point de chance contre lui, le PNJ gagne 1 point de poisse. Un point de poisse peut être utilisé pour infliger une pénalité de -10 au test de d20 d’un adversaire au moment où le MJ en a envie.'),
 ('porteur-mort-ame-for', 'Porteur de mort (âme-forgée)', 1, 0, 'race', 'Une fois arrivé à 5 PV ou moins, un vieil ordre inscrit dans la mémoire de l’âme-forgée se déclenche. Elle doit réussir un jet de SAG DD 15 ou attaquer tous les humanoïdes à sa portée pendant 1d4 tours. Ses yeux deviennent alors totalement rouges, un indice que ses compagnons peuvent apercevoir.'),
 ('posture-de-combat', 'Posture de combat', 0, 0, '', 'Au début de votre tour, choisissez d\'appliquer jusqu\'à -1 par Rang soit en attaque, DEF ou DM et obtenez l\'équivalent en bonus au choix en attaque, DEF ou DM jusqu\'à votre prochain tour.'),
-('pot-de-vin', 'Pot-de-vin', 0, 0, '', 'En y mettant le prix, le personnage arrive généralement à obtenir ce qu\'il veut. Lorsqu\'il rate un test de CHA, il peut obtenir un bonus de +1 autant de fois qu\'il paye 10 pa (pour un montant maximum de 100 pa) afin de transformer son échec en réussite.'),
+('pot-de-vin', 'Pot-de-vin', 0, 0, 'prof', 'En y mettant le prix, le personnage arrive g&eacute;n&eacute;ralement &agrave; obtenir ce qu&#039;il veut. Lorsqu&#039;il rate un test de CHA, il peut obtenir un bonus de +1 autant de fois qu&#039;il paye 10 pa (pour un montant maximum de 100 pa) afin de transformer son &eacute;chec en r&eacute;ussite.'),
 ('potion-magique', 'Potion magique', 0, 0, '', 'Le forgesort peut préparer une potion d\'Agrandissement, de Forme gazeuse, de Protection contre les éléments, d\'Armure de mage ou de Chute ralentie (voir les Voies de magicien).'),
 ('poudre-puissante', 'Poudre puissante', 0, 0, '', 'L\'arquebusier sait préparer lui-même une poudre plus puissante, il ajoute +10 m à la portée et +2 aux DM de toutes ses armes à poudre.'),
 ('poussee-d-adrenaline', 'Poussée d\'adrénaline', 0, 0, 'prest', 'En dépensant 1d4 PV, le voleur gagne une action de mouvement supplémentaire à son tour. En combinaison avec Mouche du coche, le voleur peut ainsi sacrifier trois actions de mouvement et obtenir un bonus de +10 en DEF !'),
@@ -12469,7 +11803,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('pression-mortelle', 'Pression mortelle', 1, 0, '', 'Le moine frappe les points par lesquels circule l\'énergie vitale d\'une créature vivante. En touchant un point précis, il libère ensuite des effets dévastateurs. Lorsqu\'il combat à mains nues, le joueur peut choisir de ne pas infliger immédiatement les DM de ses attaques. À tout moment dans l\'heure qui suit, il peut annoncer une  Pression mortelle. Il doit alors réussir un test d\'attaque contre la cible, ce qui libère instantanément la totalité des DM infligés jusqu\'alors.'),
 ('prison-vegetale', 'Prison végétale', 1, 1, '', 'Le druide peut commander à la végétation de pousser et bloquer ses ennemis (mais pas ses alliés) dans une zone de 10 m de diamètre (portée 20 m) pendant [5 + Mod. de SAG] tours. Entravées, les cibles subissent un malus de -2 en attaque et en DEF, et ne peuvent pas se déplacer. Chaque tour, une créature peut se libérer avec un test de FOR difficulté [10 + Mod. de SAG]. '),
 ('proche-de-la-nature', 'Proche de la nature', 0, 0, '', 'Le barbare obtient un bonus de +1 par Rang dans la Voie aux tests de survie, de discrétion ou d\'observation en milieu naturel.'),
-('professionnel', 'Professionnel', 0, 0, '', 'L\'expert gagne un bonus de +2 par Rang dans la Voie pour tous les tests liés à son métier.'),
+('professionnel', 'Professionnel', 0, 0, 'prof', 'L&#039;expert gagne un bonus de +2 par Rang dans la Voie pour tous les tests li&eacute;s &agrave; son m&eacute;tier.'),
 ('progesser-a-couvert', 'Progresser à couvert', 1, 0, 'prest', 'À son tour, le personnage peut se déplacer d’un maximum de 20 mètres et il augmente sa DEF contre les attaques à distance de +5. Il peut abriter une autre personne derrière lui et la faire bénéficier du même bonus de +5 en DEF.'),
 ('projectile-magique', 'Projectile magique', 1, 1, '', 'Le magicien choisit une cible visible située à moins de 50 mètres. Elle encaisse automatiquement 1d4 DM (pas de test d\'attaque nécessaire). À partir du Rang 4 dans cette Voie, les DM passent à 1d6.'),
 ('projectile-special', 'Projectile spécial', 1, 0, 'prest', 'À chaque combat le personnage peut tirer un nombre maximum de projectiles spéciaux égal au rang atteint dans la Voie, il lui faut ensuite 10 minutes pour renouveler sa réserve de projectiles. Lorsqu’il tire un projectile spécial, le personnage choisit un effet de son choix parmi les trois suivants. Étourdissant : +1d6 DM d’électricité et la cible doit faire un test de CON [10 + Mod. d’INT] ou être étourdie 1 tour.  Flash : DM normaux sur la cible principale et violent flash lumineux dans un rayon de 5 mètres, test de DEX [10 + Mod. d’INT] pour toutes les créatures dans la zone ou aveuglé 1 tour.  Shrapnel : DM normaux sur la cible principale et explosion projetant une multitude d’éclats dans un rayon de 5 mètres pour 1d8 DM.'),
@@ -12479,7 +11813,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('projection-puissante', 'Projection puissante', 1, 0, 'prest', 'Le moine peut doubler les DM infligés  par sa capacité de Projection du Ki. Après un tel exploit, il lui faut attendre 1d4 tours pour pouvoir à nouveau utiliser Projection du Ki.'),
 ('proprietes-etranges', 'Propriétés étranges', 0, 0, 'prest', 'Le forgesort est dorénavant capable d\'apporter une propriété spéciale à un objet de sa création. Cet apport lui demande un mois de travail et la dépense de 100 po (qui s\'ajoutent au coût de fabrication de l\'objet) par niveau de magie. Il doit de plus utiliser un composant rare et précieux en rapport avec l\'objet (de l\'ichor de dragon rouge pour une épée de feu par exemple). À partir du Rang 5, il peut ajouter 2 propriétés spéciales à un objet.'),
 ('proprioception', 'Proprioception', 0, 0, '', 'Le psionique est capable de ressentir les processus biologiques qui parcourent son corps et de modifier les stimuli sensoriels qu’ils produisent. Il est immunisé aux effets de douleur ou de peur même magiques. Il augmente sa valeur de PV maximum de son Mod. de CHA.'),
-('protecteur', 'Protecteur', 0, 0, '', 'L\'expert est désormais reconnu pour son art et a acquis un protecteur. Il ajoute son Mod. de Carac. de métier pour tous les tests réalisés dans l\'intention d\'asseoir son autorité et d\'imposer le respect. Un tel expert ne saurait être dénigré ! De plus, il ajoute un bonus de +1 à sa DEF, car on hésite désormais à l\'attaquer.'),
+('protecteur', 'Protecteur', 0, 0, 'prof', 'L&#039;expert est d&eacute;sormais reconnu pour son art et a acquis un protecteur. Il ajoute son Mod. de Carac. de m&eacute;tier pour tous les tests r&eacute;alis&eacute;s dans l&#039;intention d&#039;asseoir son autorit&eacute; et d&#039;imposer le respect. Un tel expert ne saurait &ecirc;tre d&eacute;nigr&eacute; ! De plus, il ajoute un bonus de +1 &agrave; sa DEF, car on h&eacute;site d&eacute;sormais &agrave; l&#039;attaquer.'),
 ('protecteur-entite', 'Protecteur', 0, 0, '', 'Quand un allié se trouve au contact de l’entité, il obtient un bonus de +2 en DEF. Si l’allié est l’invocateur, ce bonus passe à +4. De plus, une fois par tour, l’entité peut subir une attaque à la place d’un allié à son contact.'),
 ('protecteur-golem', 'Protecteur', 0, 0, '', 'Une fois par tour, s’il est au contact d’un personnage, le golem peut s’interposer et subir les DM d’une attaque à sa place.'),
 ('protection-contre-le', 'Protection contre le mal', 1, 1, '', 'Le prêtre peut lancer ce sort sur lui ou sur tout allié pour la durée d\'un combat. La cible obtient alors un bonus de +2 en DEF et pour tous les tests de résistance contre les attaques des mort-vivants, des démons, des élémentaires et des créatures conjurées (appelées d\'un autre plan par magie).'),
@@ -12500,14 +11834,14 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('rage-froide', 'Rage froide', 0, 0, 'prest', 'Le barbare est capable de garde toute sa lucidité alors qu\'il entre en rage (Voie de la rage). Il ne subit aucune pénalité de DEF et peut utiliser les armes de jet. Il ne peut toutefois pas utiliser d\'arme de trait (arc, arbalète), ni tenter de négocier dans cet état.'),
 ('rapide-comme-son-omb', 'Rapide comme son ombre', 0, 0, 'race', 'Le gobelin obtient un bonus +3 à tous les tests de discrétion et en initiative.'),
 ('rapidite-epique', 'Rapidité épique', 0, 0, 'epic', 'Désormais, lorsque le personnage réalise une action limitée, il obtient en plus une action de mouvement avant ou après celle-ci.'),
-('rappel', 'Rappel', 0, 0, '', 'Le personnage peut rappeler son familier à son contact par magie. Le familier est téléporté sur son maître au prix d’une action de mouvement s’il est en vue ou par une action limitée dans tous les autres cas.'),
+('rappel', 'Rappel', 0, 0, '', 'Le personnage peut rappeler son familier à son contact par magie. Le familier est téléporté sur son maître au prix d’une action de mouvement s’il est en vue ou par une action limitée dans tous les autres cas.');
+INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
 ('rappel-a-la-vie', 'Rappel à la vie', 0, 1, '', 'Une fois par jour, le prêtre peut rappeler à la vie un personnage décédé depuis moins de [Mod. de SAG] heures par un rituel de 10 minutes. Il doit connaître personnellement la personne rappelée et posséder une relique lui appartenant. Le personnage revient à la conscience avec 1d6 PV.'),
 ('rat-des-villes', 'Rat des villes', 0, 0, 'race', 'Le personnage est à l\'aise dans les foules et les cités bondées du monde. Il gagne un bonus de +5 pour tous les tests liés à la perception dans une foule, ainsi que pour trouver l\'adresse d\'une  personne ou l\'emplacement d\'un lieu précis en zone urbaine.'),
 ('rayon-affaiblissant', 'Rayon affaiblissant', 1, 1, '', 'Le magicien choisit une cible située à moins de 10 mètres. Si son attaque magique réussit, le rayon affecte la cible qui subit un malus de -2 à ses tests de FOR, d\'attaque au contact et de DM, pendant [1d6 + Mod. d\'INT] tours.'),
-('rayonnement-heroique', 'Rayonnement héroïque', 0, 0, '', 'Le personnage augmente son CHA ainsi que la caractéristique régissant son métier de +2. S\'il s\'agit également du CHA, alors il augmente son INT de +2.'),
+('rayonnement-heroique', 'Rayonnement h&eacute;ro&iuml;que', 0, 0, 'prof', 'Le personnage augmente son CHA ainsi que la caract&eacute;ristique r&eacute;gissant son m&eacute;tier de +2. S&#039;il s&#039;agit &eacute;galement du CHA, alors il augmente son INT de +2.'),
 ('reaction-violente', 'Réaction violente', 1, 0, 'race', 'Si une créature se moque du personnage ou le provoque sur son origine ou son apparence, vous devez réussir un test de SAG difficulté 10, sans quoi le personnage est pris d’une crise de folie passagère. Dans cet état, il bénéficie d’un bonus de +2 en attaque et aux DM. Le demi- ogre attaque sa cible et tous ceux qui s’interposent pendant 1d6 tours. Le demi-ogre peut stopper la crise à tout moment en prenant sur lui, il subit alors immédiatement 1d6 DM par tour restant. Il n’est pas rare de voir un jeune demi-ogre perdre conscience en essayant de se contrôler.'),
-('reduction-des-dm', 'Réduction des DM', 0, 0, 'creat', 'La créature est peu sensible aux DM provoqués par les armes, le métal rebondi sur elle comme un vulgaire morceau de bois ou alors la créature guérit immédiatement. Elle obtient une réduction des DM (RD) de 5, ce score est retranché à tous les DM subits. Choisissez un type d’arme qui ignore cette réduction');
-INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('reduction-des-dm', 'Réduction des DM', 0, 0, 'creat', 'La créature est peu sensible aux DM provoqués par les armes, le métal rebondi sur elle comme un vulgaire morceau de bois ou alors la créature guérit immédiatement. Elle obtient une réduction des DM (RD) de 5, ce score est retranché à tous les DM subits. Choisissez un type d’arme qui ignore cette réduction'),
 ('reflexes-felins', 'Réflexes félins', 0, 0, '', 'Le barbare obtient un bonus de +1 par Rang dans cette Voie à son score d\'initiative et à tous les tests de DEX destinés à esquiver un danger (boule de feu, souffle, pièges, etc.).'),
 ('regard-hypnotique', 'Regard hypnotique', 0, 0, 'race', 'L\'ophidien peut lancer le sort d\'ensorceleur Injonction (Voie de l\'envoûteur). Il peut le faire même s\'il porte une armure. A partir du Rang 4, il peut utiliser le sort Sommeil. Si le personnage connait déjà ces capacités, il double le nombre de cibles affectées.'),
 ('regeneration', 'Régénération', 0, 0, 'prest', 'Le moine considère tous les DM subis par des attaques à mains nues (mêmes les attaques à mains nues des autres moines) comme des DM temporaires. C\'est-à-dire qu\'il les guérit au rythme de 1 PV par minute.'),
@@ -12530,7 +11864,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('resistance-et-regene', 'Résistance et régénération', 0, 0, 'prest', 'Le golem divise par 2 tous les DM élémentaires (feu, froid, acide) et peut absorber l\'électricité. Non seulement le golem de chair est immunisé à l\'électricité mais en plus les DM de ce type lui permettent de guérir de ses blessures. Il régénère 1 PV pour 3 DM d\'électricité qui lui sont infligés.'),
 ('resistance-familier', 'Résistance (familier)', 0, 0, '', 'Le familier obtient une réduction des DM (RD) de 1 point par rang atteint dans la Voie face à tous les types de DM.'),
 ('resistance-frouin', 'Résistance (frouïn)', 0, 0, 'race', 'Les frouïns obtiennent un bonus de +5 pour résister aux maladies et aux poisons. Ils peuvent manger des aliments avariés sans tomber malade et n’ont besoin que de trois fois moins de nourriture qu’un humain.'),
-('resistance-heroique', 'Résistance héroïque', 0, 0, '', 'Le personnage augmente sa SAG et sa CON de +2.'),
+('resistance-heroique', 'R&eacute;sistance h&eacute;ro&iuml;que', 0, 0, 'prof', 'Le personnage augmente sa SAG et sa CON de +2.'),
 ('resistance-legendair', 'Résistance légendaire', 0, 0, 'race', 'Le halfelin obtient un bonus de +5 à tous ses tests de CON et un bonus de +5 en DEF contre la magie.'),
 ('resistance-magie-bar', 'Résistance à la magie', 0, 0, '', 'Le barbare devient capable de résister à la magie. Lorsqu’il est la cible d’un sort, une fois par tour, il peut faire un test d’attaque magique (Mod. de SAG) opposé à celui du sort. En cas de réussite, il n’en subit pas les effets.'),
 ('resistance-nain', 'Résistance (nain)', 0, 0, 'race', 'Le nain gagne un bonus de +5 à tous ses tests de CON.'),
@@ -12543,7 +11877,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('rituel-de-puissance', 'Rituel de puissance', 1, 0, '', 'Sur une attaque magique, le magicien peut utiliser un d12 en attaque au lieu du d20 habituel. Si l\'attaque est réussie, il ajoute 2d6 aux DM. Cette capacité s\'utilise uniquement avec les sorts nécessitant un test d\'attaque et infligeant des DM.'),
 ('rituel-primitif', 'Rituel primitif', 1, 0, 'prest', '\"Après avoir consacré 10 minutes à psalmodier, danser et préparer des ingrédients occultes, le nécromancien choisit un sort parmi ceux de sa connaissance. Lors de sa prochaine utilisation de ce sort, il double un paramètre : la portée, les DM ou le nombre de cibles affectées. Au Rang 2, le Nécromancien ne peut préparer qu\'un seul sort à la fois par ce biais '),
 ('robustesse', 'Robustesse', 0, 0, '', 'Le guerrier gagne 3 PV supplémentaires au Rang 1, puis 3 PV de plus au Rang 3 de cette Voie et enfin 3 PV au Rang 5.'),
-('roi-de-la-debrouille', 'Roi de la débrouille', 0, 0, '', 'Le miséreux doit être capable de saisir toutes les opportunités qui s\'offrent à lui, sans jamais se laisser surprendre par les événements. Pour chaque Rang atteint dans cette Voie, il gagne un bonus de +1 en Initiative et à tous les tests de métiers physiques.'),
+('roi-de-la-debrouille', 'Roi de la d&eacute;brouille', 0, 0, 'prof', 'Le mis&eacute;reux doit &ecirc;tre capable de saisir toutes les opportunit&eacute;s qui s&#039;offrent &agrave; lui, sans jamais se laisser surprendre par les &eacute;v&eacute;nements. Pour chaque Rang atteint dans cette Voie, il gagne un bonus de +1 en Initiative et &agrave; tous les tests de m&eacute;tiers physiques.'),
 ('ruade', 'Ruade', 0, 0, 'race', 'Le centaure peut réaliser une attaque de sabot qui inflige 1d6+3 DM avec son score d’attaque au contact habituel (action d’attaque). Au prix d’une action limitée, il peut réaliser une attaque avec une arme, plus une attaque de sabot.'),
 ('rumeurs-et-legendes', 'Rumeurs et légendes', 0, 0, '', 'À force de voyager, le barde a appris toutes sortes de choses, il obtient un bonus de +2 par Rang dans cette Voie aux tests INT pour se  souvenir  d\'une information historique, politique, géographique ou occulte qui pourrait lui être utile.'),
 ('rune-de-pouvoir', 'Rune de pouvoir', 0, 0, '', 'Le forgesort inscrit une rune lumineuse dans les airs (visible pour la durée du sort) et piège une zone allant de 2 à 10 m de diamètre. Toute créature de taille au moins Très Petite déclenche un des effets suivants chaque fois qu\'elle entre dans la zone. Le sort dure 1d6 minutes mais peut être prolongé à 12 heures par un rituel de 10 minutes. Les créatures présentes dans la zone pendant le rituel sont immunisées. Toute autre rune active se termine immédiatement. Effets : Alarme : un puissant gong retentit. Feu : [3d6+Mod. d\'INT] DM de feu. Peur : test de SAG difficulté [15+Mod. d\'INT] ou fuir pendant 2d6 tours.'),
@@ -12574,7 +11908,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('second-ennemi-jure', 'Second ennemi juré', 0, 0, '', 'Le rôdeur choisit une nouvelle race ennemie. Les règles et avantages de la capacité Ennemi Juré s’appliquent à l’identique.'),
 ('second-souffle', 'Second souffle', 1, 0, '', 'Le guerrier peut décider de ne pas attaquer lors du tour de combat pour reprendre son souffle. Il récupère alors [1d10 + niveau + Mod. de CON] PV. Attention : cette capacité ne peut être utilisée qu\'une fois par combat.'),
 ('secrets-d-alcoves', 'Secrets d\'alcôves', 0, 0, 'prest', 'Le voleur obtient un bonus de +5 pour tous les tests visant à trouver ou obtenir des informations secrètes ou sensibles et +5 à tous les tests de perception auditive (SAG). De plus, en réussissant un test de SAG difficulté 12, il est capable de suivre une conversation à distance en lisant sur les lèvres.'),
-('secrets-et-commerage', 'Secrets et commérages', 0, 0, '', 'Le courtisan obtient un bonus de +5 pour tous les tests visant à trouver ou obtenir des informations secrètes ou sensibles, et de +1 à tous les tests de perception auditive (SAG) par Rang atteint dans cette Voie.'),
+('secrets-et-commerage', 'Secrets et comm&eacute;rages', 0, 0, 'prof', 'Le courtisan obtient un bonus de +5 pour tous les tests visant &agrave; trouver ou obtenir des informations secr&egrave;tes ou sensibles, et de +1 &agrave; tous les tests de perception auditive (SAG) par Rang atteint dans cette Voie.'),
 ('seigneur-feerique', 'Seigneur féerique', 1, 0, 'race', 'le personnage devient plus sage et charismatique, il est considéré parmi les siens comme un individu de haut rang. Il augmente ses valeurs de SAG et de CHA de +2.'),
 ('sens-affutes', 'Sens affutés', 0, 0, '', 'Pour chaque Rang dans cette Voie, le rôdeur gagne un bonus de +2 à tous ses tests de SAG destinés à simuler la perception (vue, ouïe, vigilance, etc.). De plus, il ajoute son Mod. de SAG aux DM qu\'il inflige à l\'arc.'),
 ('sens-de-la-pierre', 'Sens de la pierre', 0, 0, 'prest', 'Le personnage sent la présence de toutes les créatures en contact avec la pierre (le sol ou les murs) dans un rayon de 20 m. Il peut définir précisément leur position que ce soit dans le noir ou s\'il s\'agit d\'adversaires invisibles. Il ne peut plus être approché par surprise par un adversaire en contact avec le sol.'),
@@ -12598,7 +11932,7 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('soins-legers', 'Soins légers', 1, 1, '', 'Le prêtre peut toucher une cible, qui récupère alors [1d8 + niveau du prêtre] PV perdus. Le prêtre peut utiliser ce sort sur lui-même.'),
 ('soins-moderes', 'Soins modérés', 1, 1, '', 'Le prêtre peut toucher une cible, qui récupère alors [2d8 + niveau du prêtre] PV perdus. Le prêtre peut utiliser ce sort sur lui-même.'),
 ('soins-rapides', 'Soins rapides', 0, 0, 'prest', 'Tous les sorts de la Voie des soins sont à présent lancés par une simple action de mouvement au lieu d\'une action limitée. Durant son tour, le prêtre peut donc opter pour le lancement d\'un sort de soins et, au choix, une action d\'attaque ou de mouvement.'),
-('solidarite-des-demun', 'Solidarité des démunis', 0, 0, '', 'Les démunis et les miséreux se reconnaissent instinctivement et font parfois preuve d\'un grand sens du sacrifice pour leurs semblables. Lorsqu\'un autre miséreux a la possibilité d\'aider le personnage, lancez 1d6. De 1 à 3, le PNJ apporte son aide totale et inconditionnelle (sans attendre de rémunération et sans se méfier du danger). Cependant, le MJ lance également 1d6 en secret : sur un 6, le PNJ fomente en réalité un sale coup afin de se faire un peu d\'argent...'),
+('solidarite-des-demun', 'Solidarit&eacute; des d&eacute;munis', 0, 0, 'prof', 'Les d&eacute;munis et les mis&eacute;reux se reconnaissent instinctivement et font parfois preuve d&#039;un grand sens du sacrifice pour leurs semblables. Lorsqu&#039;un autre mis&eacute;reux a la possibilit&eacute; d&#039;aider le personnage, lancez 1d6. De 1 &agrave; 3, le PNJ apporte son aide totale et inconditionnelle (sans attendre de r&eacute;mun&eacute;ration et sans se m&eacute;fier du danger). Cependant, le MJ lance &eacute;galement 1d6 en secret : sur un 6, le PNJ fomente en r&eacute;alit&eacute; un sale coup afin de se faire un peu d&#039;argent...'),
 ('solide-comme-un-roc', 'Solide comme un roc', 0, 0, 'race', 'Le nain réduit tous les DM subis de 2 points (mais il subit toujours au moins 1 point de DM par attaque reçue). Ce bonus est cumulable avec d\'autres sources de réduction des DM comme la Peau d\'acier du barbare. Au Rang 4, la réduction passe à 3 points.'),
 ('sommeil', 'Sommeil', 1, 1, '', '[1d6 + Mod. de CHA] cibles dans une zone de 10 m de diamètre (portée 20 m) et dont le score max de PV ne dépasse pas le score d\'attaque magique de l\'ensorceleur sombrent dans l\'inconscience pendant [5 + Mod. de CHA] minutes. Il est possible de les réveiller en les giflant (action d\'attaque).'),
 ('sort-parfait', 'Sort parfait', 0, 0, 'prest', 'Le personnage peut dépenser 1 PM par rang du sort qu’il lance pour obtenir l’effet maximum possible. Par exemple, pour 3 PM, une flèche enflammée inflige 6 + Mod. de Carac. DM au premier tour puis 6 points à chaque tour suivant (toutefois, lancez normalement le d6 de dégâts et, sur un résultat de 1-2, le sort prend fin).'),
@@ -12664,15 +11998,15 @@ INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `desc
 ('traqueur', 'Traqueur', 0, 0, 'prest', 'L\'arquebusier obtient un bonus de +5 aux tests de SAG pour pister les gros animaux (taille grande et supérieure).'),
 ('tri-precis', 'Tir précis', 0, 0, '', 'L\'arquebusier ajoute un bonus de +1 aux DM des armes de tir jusqu\'à une portée de 20 m. Ce bonus passe à +2 au Rang 4 de la Voie.'),
 ('troisieme-cristal', 'Troisième cristal', 0, 0, 'prest', 'Le forgesort apprend à créer deux nouveaux cristaux de son choix. Il peut bénéficier au maximum des effets de 3 cristaux simultanément, mais pas deux fois le même. Changer de cristal correspond à une action limitée.'),
-('trop-lent', 'Trop lent', 0, 0, 'prest', 'Le style de combat des amazones est basé sur la vitesse et l\'adresse. Les adversaires trop lents sont particulièrement décontenancés et débordés par ce style. L\'amazone obtient un bonus de +2 en attaque et aux DM contre tous les adversaires dont le Mod. de DEX inférieure ou égal à +1 et tout ceux dont le malus d\'armure (Mod. de DEF) est supérieur ou égal à +5.'),
+('trop-lent', 'Trop lent', 0, 0, 'prest', 'Le style de combat des amazones est basé sur la vitesse et l\'adresse. Les adversaires trop lents sont particulièrement décontenancés et débordés par ce style. L\'amazone obtient un bonus de +2 en attaque et aux DM contre tous les adversaires dont le Mod. de DEX inférieure ou égal à +1 et tout ceux dont le malus d\'armure (Mod. de DEF) est supérieur ou égal à +5.');
+INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
 ('trop-petit', 'Trop petit', 1, 0, 'race', 'La valeur de Force d’un lutin ne peut pas dépasser 8 et celle d’une fée 6. Les fées et les lutins infligent seulement 1d3 point de DM pour chaque attaque au contact ou à distance avec une arme à une main. Avec une arme à 2 mains (une dague ou un arc miniature), ils infligent 1d4 DM. Ces DM sont liés à la précision plutôt qu’à la force d’impact, et les êtres féeriques sont de véritables experts pour viser les organes vitaux. Enfin, lorsqu’un lutin ou une fée obtient des dés supplémentaires sur une attaque (par exemple pour une Attaque puissante ou une Attaque sournoise) il s’agit de d4 au lieu de d6.'),
 ('tueur-d-animaux', 'Tueur d\'animaux', 0, 0, 'prest', 'L\'arquebusier obtient un bonus de +2 en attaque et aux DM lorsqu\'il emploie une arme à distance contre les animaux de taille grande ou énorme (ours, tigre, éléphant, etc).'),
 ('tueur-d-animaux-fant', 'Tueur d\'animaux fantastiques', 0, 0, 'prest', 'L\'arquebusier obtient un bonus de +2 en attaque et aux DM lorsqu\'il emploie une arme à distance contre les monstres non-humanoïdes de taille grande ou énorme (griffon, dragon, ours-hiboux, etc).'),
 ('tueur-de-geants', 'Tueur de géants', 0, 0, 'prest', 'Le personnage est habitué à combattre les géants et les créatures de grandes tailles qui peuplent les montagnes et les régions froides. Il obtient un bonus de +1d6 aux DM contre les créatures de taille Enorme et +2d6 aux DM contre celles de taille Colossale.'),
 ('tueur-fantasmagoriqu', 'Tueur fantasmagorique', 1, 1, '', 'Ce sort invoque les pires terreurs d\'une créature vivante et lui fait croire à sa propre mort. L\'ensorceleur doit réussir un test d\'attaque magique (portée 20 m). La victime fait un test de SAG difficulté [10 + Mod. de CHA] pour résister. En cas d\'échec, elle tombe à 0 PV. En cas de succès, elle perd l\'équilibre et tombe par terre. Une créature ne peut être la cible de ce sort qu\'une fois par jour, et l\'ensorceleur ne peut pas affecter un personnage ou une créature de niveau supérieur au sien.'),
 ('vague-psionique', 'Vague psionique', 1, 1, '', 'Une fois par combat, le psionique peut projeter son esprit vers un nombre de cibles au maximum égal à [3 + Mod. de CHA] à portée d’attaque mentale. Il effectue une attaque mentale contre chacune d’elle.'),
-('vampirisation', 'Vampirisation', 1, 0, 'creat', 'La créature doit réussir une attaque magique sur une cible vivante à une distance maximum de 30 mètres. En cas de réussite, la cible subit [1d6 × NC/2] DM et la créature régénère autant de PV que de DM infligés. De plus à chaque fois qu’une créature meurt à moins de 20 mètres d’elle, la créature siphonne son énergie et gagne [1d6 + NC] PV.');
-INSERT INTO `cof_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('vampirisation', 'Vampirisation', 1, 0, 'creat', 'La créature doit réussir une attaque magique sur une cible vivante à une distance maximum de 30 mètres. En cas de réussite, la cible subit [1d6 × NC/2] DM et la créature régénère autant de PV que de DM infligés. De plus à chaque fois qu’une créature meurt à moins de 20 mètres d’elle, la créature siphonne son énergie et gagne [1d6 + NC] PV.'),
 ('vent-des-ames', 'Vent des âmes', 1, 0, 'prest', 'Le nécromancien invoque des esprits torturés qui hurlent et tourmentent un ennemi pendant [Mod. d\'INT] tours. Pendant la durée du sort, la cible peine à se concentrer et elle ne peut réaliser aucune action limitée à moins de réussir un test de SAG difficulté 12 à chaque tour. De plus, cette tempête nécrotique bloque tout effet de soins dont la cible pourrait bénéficier (elle ne peut pas se régénérer ou être soignée).'),
 ('vent-des-lames', 'Vent des lames', 0, 0, 'prest', 'Le personnage peut utiliser son Mod. de DEX au choix en attaque au contact ou aux DM (mais pas les deux) au lieu du Mod. de FOR lorsqu\'il utilise une épée ou une lance.'),
 ('ventriloquie', 'Ventriloquie', 1, 0, 'prest', 'Le barde peut projeter sa voix et la faire surgir d\'un point de son choix situé à moins de 20 mètres de lui pour une durée de [1d6+Mod. de CHA] tours.'),
@@ -13185,8 +12519,8 @@ INSERT INTO `cof_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('gnome', '3', 'insignifiant'),
 ('aasimar', '5', 'inspiration-celeste'),
 ('pnj-recurrent', '1', 'instinct-survie-crea'),
+('erudit', '5', 'int-heroique-erudit'),
 ('escrime', '2', 'intelligence-du-comb'),
-('erudit', '5', 'intelligence-heroiqu'),
 ('golem', '5', 'intelligence-heroiqu'),
 ('magie-universelle', '5', 'intelligence-heroiqu'),
 ('sombre-magie', '5', 'intelligence-heroiqu'),
@@ -13201,7 +12535,7 @@ INSERT INTO `cof_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
 ('entite', '1', 'invocation-d-entite'),
 ('demon', '5', 'invocation-d-un-demo'),
 ('energie-vitale', '3', 'invulnerable'),
-('courtisan', '4', 'j-ai-un-ami...'),
+('courtisan', '4', 'j-ai-un-ami'),
 ('homme-du-peuple', '2', 'j-ai-un-pote-qui-m-a'),
 ('chaos', '1', 'jet-prismatique'),
 ('gobelin', '2', 'jeune-worg'),
@@ -17491,6 +16825,7 @@ INSERT INTO `cof_types_capacite` (`type_capacite`, `type_capacite_intitule`, `ty
 ('creat', 'Créatures', NULL),
 ('epic', 'Epique', NULL),
 ('prest', 'Prestige', NULL),
+('prof', 'Professionnelle', NULL),
 ('race', 'Raciale', NULL);
 
 -- --------------------------------------------------------
@@ -17535,7 +16870,8 @@ CREATE TABLE IF NOT EXISTS `cof_types_voie` (
 
 INSERT INTO `cof_types_voie` (`type_voie`, `type_voie_intitule`, `type_voie_config`) VALUES
 ('creat', 'Créatures', '{ \"ranks\": 3 }'),
-('prest', 'Prestige', NULL),
+('prest', 'Prestige', '{ \"hidden\": true }'),
+('prof', 'Professionnelles', NULL),
 ('race', 'Raciales', NULL);
 
 -- --------------------------------------------------------
@@ -17604,7 +16940,7 @@ INSERT INTO `cof_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
 ('contact-mortel', 'Contact Mortel', 'À la croisée de Ken le survivant et de Crazy Kung-fu, la Voie du contact mortel fait de votre maître des arts martiaux une machine létale adepte des techniques à grand spectacle. \r\nProfil possible : moine\r\nRequis : capacité Pression mortelle (rang 2 de la Voie de l’énergie vitale).', 'prest', '0'),
 ('conteur', 'Conteur', 'Le conteur est un être énigmatique dont les mots ne sont pas à prendre à la légère. Parfois subtiles, parfois plus directes, les capacités de cette voie changeront la vision que vos compagnons ont de l’utilité d’un simple conteur d’histoires… \r\nProfils possibles : barde, ensorceleur (avec rang 5 dans la Voie des illusions).', 'prest', '0'),
 ('controle-corporel', 'Contrôle corporel', '', '', '0'),
-('courtisan', 'Courtisan', '', '', '0'),
+('courtisan', 'Courtisan', 'Cette voie est destin&eacute;e aux intrigants, aux charmeurs et aux politiciens.', 'prof', '0'),
 ('creatures-elementair', 'Créatures élémentaires', 'Cette voie, déclinée ici pour le feu, peut l’être pour d’autres éléments : froid, acide, foudre, etc. Quel que soit le rang atteint ou choisi dans cette voie, la créature est immunisée aux DM de l’élément choisi (ici feu).', 'creat', '3'),
 ('creatures-magiques', 'Créatures magiques', 'Cette voie s’applique aux golems, aux élémentaires et aux lycanthropes, à la plupart des démons et des mort-vivants. Une créature qui bénéficie de cette voie retranche de 5 à 15 points aux DM qui lui sont infligés par des armes ordinaires, ce qui augmente considérablement sa résistance. Toutefois, contre un groupe de personnage équipé d’armes appropriées ne permettant pas à la créature de profiter de cet avantage, n’hésitez pas à réduire le NC de 1.\r\nLes créatures dotées de cette voie obtiennent la CON en Carac. Supérieure (indiqué par un *).', 'creat', '3'),
 ('creatures-volantes', 'Créatures volantes', 'Les créatures dotées de cette capacité obtiennent la SAG en Carac. Supérieure (indiqué par un *).', 'creat', '3'),
@@ -17628,11 +16964,11 @@ INSERT INTO `cof_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
 ('energie-vitale', 'Energie vitale', '', '', '2'),
 ('entite', 'Entité', '', '', '2'),
 ('envouteur', 'Envoûteur', '', '', '2'),
-('erudit', 'Erudit', '', '', '2'),
+('erudit', 'Erudit', 'Cette voie repr&eacute;sente l&rsquo;&eacute;ducation et la culture des lettr&eacute;s. &Agrave; haut niveau, les adeptes de cette voie d&eacute;dient leur vie au savoir.', 'prof', '2'),
 ('escarmouche', 'Escarmouche', '', '', '2'),
 ('escrime', 'Escrime', '', '', '2'),
 ('espion', 'Espion', 'Cette voie de prestige est aussi bien adaptée aux voleurs qu’aux bardes, en effet le métier d’amuseur public peut être une couverture très utile pour s’introduire auprès du pouvoir...\r\nProfils possibles : voleur, barde.', 'prest', '2'),
-('expert', 'Expert', '', '', '2'),
+('expert', 'Expert', 'Artisan, marchand, artiste... l&rsquo;expert est un professionnel accompli. Quand il choisit cette voie, il d&eacute;termine un domaine pr&eacute;cis, en fonction de son m&eacute;tier : forgeron, sculpteur, peintre, marchand, caravanier&hellip; Toutes les capacit&eacute;s de cette voie s&rsquo;appliquent alors &agrave; ce m&eacute;tier. Lorsque vous obtenez cette voie, choisissez une &laquo; caract&eacute;ristique de m&eacute;tier &raquo; entre FOR, DEX, INT et CHA, en rapport avec l&rsquo;activit&eacute; exerc&eacute;e.', 'prof', '2'),
 ('expert-du-combat', 'Expert du combat', 'De capacités d’adaptation et d’improvisation supérieures aux autres, ils élèvent le combat au rang d’un art. Tacticiens hors pairs, imprévisibles et sans cesse en mouvement, ils deviennent des adversaires redoutables. Cette voie conviendra aux joueurs qui ont envie de briser la routine des combats en y ajoutant une dimension tactique de gestion de ressources.\r\nProfils possibles : tous profils de combattants\r\nRequis : rang 5 dans une voie d’un profil issu de la famille des combattants.', 'prest', '2'),
 ('explosifs', 'Explosifs', '', '', '3'),
 ('familier', 'Familier', '', '', '0'),
@@ -17659,7 +16995,7 @@ INSERT INTO `cof_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
 ('haut-elfe', 'Haut-Elfe', '', 'race', '0'),
 ('heros', 'Héros', '', '', '0'),
 ('heros-prestige', 'Héros', 'Cette voie peut être sélectionnée par tous les personnages qui aiment les risques, l’aventure et la gloire. Elle est destinée aux héros, aux vrais, ceux qui ne reculent jamais et défient la mort avec un sourire provocateur !\r\nProfils possibles : tous', 'prest', '0'),
-('homme-du-peuple', 'Homme du peuple', '', '', '2'),
+('homme-du-peuple', 'Homme du peuple', 'Cette voie est r&eacute;serv&eacute;e aux gens ordinaires, ces personnes que l&rsquo;on juge parfois &agrave; tort insignifiantes et qui peuvent toujours compter sur leur solide bon sens.', 'prof', '2'),
 ('honneur', 'Honneur', '', '', '2'),
 ('humain', 'Humain', '', 'race', '2'),
 ('illusions', 'Illusions', '', '', '3'),
@@ -17689,13 +17025,13 @@ INSERT INTO `cof_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
 ('metal', 'Métal', '', '', '0'),
 ('meute', 'Meute', 'Les créatures qui comptent sur le nombre plutôt que la puissance individuelle, appartiennent à cette catégorie. Ce sont généralement des créatures de petite taille (exemples : les loups ou les hyènes, les gobelins et les kobolds) mais on trouve aussi quelques prédateurs plus gros (lionne, vélociraptor).\r\nLes créatures dotées de cette voie obtiennent la CON en Carac. Supérieure (indiqué par un *). Dans le cas où une créature est rencontrée seule, ignorez ces capacités et retranchez au NC de la créature le rang qu’elle possédait dans cette Voie.', 'creat', '1'),
 ('minotaure', 'Minotaure', '', 'race', '0'),
-('misereux', 'Miséreux', '', '', '0'),
+('misereux', 'Mis&eacute;reux', 'La voie des mendiants et des parias, ceux que les gens rejettent et &eacute;vitent.', 'prof', '0'),
 ('montreur-d-ours', 'Montreur d\'ours', '', '', '0'),
 ('mort', 'Mort', '', '', '0'),
 ('musicien', 'Musicien', '', '', '0'),
 ('mutations', 'Mutations', '', '', '3'),
 ('nain', 'Nain', '', 'race', '0'),
-('nanti', 'Nanti', '', '', '0'),
+('nanti', 'Nanti', '&laquo; Les pauvres, c&rsquo;est fait pour &ecirc;tre tr&egrave;s pauvres et les riches tr&egrave;s riches ! &raquo; (Don Salluste, un riche noble estranger)', 'prof', '0'),
 ('nature', 'Nature', '', '', '1'),
 ('noblesse', 'Noblesse', '', '', '1'),
 ('ophidien', 'Ophidien', '', 'race', '2'),
@@ -18041,6 +17377,1751 @@ INSERT INTO `cof_voies_profils` (`profil`, `voie`) VALUES
 ('voleur              ', 'deplacement'),
 ('voleur              ', 'roublard'),
 ('voleur              ', 'spadassin');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_capacites`
+--
+
+DROP TABLE IF EXISTS `cog_capacites`;
+CREATE TABLE IF NOT EXISTS `cog_capacites` (
+  `capacite` varchar(30) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `limitee` tinyint(1) DEFAULT NULL,
+  `sort` tinyint(1) DEFAULT NULL,
+  `type` varchar(5) DEFAULT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_capacites`
+--
+
+INSERT INTO `cog_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('50-50', '50/50', 0, 0, 'cult', 'Le personnage a accès à de nombreuses ressources dans le domaine qui est le sien. Il peut diviser le coût et le temps nécessaire pour accéder à des produits qui ne sont pas en vente libre (objet illégal, prototype, contrebande, etc.) par deux. Si vous utilisez la notion abstraite de niveau de vie, cela équivaut à diminuer le niveau de vie de l’objet d’une catégorie. Le matériel de pointe peut souvent permettre d’obtenir des bonus aux actions de ceux qui l’utilisent.'),
+('a-lecoute', 'À l’écoute', 0, 0, 'savf', 'Le personnage sait écouter et mettre les autres à l’aise pour obtenir leurs confidences. Il gagne un bonus de compétence de +1 par rang atteint dans cette voie aux tests de PER effectués pour analyser l’état émotionnel de ses interlocuteurs et aux tests de CHA pour obtenir une information ou un aveu.'),
+('acuite-psychique', 'Acuité psychique', 0, 0, 'espeg', 'Les êtres luminescents ont un fonctionnement morphologique qui dépasse les créatures plus ordinaires. À ce stade, le personnage fait l’acquisition d’une capacité de rang 1 d’une voie psychique de son choix.'),
+('adaptation', 'Adaptation', 0, 0, 'psych', 'Le personnage augmente sa CON de 1. Le psi est désormais capable de se reprogrammer génétiquement pour faire face à un éventail de situations. Il crée un cocon protecteur dans lequel il doit passer une nuit de repos ininterrompue. Au réveil, son corps a été transformé de manière à s’adapter au mieux. Il peut sélectionner un implant biotechnologique de son choix (voir chapitre 5, page XXX) dont il bénéficie des effets avec un rang de 2 jusqu’à nouvel ordre. Si le personnage a déjà un ou plusieurs implants de ce type, il ne peut pas les sélectionner de nouveau.'),
+('adaptation-tymbri', 'Adaptation', 0, 0, 'espbo', 'Le personnage augmente sa CON de 1. Le Tymbri est désormais capable de se reprogrammer génétiquement pour faire face à un éventail de situations. Il crée un cocon protecteur dans lequel il doit passer une nuit de repos ininterrompue. Au réveil, son corps a été transformé de manière à s’adapter au mieux. Il peut sélectionner un implant biotechnologique de son choix (voir chapitre 5, page XXX) dont il bénéficie des effets avec un rang de 2 jusqu’à nouvel ordre. Si le personnage a déjà un ou plusieurs implants de ce type, il ne peut pas les sélectionner de nouveau.'),
+('amelioration-robotique', 'Amélioration robotique', 0, 0, 'espbo', 'Grâce à l’ajout de nouvelles pièces ou au remplacement d’anciennes, le personnage dispose de nouvelles capacités, équivalentes à un implant de type C de niveau 3.'),
+('anticipation', 'Anticipation', 0, 0, 'savf', 'Lorsqu’il occupe le poste de canonnier, le personnage bénéficie d’un bonus de compétence à l’ATD égal à son rang contre les vaisseaux dont l’initiative est inférieure ou égale à celle de son vaisseau. De plus, il est capable de réparer les systèmes d’armement d’un vaisseau ainsi que les tenues de protection et armures lourdes.'),
+('appel-a-un-ami', 'Appel à un ami', 0, 0, 'cult', 'Le personnage connaît de nombreuses personnes capables de lui rendre service dans son milieu. Une fois par session si les circonstances s’y prêtent, il peut demander de l’aide à une relation : renseignement, coup de main, etc. Cela nécessite la réussite d’un test de [CHA + rang]. Le ND dépend de l’importance du service requis'),
+('apprentissage-adaptatif', 'Apprentissage adaptatif', 0, 0, 'espbo', 'Le personnage dispose d’un deuxième emplacement de programmation, qui fonctionne en tout point comme celui décrit dans la capacité apprentissage par induction. Les deux emplacements libres peuvent désormais accueillir des capacités de rang 4. Le ND du test d’apprentissage pour une capacité de rang 4 est de 25.'),
+('apprentissage-par-induction', 'Apprentissage par induction', 0, 0, 'espbo', 'L’androïde est capable d’assimiler une nouvelle compétence par simple observation, même en dehors de sa programmation initiale. Il dispose d’un emplacement de programmation libre. Une fois par partie, lorsqu’il assiste à l’utilisation d’une capacité de rang inférieur ou égal à 3 d’une voie de savoir-faire, le personnage peut effectuer un test de [rang + INT] pour « reprogrammer » cet emplacement. Le ND est de 5, plus 5 par rang de la capacité (10 pour une capacité de rang 1, 15 pour une capacité de rang 2, etc). Si le test est réussi, le personnage dispose désormais de cette capacité jusqu’à ce qu’il en change. Il utilise son rang dans la voie de l’androïde lorsqu’il en fait usage.'),
+('apprentissage-par-modules', 'Apprentissage par modules', 0, 0, 'espbo', 'Une fois par aventure, le robot peut installer un module d’apprentissage. Tant que ce module est en place, celui-ci lui confère un bonus de compétence de +1 par rang à une activité extrêmement spécifique (conduire un modèle de vaisseau particulier, traduire un langage spécifique, protéger un objet désigné). Ce module doit rester cohérent avec sa spécialité.'),
+('approvisionnement', 'Approvisionnement', 0, 0, 'savf', 'S’il dispose de quelques heures sur une planète ou à bord d’une station d’un niveau technologique suffisant, le personnage peut se procurer des pièces détachées pour l’ensemble des systèmes d’un vaisseau civil. Il peut effectuer un approvisionnement une fois par planète et récupère à chaque fois de quoi effectuer 1d4 réparations (1d4 unités de pièces détachées, si vous utilisez les règles de gestion de ressources au chapitre 3 page XXX). La quantité maximale de pièces détachées qui peuvent être stockées à bord est égale au double de la taille du vaisseau (2 pour un chasseur, 4 pour un transport léger, etc.).'),
+('arme-de-predilection', 'Arme de prédilection', 0, 0, 'savf', 'Le personnage choisit une arme de prédilection. Son score de base d’ATC est augmenté de 1 lorsqu’il utilise cette arme et il peut ajouter son dé de renforcement aux dégâts de celle-ci. Il est possible de choisir ses poings et ses pieds comme arme, le dé de renforcement devient dans ce cas sans limite. De plus, lorsqu’il utilise une arme légère (couteau, rapière, mains nues), il peut choisir d’utiliser sa DEX au lieu de sa FOR pour calculer son score d’attaque.'),
+('arme-improvisee', 'Arme improvisée (M)', 0, 0, 'savf', 'Le personnage sait transformer des objets en apparence anodins en armes de défense redoutable. Il s’empare d’un objet dans le décor qu’il peut utiliser comme l’équivalent d’une arme infligeant [ 1d6 + FOR ] DM temporaires ou létaux (au choix du joueur).'),
+('as-de-la-gachette', 'As de la gâchette', 1, 0, 'savf', 'Lorsqu’il utilise coup rapide ou l’action Combat à deux armes avec des armes à feu, le personnage remplace un d12 utilisé pour l’une de ses attaques par un d20. Le personnage augmente sa PER de 1.'),
+('as-de-lingenierie', 'As de l’ingénierie', 1, 1, 'savf', 'Le personnage augmente son INT de 1. De plus, il a maintenant une connaissance intime du fonctionnement des moteurs. Lorsqu’il occupe la salle des moteurs, il ajoute le double de son INT à la Puissance du vaisseau.'),
+('as-des-as', 'As des as', 1, 1, 'savf', 'Le personnage lance deux dés et garde le meilleur résultat à chaque fois qu’il effectue une action de manoeuvre ou une action limitée ayant trait à son vaisseau. De plus, il augmente sa DEX de 1.'),
+('assaut-psi', 'Assaut Psi (A:CHA)', 0, 0, 'psych', 'Le psi concentre son esprit en un projectile d’énergie psychique visant directement les centres nerveux de sa cible. C’est une attaque psychique standard qui peut affecter une cible visible à moins de 20 m. Si elle est réussie, la cible subit 2d6 de DM temporaires et est étourdie jusqu’à la fin de son prochain tour. Au rang 4, le projectile inflige 3d6 DM temporaires et sa portée maximale passe à 50 m.'),
+('assimilation', 'Assimilation', 0, 0, 'espeg', 'Le personnage a désormais accès à la capacité de rang 2 de la voie d’espèce de son hôte. De plus, le parasite est désormais capable de récupérer un corps mort depuis moins d’une heure pour en faire son hôte.'),
+('attaque-agressive', 'Attaque agressive', 1, 1, 'cult', 'Le personnage abandonne toute prudence et mise sur l’offensive. Sa DEF est pénalisée d’un malus de situation de -2. En contrepartie, son attaque bénéficie d’un bonus de compétence de +2. Toute attaque qui réussit bénéficie d’un dé de DM supplémentaire, du même type que les dés de dégâts de l’arme. À noter que le personnage peut utiliser cette capacité avec un vaisseau s’il occupe à la fois les postes de PIL et de CAN.'),
+('attaque-deloyale', 'Attaque déloyale (A)', 0, 0, 'savf', 'Quand il attaque un adversaire dans le dos, par surprise ou en bénéficiant d’une supériorité numérique, le personnage inflige 1d6 points de DM supplémentaires (notez que ces DM supplémentaires ne sont pas multipliés en cas de critique). Ce bonus passe à 2d6 au rang 5 de la voie.'),
+('attaque-en-pique', 'Attaque en piqué', 1, 1, 'espeg', 'Le personnage peut effectuer une attaque foudroyante sur un adversaire alors qu’il est en vol. Le personnage doit se trouver à moins de 30 mètres au-dessus de sa cible. Il pique sur celle-ci puis effectue une attaque au contact ou à distance. Si cette attaque est réussie, les dégâts sont doublés. Si le personnage est interfacé avec un vaisseau qu’il pilote, il peut aussi effectuer cette manoeuvre lors d’un combat spatial à partir du moment où il a pris l’avantage sur un adversaire.'),
+('attrape-reves', 'Attrape-rêves (A:PER)', 0, 0, 'psych', 'Le psi s’enfonce plus profondément dans la psyché d’un individu, afin de lire son subconscient et ses pensées profondes. Pendant l’attaque, la cible a l’impression de rêver et perçoit des images incohérentes et chaotiques de son passé. Pour cette raison, les télépathes choisissent souvent de cibler des individus pendant leur sommeil. Si l’attaque est réussie, le psi obtient des informations sur les motivations et le caractère de sa cible. Cela peut lui permettre d’obtenir une information en particulier, et lui confère aussi un bonus de situation de +1 par rang à toutes ses interactions sociales avec cette personne.'),
+('avalanche-de-coups', 'Avalanche de coups', 1, 0, 'savf', 'Le personnage inonde de coups un adversaire pour le contraindre à se défendre. Les DM infligés sont les mêmes qu’une attaque unique, mais si l’attaque est réussie, la cible perd son prochain tour.'),
+('backdoor', 'Backdoor', 0, 0, 'ia', 'L’I.A. est capable de s’installer de manière agressive sur un grand nombre de terminaux, et devient presque impossible à éliminer. Son réseau peut s’étendre sur toute une ville ou sur un vaisseau de grande taille. L’I.A. dispose d’une capacité équivalente à la guerre électronique, de la voie de l’électronique. 5. Worm : À ce stade, l’I.A. devient presque impossible à détruire. Elle a appris à répliquer ses composantes de manière à ce que se débarrasser d’elle revient à annihiler son réseau de communication. Celui-ci occupe l’équivalent d’une fraction de planète ou d’une flotte spatiale. Tous les systèmes informatiques sont infectés. Elle peut désormais prendre le contrôle direct de n’importe quel système dans son réseau, y compris les androïdes, les robots ou les vaisseaux. Si l’I.A. remporte un test opposé d’INT (Électronique), le système devient une extension physique asservie pour le tour. L’I.A. peut contrôler ainsi une centaine de systèmes sans subir de ralentissement. 8. Crash'),
+('barriere-psi', 'Barrière Psi', 0, 0, 'psych', 'Le psi apprend à lever des barrières infranchissables autour de son esprit. Sa DEP bénéficie d’un bonus de matériel de 1 par rang, et il utilise des d6 plutôt que des d4 pour ses dégâts d’egofeedback. Cette capacité peut se cumuler avec le trait Volonté de fer.'),
+('beau-parleur', 'Beau parleur', 0, 0, 'savf', 'Une fois par session, le personnage peut relancer un test de persuasion, séduction ou bluff, ou un test de capacité de cette voie, et conserver le meilleur résultat.'),
+('bidouilleur', 'Bidouilleur', 0, 0, 'savf', 'Le personnage est capable de réparer n’importe quoi avec presque rien. Une fois par aventure, il peut réparer un vaisseau, un système ou un mécanisme même s’il ne possède a priori pas les outils ou les pièces de rechange adéquates.'),
+('bioperception', 'Bioperception', 0, 0, 'psych', 'Le psi ressent naturellement la présence de vie biologique autour de lui, qu’elle soit animale ou végétale. Il ressent aussi la présence d’ondes psychiques, avec d’autant plus de clarté que la puissance du psi ou de la capacité utilisée est élevée. Le psi dispose d’un bonus de compétence +1 par rang dans tous ses tests de PER lorsqu’il s’agit de détecter un être vivant. De plus, en présence d’une forme de vie, il est capable d’évaluer si elle est en bonne santé ou non, sans toutefois disposer d’un diagnostic plus précis.'),
+('bombe-mentale', 'Bombe mentale (CHA)', 1, 0, 'psych', 'Le psi implante une bombe mentale dans l’esprit de sa cible. En cas de réussite, face à une situation particulière ou un mot clé choisi à l’avance, la cible devient paralysée pendant 1d6 heures. Le lien entre son corps et son esprit est brisé et seul un second mot clé peut sortir la victime de sa torpeur. Dans l’intervalle, elle est parfaitement consciente de tout ce qui se passe autour d’elle. Par ailleurs, le personnage augmente ses scores de CHA et de PER de 1.'),
+('bond-de-laraignee', 'Bond de l’araignée (M)', 0, 0, 'espeg', 'Le personnage est désormais capable de réaliser des bonds impressionnants. Chaque usage de cette capacité lui permet de bondir jusqu’à 10 mètres dans la direction de son choix (même en hauteur). Il est capable de se réceptionner même sur une surface verticale ou inversée.'),
+('bouclier-psi', 'Bouclier Psi', 0, 0, 'psych', 'Les télépathes apprennent aussi à dresser des barrières autour de leur esprit. La DEP du personnage bénéficie d’un bonus de matériel de +1 par rang. Il peut en outre choisir de ne pas causer d’egofeedback lorsqu’il est la cible d’une attaque psychique. Un télépathe qui a atteint ce rang peut d’autre part enseigner à un non-psi comment abaisser ses barrières psychiques.'),
+('bouclier-vegetal', 'Bouclier végétal', 1, 0, 'espeg', 'Le personnage augmente sa FOR de 1. En outre, il a appris à manipuler sa capacité de Croissance accélérée pour créer un bouclier pratiquement infranchissable, derrière lequel ses alliés peuvent s’abriter. Jusqu’à six créatures de taille moyenne peuvent bénéficier du bouclier. Celui-ci est totalement opaque et protège contre toutes les attaques physiques : laser, plasma, feu, etc. Le bouclier dispose du même nombre de PV que le personnage. Une fois les PV du bouclier épuisés, il continue à protéger ceux qu’il abrite, mais ce sont alors les PV du personnage qui sont perdus. Si le personnage tombe à 0 PV, le bouclier se disloque.'),
+('brute-epaisse', 'Brute épaisse', 1, 0, 'savf', 'Le personnage augmente sa FOR de 1. Il peut choisir d’utiliser un d12 en attaque au contact au lieu du d20 habituel. Si une telle attaque est réussie, il ajoute 2d6 aux DM.'),
+('cameleon', 'Caméléon', 1, 0, 'savf', 'Le personnage sait se faire passer pour un autre ou pour un membre d’une corporation dont il n’est pas issu. Il obtient un bonus de compétence de +5 à tous les tests de connaissances associés au corps de métier choisi, et +1 par rang à toutes les interactions sociales avec des membres de cette corporation. Toutefois, s’il est découvert et pour le reste de l’aventure, toutes ses interactions avec un membre de cette corporation subissent un malus de situation de -5.'),
+('camouflage', 'Camouflage', 0, 0, 'espbo', 'Le personnage augmente sa DEX ou sa FOR de 1. Il est en outre capable de modifier la teinte et la luminosité de ses écailles afin de se fondre dans son environnement. Il bénéficie alors d’un bonus de compétence de +5 pour passer inaperçu. S’il utilise cette capacité avant d’attaquer une cible qui ne parvient pas à le repérer, il bénéficie aussi d’un bonus de compétence de +5 sur toutes ses attaques contre celle-ci.'),
+('camouflage-reptiloides', 'Camouflage', 0, 0, 'espeg', 'Le personnage augmente sa DEX ou sa FOR de 1. Il est en outre capable de modifier la teinte et la luminosité de ses écailles afin de se fondre dans son environnement. Il bénéficie alors d’un bonus de compétence de +5 pour passer inaperçu. S’il utilise cette capacité avant d’attaquer une cible qui ne parvient pas à le repérer, celle-ci voit sa DEF diminuée de 5.'),
+('carnage', 'Carnage', 0, 0, 'savf', 'Le personnage lance deux dés et conserve le meilleur résultat lors des tests d’attaque du vaisseau. De plus, le canonnier ajoute désormais sa PER à tous les dégâts des armes de bord.'),
+('celebre', 'Célèbre', 0, 0, 'savf', 'Le personnage est à présent un artiste reconnu. Sa célébrité lui donne accès à bien des lieux de pouvoir et la plupart des gens considèrent sa simple présence comme un honneur. Le niveau de vie du personnage est augmenté d’une catégorie. Une fois par aventure, le joueur peut demander l’intervention d’un personnage puissant en sa faveur.'),
+('champ-de-force', 'Champ de force', 0, 0, 'psych', 'Le psi déploie autour de lui un champ de force qui repousse efficacement les projectiles et les solides, ainsi que les rayons soniques et plasmiques. Ce champ de force lui confère un bonus de matériel de +2 en DEF, et ne peut se cumuler avec un autre champ de force (il peut par contre se cumuler avec le combat kinétique). Déployer et maintenir ce champ de force est une action gratuite et le champ ne peut englober personne d’autre.'),
+('chance-des-misereux', 'Chance des miséreux', 0, 0, 'cult', 'Vu ses origines, c’est un miracle que le personnage n’ait pas déjà été victime de maladie, de violence ou d’un simple accident. Il obtient 1 PC supplémentaire à chaque rang impair dans cette voie.'),
+('chanceux', 'Chanceux', 0, 0, 'espbo', 'Les Humains disposent d’1 PC supplémentaire à chaque rang impair dans la voie d’espèce. De plus, un Humain peut utiliser 1 PC pour annuler un modificateur de situation sur l’un de ses tests. Il peut utiliser ce PC en plus d’un autre point lui conférant un modificateur de chance.'),
+('changement-dhote', 'Changement d’hôte', 0, 0, 'espeg', 'Le parasite est désormais capable de se déplacer d’un hôte à l’autre. Cela nécessite que sa cible soit inconsciente, immobilisée ou bien consentante. Le parasite quitte alors l’ancien hôte (qui meurt) pour habiter le nouvel hôte.'),
+('charisme-hero\"ique', 'Charisme héroïque', 0, 0, 'savf', 'Le personnage augmente de 1 son CHA. Désormais, le joueur lance deux d20 à tous les tests de CHA basés sur les émotions et conserve le meilleur résultat. De plus, le personnage commence à vivre de son art : son niveau de vie augmente d’une catégorie (maximum: aisé).'),
+('chimie-therapeuthique', 'Chimie thérapeuthique', 0, 0, 'augm', 'Le grade de tous les stimulants sélectionnés est augmenté de 1 et peut atteindre 4. De plus, le personnage bénéficie d’un bonus de matériel de +2 à tous les tests de dépendance induits par la prise d’un stimulant (par voie externe) qui ne fait pas partie de sa sélection.'),
+('chirurgien', 'Chirurgien', 0, 0, 'savf', 'Le personnage sait opérer et réparer les organes avec du matériel approprié. Il est aussi formé à la chirurgie traumatique de terrain. En passant une heure au chevet d’un blessé, il peut lui permettre de supprimer une blessure grave en réussissant un test de DEX (ND 15). En cas de blessures multiples, seule une blessure grave peut être soignée de la sorte.'),
+('chitine', 'Chitine', 0, 0, 'espeg', 'La chitine constitue un véritable exosquelette protecteur, plus efficace que certaines armures. Le personnage augmente sa DEF de 1 par rang. Toutefois, les dégâts de feu que subit le personnage sont doublés.'),
+('cinquieme-greffe', 'Cinquième greffe', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type B. Le bonus conféré par cet implant est de +1. Les bonus conférés par tous les implants préalables au sein de cette voie sont augmentés de +1.'),
+('cinquieme-implant', 'Cinquième implant', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type C. Le bonus conféré par cet implant est de +5.'),
+('claustrophile', 'Claustrophile', 0, 0, 'cult', 'Le personnage est à l’aise dans un espace confiné, et ne souffre pas de claustrophobie. Lorsqu’il utilise une combinaison spatiale (voir la section Équipement, page XXX), les pénalités subies sont limitées : aucune pénalité pour une combinaison intravéhiculaire, et seulement -2 pour une combinaison extravéhiculaire. De plus, le personnage a l’habitude d’évoluer au milieu d’individus d’origines et de statuts extrêmement variés. Lors d’une première rencontre, il bénéficie d’un bonus de compétence de +2 à sa première tentative d’interaction sociale.'),
+('combat-de-rue', 'Combat de rue', 0, 0, 'savf', 'Le personnage a l’habitude de la tension qui vient avec le combat au corps à corps. Son Init. est augmentée de 4 dans ces situations. De plus, s’il se trouve en avantage numérique, les DM qu’il inflige sont augmentés d’un dé du même type que les DM de l’arme qu’il utilise.'),
+('combat-kinetique', 'Combat kinétique', 0, 0, 'psych', 'Le psi a appris à utiliser son don pendant le combat, en améliorant ses mouvements et en utilisant la zone de combat à son avantage. Sa DEF est en permanence augmentée de 1. De plus, si le décor le permet, il peut utiliser une action de mouvement pour lancer un objet sur son adversaire. C’est une attaque à distance qui inflige 1d6 DM (2d6 au rang 4).'),
+('comm-telepathique-mineraux', 'Communication télépathique', 0, 0, 'espeg', 'Le personnage est désormais capable de communiquer par le biais d’ondes psychiques compréhensibles par les représentants d’autres espèces. Il est capable d’imposer ce mode de communication à un individu non-minéral, sans risquer d’egofeedback. Il peut en outre faire usage d’une capacité équivalente à l’empathie de la voie de la télépathie (page XXX).'),
+('comme-un-poisson-hors-de-leau', 'Comme un poisson hors de l’eau', 0, 0, 'espeg', 'Désormais, le personnage est habitué à évoluer dans une variété d’environnements. Il bénéficie d’un bonus de compétence de +5 lors de tests physiques en 0g. D’autre part, il peut maintenant retenir sa respiration plus longtemps : utilisez des minutes plutôt que des secondes lorsque le personnage doit retenir son souffle.'),
+('communication-a-distance', 'Communication à distance', 1, 0, 'psych', 'En se concentrant, le psi est capable de créer une onde électromagnétique (type ondes radio) à n’importe quelle distance qui lui permet de créer des sons audibles pour les personnes qui se situent dans la zone visée et qui disposent d’un dispositif de réception (c’est le cas de toutes les combinaisons intra ou extravéhiculaires et de tous les véhicules). Cette communication peut se faire n’importe où à portée de vue du psi et il est même capable de la rendre directionnelle, visant une ou plusieurs personnes en particulier. Toujours en se concentrant, il est capable de détecter et recevoir les ondes radios'),
+('communication-telepathique', 'Communication télépathique', 0, 0, 'espbo', 'Le personnage est désormais capable de communiquer par le biais d’ondes psychiques compréhensibles par les représentants d’autres espèces. Il est capable d’imposer ce mode de communication à un individu non-minéral, sans risquer d’egofeedback. Il peut en outre faire usage d’une capacité équivalente à l’empathie de la voie de la télépathie (page XXX).'),
+('connaissance-des-mondes', 'Connaissance des mondes', 0, 0, 'savf', 'Le personnage est de nature curieuse et a amassé de nombreuses informations (utiles ou non...) à propos des planètes sur lesquelles il s’est rendu. Il bénéficie d’un bonus de compétence de +5 à tous les tests de culture générale en rapport avec une communauté (planète, ville, tribu, etc.) qu’il a déjà visitée.'),
+('connaissance-theorique', 'Connaissance théorique', 0, 0, 'cult', 'Au cours de son parcours, le personnage a appris les bases théoriques du fonctionnement de la plupart des équipements impliqués dans le fonctionnement d’un vaisseau. Il peut donc occuper n’importe quel poste à bord, en ignorant ses propres caractéristiques dans le calcul des caractéristiques du vaisseau (y compris si celles-ci sont négatives).'),
+('contrafactualite', 'Contrafactualité', 0, 0, 'psych', 'Les faits qui auraient pu se produire ont une influence sur la trame de la réalité. Une fois par session, le psi peut choisir de remplacer le résultat d’un de ses d20 par 10.'),
+('controle', 'Contrôle (A:CHA)', 0, 0, 'psych', 'Si cette attaque réussit, le psi prend le contrôle du système nerveux de sa cible jusqu’au début de son prochain tour. Il peut alors la faire agir comme il l’entend. Toutefois, si la cible n’est pas un synthétique (robot ou androïde, par exemple), le mouvement est saccadé et toutes les actions ou attaques subissent un malus de situation de -5. Une fois le tour terminé, la cible est confuse pendant 1d6 tours.'),
+('corporatisme', 'Corporatisme', 0, 0, 'cult', 'Le personnage connaît les codes et les règles officielles ou tacites du milieu dans lequel il évolue. Il sait reconnaître les membres de sa corporation et interagir avec eux. Il obtient un bonus de compétence de +5 à tous les tests de connaissances associés à son corps de métier, et +1 par rang à toutes les interactions sociales avec des membres de sa corporation.'),
+('coup-chanceux', 'Coup chanceux', 1, 0, 'savf', 'Une fois par session, après une attaque réussie, le personnage peut ignorer jusqu’à 5 points de la RD de l’armure de son adversaire. Au rang 5, il ignore jusqu’à 10 points de RD.'),
+('coup-etourdissant', 'Coup étourdissant', 0, 0, 'cult', 'Lorsqu’on se bat pour sa vie, il faut souvent parer au plus pressé sans faire dans la dentelle. Le personnage cherche à neutraliser son adversaire le plus vite possible. Il effectue une attaque normale. Si elle réussit, la cible n’encaisse pas de DM mais est étourdie pendant 1 round.'),
+('coup-incapacitant', 'Coup incapacitant', 1, 0, 'cult', 'Le personnage vise une partie vulnérable de son adversaire et cherche à l’étourdir. Cette capacité n’est utilisable que si son arme est réglée pour assommer. Les DM temporaires infligés sont doublés. Si la cible est étourdie, elle le reste pendant 1d6 rounds.'),
+('coup-precis', 'Coup précis (A/L)', 1, 0, 'savf', 'Le personnage peut effectuer un tir visé (voir règles de combats page XXX) comme une simple action d’attaque. Il peut aussi choisir de le faire en action limitée. Dans ce cas, il ajoute sa PER à la fois à l’attaque et aux DM (comme s’il utilisait un trépied).'),
+('coup-rapide', 'Coup rapide', 1, 0, 'savf', 'Le personnage peut effectuer deux attaques pendant ce tour avec une arme à feu. Le joueur utilise un d12 au lieu du d20 pour le test de la seconde attaque.'),
+('coup-vicieux', 'Coup vicieux', 1, 0, 'cult', 'Dans les bas-fonds, le combat est rarement honorable, et le personnage a appris à ignorer les règles traditionnelles. Une fois par combat, il peut asséner un coup vicieux. Si l’attaque est réussie, en plus des DM infligés, la DEF de la cible est pénalisée d’un malus de situation de -1 par rang pour le reste du combat.'),
+('cour-des-miracles', 'Cour des miracles', 0, 0, 'cult', 'Le personnage a acquis une certaine réputation dans le monde interlope et, lorsqu’il se trouve dans une zone populeuse, il peut à tout moment disparaître et échapper à ses poursuivants, et avec lui ses compagnons. Il peut obtenir en 1d6 heures des faux papiers et de fausses identités qui leur permettront d’échapper aux contrôles des forces de l’ordre tant que le groupe n’attire pas trop l’attention. De plus, une fois par aventure, il peut obtenir un objet sans tenir compte du fait qu’il soit d’accès restreint ou pas. Enfin, il bénéficie d’un bonus de compétence de +5 à tous ses tests d’interaction sociale avec ceux qui évoluent en marge de la société.'),
+('crash', 'Crash (rang 8)', 0, 0, 'ia', 'L’I.A. a pris le contrôle de la totalité des réseaux de communication de sa planète. Elle peut désormais contrôler directement plusieurs milliers de systèmes sans ralentissement. Elle peut survivre même à un arrêt total des systèmes informatiques sur lesquels elle repose et ne requiert que 1d20 minutes après un tel crash pour se régénérer.'),
+('credibilite', 'Crédibilité', 1, 0, 'cult', 'Une fois par session, en réussissant un test de CHA (Persuasion), le personnage peut échapper avec ses compagnons à un contrôle des forces de l’ordre ou à une arrestation. Le ND du test dépend de la nature de l’offense et de l’opposition, de 10 pour une offense mineure ou de légers soupçons sur une planète éloignée, jusqu’à 25 pour une série de meurtres dans une mégalopole populeuse.'),
+('creer-un-obstacle', 'Créer un obstacle (M)', 0, 0, 'savf', 'Le personnage utilise le décor pour créer un obstacle entre lui et un ou plusieurs adversaires dans un rayon de 5 mètres autour de lui. Les adversaires ciblés sont ralentis jusqu’à ce qu’ils réussissent un test de DEX (ND 10). Ils effectuent ce test à la fin de leurs tours respectifs.'),
+('crochets', 'Crochets (A)', 0, 0, 'espeg', 'Le personnage est capable d’utiliser les crochets ou un dard pour délivrer un venin paralysant puissant par une attaque de contact. Cette attaque inflige 1d6 DM + FOR et, si la cible rate un test de CON (ND 12), elle est immobilisée. Les effets du poison se dissipent après 10 minutes. Le personnage augmente aussi sa DEX ou sa CON de 1.'),
+('croissance-acceleree', 'Croissance accélérée', 0, 0, 'espeg', 'Dans des conditions favorables, s’il dispose de lumière, d’eau et de nutriments adaptés, le personnage peut faire croître et façonner son corps comme il le souhaite, jusqu’au double de sa taille habituelle. Cette transformation dure au maximum 1d6 heures, et est suivie d’1d6 heures pendant lesquelles le personnage est fatigué. Pendant le temps de la transformation, le personnage bénéficie d’un bonus de matériel de +2 à tous les tests et attaques basés sur la FOR.'),
+('cryopyrokinesie', 'Cryo/Pyrokinésie (A:CHA)', 0, 0, 'psych', 'Le psi a appris à manipuler la température en agitant ou en ralentissant la matière au niveau atomique. Il peut ainsi créer un projectile de feu ou de froid qu’il lance sur la cible. C’est une attaque psychique contre la DEF (et non la DEP) de celle-ci, sans risque d’egofeedback. Un projectile enflammé cause 3d6 de DM, puis 1d6 de DM supplémentaires à chaque tour suivant, jusqu’à ce que la cible utilise une action de mouvement pour éteindre le foyer ou que le résultat du dé de DM soit 1. Le projectile de froid cause 1d6 de DM et la cible est ralentie pendant 1d6 tours.'),
+('de-chair-et-dacier', 'De chair et d&#39;acier', 0, 0, 'savf', 'Le personnage augmente sa FOR ou son INT de 1. Il a acquis une connaissance intime et une parfaite maîtrise de son armure de combat ou de sa machine. Le seuil d’incident de tir de chacune des armes employées est diminué de 1, et il utilise un d4 (plutôt qu’un d6) pour tous les tests de surchauffe.'),
+('debrouillardise', 'Débrouillardise', 0, 0, 'cult', 'Le personnage a appris comment se débrouiller, même dans les situations les plus critiques. Le personnage est capable d’occuper n’importe quel poste d’un vaisseau. Toutefois, lorsqu’il le fait, les caractéristiques du personnage ne sont prises en compte que si elles sont négatives dans le calcul des caractéristiques du vaisseau.'),
+('defense-intuitive', 'Défense intuitive', 0, 0, 'psych', 'En combat, le psi est capable d’anticiper les mouvements de ses adversaires. Il bénéficie d’un bonus de compétence de +2 à la DEF et à l’Init. Ces bonus s’appliquent aussi au combat spatial s’il occupe le poste de pilotage (PIL).'),
+('deja-vu', 'Déjà vu', 0, 0, 'psych', 'Le psi est toujours en train d’évoluer en plusieurs instants contigus sur la ligne du temps. Une fois par session, il peut utiliser cette aptitude pour relancer un dé. Il doit accepter le second résultat.'),
+('dephasage-partiel', 'Déphasage partiel (M)', 0, 0, 'espbo', 'Le personnage peut modifier sa densité corporelle pour se rendre partiellement immatériel. Au prix d’une action de mouvement, il bénéficie d’une RD égale à son rang dans cette voie, non cumulable avec une armure. Il peut maintenir cette capacité en « dépensant » une action de mouvement à chacun de ses tours.'),
+('dephasage-partiel-luminescents', 'Déphasage partiel (M)', 0, 0, 'espeg', 'Le personnage peut modifier sa densité corporelle pour se rendre partiellement immatériel. Au prix d’une action de mouvement, il bénéficie d’une RD égale à son rang dans cette voie, non cumulable avec une armure. Il peut maintenir cette capacité en « dépensant » une action de mouvement à chacun de ses tours.'),
+('deplacement-arachneen', 'Déplacement arachnéen', 0, 0, 'espeg', 'Le personnage est capable de se déplacer sur une surface verticale ou à l’envers sans effort particulier et en conservant sa vitesse de déplacement. Il n’est jamais gêné pour ses déplacements par son environnement : il ne peut donc être ralenti ou renversé d’aucune manière. De plus, il ne subit jamais de pénalité de déplacement en 0g.'),
+('desintegration', 'Désintégration  (A:CHA)', 0, 0, 'psych', 'Le personnage augmente sa CON de 1. En touchant un objet, il est désormais capable de remettre en cause la cohésion des atomes qui constituent cet objet. Pour un objet inanimé, le ND dépend de la taille et la composition de celui-ci : 10 pour un petit objet composé majoritairement de carbone (bois) ou de métaux pauvres (aluminium, étain, plomb...), jusqu’à 25 pour un objet de grande taille fait de métal (titane, fer, platine, or...) L’objet est réduit en morceaux et irrémédiablement détruit. Pour un être vivant, le psi doit réussir à toucher sa cible (par exemple par une attaque au contact) et une attaque psychique. Cette attaque inflige 3d8 DM et cause automatiquement une blessure grave.'),
+('detection-&-recherche', 'Détection & Recherche', 1, 1, 'savf', 'Le personnage est capable d’utiliser les senseurs d’un vaisseau pour obtenir des informations détaillées sur un vaisseau ou une planète. Il doit pour ce faire réussir un test de [PER du vaisseau + rang]. Le ND dépend de la quantité de détails souhaités et des protections éventuelles, depuis 10 pour une planète primitive ou récemment colonisée, ou bien un vaisseau de petite taille jusqu’à 25 pour une planète civilisée aux infrastructures très développées ou le navire amiral d’une flotte.'),
+('detox', 'Detox (A:PER)', 0, 0, 'psych', 'Le psi est capable d’évaluer la présence de n’importe quel poison ou n’importe quelle toxine dans le corps de sa cible, et d’en annuler les effets. Pour ce faire, le psi doit réussir une attaque psychique contre la cible, mais cette attaque doit aussi dépasser un ND qui dépend de la virulence du poison : 10 pour un poison anodin, 25 pour un poison mortel et instantané. Le personnage dispose aussi d’un bonus de compétence de +1 par rang à tous ses autres tests impliquant les poisons.'),
+('deuxieme-forme', 'Deuxième forme', 0, 0, 'augm', 'Le personnage peut définir une nouvelle forme et y transférer son esprit. Cette coquille peut bénéficier de deux implants de type B, qui peuvent être différents de celui sélectionné lors du premier transfert. Le bonus conféré par ces deux implants est de +1.'),
+('deuxieme-greffe', 'Deuxième greffe', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type B. Le bonus conféré par cet implant est de +1. Le bonus conféré par tout implant préalable au sein de cette voie est augmenté de +1.'),
+('deuxieme-implant', 'Deuxième implant', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type C. Le bonus conféré par cet implant est de +2.'),
+('deuxieme-peau', 'Deuxième peau', 0, 0, 'espbo', 'Les Libilis présentent un derme et un épiderme plus solides que la peau humaine. Ces écailles leur fournissent une protection naturelle équivalente à une RD de 1, qui se cumule avec d’éventuelles armures. De plus, le métabolisme particulier des Libilis leur permet de bien mieux résister aux dommages. Une fois par session, lorsque le personnage est victime d’une blessure grave, il peut décider d’annuler cette blessure. Le membre ou la partie du corps touchée est alors abandonnée et se régénère en 1d6 heures.'),
+('deuxieme-peau-reptiloides', 'Deuxième peau', 0, 0, 'espeg', 'Les espèces reptiliennes présentent un derme et un épiderme plus solides que la peau humaine. Ces écailles leur fournissent une protection naturelle équivalente à une RD de 1, qui se cumule avec d’éventuelles armures. De plus, le métabolisme particulier des reptiloïdes leur permet de bien mieux résister aux dommages. Une fois par partie, lorsque le personnage est victime d’une blessure grave, il peut décider d’annuler cette blessure. Le membre ou la partie du corps touchée est alors abandonnée et se régénère en 1d6 heures.'),
+('discretion', 'Discrétion', 0, 0, 'savf', 'Quand il essaie de passer inaperçu, le personnage bénéficie d’un bonus de compétence de +1 par rang à son test de DEX. De plus, toute personne qui essaie de le reconnaître, le décrire ou se souvenir de lui subit un malus de situation de -1 par rang.'),
+('domination', 'Domination (A:CHA)', 0, 0, 'psych', 'Le personnage augmente son CHA de 1. Lors d’un combat psychique, il est maintenant capable de prendre totalement le contrôle d’un adversaire. Si la première attaque psychique réussit, le psi dirige désormais totalement les actions de sa « marionnette » pendant 1d6 tours. Maintenir ce contrôle coûte au psi son action d’attaque à chaque tour. La cible peut tenter une fois par round de se libérer de l’emprise du psi en effectuant une attaque psychique (A - CHA). Si cette attaque réussit, le psi subit un egofeedback et perd le contrôle. Lorsqu’elle est libérée de l’emprise du psi, la cible est confuse pendant 1 heure.'),
+('double-attaque', 'Double attaque', 1, 0, 'savf', 'Le personnage effectue deux attaques au contact pendant ce tour. Toutefois, le joueur utilise un d12 au lieu du d20 pour le test de la seconde attaque.'),
+('dualite-onde-corpuscule', 'Dualité onde-corpuscule (M)', 0, 0, 'psych', 'Le psi se concentre pour affecter n’importe quel projectile ou onde le ciblant afin d’en perturber la nature et d’en diminuer l’efficacité. Tant et aussi longtemps qu’il utilise une action de mouvement pour rester concentré, le psi bénéficie d’une RD de 2, qui peut se cumuler avec la RD d’une éventuelle armure. Cette RD passe à 5 au rang 4 de la voie.'),
+('ecailles-et-branchies', 'Écailles et branchies', 0, 0, 'espeg', 'Les espèces aquatiques présentent un derme et un épiderme plus solides que la peau humaine. Ces écailles leur fournissent une protection naturelle équivalente à une RD de 1, qui se cumule avec d’éventuelles armures. La RD passe à 2 au rang 3. En outre, le personnage n’a pas besoin de retenir sa respiration pour évoluer sous l’eau. Dans cet environnement, il bénéficie d’un bonus de compétence de +5 à tout test physique. Par contre, privé de son scaphandre de survie à l’air libre, il doit retenir sa respiration selon les règles habituelles.'),
+('electromancie', 'Électromancie (CHA)', 1, 0, 'espbo', 'Le personnage a appris à projeter une partie de son intégrité corporelle contre un adversaire. Il peut ainsi créer un éclair qu’il lance sur la cible. C’est une attaque psychique contre la DEF (et non la DEP) de celle-ci, sans risque d’egofeedback. Un tel éclair inflige 4d6 dégâts. Cependant, lancer un tel éclair endommage aussi le personnage et lui fait subir 1d6 DM.'),
+('electromancie-luminescents', 'Électromancie (CHA)', 1, 0, 'espeg', 'Le personnage a appris à projeter une partie de son intégrité corporelle contre un adversaire. Il peut ainsi créer un éclair qu’il lance sur la cible. C’est une attaque psychique contre la DEF (et non la DEP) de celle-ci, sans risque d’egofeedback. Un tel éclair inflige 4d6 dégâts. Cependant, lancer un tel éclair endommage aussi le personnage et lui fait subir 1d6 DM.'),
+('electronicien', 'Électronicien', 0, 0, 'savf', 'Le personnage connaît le fonctionnement de la plupart des systèmes informatiques et électroniques. Il obtient un bonus de compétence de +1 par rang à tous les tests visant à réparer ou utiliser ce type de systèmes. À bord d’un vaisseau, il peut occuper la salle des senseurs (SEN) ou la salle des ordinateurs (ORD).'),
+('embuscade', 'Embuscade', 0, 0, 'savf', 'En quelques minutes, le personnage peut préparer une embuscade si l’environnement le lui permet. Tant qu’ils ne bougent pas, le personnage et ses compagnons sont totalement indétectables. S’ils attaquent des adversaires, ces derniers sont considérés comme surpris au premier tour du combat.'),
+('empathie', 'Empathie (PER)', 0, 0, 'psych', 'Le psi a appris à explorer le flot des émotions et des sentiments. Il est capable, comme une action gratuite, de se connecter à l’esprit d’un individu à portée de vue, et de « lire » son esprit pour y détecter ses impressions et son état d’esprit superficiel. C’est une attaque psychique standard. La cible n’a conscience de cette intrusion que si l’attaque échoue. Une utilisation parmi d’autres de cette capacité permet de détecter le stress et le sentiment d’inconfort qui peuvent parfois être la conséquence d’un mensonge. Toutefois, le psi n’est pas capable de détecter la nature exacte d’un tel mensonge et ne peut jamais être certain que le stress n’est pas dû à une autre source.'),
+('empathie-animale', 'Empathie animale (M)', 0, 0, 'espbo', 'Le personnage est capable de comprendre et d’interpréter le langage corporel de la plupart des animaux. Il peut ainsi établir une sorte de dialogue à base de concepts simples et immédiats. Une fois par session, le personnage peut essayer de calmer un animal grâce à un test opposé de [ rang + CHA ]. En cas de succès, l’attitude de l’animal devient neutre (il prend la fuite à moins de circonstances spécifiques). En cas de succès critique, son attitude devient positive : il se calme et se soumet au personnage, qui peut lui donner des ordres simples ne le mettant pas en danger. Cette capacité est utilisable y compris en combat contre un animal agressif.'),
+('empathie-animale-anthropo', 'Empathie animale (M)', 0, 0, 'espeg', 'Le personnage est capable de comprendre et d’interpréter le langage corporel de la plupart des animaux. Il peut ainsi établir une sorte de dialogue à base de concepts simples et immédiats. Une fois par session, le personnage peut essayer de calmer un animal grâce à un test opposé de CHA. En cas de succès, l’attitude de l’animal devient neutre (il prend la fuite à moins de circonstances spécifiques). En cas de succès critique, son attitude devient positive : il se calme et se soumet au personnage. Cette capacité est utilisable y compris en combat contre un animal agressif.'),
+('empathie-tymbri', 'Empathie (PER)', 0, 0, 'espbo', 'Le Tymbri a appris à explorer le flot des émotions et des sentiments. Il est capable, comme une action gratuite, de se connecter à l’esprit d’un individu à portée de vue, et de « lire » son esprit pour y détecter ses impressions et son état d’esprit superficiel. C’est une attaque psychique standard. La cible n’a conscience de cette intrusion que si l’attaque échoue. Une utilisation parmi d’autres de cette capacité permet de détecter le stress et le sentiment d’inconfort qui peuvent parfois être la conséquence d’un mensonge. Toutefois, le Tymbri n’est pas capable de détecter la nature exacte d’un tel mensonge et ne peut jamais être certain que le stress n’est pas dû à une autre source.'),
+('enchainement', 'Enchaînement (M)', 0, 0, 'savf', 'Lorsque le personnage rend inconscient un adversaire avec une attaque au contact, il peut immédiatement attaquer un autre adversaire à sa portée.'),
+('endurant', 'Endurant', 0, 0, 'savf', 'Le personnage a soumis son corps à un entraînement rigoureux et régulier qui l’a rendu plus résistant. Il gagne 1 PV de plus à chaque niveau, à la fois pour les niveaux passés et futurs. De plus, sa vitesse de récupération des PV est doublée.'),
+('entraide', 'Entraide', 0, 0, 'cult', 'Le personnage dispose d’un réseau de contacts, des gens de confiance qui peuvent le dépanner en cas de coup dur ou le protéger d’éventuels poursuivants. Pour chaque rang dans cette voie, le personnage peut définir un de ces contacts. Il n’est pas obligé de définir tous ses contacts a priori, et peut tout à fait en définir un nouveau lorsque la situation l’impose.'),
+('entrainement-de-haut-niveau', 'Entraînement de haut niveau', 0, 0, 'savf', 'Le personnage augmente l’une de ses caractéristiques physiques de 1. Désormais, il lance deux d20 à tous les tests liés à cette caractéristique et conserve le meilleur résultat.'),
+('epiphyse-artificielle', 'Épiphyse artificielle', 0, 0, 'augm', 'Cet implant contrôle l’horloge interne du personnage et contribue à la stabilisation de son système hormonal et au renforcement de ses capacités de récupération. Le personnage est désormais capable de s’endormir à volonté. Quatre heures de sommeil sont pour lui l’équivalent d’une nuit complète de repos. Enfin, il ne peut pas être épuisé. S’il subit l’état épuisé, il est seulement fatigué. La durée des effets secondaires des stimulants injectés via son implant est divisée par 2.'),
+('esprit-danalyse', 'Esprit d’analyse', 0, 0, 'savf', 'Le personnage obtient un bonus de compétence de +1 par rang pour les tests d’INT concernant la recherche d’informations. De plus, il bénéficie d’un statut officiel qui lui permet d’accéder à certaines données protégées (plus son rang est élevé, plus les données auxquelles il a accès sont importantes). Si les informations qu’il recherche peuvent être rapprochées de l’activité normale de son profil (par exemple, dossier criminel pour un chasseur de primes), en plus des informations « standards » que tout un chacun peut dénicher, le personnage a accès à des informations confidentielles.'),
+('esprit-de-la-ruche', 'Esprit de la ruche', 0, 0, 'espeg', 'Si le personnage est entouré d’au moins dix de ses congénères, il bénéficie d’un bonus de situation de +2 à tous ses tests d’INT et de PER. De plus, une fois par session, lorsqu’un allié du personnage tombe à 0 PV, ce dernier entre dans une rage sourde et vient à la rescousse de son camarade blessé. Il bénéficie alors d’un bonus de situation de +1 à toutes ses attaques et de +2 aux DM pour le reste du combat. Ces bonus sont applicables au combat spatial si le personnage occupe le poste de canonnier.'),
+('esquive-instinctive', 'Esquive instinctive', 0, 0, 'savf', 'Lorsque le personnage est ciblé par une attaque à aire d’effet (comme une grenade ou un tir de suppression), il a le droit à un test de DEX (ND 15). Si ce test est réussi, les DM de l’attaque sont divisés par deux. À partir du rang 4, ils sont réduits à 0.'),
+('etre-denergie', 'Être d’énergie', 0, 0, 'espbo', 'Les A’gón se défendent généralement en concentrant une part de leur énergie interne en une décharge ciblant un adversaire. C’est une attaque à distance qui suit les règles d’une arme laser, et qui fait 1d8 de DM. De plus, ils sont immunisés aux dégâts des armes laser. Enfin, ils sont capables d’envoyer une décharge d’énergie dans un appareil électronique jusqu’à 3 mètres de distance. Cela peut (au choix) provoquer un court-circuit ou allumer l’appareil en question.'),
+('etre-denergie-luminescents', 'Être d’énergie', 0, 0, 'espeg', 'Les êtres luminescents se défendent généralement en concentrant une part de leur énergie interne en une décharge ciblant un adversaire. C’est une attaque à distance qui suit les règles d’une arme laser, et qui fait 1d8 de DM. De plus, ils sont immunisés aux dégâts des armes laser. Enfin, ils sont capables d’envoyer une décharge d’énergie dans un appareil électronique jusqu’à 3 mètres de distance. Cela peut (au choix) provoquer un court-circuit ou allumer l’appareil en question.'),
+('examen-psychologique', 'Examen psychologique', 0, 0, 'savf', 'En parlant pendant 1d6 minutes avec sa cible et en réussissant un test opposé de PER contre CHA, le personnage peut déterminer l’état émotionnel de sa cible même si elle tente de le camoufler. Le personnage peut notamment savoir si on tente de lui mentir ou de lui cacher des choses (sans pouvoir déterminer lequel des deux). En cas d’échec, le personnage ne peut plus tenter cette capacité sur la même cible pendant 24 heures.'),
+('expert', 'Expert', 0, 0, 'savf', 'Le personnage est une pointure dans le domaine de la chirurgie, il obtient un bonus de compétence de +5 à tous les tests de DEX de précision manuelle et augmente de 1 son INT. Désormais, le joueur lance deux d20 à tous les tests de médecine ou de chirurgie et conserve le meilleur résultat. De plus, son niveau de vie augmente d’une catégorie (maximum: fortuné).'),
+('explorateur', 'Explorateur', 0, 0, 'savf', 'Le personnage a l’habitude d’évoluer dans des milieux aux conditions très différentes. Il ne subit aucun malus par rapport à ce qui a trait aux modifications de gravité, de climat, de température ou de pression. Il bénéficie en outre d’un bonus de compétence égal à son rang à tous ses tests ayant trait à la survie en milieu hostile, la détection des dangers ou la résistance à l’environnement (température, poisons, faim, etc.).'),
+('feinte', 'Feinte', 0, 0, 'espbo', 'Une fois par round, lorsqu’une attaque fait tomber le personnage à 0 PV, ce dernier peut effectuer un test d’attaque (du même type). Si le résultat de son test est supérieur ou égal à celui de l’adversaire, il esquive ou résiste à cette attaque et ne subit aucun DM. Lors d’un combat spatial, le personnage peut utiliser cette capacité s’il occupe le poste de pilote.'),
+('fleur-de-la-mort', 'Fleur de la Mort', 1, 1, 'savf', 'Au prix d’un point d’énergie, le canonnier tire sans distinction sur tous les adversaires à courte portée, quel que soit leur nombre. Le joueur utilise un d12 au lieu du d20 pour déterminer s’il atteint chaque adversaire.');
+INSERT INTO `cog_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('flou', 'Flou (M)', 0, 0, 'psych', 'Le psi manipule les ondes lumineuses autour de lui à tel point qu’il paraît flou. Toute attaque à distance le ciblant subit un malus de situation de -2. De plus, les armes (laser et ioniques) subissent un effet de dispersion. Créer ou maintenir cet effet nécessite une action de mouvement.'),
+('formation-academique', 'Formation académique', 0, 0, 'cult', 'Le personnage obtient un bonus de compétence de +1 par rang atteint dans cette voie pour tous les tests en rapport avec son domaine d’étude, à choisir parmi : arts et lettres, sciences naturelles, sciences formelles, sciences humaines, sciences économiques, droit, santé, langues, etc.'),
+('formation-artistique', 'Formation artistique', 0, 0, 'savf', 'Le personnage obtient un bonus de compétence de +1 par rang à tous les tests en rapport avec la connaissance et l’histoire de l’art. De plus, il choisit une spécialité (littérature, sculpture, peinture, musique, chant, danse, comédie, etc.), pour laquelle il obtient un bonus de compétence de +5.'),
+('forme-optimale', 'Forme optimale', 0, 0, 'augm', 'Le personnage peut maintenant transférer son esprit dans des coquilles optimales des trois formes qui lui sont « connues ». Chaque nouvelle coquille est fournie avec trois implants de type B, qui peuvent être différents de ceux sélectionnés précédemment. Le bonus conféré par chacun d’entre eux est de +4. Toutefois, une fois parvenu à ce rang, chaque nouveau transfert a une chance d’être le dernier : le personnage effectue un test de CON (ND 10). En cas d’échec, la lassitude l’emporte, et cette nouvelle coquille sera aussi sa dernière.'),
+('frappe-chirurgicale', 'Frappe chirurgicale', 0, 0, 'savf', 'Le personnage connaît les points vitaux de la plupart des créatures vivantes. Il est capable d’utiliser cette connaissance à son avantage. Désormais, il obtient un critique en attaque au contact ou à distance sur un résultat de 19 ou 20 au d20 et il ajoute 1d6 aux DM des critiques obtenus.'),
+('genome-ameliore', 'Génome amélioré', 0, 0, 'augm', 'L’inclusion du code génétique de l’autre espèce a un effet sur les capacités du personnage, qui dispose d’un bonus de matériel de +2 à tous les tests et attaques dépendant d’une caractéristique. La caractéristique affectée varie selon l’espèce choisie pour l’hybridation, comme l’indique la Table des bonus d’hybridation.'),
+('genome-composite', 'Génome composite', 0, 0, 'augm', 'Le personnage dispose désormais de la capacité de rang 2 de la voie d’espèce choisie pour l’hybridation. L’hybridation devient difficile à dissimuler.'),
+('gros-bras', 'Gros bras', 0, 0, 'savf', 'Le personnage est capable d’utiliser les armes lourdes et autres engins explosifs. Il bénéficie d’un bonus de compétence de +1 par rang à tous ses tests concernant la manipulation ou la connaissance des explosifs. De plus, il peut occuper le poste de canonnier (CAN) à bord d’un vaisseau.'),
+('grosse-tete', 'Grosse tête', 0, 0, 'cult', 'Une fois par session, en utilisant son intelligence à bon escient, le personnage change la donne d’une action réalisée par lui ou un de ses alliés. Son INT est ajoutée à un test effectué par lui ou un de ses alliés avec qui il peut communiquer. Ce bonus est considéré comme un modificateur de chance et ne peut se cumuler avec l’utilisation d’un PC sur la même action.'),
+('guerre-electronique', 'Guerre électronique (A)', 1, 1, 'savf', 'Le personnage a appris à utiliser ses compétences pour affecter les systèmes électroniques d’un vaisseau adverse. Une fois par session, il peut utiliser sa capacité Hacker contre les senseurs d’un vaisseau adverse, en réussissant un test en opposition de [PER du vaisseau]. En cas de réussite, il peut pénaliser n’importe quelle caractéristique du vaisseau adverse (sauf Coque) d’un malus de situation de -2 pour le reste du combat. De plus, si la configuration du vaisseau le permet, il peut occuper les postes SEN et ORD d’un vaisseau en même temps.'),
+('hacker', 'Hacker', 1, 1, 'savf', 'Le personnage est désormais capable de pénétrer un système ennemi pour le pirater. Il peut effectuer un test d’INT pour ouvrir une serrure électronique sans déclencher d’alarme, récupérer des données sur un ordinateur, ou perturber un système électronique courant. Le ND dépend du système visé, depuis 10 pour un système civil basique jusqu’à 25 pour un système à la pointe de la technologie.'),
+('homo-perfectus', 'Homo perfectus', 0, 0, 'espbo', 'Le personnage augmente la valeur de deux de ses caractéristiques de 1. Lorsqu’il utilise ses capacités d’Apprentissage par induction et d’Apprentissage adaptatif, il peut désormais lancer deux d20 et conserver le meilleur résultat.'),
+('hybridation-genetique', 'Hybridation génétique', 0, 0, 'augm', 'Le code génétique du personnage est augmenté de celui d’une autre espèce de son choix. Sélectionnez l’une des voies génériques d’espèce organique (hors voie des parasites) présentées au chapitre 10, Xénomorphes, page XXX. Le personnage dispose désormais de la capacité de rang 1 de cette voie. L’hybridation génétique peut être plus ou moins visible selon les cas et reste encore relativement discrète.'),
+('immobilisation', 'Immobilisation (A:CHA)', 0, 0, 'psych', 'Le psi rassemble des forces gravitationnelles en un point précis. Si l’attaque est réussie, la cible est immobilisée jusqu’à la fin de son prochain tour. Dans le cas contraire, elle est simplement ralentie.'),
+('immobilisation-vegetaux', 'Immobilisation (A)', 0, 0, 'espeg', 'Le personnage tente d’agripper un adversaire. Il effectue un test d’attaque au contact. Si ce test est réussi, la cible ne subit aucun DM mais est immobilisée. Elle ne peut se libérer de l’emprise du personnage que si celui-ci le décide, s’éloigne de plus de 2 mètres, ou si elle réussit un test opposé de FOR (en utilisant un d12 puisqu’elle est immobilisée).'),
+('implant-thyro\"idien', 'Implant thyroïdien', 0, 0, 'augm', 'En préparation des modifications futures, le personnage se voit implanter une thyroïde artificielle capable de réguler son flux hormonal et son métabolisme. Il bénéficie d’un bonus de matériel de +1 par rang à toute activité physique ou sportive. Son total de PV est aussi augmenté de 1 par rang dans cette voie.'),
+('imprevisible', 'Imprévisible', 0, 0, 'savf', 'Le personnage ajoute désormais son CHA à son score d’initiative et peut utiliser sa capacité d’Inspiration sur un test lié à une caractéristique physique (FOR, DEX ou CON), y compris les tests d’attaque. De plus, il peut sélectionner une deuxième spécialité artistique.'),
+('improviser-un-couvert', 'Improviser un couvert (M)', 0, 0, 'cult', 'Le personnage est capable de dénicher un couvert même dans les endroits les plus improbables : à bord d’un vaisseau ou dans un espace réduit, le personnage peut improviser un couvert qui impose un malus de situation de -2 à quiconque le vise par une attaque à distance.'),
+('impulsion-electro-magnetique', 'Impulsion électro-magnétique (A:CHA)', 0, 0, 'psych', 'Le psi génère une impulsion capable de surcharger n’importe quel système électronique avec lequel il est en contact. Il peut s’agir d’un terminal, d’une arme, d’un véhicule ou d’un implant. Seuls les objets archaïques sans aucun composant électrique résistent à l’impulsion. Les autres deviennent inutilisables pendant [ rang + 1d6] tours. Si le d6 est un 6, l’objet est endommagé et nécessite une réparation. Au rang 4, il peut utiliser ce pouvoir jusqu’à 10 mètres de distance.'),
+('individualisme', 'Individualisme', 0, 0, 'cult', 'La surpopulation mène à une exaltation de l’individu, parfois au détriment de la communauté. Le personnage dispose d’un bonus de compétence de +5 à toute action qui peut lui permettre d’obtenir un gain personnel d’ordre financier ou social.'),
+('influence', 'Influence', 0, 0, 'cult', 'Glisser le bon billet dans la bonne poche ou simplement faire étalage de son influence permet souvent de réduire les difficultés rencontrées. Une fois par session, le personnage dispose d’un bonus de matériel de +5 sur un test opposé de CHA contre un individu dont le niveau de vie est inférieur au sien, y compris après avoir pris connaissance du résultat de l’action.'),
+('ingenierie-planetaire', 'Ingénierie planétaire', 1, 1, 'savf', 'Les connaissances du personnage lui permettent d’utiliser les planètes et autres corps stellaires en situation de combat. Une fois par session, il peut utiliser le « terrain » pour dissimuler son vaisseau, échapper à des poursuivants ou automatiquement prendre l’avantage sur un vaisseau adverse. C’est une action qui peut être utilisée même si le personnage n’occupe aucun poste à bord.'),
+('ingenieur', 'Ingénieur', 0, 0, 'savf', 'Le personnage connaît le fonctionnement de la plupart des dispositifs impliqués dans le fonctionnement des moteurs, quel que soit le type de véhicule ou de vaisseau. Il peut occuper la salle des machines (MOT). De plus, il obtient un bonus de compétence de +1 par rang à tous les tests visant à réparer ou entretenir un moteur.'),
+('inspiration', 'Inspiration', 0, 0, 'savf', 'Le personnage possède une grande sensibilité, les émotions sont chez lui un vecteur puissant de motivation et de réussite. Une fois par session, il peut relancer le dé sur un test lié à une caractéristique mentale (INT, PER ou CHA). Ce choix doit être fait après avoir lancé le dé, mais avant de connaître le résultat de l’action.'),
+('instinct-animal', 'Instinct animal', 0, 0, 'espbo', 'Les sens du personnage sont particulièrement aiguisés. Il ne peut plus être surpris dans des conditions normales (il reste vulnérable à des capacités comme embuscade), et il bénéficie d’un bonus de compétence de +5 à tous les tests pour détecter des pièges ou un danger imminent.'),
+('instinct-animal-anthropo', 'Instinct animal', 0, 0, 'espeg', 'Les sens du personnage sont particulièrement aiguisés. Il ne peut plus être surpris dans des conditions normales (il reste vulnérable à des capacités comme embuscade), et il bénéficie d’un bonus de compétence de +5 à tous les tests pour détecter des pièges ou un danger imminent.'),
+('integration-de-circuit', 'Intégration de circuit', 0, 0, 'espeg', 'Si un terminal électronique de quelque sorte que ce soit (ordinateur, robot, ordinateur de vol, etc.) dispose d’une entrée optique, le personnage peut s’interfacer, communiquer et contrôler totalement ce terminal. Cela se traduit pour le personnage par un bonus de compétence de +5 à tous les tests en rapport avec l’électronique ou l’informatique, ainsi que la capacité à occuper tous les postes d’un vaisseau spatial.'),
+('intelligence-heroique', 'Intelligence héroïque', 0, 0, 'cult', 'Le personnage augmente son INT de 1. Il lance désormais deux d20 lors de tous les tests d’INT et conserve le meilleur résultat.'),
+('interaction-faible', 'Interaction faible', 0, 0, 'psych', 'Le psi a une connaissance intime du fonctionnement des interactions entre particules. Il sait utiliser cela pour se protéger des radiations, auxquelles il est désormais immunisé.'),
+('interface', 'Interface', 0, 0, 'psych', 'Le personnage est capable de s’interfacer avec un composant électronique et de « dialoguer » de manière simple, via des impulsions électriques, avec ce composant. La quantité et la qualité des informations dépendent du type de composant, mais leur interprétation dépend des compétences du personnage. Ainsi, s’il s’interface avec un ordinateur, il est capable d’explorer les données qu’il contient, mais aura besoin d’un test d’INT pour comprendre la nature du contenu ou repérer un document en particulier.'),
+('interface-agon', 'Interface', 0, 0, 'espbo', 'Le personnage est désormais capable de s’interfacer avec un composant électronique et de « dialoguer » de manière simple, via des impulsions électriques, avec ce composant. La quantité et la qualité des informations dépendent du type de composant, mais leur interprétation dépend des compétences du personnage. Ainsi, s’il s’interface avec un ordinateur, il est capable d’explorer les données qu’il contient, mais aura besoin d’un test d’INT pour comprendre la nature du contenu ou repérer un document en particulier.'),
+('intimidation', 'Intimidation (M)', 0, 0, 'espbo', 'Par une action de mouvement, le personnage adopte une attitude intimidante, faite d’une posture agressive, du gonflement éventuel de certains organes (gorge, thorax, etc.) et de sons sifflants. Le personnage effectue ensuite un test opposé de [rang + CHA] contre l’ensemble des adversaires dans un rayon de 10 mètres. Ceux qui obtiennent un résultat inférieur à celui du personnage subissent un malus de situation de -2 à toutes leurs actions et attaques pour le reste du tour.'),
+('intimidation-reptiloides', 'Intimidation (M)', 0, 0, 'espeg', 'Par une action de mouvement, le personnage adopte une attitude intimidante, faite d’une posture agressive, du gonflement éventuel de certains organes (gorge, thorax, etc.) et de sons sifflants. Le personnage effectue ensuite un test opposé de CHA contre l’ensemble des adversaires dans un rayon de 10 mètres. Ceux qui obtiennent un résultat inférieur à celui du personnage subissent un malus de situation de -2 à toutes leurs actions et attaques pour le reste du tour.'),
+('intrication-quantique', 'Intrication quantique (M)', 0, 0, 'psych', 'En manipulant l’état quantique d’un ensemble de particules, le psi est capable de transmettre une information instantanément à n’importe quelle distance. Cette information peut prendre la forme d’une courte phrase ou d’une image simple. Le psi est capable de viser un lieu particulier qu’il a déjà visité ou une personne qu’il a déjà rencontrée, où qu’elle se trouve. Cette personne entend ou voit cette information (le médium le plus adapté) et a conscience de la source de l’envoi, mais elle ne peut pas répondre.'),
+('intuition-hero\"ique', 'Intuition héroïque', 0, 0, 'savf', 'Le personnage augmente son CHA de 1 et il peut désormais lancer deux d20 et conserver le meilleur résultat, à chaque fois qu’un test de PER lié aux capacités de cette voie lui est demandé.'),
+('investigateur', 'Investigateur', 0, 0, 'savf', 'Le personnage bénéficie d’un bonus de compétence de +1 par rang à tous les tests correspondant à la recherche d’indices (PER), à remarquer un détail anormal (INT) ou à obtenir des informations ou des aveux (CHA). Ce bonus s’applique aussi à l’action Aider pendant un combat spatial. Le personnage bénéficie en outre d’un modificateur de situation de +2 lors de toute interaction sociale avec un représentant des forces de l’ordre.'),
+('invisibilite', 'Invisibilité', 1, 0, 'psych', 'Le psi est désormais capable de dévier les photons qui devraient passer au travers d’un volume et de les faire reprendre leur course naturelle, ce qui rend le volume en question totalement invisible. Toutefois, le psi n’est capable de réussir cette prouesse que s’il est en contact avec l’objet (ou la personne), que celui (ou celle) ci est totalement immobile, et si sa taille ne dépasse pas celle d’un véhicule personnel. L’objet n’a pas disparu et il est encore possible d’interagir physiquement avec lui (par exemple en le touchant). Mais tout système de perception basé sur le spectre lumineux sera trompé (cela inclut par exemple la vision infrarouge).'),
+('invulnerable', 'Invulnérable', 0, 0, 'espbo', 'Les Kneiss sont totalement immunisés aux armes à énergie et aux radiations. Seuls les chocs (armes à feu, explosifs ou coups directs) peuvent les endommager. Ils n’ont pas non plus un cycle biologique qui leur impose de s’alimenter ou de respirer et peuvent donc survivre sans problème dans le vide spatial. Ils restent sensibles à la gravité et un individu « perdu » dans l’espace finira généralement par s’abîmer dans le puits gravitationnel d’une étoile ou d’une planète. De plus, si l’individu est soumis à une faible luminosité, il est affaibli. Dans le noir total, il est considéré comme inconscient.'),
+('invulnerable-mineraux', 'Invulnérable', 0, 0, 'espeg', 'Les espèces minérales sont totalement immunisées aux armes à énergie et aux radiations. Seuls les chocs (armes à feu, explosifs ou coups directs) peuvent les endommager. Elles n’ont pas non plus un cycle biologique qui leur impose de s’alimenter ou de respirer et peuvent donc survivre sans problème dans le vide spatial. Elles restent sensibles à la gravité et un individu « perdu » dans l’espace finira généralement par s’abîmer dans le puits gravitationnel d’une étoile ou d’une planète. De plus, si l’individu est soumis à une faible luminosité, il est affaibli. Dans le noir total, il est considéré comme inconscient.'),
+('ivan-le-fou', 'Ivan le Fou', 1, 1, 'savf', 'Le pilote effectue une manoeuvre inattendue qui prend de court ses adversaires. Ceux-ci ne peuvent l’attaquer pendant le reste du tour. De plus, il effectue un test d’opposition de Pilotage contre l’un des adversaires. S’il l’emporte, il peut, au choix, prendre automatiquement l’avantage sur ce dernier ou le mettre hors de portée (voir règles sur les combats spatiaux).'),
+('joker', 'Joker', 0, 0, 'cult', 'Une fois par aventure, le personnage peut résoudre un obstacle du scénario grâce à l’intervention d’un événement inattendu. Le joueur doit inventer une histoire à peu près crédible (même si elle est improbable) pour justifier ce deus ex-machina. Par exemple, un mercenaire contacte une bande de sa connaissance qui traînait justement dans les parages, ou un pirate utilise le repaire d’un ancien ennemi pour se planquer.'),
+('la-mort-venue-den-haut', 'La mort venue d&#39;en haut', 1, 1, 'savf', 'Si son mecha dispose de fusées d’appoint, le personnage est capable de mener cette attaque spéciale dans des circonstances désespérées. Il fait décoller son mecha pour atterrir directement sur un mecha adverse à portée. C’est une attaque au contact, qui utilise 2 points de la capacité de refroidissement (comme tout usage des fusées d’appoint). Si l’attaque est réussie, la cible subit 4d8 DM. Tout membre d’équipage du mecha ciblé subit la moitié de ces DM. Le mecha réalisant cette manoeuvre subit lui aussi la moitié des DM infligés. Si cela l’amène à 0 PV, cela signifie que les membres inférieurs du mecha ont été irrémédiablement endommagés, il n’est plus capable de se déplacer. Un échec ou un échec critique sur cette attaque n’ont aucun effet : le pilote a simplement manqué sa cible et se retrouve au contact avec celle-ci.'),
+('langage-machine', 'Langage machine', 1, 1, 'savf', 'Le personnage augmente son INT de 1. De plus, à chaque fois qu’il effectue une action en rapport avec un ordinateur, une machine ou un robot (qu’il se trouve à bord d’un vaisseau ou non), il lance deux dés et conserve le meilleur résultat.'),
+('laser', 'Laser (A:CHA)', 0, 0, 'psych', 'Le psi concentre la lumière en un faisceau directionnel à haute énergie comparable à une arme laser. L’attaque a une portée de 50 mètres et inflige 2d6 DM.'),
+('laser-kneiss', 'Laser (A:CHA)', 0, 0, 'espbo', 'Le personnage concentre la lumière en un faisceau directionnel à haute énergie comparable à une arme laser. L’attaque a une portée de 50 mètres et inflige 2d6 DM.'),
+('le-geste-parfait', 'Le geste parfait', 0, 0, 'savf', 'Une fois par session, le joueur peut décider de ne pas lancer de dé lors d’un test de caractéristique physique (FOR, DEX ou CON) hors combat. L’action est automatiquement un succès.'),
+('levitation', 'Lévitation (M)', 0, 0, 'psych', 'Le psi est capable d’influer sur les ondes gravitationnelles afin de faciliter ses déplacements. Il bénéficie d’un bonus de situation égal à son rang pour tout test lié à un saut ou une acrobatie. De plus, il peut utiliser une action de mouvement pour se déplacer verticalement de 2 mètres vers le haut ou vers le bas. Enfin, il divise par deux les dégâts de chute qu’il subit.'),
+('loeil-interieur', 'L’oeil intérieur', 0, 0, 'psych', 'Le psi ne voit plus seulement avec ses sens, mais aussi avec son esprit. Il est capable de discerner les flux et les empreintes psychiques, même ténues. Il bénéficie d’un bonus de compétence de +1 par rang à tous ses tests de PER en rapport avec la vigilance, la découverte d’indices ou d’informations cachées, la détection du mensonge ou des émotions, la détection d’autres psis, etc. Les émotions violentes, la douleur, la peur, causent des perturbations du flux psychique, que le psi est capable de discerner plusieurs heures après les événements.'),
+('loup-parmi-les-loups', 'Loup parmi les loups', 0, 0, 'espbo', 'Le personnage gagne +1 aux DM lorsqu’il affronte un adversaire humain, qu’il s’agisse d’un combat normal ou d’un combat spatial contre un vaisseau piloté par un Humain. Ce bonus passe à +2 au rang 4 de la voie.'),
+('luminosite', 'Luminosité', 0, 0, 'psych', 'Le psi est capable d’altérer légèrement l’intensité du rayonnement lumineux dans une sphère d’environ 1 mètre de rayon. Cela lui permet d’ignorer tout modificateur de situation lié à la luminosité, ainsi que d’offrir un bonus de situation de +2 (ou un malus de situation de -2) à toute tentative de discrétion.'),
+('maitre-darme', 'Maître d’arme', 1, 0, 'savf', 'Le personnage augmente sa DEX de 1. Une fois par session, il peut relancer un test d’attaque à mains nues ou avec une arme de contact.'),
+('maitre-des-airs', 'Maître des airs', 0, 0, 'espeg', 'Le personnage est habitué à évoluer en l’air et en trois dimensions, ce qui le rend particulièrement apte au pilotage. Le personnage ajoute sa PER comme un bonus de matériel à tout test visant à effectuer une manoeuvre à bord d’un vaisseau qu’il pilote.'),
+('mandarin', 'Mandarin', 0, 0, 'cult', 'Le personnage a acquis un statut important au sein de sa corporation, et son influence est reconnue au-delà de son milieu. Le personnage augmente de 1 ses valeurs de CHA et d’INT. Désormais, il lance deux d20 à tous les tests dépendant du CHA et conserve le meilleur résultat. De plus, son niveau de vie augmente d’une catégorie.'),
+('manipulateur', 'Manipulateur', 1, 0, 'savf', 'En parlant pendant 1d6 minutes avec sa cible et en réussissant un test opposé de CHA, le personnage peut influer sur l’état émotionnel superficiel (calme/stressé, joyeux/triste, motivé/déprimé, méfiant/confiant, terrifié/apaisé, etc.). En cas d’échec, l’état émotionnel actuel de la cible en sort renforcé et le personnage ne peut plus tenter de l’influencer pendant 24 heures. En cas de réussite, la cible est considérée sous influence du personnage, et elle aura tendance à accepter ses suggestions pendant 1d6 heures.'),
+('manipulation-a-distance', 'Manipulation à distance', 0, 0, 'psych', 'La première étape de l’apprentissage du psi est la télékinésie à proprement parler. Il peut alors déplacer des objets, ou manipuler certaines interfaces physiques (comme un interrupteur ou un clavier) à distance. Au rang 1, les objets déplacés doivent être petits et légers, et la manipulation manque de précision. Au rang 3, le personnage peut « soulever » un véhicule de petite taille et manipuler un clavier ou une console normalement. Au rang 5, le psi peut perturber un vaisseau de transport en plein vol et agir sur plusieurs interfaces à la fois avec une vitesse et une précision surhumaines.'),
+('manoeuvre-devitement', 'Manoeuvre d’évitement (M)', 0, 1, 'savf', 'Le personnage effectue des manoeuvres défensives, privilégiant la défense et l’esquive. Le vaisseau dispose d’un bonus de compétence à la DEF égal au rang du pilote. Toutefois, toute attaque à distance subit du même coup un malus de situation de -2.'),
+('manoeuvre-inattendue', 'Manoeuvre inattendue (M)', 0, 1, 'espeg', 'Les pilotes issus des espèces aquatiques sont capables d’improviser des manoeuvres de pilotage inconcevables pour les espèces terrestres. Une fois par combat, le pilote peut choisir de bénéficier de l’un des bonus suivants pendant un tour : +5 en DEF, +2 à toutes les attaques, ou automatiquement prendre l’avantage sur un pilote adverse. En outre, la PER du personnage est augmentée de 1.'),
+('mecano', 'Mécano', 0, 0, 'savf', 'Le personnage connaît le fonctionnement de nombreux dispositifs mécaniques, des vaisseaux entre autres. Il obtient un bonus de compétence de +1 par rang à tous les tests visant à réparer ou comprendre ce type de mécanismes. En outre, si le personnage dispose de quelques heures et des outils et pièces détachées nécessaires, il peut entreprendre de réparer un vaisseau. Il effectue alors un test d’INT (ND 15). S’il est réussi, le vaisseau récupère l’équivalent d’un dé de vie, sans toutefois pouvoir dépasser son maximum à l’état neuf. 1d6 heures par taille du vaisseau sont nécessaires.'),
+('medecin', 'Médecin', 0, 0, 'savf', 'Le personnage sait diagnostiquer les maladies et les traumatismes. Il reçoit un bonus de compétence de +1 par rang à tous les tests de médecine, de biologie ou d’anatomie. S’il accorde des soins à un personnage qui ne dispose pas de l’ensemble de ses PV avant une période de repos, il lui permet de doubler le résultat de son test de récupération. Cela ne nécessite pas de test de médecine.'),
+('memoire-cristalline', 'Mémoire cristalline', 0, 0, 'espbo', 'La structure et la croissance des Kneiss leur permet de stocker une quantité d’information quasiment infinie. Le personnage bénéficie d’un bonus de compétence de +5 à tous ses tests de culture générale et de recherche d’informations. De plus, s’il a eu accès à une information au cours de la campagne, il peut effectuer un test de CON (ND 10) pour retrouver cette information au sein même de son organisme (le MJ se doit alors de lui répéter l’information si nécessaire).'),
+('memoire-cristalline-mineraux', 'Mémoire cristalline', 0, 0, 'espeg', 'La structure et la croissance des espèces minérales leur permet de stocker une quantité d’information quasiment infinie. Le personnage bénéficie d’un bonus de compétence de +5 à tous ses tests de culture générale et de recherche d’informations. De plus, s’il a eu accès à une information au cours de la campagne, il peut effectuer un test de CON (ND 10) pour retrouver cette information au sein même de son organisme (le MJ se doit alors de lui répéter l’information si nécessaire).'),
+('memoire-eidetique', 'Mémoire eidétique', 1, 0, 'savf', 'Le personnage a une mémoire parfaite de tout ce qu’il a vu et entendu. Si le joueur le demande, le MJ doit lui rappeler tous les détails relatifs à un lieu qu’il a visité ou une conversation qu’il a entendue. Cette mémoire exceptionnelle permet aussi au personnage d’obtenir un bonus de compétence de +5 sur tous les tests de culture générale.'),
+('mental-dacier', 'Mental d’acier', 0, 0, 'savf', 'Le personnage a étudié ses propres points faibles et il est devenu particulièrement résilient. Sa DEP est augmentée de 2. De plus, lorsqu’il est le défenseur dans un test en opposition basé sur le CHA ou pour résister à la peur, il bénéficie d’un bonus de compétence égal à son rang.'),
+('metabolisme-ameliore', 'Métabolisme amélioré (PER)', 1, 0, 'psych', 'Le psi élabore une solution temporaire pour améliorer le métabolisme de sa cible à une fin précise. Il peut s’agir de permettre à un individu de courir plus vite ou plus longtemps, d’améliorer l’irrigation de son cerveau ou d’influencer sa production d’hormones. La cible bénéficie pendant 1 heure d’un bonus de matériel de +2 à tous les tests dépendant d’une caractéristique. À la fin de ce délai, elle est toutefois fatiguée pendant 1d6 heures. Au rang 4, le psi est aussi capable d’influer de manière négative sur le métabolisme d’un adversaire : si l’attaque du psi réussit, sa cible est fatiguée pour 1d6 tours.'),
+('metabolisme-ameliore-tymbri', 'Métabolisme amélioré (PER)', 1, 0, 'espbo', 'Le Tymbri élabore une solution temporaire pour améliorer le métabolisme de sa cible à une fin précise. Il peut s’agir de permettre à un individu de courir plus vite ou plus longtemps, d’améliorer l’irrigation de son cerveau ou d’influencer sa production d’hormones. La cible bénéficie pendant 1 heure d’un bonus de matériel de +2 à tous les tests dépendant d’une caractéristique. À la fin de ce délai, elle est toutefois fatiguée pendant 1d6 heures. Au rang 4, le Tymbri est aussi capable d’influer de manière négative sur le métabolisme d’un adversaire : si l’attaque réussit, la cible est fatiguée pour 1d6 tours.'),
+('metabolisme-synthetique', 'Métabolisme synthétique', 1, 0, 'espbo', 'L’androïde élabore une solution temporaire pour améliorer son métabolisme à une fin précise. Il peut s’agir d’altérer son système musculaire pour courir plus vite ou plus longtemps, d’améliorer les procédures de refroidissement de son processeur ou de générer la production d’hormones de synthèse appropriées. Le personnage bénéficie pendant 4 heures d’un bonus de matériel de +2 à tous les tests dépendant d’une caractéristique de son choix (y compris les tests d’attaque éventuels). À la fin de ce délai, il est toutefois affaibli pendant 1 heure.'),
+('metis-genetique', 'Métis génétique', 0, 0, 'augm', 'Le personnage dispose de la capacité de rang 3 de la voie d’espèce choisie pour l’hybridation. De plus, la caractéristique privilégiée correspondante, indiquée dans la Table des bonus d’hybridation, est augmentée de 1. Désormais, le personnage est visiblement affecté par l’hybridation et il devient impossible de le dissimuler.'),
+('microdosage', 'Microdosage', 0, 0, 'augm', 'Le personnage sélectionne un stimulant supplémentaire que ses implants peuvent diffuser dans son organisme. Le seuil d’accoutumance de tous les stimulants sélectionnés est désormais doublé.'),
+('microgravite', 'Microgravité', 1, 0, 'cult', 'Le personnage augmente sa DEX de 1. De plus, lorsqu’il utilise sa capacité né dans un vaisseau, il ne divise plus le bonus appliqué au vaisseau.'),
+('mieux-que-le-neuf', 'Mieux que le neuf', 0, 0, 'savf', 'Le personnage ne se contente plus de réparer les systèmes et véhicules. Il est maintenant capable d’améliorer tout ce qu’il touche. Une fois par session, en travaillant 1d6 heures, il peut faire bénéficier un objet d’une amélioration légère. Ce peut être un modificateur de matériel de +1 en attaque ou aux DM pour une arme, +1 en DEF ou en RD pour une armure, etc. Le bonus est valable pendant le reste de l’aventure, ensuite l’objet se dégrade et nécessite une nouvelle intervention du mécano. Il peut également optimiser les systèmes d’un vaisseau pour accepter plus de modifications : tant que le mécano opère à bord, on considère que le vaisseau comprend un nombre d’OPT supplémentaires égal à sa Taille (un vaisseau ne peut bénéficier qu’une seule fois de cette capacité).'),
+('modif-struct-luminescents', 'Modification structurelle', 0, 0, 'espeg', 'À force de côtoyer les atmosphères des espèces « denses », l’être luminescent a appris à adapter sa morphologie pour surpasser ses limites. Le personnage n’a plus besoin d’une combinaison pour évoluer dans des conditions classiques. Il est capable d’adopter une forme quasi-humanoïde et peut désormais « saisir » ou porter des objets physiques sous cette forme. En outre, il divise désormais par deux tous les dégâts électromagnétiques, tels que décharge d’énergie, électromancie ou onde de choc.'),
+('modification-structurelle', 'Modification structurelle', 0, 0, 'espbo', 'À force de côtoyer les atmosphères des espèces « denses », l’être luminescent a appris à adapter sa morphologie pour surpasser ses limites. Le personnage n’a plus besoin d’une combinaison pour évoluer dans des conditions classiques. Il est capable d’adopter une forme quasi-humanoïde et peut désormais « saisir » ou porter des objets physiques sous cette forme. En outre, il divise désormais par deux tous les dégâts électromagnétiques, tels que décharge d’énergie, électromancie ou onde de choc.'),
+('monstruosite', 'Monstruosité', 0, 0, 'espeg', 'Le personnage est répugnant et terrifiant pour quiconque n’y est pas habitué. Un individu qui ne côtoie pas régulièrement l’espèce du personnage doit réussir un test de CHA (ND [10 + rang]) avant de pouvoir chercher à intimider ou tromper le personnage. Il doit aussi effectuer ce test au premier tour de combat. En cas d’échec, il subit un malus de situation de -2 à toutes ses actions dirigées contre le personnage lors de son prochain tour.'),
+('navigation', 'Navigation', 0, 0, 'espeg', 'Les espèces aquatiques bénéficient d’un don inné pour la navigation, et d’un bonus de compétence de +5 pour tout test visant à se repérer dans l’espace ou à s’orienter (y compris dans un territoire inconnu). À ce rang, le personnage peut occuper le poste de pilotage (PIL) à bord d’un vaisseau. De plus, il choisit s’il ajoute sa DEX ou sa PER à la manoeuvrabilité du vaisseau.'),
+('ne-dans-un-vaisseau', 'Né dans un vaisseau', 0, 0, 'cult', 'Le personnage est familier de la plupart des postes de combat d’un vaisseau spatial et peut donc occuper l’ensemble de ces postes. Le bonus appliqué aux caractéristiques du vaisseau est toutefois divisé par deux lorsqu’un poste est occupé grâce à cette capacité. Tout modificateur négatif n’est pas divisé. Le personnage est en outre capable de reconnaître la plupart des vaisseaux de son espèce, ainsi que leurs forces et faiblesses (leurs caractéristiques de base).'),
+('neutraliser-laura', 'Neutraliser l’aura (M)', 0, 0, 'psych', 'Le psi est capable de dissimuler son aura ainsi que celles d’un nombre de personnes égal à son rang. Cela confère à toutes un bonus de situation de +2 à tout test de discrétion, et un bonus de compétence égal au rang dans cette voie contre toute tentative de détecter l’esprit du personnage.'),
+('nuke', 'Nuke (rang 13)', 0, 0, 'ia', 'L’I.A. s’est propagée au-delà des limites de sa planète d’origine, et est capable de survivre dans les réseaux de communication spatiaux. Son réseau peut désormais s’étendre sur plusieurs unités astronomiques. Elle est en outre capable de concentrer son être dans un petit nombre de terminaux très puissants (ce qui la rend temporairement plus vulnérable), et de se déplacer par ce biais dans d’autres systèmes stellaires. Enfin, elle peut détruire physiquement n’importe quel système électronique dont elle a pris le contrôle.'),
+('ombre', 'Ombre', 0, 0, 'savf', 'Le personnage augmente sa DEX de 1. De plus, le personnage est capable de se mouvoir et de disparaître dans les ombres ou dans la foule en un clin d’oeil. Même s’il est observé et visible, si le décor le lui permet, le personnage peut demander un test de DEX (Discrétion) pour échapper à son (ou ses) observateur(s).'),
+('onde-de-choc', 'Onde de Choc (PER)', 1, 0, 'psych', 'Le personnage se concentre, avant de déclencher une impulsion électrique qui affecte tout le monde dans un rayon de 10 m. Il effectue une attaque psychique contre chaque cible, sans risque d’egofeedback. Les cibles touchées encaissent 2d6 de DM temporaires s’il s’agit de cibles organiques, et des DM létaux s’il s’agit de cibles synthétiques. Cela inclut robots et androïdes, mais aussi organiques avec des organes cybernétiques.'),
+('onde-psi', 'Onde Psi (CHA)', 1, 0, 'psych', 'Le psi projette son esprit vers un nombre de cibles visibles, au maximum égal à son rang, dans un rayon de 10 m. Il effectue une attaque psychique contre chacune d’elle. En cas de réussite, la cible est affectée comme si elle avait été visée par un Assaut Psi. Le personnage ne peut subir d’egofeedback sur ce type d’attaque.'),
+('optimisation', 'Optimisation', 0, 0, 'savf', 'Le personnage est un expert dans le réglage des paramètres du réacteur d’un mecha et de ses diverses composantes. Il récupère 2 points de capacité de refroidissement au lieu de 1 au début de chaque tour, et 3 points par tour une fois atteint le rang 5. Il peut aussi choisir d’utiliser sa DEX plutôt que sa FOR lorsqu’il pilote un mecha.'),
+('optimisation-quantique', 'Optimisation quantique', 0, 0, 'savf', 'Quand il occupe la salle des moteurs, le personnage optimise les ressources énergétiques du vaisseau, qui gagne autant de points d’énergie disponible que le rang du personnage dans cette voie.'),
+('orateur', 'Orateur', 1, 0, 'savf', 'Le personnage augmente son CHA de 1. Il peut en outre utiliser sa capacité de manipulateur contre une foule en faisant un test de CHA. Le ND va de 10 pour un groupe d’une dizaine de personnes, jusqu’à 25 pour une foule de plusieurs milliers de personnes.'),
+('organes-non-vitaux', 'Organes non vitaux', 0, 0, 'espeg', 'Par une croissance savamment organisée autour d’organes non vitaux, les espèces végétales s’assurent une résistance étonnante aux dégâts. Le personnage n’est pas affecté par le bois, la pierre, l’électricité ou les radiations. Il reste toutefois vulnérable au feu, qui lui inflige des DM doublés. De plus, à chaque fois qu’il encaisse une blessure grave, le personnage effectue un test de [CON + rang] de ND 15. Si le test est réussi, le personnage ignore purement et simplement la blessure grave (mais pas les DM qui auraient causé cette blessure).'),
+('parasitage', 'Parasitage', 0, 0, 'espeg', 'Le personnage choisit une espèce de prédilection à laquelle doivent appartenir ses hôtes. Il dispose désormais de la capacité de rang 1 de la voie d’espèce correspondante. Toutefois, il laisse certains signes sur son hôte qui peuvent permettre de détecter sa vraie nature. Un individu ayant déjà côtoyé un membre de cette espèce peut effectuer un test opposé de PER contre [rang + INT du parasite] afin de détecter sa présence. S’il connaissait l’individu parasité, il bénéficie d’un bonus de situation de +5 à ce test.'),
+('perception-hero\"ique', 'Perception héroïque', 1, 0, 'savf', 'Le personnage augmente sa PER de 1. Il peut désormais lancer deux d20 et conserver le meilleur résultat à chaque fois qu’un test de PER lui est demandé.'),
+('perception-heroique-aeriens', 'Perception héroïque', 0, 0, 'espeg', 'Le personnage augmente sa PER de 1. Il peut désormais lancer deux d20 et conserver le meilleur résultat à chaque fois qu’un test de PER lui est demandé.'),
+('pharmacopee', 'Pharmacopée', 0, 0, 'augm', 'Le personnage sélectionne trois stimulants parmi la liste des stimulants disponibles. Son implant est capable de diffuser les stimulants en question dans son organisme sans risque de dépendance. Le grade des stimulants utilisés dépend du niveau de vie du personnage (ou doivent être achetés si vous utilisez les crédits). Le personnage reste sujet à l’accoutumance et aux effets secondaires.'),
+('pieces-detachees', 'Pièces détachées', 0, 0, 'espbo', 'Le personnage est avant tout un assemblage de pièces mécaniques. S’il dispose des pièces adéquates, le personnage peut se modifier (ou se faire modifier) en 1d6 heures. Il s’agit d’un test d’INT (robotique) de ND 15. Si le test est réussi, le personnage peut modifier ses caractéristiques. Il peut réallouer de la sorte 2 points de caractéristiques, sans toutefois pouvoir altérer aucune caractéristique de plus de 1 point par rapport à sa valeur de départ.'),
+('pied-a-terre', 'Pied-à-terre', 0, 0, 'cult', 'Le personnage a accès à un logement de qualité sur la plupart des planètes et stations importantes. Il s’agit généralement de quartiers appartenant à un ami ou un allié (ou bien une de leurs sociétés). L’endroit peut être discret ou ostentatoire, au gré du joueur. Il peut aussi inclure du personnel et donner accès à de l’équipement en rapport avec sa fonction, y compris de l’armement ou d’autres produits illégaux (à la discrétion du MJ).5. Relations : Une fois par session, avec l’accord du MJ, le personnage peut faire jouer ses relations et son influence pour obtenir un avantage important. Obtenir un rendez-vous avec un personnage en vue, ralentir (ou accélérer) une enquête en cours, emprunter une grosse somme, etc. 6'),
+('pilote-emerite', 'Pilote émérite', 0, 0, 'savf', 'Le personnage peut occuper le poste de pilotage (PIL) à bord d’un vaisseau. De plus, s’il en est capable, il peut choisir lors d’un tour d’occuper un (et un seul) des postes suivants en même temps que le poste de PIL : CAN, SEN ou ORD. Le vaisseau bénéficie alors du bonus correspondant au lieu du bonus du poste de pilotage, mais n’est pas considéré comme un vaisseau sans pilote. Le pilote peut effectuer une action d’attaque s’il occupe un poste de CAN.'),
+('pistolero', 'Pistolero', 1, 0, 'savf', 'Remettre en état son arme à feu après un incident de tir est désormais une action gratuite pour le personnage. De plus, le personnage peut cumuler l’usage de Coup rapide et l’action de combat à deux armes, tant qu’il s’agit de deux armes à feu. Dans ce cas, pour une action limitée, il effectue deux attaques avec une main et une attaque avec sa deuxième main. Toutes ces attaques utilisent un d12.'),
+('planetologue', 'Planétologue', 0, 0, 'savf', 'Le personnage a une connaissance intime des systèmes planétaires et de leur mode de fonctionnement. En réussissant un test de [INT + rang] contre un ND 15, il peut déterminer avec exactitude des données de survie primordiale, telles que dénicher de l’eau douce ou une terre plus fertile, les points les plus favorables à l’installation d’une population autochtone, les abris et prédateurs potentiels, etc. Ces informations lui confèrent un bonus de compétence égal à son rang pour toutes ses actions hors combat pendant la durée d’une scène qui se déroule sur la planète. Il peut faire cette action une fois par session.'),
+('pleine-puissance', 'Pleine puissance', 1, 1, 'savf', 'Si le vaisseau dispose d’au moins un point d’énergie disponible, le personnage peut décider de provoquer un pic temporaire de puissance. Au prix d’un point d’énergie, le vaisseau reçoit pour la durée du combat un bonus égal au rang du personnage, qui s’applique soit à la puissance (cela n’affecte pas l’énergie disponible), soit à la manoeuvrabilité.'),
+('polychrone', 'Polychrone', 0, 1, 'savf', 'Lorsqu’il occupe un autre poste en plus du poste de pilotage (voir Pilote émérite), le pilote fait bénéficier son vaisseau des deux bonus : celui du poste de pilotage et celui du poste additionnel.'),
+('polydextrie', 'Polydextrie (A)', 0, 0, 'espeg', 'Le personnage augmente sa FOR de 1. De plus, il est capable d’utiliser plusieurs de ses bras pour manipuler des objets sans perte de précision ou de puissance. Lorsqu’il effectue une action d’attaque, il bénéficie d’une attaque supplémentaire. Celle-ci utilise un d12 au lieu d’un d20.'),
+('polyvalent', 'Polyvalent', 0, 0, 'espbo', 'Le personnage augmente sa caractéristique la plus faible ainsi qu’une autre caractéristique de son choix de 1.'),
+('polyvalent-anthropo', 'Polyvalent', 0, 0, 'espeg', 'Le personnage augmente de 1 sa caractéristique la plus faible ainsi qu’une autre caractéristique de son choix.'),
+('postcognition', 'Postcognition (A:PER)', 0, 0, 'psych', 'Le psi est désormais capable d’explorer les ondes psychiques d’une personne ou d’un endroit afin d’explorer virtuellement sa mémoire et d’obtenir une vision du passé relativement précise. Contre une personne, il s’agit d’une attaque psychique standard. Pour un lieu, le ND du test dépend de la taille de l’endroit et de la quantité de temps écoulée depuis les événements : 10 pour une petite pièce ou une plongée de quelques minutes en arrière, 25 pour une ville ou une plongée de plusieurs années dans le passé. De plus, le psi est désormais capable d’utiliser l’action Détecter un psi non seulement contre les psis mais contre tout individu issu d’une espèce sapiente.'),
+('precognition', 'Précognition', 1, 0, 'psych', 'Le personnage augmente son score d’INT de 1. Il est maintenant capable de se projeter dans le temps et d’évaluer les différents chemins du temps, sous la forme de visions plus ou moins claires d’avenirs possibles. Une fois par aventure, le personnage peut demander au MJ de lui donner des informations sur une scène à venir.'),
+('premier-implant', 'Premier implant', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type C. Le bonus conféré par cet implant est de +1.'),
+('premier-transfert', 'Premier transfert', 0, 0, 'augm', 'Le personnage transfère son esprit dans une nouvelle coquille similaire à sa forme d’origine. Cette coquille peut bénéficier d’un implant de type B. Le bonus conféré par cet implant est de +1.'),
+('premiere-greffe', 'Première greffe', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type B. Le bonus conféré par cet implant est de +1.'),
+('programmation-secondaire', 'Programmation secondaire', 0, 0, 'espbo', 'Le personnage dispose d’une deuxième programmation. Cette deuxième programmation lui confère une deuxième spécialité ainsi qu’un trait. Il peut passer d’une programmation à une autre (ou un individu possédant un code particulier peut le faire passer sur sa deuxième programmation) en restant inactif pendant une minute. Lorsqu’il change ainsi de programmation, il peut bénéficier de la capacité pièces détachées sans avoir à être bricolé.'),
+('projection-daura', 'Projection d’aura (A:CHA)', 0, 0, 'psych', 'Le personnage augmente son score de PER de 1. Il est désormais capable d’inonder les sens d’une créature de signaux contradictoires en projetant son aura vers elle. Si l’attaque est réussie, la cible est considérée aveuglée pendant 1d6 rounds.'),
+('projection-holographique', 'Projection holographique (PER)', 1, 0, 'psych', 'Le personnage est maintenant capable de manipuler les ondes lumineuses pour créer des hologrammes et des illusions plus vraies que nature. Le ND dépend de la complexité de la scène envisagée : 10 pour une illusion de petite taille dans une zone mal éclairée, jusqu’à 25 pour une illusion de plusieurs dizaines de mètres de côté en plein jour. La photokinésie ne cible personne en particulier et le psi ne risque donc aucun egofeedback. L’illusion est uniquement visuelle, et n’affecte pas les autres sens. D’autre part, le personnage augmente son INT de 1.'),
+('projection-memorielle', 'Projection mémorielle (PER)', 1, 0, 'espbo', 'Le personnage est désormais capable de projeter ses souvenirs et ses ressentis sous la forme d’une image complexe similaire à un hologramme. Cette image ne peut être falsifiée ou reproduite, garantissant sa véracité. En outre, le personnage augmente son INT de 1.'),
+('projection-memorielle-mineraux', 'Projection mémorielle (PER)', 1, 0, 'espeg', 'Le personnage est désormais capable de projeter ses souvenirs et ses ressentis sous la forme d’une image complexe similaire à un hologramme. Cette image ne peut être falsifiée ou reproduite, garantissant sa véracité. En outre, le personnage augmente son INT de 1.'),
+('projection-virtuelle', 'Projection virtuelle (CHA)', 1, 0, 'psych', 'Le personnage augmente sa valeur d’INT de 1. Il peut désormais projeter sa conscience dans un système informatique quelconque (ordinateur, vaisseau, ville...) Il bénéficie d’un bonus de matériel de +5 pour tout test visant à prendre le contrôle d’un des systèmes concernés. Il peut aussi provoquer un dysfonctionnement majeur ayant une incidence physique sur l’environnement immédiat d’une des machines du réseau (court-circuit, explosion, etc.). Tout individu se trouvant à moins de 3 mètres de cette machine subit 3d6 DM. Au prix d’une action limitée, le psi peut choisir de rester dans le réseau. À partir du deuxième tour en projection, il doit réussir un test de CHA (ND 15) à chaque début de tour ou être éjecté et subir un egofeedback.'),
+('provocateur', 'Provocateur', 1, 0, 'savf', 'Le personnage maîtrise l’art de se rendre désagréable, voire insupportable. Par un test opposé de CHA contre l’INT de la cible, il peut forcer celle-ci à sortir de ses gonds, voire à l’attaquer (au choix du joueur) pendant un tour. Une victime ainsi provoquée agit sans aucune considération pour son intérêt personnel et ses objectifs. Si elle attaque le personnage, elle subit des modificateurs de situation de -5 en attaque et -2 en DEF jusqu’au début de son prochain tour. Une victime ne peut être ciblée que par une seule provocation par session.'),
+('quatrieme-greffe', 'Quatrième greffe', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type B. Le bonus conféré par cet implant est de +1. Les bonus conférés par tous les implants au sein de cette voie préalables sont augmentés de +1.'),
+('quatrieme-implant', 'Quatrième implant', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type C. Le bonus conféré par cet implant est de +4.'),
+('rage', 'Rage', 1, 0, 'espeg', 'Le personnage laisse le temps d’une action son instinct animal (souvent de prédateur) prendre le dessus. Il perd 4 points de DEF, mais bénéficie en contrepartie d’un bonus de matériel de +2 à l’attaque et d’une attaque supplémentaire, effectuée avec un d12 au lieu du d20. Le personnage peut utiliser cette rage prédatrice au contact ou à distance, mais pas avec des capacités issues de voies psychiques.'),
+('ralentir-le-temps', 'Ralentir le temps', 1, 0, 'psych', 'En contractant les ondes gravitationnelles, le psi parvient à littéralement ralentir le temps autour de lui. À chaque tour pour le reste de la scène, il peut considérer une (et une seule) action de mouvement comme une action gratuite. Seul le déclenchement de l’effet nécessite une action limitée.'),
+('regeneration', 'Régénération', 0, 0, 'augm', 'Les modifications génétiques qu’a subies le personnage lui confèrent une capacité de régénération cellulaire accrue. Il double sa vitesse de récupération de PV et tous les tests de médecine ou de chirurgie le ciblant bénéficient d’un bonus de situation de +5. De plus, le personnage ne peut plus être épuisé. S’il doit subir cet état, il est simplement fatigué.'),
+('relations', 'Relations', 0, 0, 'cult', 'Une fois par session, avec l’accord du MJ, le personnage peut faire jouer ses relations et son influence pour obtenir un avantage important. Obtenir un rendez-vous avec un personnage en vue, ralentir (ou accélérer) une enquête en cours, emprunter une grosse somme, etc.'),
+('relie-a-la-terre', 'Relié à la terre (M)', 0, 0, 'espeg', 'Par une action de mouvement, le personnage prend pied solidement à l’endroit où il se trouve. Tant qu’il utilise une action de mouvement pour conserver sa position, il ne peut plus être renversé ou étourdi et devient immunisé aux DM temporaires.');
+INSERT INTO `cog_capacites` (`capacite`, `nom`, `limitee`, `sort`, `type`, `description`) VALUES
+('renforcement', 'Renforcement', 0, 0, 'savf', 'Lorsqu’il combat à mains nues, le personnage inflige [1d4 + FOR] DM létaux (et non des DM temporaires). Le dé passe à 1d6 au rang 3 et à 1d8 au rang 5. De plus, le personnage obtient un bonus de compétence de +1 par rang en DEF contre les attaques au contact (sauf s’il est surpris). Le personnage peut choisir d’infliger des DM temporaires s’il le souhaite.'),
+('renforcement-parasites', 'Renforcement', 0, 0, 'espeg', 'Le personnage a désormais une connaissance assez intime du fonctionnement de l’espèce hôte et est capable d’accroître sa résistance pendant le temps que dure son parasitage. Son seuil de blessure grave est augmenté de 5 et le personnage bénéficie d’un bonus de compétence de +5 pour résister à toute invasion organique extérieure : maladies, poisons, etc.'),
+('rente', 'Rente', 0, 0, 'cult', 'Au début de chaque aventure, vous percevez les rentes de quelque affaire dont vous avez la charge. Vous pouvez faire l’acquisition d’un bien supplémentaire correspondant à votre niveau de vie. Lorsque vous utilisez cette capacité, lancez 1d6. Sur un 1, l’objet vous attire des ennuis : dette, bien volé ou qui intéresse des concurrents ou bien des criminels, etc.'),
+('reparation-des-tissus', 'Réparation des tissus (A:PER)', 0, 0, 'psych', 'Le psi connaît intimement le fonctionnement des tissus organiques. Il est maintenant capable d’accélérer le processus de guérison, voire de le rendre instantané. Pour ce faire, le psi doit réussir une attaque psychique contre la cible, mais cette attaque doit aussi dépasser un ND qui dépend du nombre de blessures graves et de leur nature : 10 pour une blessure unique au bras ou à la jambe, jusqu’à 25 pour de multiples blessures à la tête. Si le test est réussi, les tissus sont régénérés en 1d6 tours (pendant lesquels le psi doit rester concentré) et toutes les blessures graves sont annulées. Le processus est toutefois éreintant pour le psi, qui devient épuisé pendant 1d6 heures.'),
+('reseau-neuronal', 'Réseau neuronal', 0, 0, 'espbo', 'Au moment de sa fabrication, l’androïde bénéficie d’une programmation initiale en fonction de sa mission et des capacités souhaitées chez l’individu. Le joueur sélectionne trois voies de son choix parmi les voies culturelles (pas plus d’une voie culturelle) et les voies de savoir-faire. Il a désormais accès à ces trois voies et à deux capacités de rang 1 de son choix. Toute progression ultérieure dépend de la dépense de points de capacité, tout comme pour les organiques.'),
+('resistance', 'Résistance', 0, 0, 'espeg', 'Le corps du personnage devient extrêmement résistant. Il ne subit plus de dégâts de chute et est immunisé à la plupart des radiations. Il est en outre capable d’évoluer dans le vide sans subir de dégâts pendant [CON] minutes. Au-delà, il suit les règles habituelles (voir chapitre 3, Règles avancées page XXX).'),
+('savoir-encyclopedique', 'Savoir encyclopédique', 1, 1, 'savf', 'Le personnage augmente son INT de 1. De plus, à chaque fois qu’il effectue un test de connaissance, de recherche d’information ou de culture générale, il lance deux dés et garde le meilleur résultat.'),
+('se-depasser', 'Se dépasser', 0, 0, 'savf', 'En sacrifiant jusqu’à 1 PV par rang, le personnage obtient un bonus de compétence de +1 par PV sacrifié sur n’importe quel test de FOR, DEX ou CON, y compris un test d’attaque.'),
+('se-fondre-dans-la-masse', 'Se fondre dans la masse', 1, 0, 'cult', 'Dans un combat mettant aux prises plus de dix combattants, le personnage peut choisir de se dissimuler temporairement. Il effectue un test de DEX (Discrétion) de ND 10. Si le test est réussi, aucun adversaire ne peut cibler le personnage pendant un round. Au round suivant, si le personnage décide d’attaquer, ce sera avec un bonus de compétence de +5.'),
+('second-souffle', 'Second souffle (M)', 0, 0, 'psych', 'Une fois par combat, le psi peut concentrer son énergie afin de trouver un second souffle et reprendre la bataille de plus belle. Il regagne 1d6 PV permanents, 2d6 PV temporaires, et bénéficie jusqu’au début de son prochain tour d’un bonus de matériel de +2 à toutes ses attaques psychiques.'),
+('secouriste', 'Secouriste', 0, 0, 'savf', 'Le personnage peut stabiliser en quelques minutes un personnage à 0 PV. Celui-ci récupère alors 1d6 PV.'),
+('sens-affutes', 'Sens affûtés', 0, 0, 'savf', 'Le personnage gagne un bonus de compétence de +1 par rang à tous les tests de PER destinés à évaluer la perception de son environnement (vue, ouïe, vigilance, etc.). Cela s’applique aussi à l’action Aider lors d’un combat spatial.'),
+('sens-de-la-communaute', 'Sens de la communauté', 0, 0, 'cult', 'Lorsqu’il aide un test en coopération, le personnage confère un bonus de +5 (au lieu de +2). De plus, une fois par session, il peut « donner » un PC à l’un de ses compagnons. Le joueur doit justifier comment son personnage peut avoir aidé ce dernier ou contribué à l’action en cours. Le PC « donné » n’est pas enlevé de sa réserve : il s’agit d’un PC supplémentaire disponible uniquement pour cette action ou pour la durée d’une scène.'),
+('sens-de-la-confrerie', 'Sens de la confrérie', 1, 0, 'cult', 'Une fois par aventure, le personnage peut faire appel à son réseau de contacts ou tout simplement à la solidarité de ceux qui, comme lui, ont grandi dans les rues. Cette solidarité peut lui permettre de se sortir d’un mauvais pas, de bénéficier d’un coup de pouce inattendu ou d’une information vitale, ou bien encore de récupérer de ses blessures sans l’intervention d’un médecin.'),
+('sens-du-danger', 'Sens du danger', 0, 0, 'psych', 'Le psi a toujours un coup d’avance sur le temps. Il ne peut plus être surpris. Il bénéficie de plus d’un bonus de compétence égal à son rang pour tout test en rapport avec sa survie dans un milieu inconnu ou hostile.'),
+('sniffing', 'Sniffing', 0, 0, 'ia', 'L’I.A. occupe un réseau de communication de taille réduite : quelques ordinateurs et calculateurs, tout au plus. Elle est capable d’écouter toutes les communications transitant par ce réseau, et d’analyser les signaux. Elle peut entretenir une conversation électronique et commencer à bâtir une « persona », une identité. À ce rang, une I.A. peut encore être détruite de manière assez aisée.'),
+('sonar', 'Sonar', 0, 0, 'espeg', 'Le personnage dispose d’organes sensoriels qui lui permettent de visualiser son environnement en trois dimensions, même dans les plus profondes ténèbres. En combat spatial, cette aptitude lui donne un avantage supplémentaire pour visualiser la situation : un pilote aquatique augmente la DEF de son vaisseau de 1. En outre, le personnage ne peut être affecté par un malus de situation dû à la luminosité.'),
+('specialiste', 'Spécialiste', 0, 0, 'savf', 'Le personnage choisit une catégorie d’armes de prédilection parmi : ionique, laser, plasma, sonique. Le score de base d’ATD et les DM de toutes les armes de cette catégorie sont augmentés de 1. De plus, il peut tenter de réparer une arme à énergie.'),
+('specialiste-armes-a-feu', 'Spécialiste (armes à feu)', 0, 0, 'savf', 'Le score de base d’ATD du personnage et ses DM sont augmentés de 1 lorsqu’il utilise une arme à feu. De plus, il peut tenter de réparer une arme à feu.'),
+('specialite', 'Spécialité', 0, 0, 'espbo', 'Le robot dispose d’une spécialité. Celle-ci correspond au pourquoi de sa conception et constitue un domaine de prédilection pour le robot. Le personnage choisit un type de test (mécanique, médecine, observation, attaque à distance, attaque au contact…), lorsqu’il effectue ce type de test il peut lancer deux dés et choisir le meilleur résultat. Ce choix est définitif. Pour les profils de base de robot, la spécialité est indiquée entre parenthèses pour chaque profil.'),
+('spoofing', 'Spoofing', 0, 0, 'ia', 'L’I.A occupe un réseau plus important et hétéroclite : quelques dizaines d’ordinateurs, de terminaux et de routeurs, à l’échelle d’un bâtiment, d’un quartier ou d’un petit vaisseau spatial. Elle commence à jouer avec plusieurs persona différentes, plusieurs identités. Elle est capable de dissimuler ses traces grâce à ce système et de hacker de nouveaux systèmes de manière assez basique (cf. la capacité hacker de la voie de l’électronique). Elle dispose aussi d’un module vocal pour dialoguer avec des organiques, et peut « incarner » une partie de ses routines système dans un androïde ou un robot. La détruire devient compliqué'),
+('suggestion', 'Suggestion (CHA)', 1, 0, 'psych', 'Le psi ne se contente plus de lire dans l’esprit de sa cible, mais tente d’y implanter une suggestion puissante à laquelle la cible ne pourra résister. S’il a effectué un attrape-rêves avec succès contre cette même cible, le psi bénéficie d’un bonus de situation de +2 pour la suggestion. Si la suggestion réussit, la cible ressent le besoin d’exécuter les ordres du psi aussi vite que possible et fait tout son possible pour y parvenir pendant 24h. Au-delà ou si la suggestion échoue, elle est parfaitement consciente d’avoir été manipulée. Elle peut deviner la source de la manipulation grâce à un test d’INT ou de PER (ND 15). Le psi ne peut implanter une suggestion qui mette directement en danger sa cible et ne peut en aucun cas lui intimer l’ordre de se tuer. Le test d’attaque de la suggestion subit de plus un modificateur de situation dépendant des prédispositions de la cible envers le psi (voir marge).'),
+('superposition-quantique', 'Superposition quantique (A:PER)', 0, 0, 'psych', 'Le personnage agit au niveau des particules élémentaires d’un objet de petite taille afin de changer sa position exacte. La portée de cette capacité est de 10 mètres, de même que la distance maximale dont l’objet peut se « déplacer ». L’objet ne se déplace pas réellement et tout obstacle entre la zone de départ et la zone d’arrivée est simplement ignoré. Il n’est pas possible de déplacer l’objet à l’intérieur d’un autre corps solide. Le ND dépend de la taille et du poids de l’objet : 10 pour un objet minuscule et léger (par exemple une pièce de monnaie ou une allumette), 20 pour une arme de poing et jusqu’à 25 pour un objet de taille équivalente à une arme d’épaule.'),
+('survie-naturelle', 'Survie naturelle', 0, 0, 'espeg', 'En pleine nature, le personnage bénéficie d’un bonus de compétence de +5 à tous ses tests de survie visant à : trouver de l’eau potable, repérer une plante vénéneuse, un abri, échapper à un prédateur, pister une cible, etc.'),
+('survivant', 'Survivant', 0, 0, 'cult', 'Le personnage augmente sa FOR de 1. De plus, il bénéficie d’un bonus de compétence de +5 à toute tentative de résister à un poison ou une maladie. Enfin, s’il subit l’état affaibli, il est seulement blessé.'),
+('symbiose', 'Symbiose', 0, 0, 'espeg', 'Le personnage obtient la capacité de rang 3 de la voie d’espèce de son hôte. De plus, il ne peut plus être détecté sans un examen médical complet et approfondi. Enfin, le personnage augmente de 1 une caractéristique de son choix.'),
+('systemes-avances', 'Systèmes avancés', 0, 0, 'savf', 'En plus des mécanismes, le personnage est versé dans le fonctionnement des systèmes électroniques et informatiques. Il applique dorénavant son bonus de mécano aux tests concernés. De plus, il est capable de réparer des systèmes d’armement, qu’il s’agisse d’armes personnelles ou d’armes lourdes, ainsi que des tenues de protection ou des armures lourdes.'),
+('systemes-de-secours', 'Systèmes de secours', 1, 1, 'savf', 'Une fois par session, le personnage peut faire le nécessaire pour recharger les batteries du vaisseau. Cela requiert un test de [INT + rang] avec un ND de 15. S’il est réussi, le vaisseau regagne la moitié des points d’énergie perdus depuis le début du combat. Une réussite critique permet de récupérer l’ensemble des points perdus.'),
+('technomecano', 'Technomécano', 0, 0, 'savf', 'Le personnage a une connaissance superficielle d’un ensemble de systèmes impliqués dans la fabrication des mechas. Il est capable d’employer cette connaissance pour réparer n’importe quelle pièce d’un mecha (en utilisant le bonus de compétence approprié), mais aussi de réparer le blindage d’une armure, une arme lourde ou même le moteur d’un vaisseau (sans toutefois bénéficier de bonus de compétence dans ce cas).'),
+('technopilote', 'Technopilote', 0, 0, 'savf', 'Le personnage est un habitué des exo-armures et des mechas. Même s’il ne dispose pas des prérequis nécessaires, il fait bénéficier un mecha qu’il pilote de ses bonus de caractéristiques. Il est aussi capable d’utiliser les armes lourdes et les explosifs, qui font partie de l’arsenal naturel du technopilote.'),
+('teleportation', 'Téléportation', 1, 0, 'psych', 'La maîtrise quantique du personnage lui permet désormais de se téléporter lui-même, ainsi que tout ce qu’il porte sur lui, d’un endroit à un autre, sur une distance maximale de 10 mètres. D’autre part, le personnage augmente sa CON de 1.'),
+('temporiser', 'Temporiser (A)', 0, 0, 'savf', 'Le personnage s’adresse à un adversaire (ou un groupe d’adversaires) pour tenter de changer la situation. Il doit réussir un test de CHA dont le ND dépend de la relation entre les PNJ et les PJ : 15 pour des mercenaires anonymes, jusqu’à 30 pour un ennemi spécifique qui cherche à se venger des PJ. Si le test est réussi, pendant 1d6 tours et tant que ces adversaires ne sont pas attaqués directement, ils cessent le combat. Sur une réussite critique, le personnage les convainc de quitter les lieux immédiatement.'),
+('thermosensible', 'Thermosensible', 0, 0, 'espbo', 'Par le biais de son odorat et de capteurs spécialisés, le personnage est capable de visualiser son environnement immédiat, même dans l’obscurité la plus totale. Il ne peut jamais subir de malus de situation dû à l’obscurité.'),
+('thermosensible-reptiloides', 'Thermosensible', 0, 0, 'espeg', 'Par le biais de son odorat et de capteurs spécialisés, le personnage est capable de visualiser son environnement immédiat, même dans l’obscurité la plus totale. Il ne peut jamais subir de malus de situation dû à l’obscurité.'),
+('tir-a-haute-energie', 'Tir à haute énergie', 1, 0, 'savf', 'Le personnage accumule le plus de puissance possible avant de tirer. Les DM de l’arme sont augmentés d’un dé du même type que les DM de base (par exemple, un d6 pour une arme laser). Cependant, si un incident de tir survient, l’arme obtient automatiquement un 1 sur le dé d’incident (une arme laser surchauffe et une arme plasmique est endommagée).'),
+('tir-de-barrage', 'Tir de barrage (A)', 0, 1, 'savf', 'Le canonnier utilise les armes de bord comme un moyen de défense, tout en essayant d’atteindre sa cible. Au prix d’un point d’énergie disponible, en plus de la tentative de tir du canonnier, le vaisseau bénéficie d’un bonus de compétence de DEF égal au rang du personnage dans cette voie. Si le vaisseau ne dispose d’aucune énergie disponible ou si le canonnier ne souhaite pas en utiliser, il peut choisir de sacrifier son attaque pour bénéficier du bonus de DEF.'),
+('tir-de-suppression', 'Tir de suppression', 1, 0, 'savf', 'Le personnage utilise son arme à feu pour effectuer une attaque sur une aire d’effet de 10 mètres de côté sans se soucier de réellement toucher sa cible. Alliés et ennemis pris dans la zone subissent un malus de situation de -2 à toute action d’attaque qu’ils entreprennent jusqu’au début du prochain tour du tireur. De plus, ils sont tous visés par une attaque avec un malus de situation de -5, et un seuil d’incident augmenté de 1.'),
+('tirer-la-couverture-a-soi', 'Tirer la couverture à soi', 1, 0, 'cult', 'Le personnage peut utiliser cette capacité une fois par session, lorsque l’un de ses compagnons utilise un PC pour réussir une action. S’il est capable de s’attribuer tout ou partie du mérite de ce succès, alors le personnage récupère le PC dépensé et l’ajoute à ses propres PC, sans toutefois pouvoir dépasser son total de départ.'),
+('tireur-delite', 'Tireur d’élite', 1, 0, 'savf', 'Le personnage augmente sa PER de 1. De plus, son expertise lui permet d’ignorer les effets de la dispersion (pour les armes laser) ou de la longue portée (pour les armes soniques et plasmiques), selon la catégorie d’arme sélectionnée.'),
+('toile', 'Toile', 1, 0, 'espeg', 'Le personnage est capable de générer une toile résistante qui a de multiples usages : il est considéré comme disposant toujours d’une longueur de corde ou de câble suffisante, qui peut soutenir jusqu’à quatre fois son poids. En combat, le personnage peut utiliser cette toile via une attaque à distance afin d’immobiliser une cible jusqu’à 20 mètres. Si l’attaque est réussie, la cible est ralentie jusqu’à ce qu’elle réussisse un test de FOR (ND [10 + rang]).'),
+('transfert-ameliore', 'Transfert amélioré', 0, 0, 'augm', 'Le personnage transfère son esprit dans l’une des deux formes qui lui sont « connues ». Cette nouvelle coquille peut bénéficier de trois implants de type B, qui peuvent être différents de ceux sélectionnés précédemment. Le bonus conféré par chacun d’entre eux est de +2.'),
+('troisieme-forme', 'Troisième forme', 0, 0, 'augm', 'Le personnage peut définir une nouvelle forme et y transférer son esprit. Cette coquille peut bénéficier de trois implants de type B, qui peuvent être différents de ceux sélectionnés précédemment. Le bonus conféré par chacun d’entre eux est de +3.'),
+('troisieme-greffe', 'Troisième greffe', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type B. Le bonus conféré par cet implant est de +1. Les bonus conférés par tous les implants préalables au sein de cette voie sont augmentés de +1.'),
+('troisieme-implant', 'Troisième implant', 0, 0, 'augm', 'Le personnage peut sélectionner un implant parmi les implants de type C. Le bonus conféré par cet implant est de +3.'),
+('trouver-le-point-faible', 'Trouver le point faible', 1, 0, 'savf', 'Dans la plupart des situations, qu’il s’agisse d’un combat ou d’une joute verbale, le personnage est capable de trouver un point faible dans la défense de son adversaire et d’évaluer la meilleure manière de l’utiliser. Pour cela, il doit passer un tour complet pour évaluer sa cible. Il dispose ensuite d’un bonus de compétence égal à son rang, soit à son action (Persuasion, Intimidation, etc.), soit à l’une de ses attaques.'),
+('urbanite', 'Urbanité', 1, 0, 'cult', 'Le personnage augmente son CHA de 1. De plus, lorsqu’il réalise une action dans un milieu densément peuplé (hors actions de combat), il peut lancer deux dés et conserver le meilleur résultat.'),
+('vehicule-prive', 'Véhicule privé', 0, 0, 'cult', 'Une fois par aventure, le personnage peut obtenir les services temporaires d’un vaisseau de transport. Ce vaisseau appartient à un ami ou un allié (ou bien une de leurs sociétés). Il peut s’agir d’un vaisseau corporatiste ou de luxe, au gré du joueur. Toutefois, le vaisseau n’est pas armé. Il inclut les services d’un équipage. Cet équipage refuse de participer à toute action illégale ou ouvertement violente.'),
+('venin', 'Venin (M)', 0, 0, 'espbo', 'Le personnage est capable de secréter un venin ou un poison dangereux pour n’importe quel représentant d’une autre espèce organique. Appliqué sur une arme de contact, le venin ajoute 1d6 de DM à la prochaine attaque. Le personnage peut aussi projeter son venin sur une cible jusqu’à 3 mètres, en réussissant une attaque à distance qui cause 2d6 de DM. Dans les deux cas, il s’agit d’une action de mouvement. Au rang 5, les DM montent à 2d6 pour le venin appliqué sur une arme et 3d6 pour le venin projeté.'),
+('venin-reptiloides', 'Venin-reptiloides (M)', 0, 0, 'espeg', 'Le personnage est capable de secréter un venin ou un poison dangereux pour n’importe quel représentant d’une autre espèce organique. Appliqué sur une arme de contact, le venin ajoute 1d6 de DM à la prochaine attaque. Le personnage peut aussi projeter son venin sur une cible jusqu’à 3 mètres, en réussissant une attaque à distance qui cause 2d6 de DM. Dans les deux cas, il s’agit d’une action de mouvement. Au rang 5, les DM montent à 2d6 pour le venin appliqué sur une arme et 3d6 pour le venin projeté.'),
+('versatile', 'Versatile', 0, 0, 'espbo', 'Le personnage obtient une capacité de rang 1 ou 2 de n’importe quelle voie.'),
+('violon-dingres', 'Violon d’Ingres', 0, 0, 'cult', 'La curiosité naturelle du personnage lui permet de s’intéresser à de nombreux sujets, parfois très éloignés de son domaine d’étude. Il peut choisir n’importe quelle capacité de rang 1 à 3 dans une voie de savoir-faire de son choix. Si celle-ci fait appel au rang du personnage, utilisez le rang atteint dans la voie de l’universitaire.'),
+('vision-aceree', 'Vision acérée', 0, 0, 'espeg', 'Le personnage a une vue particulièrement perçante. Il ne subit aucun malus dû à la portée lors d’une attaque à distance. Il bénéficie en outre d’un bonus de compétence de +5 à tout test de PER basé sur la vue. Enfin, lorsqu’il est en vol, un tir visé devient une action d’attaque (A) plutôt qu’une action limitée (L).'),
+('vision-lointaine', 'Vision lointaine', 1, 0, 'psych', 'Le psi a appris à projeter son oeil intérieur à de grandes distances. Il peut percevoir avec l’un de ses sens ce qui se passe dans n’importe quel endroit à portée de vue, ou qu’il a visité dans un passé récent (10 jours au maximum). La distance réelle n’a aucune importance (il peut s’agir d’un endroit sur une autre planète visitée quelques jours plus tôt, ou le coin d’un mur situé à quelques mètres devant lui). Le personnage doit réussir un test de PER (ND [ 15 +1 par jour passé depuis sa dernière visite ]). En cas d’échec critique, le psi est aveuglé pendant 1d6 tours.'),
+('vision-segmentee', 'Vision segmentée', 0, 0, 'espeg', 'Le personnage dispose d’une vue aiguisée et d’une multitude de récepteurs visuels, qui lui permettent de décomposer efficacement même les mouvements les plus rapides. Il bénéficie d’un bonus de compétence de +5 à l’Init (en combat et en combat spatial). De plus, son vaisseau bénéficie d’un bonus de compétence de +2 en DEF lors d’un combat spatial s’il occupe le poste de pilotage.'),
+('vol', 'Vol', 0, 0, 'psych', 'Le psi est désormais capable de s’élever lui-même dans les airs et de voler. Sa vitesse maximale est le double de sa vitesse au sol. Se maintenir en vol est une action gratuite, et le personnage peut donc continuer à agir tout en volant. En outre, le personnage augmente sa FOR de 1.'),
+('vol-aeriens', 'Vol (M)', 0, 0, 'espeg', 'Le personnage est capable de prendre son envol par une action de mouvement. Chaque action lui permet de se déplacer verticalement de 10 mètres ou horizontalement de 20 mètres. À chaque tour, il doit ensuite consacrer une action de mouvement à « rester en l’air. » Dans le cas contraire, il descend automatiquement de 10 mètres. Si cela l’amène au sol, il se pose sans dégâts. Le seul cas où un personnage aviaire encaisse des dégâts de chute est s’il est inconscient au moment de cette chute. En outre, le personnage est capable d’occuper le poste de pilotage (PIL) à bord d’un vaisseau.'),
+('worm', 'Worm (rang 5)', 0, 0, 'ia', 'À ce stade, l’I.A. devient presque impossible à détruire. Elle a appris à répliquer ses composantes de manière à ce que se débarrasser d’elle revient à annihiler son réseau de communication. Celui-ci occupe l’équivalent d’une fraction de planète ou d’une flotte spatiale. Tous les systèmes informatiques sont infectés. Elle peut désormais prendre le contrôle direct de n’importe quel système dans son réseau, y compris les androïdes, les robots ou les vaisseaux. Si l’I.A. remporte un test opposé d’INT (Électronique), le système devient une extension physique asservie pour le tour. L’I.A. peut contrôler ainsi une centaine de systèmes sans subir de ralentissement.');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_capacites_voies`
+--
+
+DROP TABLE IF EXISTS `cog_capacites_voies`;
+CREATE TABLE IF NOT EXISTS `cog_capacites_voies` (
+  `voie` varchar(20) NOT NULL,
+  `rang` varchar(1) NOT NULL,
+  `capacite` varchar(30) NOT NULL,
+  PRIMARY KEY (`voie`,`rang`),
+  KEY `cga_capacites_voies_voie` (`voie`),
+  KEY `cga_capacites_voies_capacite` (`capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_capacites_voies`
+--
+
+INSERT INTO `cog_capacites_voies` (`voie`, `rang`, `capacite`) VALUES
+('corporations', '3', '50-50'),
+('psychologie', '1', 'a-lecoute'),
+('luminescents', '2', 'acuite-psychique'),
+('biokinesie', '5', 'adaptation'),
+('tymbris', '5', 'adaptation-tymbri'),
+('robot', '4', 'amelioration-robotique'),
+('armes-lourdes', '2', 'anticipation'),
+('corporations', '2', 'appel-a-un-ami'),
+('androide', '4', 'apprentissage-adaptatif'),
+('androide', '3', 'apprentissage-par-induction'),
+('robot', '2', 'apprentissage-par-modules'),
+('reparation', '2', 'approvisionnement'),
+('arts-martiaux', '3', 'arme-de-predilection'),
+('bagarre', '2', 'arme-improvisee'),
+('armes-a-feu', '5', 'as-de-la-gachette'),
+('moteurs', '5', 'as-de-lingenierie'),
+('pilotage', '5', 'as-des-as'),
+('psychomachie', '2', 'assaut-psi'),
+('parasites', '3', 'assimilation'),
+('systeme-d', '4', 'attaque-agressive'),
+('furtivite', '3', 'attaque-deloyale'),
+('aeriens', '4', 'attaque-en-pique'),
+('telepathie', '3', 'attrape-reves'),
+('arts-martiaux', '4', 'avalanche-de-coups'),
+('ia', '3', 'backdoor'),
+('psychomachie', '1', 'barriere-psi'),
+('discours', '1', 'beau-parleur'),
+('reparation', '4', 'bidouilleur'),
+('biokinesie', '1', 'bioperception'),
+('telepathie', '5', 'bombe-mentale'),
+('arachnides', '4', 'bond-de-laraignee'),
+('telepathie', '2', 'bouclier-psi'),
+('vegetaux', '5', 'bouclier-vegetal'),
+('bagarre', '5', 'brute-epaisse'),
+('discours', '3', 'cameleon'),
+('libilis', '5', 'camouflage'),
+('reptiloides', '5', 'camouflage-reptiloides'),
+('armes-lourdes', '5', 'carnage'),
+('arts', '5', 'celebre'),
+('psychokinesie', '3', 'champ-de-force'),
+('bas-fonds', '1', 'chance-des-misereux'),
+('humains', '1', 'chanceux'),
+('parasites', '2', 'changement-dhote'),
+('arts', '4', 'charisme-hero\"ique'),
+('panacee', '5', 'chimie-therapeuthique'),
+('medecine', '3', 'chirurgien'),
+('insectoides', '1', 'chitine'),
+('bioorg', '5', 'cinquieme-greffe'),
+('cyborg', '5', 'cinquieme-implant'),
+('espace', '1', 'claustrophile'),
+('bagarre', '1', 'combat-de-rue'),
+('psychokinesie', '2', 'combat-kinetique'),
+('mineraux', '2', 'comm-telepathique-mineraux'),
+('aquatiques', '3', 'comme-un-poisson-hors-de-leau'),
+('cosmokinesie', '4', 'communication-a-distance'),
+('kneiss', '2', 'communication-telepathique'),
+('exploration', '2', 'connaissance-des-mondes'),
+('universitaire', '2', 'connaissance-theorique'),
+('quantakinesie', '1', 'contrafactualite'),
+('electrokinesie', '4', 'controle'),
+('corporations', '1', 'corporatisme'),
+('armes-energetiques', '3', 'coup-chanceux'),
+('bas-fonds', '4', 'coup-etourdissant'),
+('espace', '4', 'coup-incapacitant'),
+('armes-energetiques', '4', 'coup-precis'),
+('armes-a-feu', '3', 'coup-rapide'),
+('bas-fonds', '2', 'coup-vicieux'),
+('bas-fonds', '5', 'cour-des-miracles'),
+('ia', '5', 'crash'),
+('classe-moyenne', '4', 'credibilite'),
+('bagarre', '3', 'creer-un-obstacle'),
+('arachnides', '5', 'crochets'),
+('vegetaux', '3', 'croissance-acceleree'),
+('psychokinesie', '4', 'cryopyrokinesie'),
+('mechanaute', '5', 'de-chair-et-dacier'),
+('systeme-d', '1', 'debrouillardise'),
+('chronokinesie', '3', 'defense-intuitive'),
+('chronokinesie', '1', 'deja-vu'),
+('agon', '3', 'dephasage-partiel'),
+('luminescents', '3', 'dephasage-partiel-luminescents'),
+('arachnides', '1', 'deplacement-arachneen'),
+('cosmokinesie', '5', 'desintegration'),
+('electronique', '2', 'detection-&-recherche'),
+('biokinesie', '3', 'detox'),
+('posthumain', '2', 'deuxieme-forme'),
+('bioorg', '2', 'deuxieme-greffe'),
+('cyborg', '2', 'deuxieme-implant'),
+('libilis', '2', 'deuxieme-peau'),
+('reptiloides', '2', 'deuxieme-peau-reptiloides'),
+('furtivite', '1', 'discretion'),
+('psychomachie', '5', 'domination'),
+('bagarre', '4', 'double-attaque'),
+('quantakinesie', '2', 'dualite-onde-corpuscule'),
+('aquatiques', '1', 'ecailles-et-branchies'),
+('agon', '5', 'electromancie'),
+('luminescents', '5', 'electromancie-luminescents'),
+('electronique', '1', 'electronicien'),
+('furtivite', '4', 'embuscade'),
+('telepathie', '1', 'empathie'),
+('tymbris', '4', 'empathie-animale'),
+('anthropomorphes', '4', 'empathie-animale-anthropo'),
+('tymbris', '1', 'empathie-tymbri'),
+('arts-martiaux', '2', 'enchainement'),
+('exploits-physiques', '2', 'endurant'),
+('systeme-d', '2', 'entraide'),
+('exploits-physiques', '5', 'entrainement-de-haut-niveau'),
+('panacee', '3', 'epiphyse-artificielle'),
+('investigation', '1', 'esprit-danalyse'),
+('insectoides', '2', 'esprit-de-la-ruche'),
+('exploits-physiques', '1', 'esquive-instinctive'),
+('agon', '1', 'etre-denergie'),
+('luminescents', '1', 'etre-denergie-luminescents'),
+('psychologie', '4', 'examen-psychologique'),
+('medecine', '5', 'expert'),
+('exploration', '1', 'explorateur'),
+('humains', '4', 'feinte'),
+('armes-lourdes', '4', 'fleur-de-la-mort'),
+('photokinesie', '2', 'flou'),
+('universitaire', '1', 'formation-academique'),
+('arts', '1', 'formation-artistique'),
+('posthumain', '5', 'forme-optimale'),
+('medecine', '4', 'frappe-chirurgicale'),
+('hybride', '2', 'genome-ameliore'),
+('hybride', '3', 'genome-composite'),
+('armes-lourdes', '1', 'gros-bras'),
+('universitaire', '3', 'grosse-tete'),
+('electronique', '4', 'guerre-electronique'),
+('electronique', '3', 'hacker'),
+('androide', '5', 'homo-perfectus'),
+('hybride', '1', 'hybridation-genetique'),
+('cosmokinesie', '3', 'immobilisation'),
+('vegetaux', '4', 'immobilisation-vegetaux'),
+('panacee', '1', 'implant-thyro\"idien'),
+('arts', '3', 'imprevisible'),
+('espace', '3', 'improviser-un-couvert'),
+('electrokinesie', '2', 'impulsion-electro-magnetique'),
+('classe-moyenne', '1', 'individualisme'),
+('aristocratie', '2', 'influence'),
+('exploration', '4', 'ingenierie-planetaire'),
+('moteurs', '1', 'ingenieur'),
+('arts', '2', 'inspiration'),
+('tymbris', '2', 'instinct-animal'),
+('anthropomorphes', '2', 'instinct-animal-anthropo'),
+('mineraux', '4', 'integration-de-circuit'),
+('universitaire', '5', 'intelligence-heroique'),
+('cosmokinesie', '1', 'interaction-faible'),
+('electrokinesie', '1', 'interface'),
+('agon', '2', 'interface-agon'),
+('libilis', '4', 'intimidation'),
+('reptiloides', '4', 'intimidation-reptiloides'),
+('quantakinesie', '4', 'intrication-quantique'),
+('psychologie', '5', 'intuition-hero\"ique'),
+('investigation', '2', 'investigateur'),
+('photokinesie', '4', 'invisibilite'),
+('kneiss', '1', 'invulnerable'),
+('mineraux', '1', 'invulnerable-mineraux'),
+('pilotage', '4', 'ivan-le-fou'),
+('corporations', '4', 'joker'),
+('mechanaute', '4', 'la-mort-venue-den-haut'),
+('electronique', '5', 'langage-machine'),
+('photokinesie', '3', 'laser'),
+('kneiss', '3', 'laser-kneiss'),
+('exploits-physiques', '4', 'le-geste-parfait'),
+('cosmokinesie', '2', 'levitation'),
+('clairvoyance', '1', 'loeil-interieur'),
+('humains', '2', 'loup-parmi-les-loups'),
+('photokinesie', '1', 'luminosite'),
+('arts-martiaux', '5', 'maitre-darme'),
+('aeriens', '3', 'maitre-des-airs'),
+('corporations', '5', 'mandarin'),
+('discours', '4', 'manipulateur'),
+('psychokinesie', '1', 'manipulation-a-distance'),
+('pilotage', '2', 'manoeuvre-devitement'),
+('aquatiques', '5', 'manoeuvre-inattendue'),
+('reparation', '1', 'mecano'),
+('medecine', '2', 'medecin'),
+('kneiss', '4', 'memoire-cristalline'),
+('mineraux', '3', 'memoire-cristalline-mineraux'),
+('investigation', '4', 'memoire-eidetique'),
+('psychologie', '2', 'mental-dacier'),
+('biokinesie', '2', 'metabolisme-ameliore'),
+('tymbris', '3', 'metabolisme-ameliore-tymbri'),
+('androide', '2', 'metabolisme-synthetique'),
+('hybride', '5', 'metis-genetique'),
+('panacee', '4', 'microdosage'),
+('espace', '5', 'microgravite'),
+('reparation', '5', 'mieux-que-le-neuf'),
+('luminescents', '4', 'modif-struct-luminescents'),
+('agon', '4', 'modification-structurelle'),
+('arachnides', '2', 'monstruosite'),
+('aquatiques', '2', 'navigation'),
+('espace', '2', 'ne-dans-un-vaisseau'),
+('clairvoyance', '2', 'neutraliser-laura'),
+('ia', '6', 'nuke'),
+('furtivite', '5', 'ombre'),
+('electrokinesie', '3', 'onde-de-choc'),
+('psychomachie', '4', 'onde-psi'),
+('mechanaute', '3', 'optimisation'),
+('moteurs', '2', 'optimisation-quantique'),
+('discours', '5', 'orateur'),
+('vegetaux', '1', 'organes-non-vitaux'),
+('parasites', '1', 'parasitage'),
+('investigation', '5', 'perception-hero\"ique'),
+('aeriens', '5', 'perception-heroique-aeriens'),
+('panacee', '2', 'pharmacopee'),
+('robot', '3', 'pieces-detachees'),
+('aristocratie', '4', 'pied-a-terre'),
+('pilotage', '1', 'pilote-emerite'),
+('armes-a-feu', '4', 'pistolero'),
+('exploration', '3', 'planetologue'),
+('moteurs', '3', 'pleine-puissance'),
+('pilotage', '3', 'polychrone'),
+('insectoides', '5', 'polydextrie'),
+('humains', '5', 'polyvalent'),
+('anthropomorphes', '5', 'polyvalent-anthropo'),
+('clairvoyance', '3', 'postcognition'),
+('chronokinesie', '5', 'precognition'),
+('cyborg', '1', 'premier-implant'),
+('posthumain', '1', 'premier-transfert'),
+('bioorg', '1', 'premiere-greffe'),
+('robot', '5', 'programmation-secondaire'),
+('clairvoyance', '5', 'projection-daura'),
+('photokinesie', '5', 'projection-holographique'),
+('kneiss', '5', 'projection-memorielle'),
+('mineraux', '5', 'projection-memorielle-mineraux'),
+('electrokinesie', '5', 'projection-virtuelle'),
+('discours', '2', 'provocateur'),
+('bioorg', '4', 'quatrieme-greffe'),
+('cyborg', '4', 'quatrieme-implant'),
+('anthropomorphes', '3', 'rage'),
+('chronokinesie', '4', 'ralentir-le-temps'),
+('hybride', '4', 'regeneration'),
+('aristocratie', '5', 'relations'),
+('vegetaux', '2', 'relie-a-la-terre'),
+('arts-martiaux', '1', 'renforcement'),
+('parasites', '4', 'renforcement-parasites'),
+('aristocratie', '1', 'rente'),
+('biokinesie', '4', 'reparation-des-tissus'),
+('androide', '1', 'reseau-neuronal'),
+('insectoides', '3', 'resistance'),
+('exploration', '5', 'savoir-encyclopedique'),
+('exploits-physiques', '3', 'se-depasser'),
+('classe-moyenne', '2', 'se-fondre-dans-la-masse'),
+('psychomachie', '3', 'second-souffle'),
+('medecine', '1', 'secouriste'),
+('furtivite', '2', 'sens-affutes'),
+('systeme-d', '3', 'sens-de-la-communaute'),
+('bas-fonds', '3', 'sens-de-la-confrerie'),
+('chronokinesie', '2', 'sens-du-danger'),
+('ia', '1', 'sniffing'),
+('aquatiques', '4', 'sonar'),
+('armes-energetiques', '1', 'specialiste'),
+('armes-a-feu', '1', 'specialiste-armes-a-feu'),
+('robot', '1', 'specialite'),
+('ia', '2', 'spoofing'),
+('telepathie', '4', 'suggestion'),
+('quantakinesie', '3', 'superposition-quantique'),
+('anthropomorphes', '1', 'survie-naturelle'),
+('systeme-d', '5', 'survivant'),
+('parasites', '5', 'symbiose'),
+('reparation', '3', 'systemes-avances'),
+('moteurs', '4', 'systemes-de-secours'),
+('mechanaute', '2', 'technomecano'),
+('mechanaute', '1', 'technopilote'),
+('quantakinesie', '5', 'teleportation'),
+('psychologie', '3', 'temporiser'),
+('libilis', '1', 'thermosensible'),
+('reptiloides', '1', 'thermosensible-reptiloides'),
+('armes-energetiques', '2', 'tir-a-haute-energie'),
+('armes-lourdes', '3', 'tir-de-barrage'),
+('armes-a-feu', '2', 'tir-de-suppression'),
+('classe-moyenne', '3', 'tirer-la-couverture-a-soi'),
+('armes-energetiques', '5', 'tireur-delite'),
+('arachnides', '3', 'toile'),
+('posthumain', '3', 'transfert-ameliore'),
+('posthumain', '4', 'troisieme-forme'),
+('bioorg', '3', 'troisieme-greffe'),
+('cyborg', '3', 'troisieme-implant'),
+('investigation', '3', 'trouver-le-point-faible'),
+('classe-moyenne', '5', 'urbanite'),
+('aristocratie', '3', 'vehicule-prive'),
+('libilis', '3', 'venin'),
+('reptiloides', '3', 'venin-reptiloides'),
+('humains', '3', 'versatile'),
+('universitaire', '4', 'violon-dingres'),
+('aeriens', '2', 'vision-aceree'),
+('clairvoyance', '4', 'vision-lointaine'),
+('insectoides', '4', 'vision-segmentee'),
+('psychokinesie', '5', 'vol'),
+('aeriens', '1', 'vol-aeriens'),
+('ia', '4', 'worm');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_categories_equipement`
+--
+
+DROP TABLE IF EXISTS `cog_categories_equipement`;
+CREATE TABLE IF NOT EXISTS `cog_categories_equipement` (
+  `code` varchar(20) NOT NULL,
+  `libelle` varchar(50) NOT NULL,
+  `parent` varchar(20) DEFAULT NULL,
+  `sequence` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`code`),
+  KEY `cga_categories_equipemet_parent` (`parent`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_categories_equipement`
+--
+
+INSERT INTO `cog_categories_equipement` (`code`, `libelle`, `parent`, `sequence`) VALUES
+('armes', 'Armes', NULL, '0005'),
+('armes-a-feu', 'Armes &agrave; feu', 'armes', '0015'),
+('armes-archaiques', 'Armes archa&iuml;ques', 'armes', '0005'),
+('armes-de-contact', 'Armes de contact', 'armes', '0010'),
+('armes-energetiques', 'Armes &agrave; &eacute;nergie', 'armes', '0020'),
+('armes-lourdes', 'Armes lourdes', 'armes', '0025'),
+('armures', 'Armures', 'protections', '0005'),
+('augmentations', 'Augmentations', NULL, '0020'),
+('champs-de-force', 'Champs de force', 'protections', '0010'),
+('combinaisons', 'Combinaisons', 'protections', '0015'),
+('divers', 'Divers', NULL, '0015'),
+('drogues', 'Drogues', NULL, '0025'),
+('drones', 'Drones', 'divers', '0030'),
+('logement', 'Logement', 'divers', '0010'),
+('medical', 'Medical', 'divers', '0025'),
+('nourriture', 'Nourriture', 'divers', '0015'),
+('protections', 'Protections', NULL, '0010'),
+('robots', 'Robots', 'divers', '0035'),
+('utilitaires', 'Utilitaires', 'divers', '0020'),
+('vetements', 'V&ecirc;tements', 'divers', '0005');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_categories_proprietes`
+--
+
+DROP TABLE IF EXISTS `cog_categories_proprietes`;
+CREATE TABLE IF NOT EXISTS `cog_categories_proprietes` (
+  `code_categorie` varchar(20) NOT NULL,
+  `code_propriete` varchar(20) NOT NULL,
+  PRIMARY KEY (`code_categorie`,`code_propriete`),
+  KEY `cga_categories_proprietes_categorie` (`code_categorie`),
+  KEY `cga_categories_proprietes_propriete` (`code_propriete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_categories_proprietes`
+--
+
+INSERT INTO `cog_categories_proprietes` (`code_categorie`, `code_propriete`) VALUES
+('armes-a-feu', 'aire-deffet'),
+('armes-a-feu', 'dm-1-main'),
+('armes-a-feu', 'dm-2-mains'),
+('armes-a-feu', 'incident-de-tir'),
+('armes-a-feu', 'niveau-de-vie'),
+('armes-a-feu', 'portee'),
+('armes-archaiques', 'dm-1-main'),
+('armes-archaiques', 'dm-2-mains'),
+('armes-archaiques', 'dm-temp-1m'),
+('armes-archaiques', 'dm-temp-2m'),
+('armes-archaiques', 'incident-de-tir'),
+('armes-archaiques', 'niveau-de-vie'),
+('armes-archaiques', 'portee'),
+('armes-archaiques', 'type'),
+('armes-de-contact', 'action-de-tir'),
+('armes-de-contact', 'aire-deffet'),
+('armes-de-contact', 'dm-1-main'),
+('armes-de-contact', 'dm-2-mains'),
+('armes-de-contact', 'dm-temp-1m'),
+('armes-de-contact', 'dm-temp-2m'),
+('armes-de-contact', 'incident-de-tir'),
+('armes-de-contact', 'niveau-de-vie'),
+('armes-de-contact', 'type'),
+('armes-energetiques', 'aire-deffet'),
+('armes-energetiques', 'dm-1-main'),
+('armes-energetiques', 'dm-2-mains'),
+('armes-energetiques', 'dm-temp-1m'),
+('armes-energetiques', 'dm-temp-2m'),
+('armes-energetiques', 'incident-de-tir'),
+('armes-energetiques', 'niveau-de-vie'),
+('armes-energetiques', 'portee'),
+('armes-energetiques', 'type'),
+('armes-lourdes', 'action-de-tir'),
+('armes-lourdes', 'aire-deffet'),
+('armes-lourdes', 'dm-1-main'),
+('armes-lourdes', 'dm-2-mains'),
+('armes-lourdes', 'dm-temp-1m'),
+('armes-lourdes', 'dm-temp-2m'),
+('armes-lourdes', 'incident-de-tir'),
+('armes-lourdes', 'niveau-de-vie'),
+('armes-lourdes', 'portee'),
+('armes-lourdes', 'type'),
+('armures', 'def'),
+('armures', 'malus'),
+('armures', 'niveau-de-vie'),
+('armures', 'rd'),
+('champs-de-force', 'def'),
+('champs-de-force', 'niveau-de-vie'),
+('champs-de-force', 'type'),
+('combinaisons', 'def'),
+('combinaisons', 'malus'),
+('combinaisons', 'niveau-de-vie'),
+('combinaisons', 'rd'),
+('drones', 'niveau-de-vie'),
+('logement', 'niveau-de-vie'),
+('medical', 'bonus'),
+('medical', 'niveau-de-vie'),
+('nourriture', 'niveau-de-vie'),
+('robots', 'niveau-de-vie'),
+('utilitaires', 'bonus'),
+('utilitaires', 'niveau-de-vie'),
+('vetements', 'niveau-de-vie');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_equipement`
+--
+
+DROP TABLE IF EXISTS `cog_equipement`;
+CREATE TABLE IF NOT EXISTS `cog_equipement` (
+  `code` varchar(20) NOT NULL,
+  `designation` varchar(50) NOT NULL,
+  `categorie` varchar(20) NOT NULL,
+  `sequence` varchar(5) DEFAULT NULL,
+  `prix` decimal(16,2) DEFAULT NULL,
+  `notes` mediumtext,
+  PRIMARY KEY (`code`),
+  KEY `cga_equipement_categorie` (`categorie`),
+  KEY `cga_equipement_sequence_idx` (`sequence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_equipement`
+--
+
+INSERT INTO `cog_equipement` (`code`, `designation`, `categorie`, `sequence`, `prix`, `notes`) VALUES
+('analyseur-de-minerai', 'Analyseur de minerai', 'utilitaires', '0010', '500.00', NULL),
+('analyseur-eauair', 'Analyseur eau+air', 'utilitaires', '0005', '250.00', NULL),
+('antirads', 'Antirads', 'medical', '0005', '50.00', 'Cette pilule &agrave; base d&rsquo;iode permet d&rsquo;att&eacute;nuer les effets d&rsquo;une partie des radiations subies par le personnage et de les &eacute;vacuer via les urines. Elle conf&egrave;re un bonus de mat&eacute;riel de +5 pour r&eacute;sister aux effets des radiations.'),
+('arc', 'Arc', 'armes-archaiques', '005', '75.00', NULL),
+('arc-a-poulie', 'Arc à poulie', 'armes-archaiques', '010', '150.00', NULL),
+('armure-de-combat', 'Armure de combat', 'armures', '0010', '10000.00', NULL),
+('armure-legere', 'Armure l&eacute;g&egrave;re', 'armures', '0005', '3000.00', NULL),
+('autodoc', 'Autodoc', 'medical', '0010', '15000.00', 'Cet &eacute;quipement autonome statique est &agrave; la fois un outil de diagnostic et d&rsquo;op&eacute;ration. Il effectue tous ses tests de m&eacute;decine, de premiers secours ou de chirurgie avec un bonus de comp&eacute;tence de +5. De plus, il permet de diviser par deux tous les temps de r&eacute;cup&eacute;ration. La forme exacte d&rsquo;un autodoc d&eacute;pend largement de l&rsquo;esp&egrave;ce l&rsquo;ayant fabriqu&eacute;. Chaque mod&egrave;le ne fonctionne g&eacute;n&eacute;ralement que pour un nombre limit&eacute; d&rsquo;esp&egrave;ces dont il conna&icirc;t la biologie.'),
+('baton-a-impulsion', 'B&acirc;ton &agrave; impulsion', 'armes-de-contact', '0005', '500.00', 'Ce grand b&acirc;ton a &agrave; peu pr&egrave;s la m&ecirc;me apparence qu&rsquo;un b&acirc;ton ferr&eacute;, mais il s&rsquo;agit aussi d&rsquo;une arme sonique &agrave; aire d&rsquo;effet. Il peut &ecirc;tre employ&eacute; comme un b&acirc;ton de combat normal. Mais pour une action limit&eacute;e, son porteur peut le planter au sol et d&eacute;clencher son effet. Toute personne dans la zone d&rsquo;effet (10 m&egrave;tres de rayon) &agrave; l&rsquo;exception de celles qui touchent le b&acirc;ton sont affect&eacute;es par une onde sonique qui inflige 2d6 DM. On ne fait qu&rsquo;un seul test d&rsquo;attaque pour toutes les cibles. Un incident de tir peut survenir lorsque cette attaque sp&eacute;ciale est utilis&eacute;e et indique tout simplement que la batterie de l&rsquo;arme doit &ecirc;tre recharg&eacute;e.'),
+('baton-ferre', 'Bâton ferré', 'armes-archaiques', '015', '2.00', NULL),
+('biocicatrisant', 'Biocicatrisant', 'medical', '0015', '500.00', 'Concentr&eacute; de compos&eacute;s analg&eacute;siques, stoppant l&rsquo;afflux sanguin et ralentissant les fonctions m&eacute;taboliques. &Agrave; injecter directement dans la blessure, vendu avec pistolet et r&eacute;servoir sous pression. Permet de stabiliser et ignorer une blessure grave. La mousse se dissout en 1d6 heures. Au-del&agrave; de la premi&egrave;re application, le personnage est ralenti sous l&rsquo;effet des analg&eacute;siques.'),
+('bottes-magnetiques', 'Bottes magn&eacute;tiques', 'vetements', '0005', '200.00', NULL),
+('brise-code', 'Brise-code', 'utilitaires', '0015', '1000.00', 'Cet outil permet de d&eacute;coder les signaux d&rsquo;une serrure &eacute;lectronique afin de falsifier l&rsquo;empreinte d&rsquo;une carte magn&eacute;tique ou d&rsquo;autres moyens de reconnaissance. Un brise-code permet d&rsquo;ajouter un bonus de mat&eacute;riel de +2 ou +5 (selon sa qualit&eacute;) &agrave; toute tentative de crochetage d&rsquo;une serrure de ce type.'),
+('brise-code-qualite', 'Brise-code de qualit&eacute;', 'utilitaires', '0020', '2500.00', 'Cet outil permet de d&eacute;coder les signaux d&rsquo;une serrure &eacute;lectronique afin de falsifier l&rsquo;empreinte d&rsquo;une carte magn&eacute;tique ou d&rsquo;autres moyens de reconnaissance. Un brise-code permet d&rsquo;ajouter un bonus de mat&eacute;riel de +2 ou +5 (selon sa qualit&eacute;) &agrave; toute tentative de crochetage d&rsquo;une serrure de ce type.'),
+('chambre-bus-nuit', 'Chambre business / nuit', 'logement', '0035', '150.00', NULL),
+('chambre-eco-nuit', 'Chambre &eacute;conomique / nuit', 'logement', '0030', '50.00', NULL),
+('chambre-sup-nuit', 'Chambre sup&eacute;rieure / nuit', 'logement', '0040', '500.00', NULL),
+('champ-laser', 'Champ de force laser', 'champs-de-force', '0005', '3000.00', NULL),
+('champ-multifonction', 'Champ de force multifonction', 'champs-de-force', '0015', '10000.00', 'Ne peut &ecirc;tre r&eacute;gl&eacute; que sur un mode de protection &agrave; la fois'),
+('champ-plasma', 'Champ de force plasma', 'champs-de-force', '0010', '5000.00', NULL),
+('combi-extra', 'Combinaison extrav&eacute;hiculaire', 'combinaisons', '0010', '5000.00', NULL),
+('combi-intra', 'Combinaison intrav&eacute;hiculaire', 'combinaisons', '0005', '1000.00', NULL),
+('costume-complet', 'Costume complet', 'vetements', '0040', '1500.00', NULL),
+('couteau-de-cuisine', 'Couteau de cuisine', 'armes-archaiques', '020', '5.00', NULL),
+('couteau-de-lancer', 'Couteau de lancer', 'armes-archaiques', '025', '10.00', NULL),
+('dague-choc', 'Dague choc', 'armes-de-contact', '0010', '20.00', NULL),
+('detect-radiations', 'D&eacute;tecteur de radiations', 'utilitaires', '0025', '1000.00', NULL),
+('dortoir-nuit', 'Dortoir / nuit', 'logement', '0025', '20.00', NULL),
+('drone-de-combat', 'Drone de combat', 'drones', '0025', '2000.00', NULL),
+('drone-espion', 'Drone espion', 'drones', '0020', '1000.00', NULL),
+('drone-exploration', 'Drone d&#039;exploration', 'drones', '0015', '1000.00', NULL),
+('drone-miniature', 'Drone miniature', 'drones', '0035', '1000.00', 'DEF +4'),
+('drone-minier', 'Drone minier', 'drones', '0010', '1000.00', NULL),
+('drone-surveillance', 'Drone de surveillance', 'drones', '0005', '500.00', NULL),
+('drone-volant', 'Drone volant', 'drones', '0030', '500.00', NULL),
+('fast-street-food', 'Fast-food / Street-food', 'nourriture', '0005', '5.00', NULL),
+('filtre-respiratoire', 'Filtre respiratoire', 'vetements', '0010', '200.00', NULL),
+('fronde', 'Fronde', 'armes-archaiques', '030', NULL, NULL),
+('fusil-a-impulsion', 'Fusil &agrave; impulsion', 'armes-energetiques', '0025', '500.00', NULL),
+('fusil-a-plasma', 'Fusil &agrave; plasma', 'armes-energetiques', '0040', '5000.00', NULL),
+('fusil-a-pompe', 'Fusil &agrave; pompe', 'armes-a-feu', '0015', '1500.00', NULL),
+('fusil-dassaut', 'Fusil d&#039;assaut', 'armes-a-feu', '0020', '2000.00', NULL),
+('fusil-de-precision', 'Fusil de pr&eacute;cision', 'armes-a-feu', '0025', '4000.00', NULL),
+('fusil-ionique', 'Fusil ionique', 'armes-energetiques', '0030', '1500.00', NULL),
+('fusil-laser', 'Fusil laser', 'armes-energetiques', '0035', '1500.00', NULL),
+('fusil-laser-precis', 'Fusil laser de pr&eacute;cision', 'armes-energetiques', '0045', '6000.00', NULL),
+('fusil-plasma-lourd', 'Fusil plasma lourd', 'armes-lourdes', '0005', '10000.00', NULL),
+('gourdin', 'Gourdin', 'armes-archaiques', '035', NULL, NULL),
+('grenade-flash', 'Grenade flash', 'armes-lourdes', '0020', '150.00', NULL),
+('grenade-frag', 'Grenade &agrave; fragmentation', 'armes-lourdes', '0010', '150.00', NULL),
+('grenade-fumigene', 'Grenade fumig&egrave;ne', 'armes-lourdes', '0015', '100.00', NULL),
+('grenade-plasma', 'Grenade plasma', 'armes-lourdes', '0030', '1000.00', NULL),
+('grenade-sonique', 'Grenade sonique', 'armes-lourdes', '0025', '50.00', NULL),
+('javeline', 'Javeline', 'armes-archaiques', '035', NULL, NULL),
+('lame-laser', 'Lame laser', 'armes-de-contact', '0015', '5000.00', 'Cette arme est l&rsquo;une des plus difficiles &agrave; acqu&eacute;rir (et &agrave; ma&icirc;triser). Elle a &eacute;t&eacute; cr&eacute;&eacute;e par un ordre secret de guerriers psychiques qui vouent leur vie &agrave; la recherche de la perfection. Un personnage qui manie une lame laser peut l&rsquo;utiliser pour effectuer une d&eacute;fense simple ou totale, y compris contre les tirs d&rsquo;une arme &agrave; &eacute;nergie (quel que soit son type, mais pas une arme &agrave; feu).'),
+('lame-legere', 'Lame l&eacute;g&egrave;re', 'armes-de-contact', '0020', '250.00', 'Ces armes blanches l&eacute;g&egrave;res peuvent prendre diverses formes ais&eacute;ment dissimulables et servent souvent d&rsquo;arme de d&eacute;fense personnelle pour des personnes de la haute soci&eacute;t&eacute;. Toute personne qui tente de d&eacute;tecter une telle arme subit un malus de situation de -2 sur son test de PER.'),
+('lame-moleculaire', 'Lame mol&eacute;culaire', 'armes-de-contact', '0025', '1000.00', 'Ces armes constituent le raffinement ultime de l&rsquo;art de fabrication des lames. Le fil est constitu&eacute; d&rsquo;une cha&icirc;ne coh&eacute;rente d&rsquo;atomes dont la structure cristalline renforc&eacute;e par des atomes de carbone rend la lame &agrave; la fois extr&ecirc;mement solide et parfaitement tranchante. Les lames mol&eacute;culaires existent en plusieurs formats, depuis des dagues jusqu&rsquo;&agrave; des lames courbes similaires aux katanas du Japon m&eacute;di&eacute;val. Les d&eacute;g&acirc;ts de ces lames ne varient pas en fonction de leur forme.'),
+('lance-grenade', 'Lance-grenade', 'armes-lourdes', '0035', '1500.00', NULL),
+('lance-plasmique', 'Lance plasmique', 'armes-de-contact', '0030', '5000.00', 'Sous l&rsquo;apparence d&rsquo;une lance archa&iuml;que, il s&rsquo;agit en fait d&rsquo;une arme plasmique redoutable. La charge &agrave; plasma est dissimul&eacute;e dans le manche de l&rsquo;arme et d&eacute;livr&eacute;e via sa lame, qui peut prendre diverses formes y compris les plus exotiques. Il est possible d&rsquo;attaquer un adversaire jusqu&rsquo;&agrave; 1,5 m&egrave;tre de distance avec cette arme.'),
+('logiciel-bd', 'Logiciel / Base de donn&eacute;es', 'utilitaires', '0030', '500.00', NULL),
+('logiciel-de-pointe', 'Logiciel de pointe', 'utilitaires', '0035', '2000.00', NULL),
+('machette-hachette', 'Machette, hachette', 'armes-archaiques', '040', '50.00', NULL),
+('mains-nues', 'Mains nues', 'armes-archaiques', '050', NULL, NULL),
+('maison-particuliere', 'Maison particuli&egrave;re / mois', 'logement', '0020', '5000.00', NULL),
+('matraque-sonique', 'Matraque sonique', 'armes-de-contact', '0035', '100.00', NULL),
+('medkit', 'Medkit', 'medical', '0020', '4000.00', 'Lourde valise robotis&eacute;e &eacute;quip&eacute;e d&rsquo;un d&eacute;fibrillateur int&eacute;gr&eacute;, d&rsquo;outils de chirurgie et d&rsquo;une IA d&rsquo;assistance m&eacute;dicale. Utilis&eacute;e par un personnage, elle lui conf&egrave;re un bonus de mat&eacute;riel de +2 &agrave; tout test de m&eacute;decine, de premiers secours ou de chirurgie. Elle peut aussi op&eacute;rer de mani&egrave;re autonome, son modificateur de comp&eacute;tence est alors de +2.'),
+('mitrailleuse-lourde', 'Mitrailleuse lourde', 'armes-lourdes', '0040', '5000.00', NULL),
+('ordinateur-personnel', 'Ordinateur personnel', 'utilitaires', '0040', '150.00', NULL),
+('pistolet-a-impulsion', 'Pistolet &agrave; impulsion', 'armes-energetiques', '0005', '250.00', NULL),
+('pistolet-a-plasma', 'Pistolet &agrave; plasma', 'armes-energetiques', '0020', '1500.00', NULL),
+('pistolet-ionique', 'Pistolet ionique', 'armes-energetiques', '0010', '600.00', NULL),
+('pistolet-laser', 'Pistolet laser', 'armes-energetiques', '0015', '500.00', NULL),
+('pistolet-leger', 'Pistolet l&eacute;ger', 'armes-a-feu', '0005', '150.00', NULL),
+('pistolet-lourd', 'Pistolet lourd', 'armes-a-feu', '0010', '400.00', NULL),
+('poing-americain', 'Poing américain', 'armes-archaiques', '55', '10.00', NULL),
+('radio-portative', 'Radio portative', 'utilitaires', '0045', '150.00', NULL),
+('restaurant-correct', 'Restaurant correct', 'nourriture', '0015', '50.00', NULL),
+('restaurant-familial', 'Restaurant familial', 'nourriture', '0010', '25.00', NULL),
+('restaurant-luxe', 'Restaurant luxe', 'nourriture', '0020', '500.00', NULL),
+('robot-assassin', 'Robot assassin', 'robots', '0050', '10000.00', NULL),
+('robot-de-loisir', 'Robot de loisir', 'robots', '0030', '2500.00', NULL),
+('robot-domestique', 'Robot domestique', 'robots', '0005', '500.00', NULL),
+('robot-exploration', 'Robot d&#039;exploration', 'robots', '0020', '2500.00', NULL),
+('robot-maintenance', 'Robot de maintenance', 'robots', '0035', '2500.00', NULL),
+('robot-medical', 'Robot m&eacute;dical', 'robots', '0025', '3000.00', NULL),
+('robot-minier', 'Robot minier', 'robots', '0010', '2500.00', NULL),
+('robot-protocolaire', 'Robot protocolaire', 'robots', '0040', '3000.00', NULL),
+('robot-soldat', 'Robot soldat', 'robots', '0045', '7500.00', NULL),
+('robot-surveillance', 'Robot de surveillance', 'robots', '0015', '1500.00', NULL),
+('stimpack', 'Stimpack', 'medical', '0025', '250.00', 'L&rsquo;injection d&rsquo;un stimpack rend 2d4 PV par tour pendant 2 tours, jusqu&rsquo;&agrave; concurrence du maximum de PV du personnage. Il n&rsquo;est pas possible de cumuler les effets de plusieurs stimpacks.'),
+('suite-de-luxe', 'Suite de luxe', 'logement', '0045', '2500.00', NULL),
+('traducteur-universel', 'Traducteur universel', 'utilitaires', '0050', '250.00', NULL),
+('trousse-1er-secours', 'Trousse 1er secours', 'medical', '0030', '100.00', 'Petite sacoche contenant le n&eacute;cessaire de base pour pratiquer la m&eacute;decine de terrain. Chaque trousse est adapt&eacute;e &agrave; une esp&egrave;ce donn&eacute;e. Utiliser une trousse de premier secours inadapt&eacute;e &agrave; l&rsquo;esp&egrave;ce de la cible implique un malus de situation de -2 &agrave; tout test de premiers soins ou de chirurgie.'),
+('trousse-a-outils', 'Trousse &agrave; outils', 'utilitaires', '0055', '100.00', NULL),
+('unite-hab-mini', 'Unit&eacute; d&#039;habitation minimale / mois', 'logement', '0005', '200.00', NULL),
+('unite-hab-moy', 'Unit&eacute; d&#039;habitation moyenne / mois', 'logement', '0010', '500.00', NULL),
+('unite-hab-sup', 'Unit&eacute; habitation sup&eacute;rieure / mois', 'logement', '0015', '1500.00', NULL),
+('vapo-autodefense', 'Vaporisateur d&#039;autod&eacute;fense', 'armes-a-feu', '0030', '100.00', 'Cette arme de d&eacute;fense rapproch&eacute;e peut se pr&eacute;senter sous diverses formes mais est g&eacute;n&eacute;ralement assez petite pour se glisser dans la poche d&rsquo;un v&ecirc;tement ou un sac &agrave; main. M&ecirc;me si sa port&eacute;e effective est r&eacute;duite, une attaque r&eacute;ussie rend la cible aveugl&eacute;e pendant 1d6 tours. Un incident de tir indique simplement que la r&eacute;serve de gaz propulseur est vide et qu&rsquo;il est temps de la remplacer.'),
+('veste-blindee', 'Veste blind&eacute;e', 'armures', '0015', '500.00', NULL),
+('vetements-a-la-mode', 'V&ecirc;tements &agrave; la mode', 'vetements', '0035', '300.00', NULL),
+('vetements-courants', 'V&ecirc;tements courants', 'vetements', '0020', '50.00', NULL),
+('vetements-de-luxe', 'V&ecirc;tements de luxe', 'vetements', '0045', '3000.00', NULL),
+('vetements-de-recup', 'V&ecirc;tements de r&eacute;cup&eacute;ration', 'vetements', '0015', '15.00', NULL),
+('vetements-de-sport', 'V&ecirc;tements de sport', 'vetements', '0030', '100.00', NULL),
+('vetements-discrets', 'V&ecirc;tements discrets', 'vetements', '0025', '150.00', NULL),
+('vetements-renforces', 'V&ecirc;tements renforc&eacute;s', 'armures', '0020', '50.00', NULL),
+('vetements-sur-mesure', 'V&ecirc;tements sur mesure', 'vetements', '0050', NULL, 'Prix x 3 +1 niveau de vie');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_equipement_profils`
+--
+
+DROP TABLE IF EXISTS `cog_equipement_profils`;
+CREATE TABLE IF NOT EXISTS `cog_equipement_profils` (
+  `profil` varchar(20) NOT NULL,
+  `sequence` tinyint(4) NOT NULL,
+  `equipement` varchar(20) NOT NULL,
+  `nombre` tinyint(1) NOT NULL DEFAULT '1',
+  `special` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`profil`,`sequence`),
+  KEY `cga_equipement_profils_equipement` (`equipement`),
+  KEY `cga_equipement_profils_profil` (`profil`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_equipement_proprietes`
+--
+
+DROP TABLE IF EXISTS `cog_equipement_proprietes`;
+CREATE TABLE IF NOT EXISTS `cog_equipement_proprietes` (
+  `code_equipement` varchar(20) NOT NULL,
+  `code_propriete` varchar(20) NOT NULL,
+  `valeur` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`code_equipement`,`code_propriete`),
+  KEY `cga_equipement_proprietes_equipement` (`code_equipement`),
+  KEY `cga_equipement_proprietes_propriete` (`code_propriete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_equipement_proprietes`
+--
+
+INSERT INTO `cog_equipement_proprietes` (`code_equipement`, `code_propriete`, `valeur`) VALUES
+('analyseur-de-minerai', 'niveau-de-vie', 'Ais'),
+('analyseur-eauair', 'niveau-de-vie', 'Ais'),
+('antirads', 'bonus', '+5'),
+('antirads', 'niveau-de-vie', 'Mod'),
+('arc', 'dm-2-mains', '1d6'),
+('arc', 'incident-de-tir', '1-2'),
+('arc', 'niveau-de-vie', 'Mod'),
+('arc', 'portee', '30'),
+('arc-a-poulie', 'dm-2-mains', '1d8'),
+('arc-a-poulie', 'incident-de-tir', '1'),
+('arc-a-poulie', 'niveau-de-vie', 'Ais'),
+('arc-a-poulie', 'portee', '40'),
+('armure-de-combat', 'def', '+2'),
+('armure-de-combat', 'malus', '-2'),
+('armure-de-combat', 'niveau-de-vie', 'Nan'),
+('armure-de-combat', 'rd', '10'),
+('armure-legere', 'def', '+1'),
+('armure-legere', 'niveau-de-vie', 'For'),
+('armure-legere', 'rd', '5'),
+('autodoc', 'bonus', '+5'),
+('autodoc', 'niveau-de-vie', 'Nan'),
+('baton-a-impulsion', 'action-de-tir', '(L)'),
+('baton-a-impulsion', 'aire-deffet', '10'),
+('baton-a-impulsion', 'dm-temp-2m', '2d6+FOR'),
+('baton-a-impulsion', 'incident-de-tir', '1-2'),
+('baton-a-impulsion', 'niveau-de-vie', 'Ais'),
+('baton-a-impulsion', 'type', 'Sonique'),
+('baton-ferre', 'dm-temp-2m', '1d6+FOR'),
+('baton-ferre', 'incident-de-tir', 'n/a'),
+('baton-ferre', 'niveau-de-vie', 'Mis'),
+('biocicatrisant', 'niveau-de-vie', 'Ais'),
+('bottes-magnetiques', 'niveau-de-vie', 'Mod'),
+('brise-code', 'bonus', '+2'),
+('brise-code', 'niveau-de-vie', 'Ais'),
+('brise-code-qualite', 'bonus', '+5'),
+('brise-code-qualite', 'niveau-de-vie', 'For'),
+('chambre-bus-nuit', 'niveau-de-vie', 'Ais'),
+('chambre-eco-nuit', 'niveau-de-vie', 'Mod'),
+('chambre-sup-nuit', 'niveau-de-vie', 'For'),
+('champ-laser', 'def', '+4'),
+('champ-laser', 'niveau-de-vie', 'For'),
+('champ-laser', 'type', 'Laser'),
+('champ-multifonction', 'def', '+4'),
+('champ-multifonction', 'niveau-de-vie', 'Nan'),
+('champ-multifonction', 'type', 'Laser/Plasma'),
+('champ-plasma', 'def', '+4'),
+('champ-plasma', 'niveau-de-vie', 'For'),
+('champ-plasma', 'type', 'Plasma'),
+('combi-extra', 'def', '-2'),
+('combi-extra', 'malus', '-5'),
+('combi-extra', 'niveau-de-vie', 'For'),
+('combi-extra', 'rd', '5'),
+('combi-intra', 'malus', '-2'),
+('combi-intra', 'niveau-de-vie', 'Ais'),
+('combi-intra', 'rd', '2'),
+('costume-complet', 'niveau-de-vie', 'Ais'),
+('couteau-de-cuisine', 'dm-1-main', '1d4+FOR'),
+('couteau-de-cuisine', 'incident-de-tir', 'n/a'),
+('couteau-de-cuisine', 'niveau-de-vie', 'Mis'),
+('couteau-de-lancer', 'dm-1-main', '1d4'),
+('couteau-de-lancer', 'incident-de-tir', 'n/a'),
+('couteau-de-lancer', 'niveau-de-vie', 'Pau'),
+('couteau-de-lancer', 'portee', '5'),
+('dague-choc', 'dm-temp-1m', '1d6+FOR'),
+('dague-choc', 'incident-de-tir', 'n/a'),
+('dague-choc', 'niveau-de-vie', 'Mod'),
+('dague-choc', 'type', 'Sonique'),
+('detect-radiations', 'niveau-de-vie', 'Ais'),
+('dortoir-nuit', 'niveau-de-vie', 'Mis'),
+('drone-de-combat', 'niveau-de-vie', 'For (1-5) / Nan (6)'),
+('drone-espion', 'niveau-de-vie', 'Ais (1-2) / For (3-6)'),
+('drone-exploration', 'niveau-de-vie', 'Ais (1-2) / For (3-6)'),
+('drone-minier', 'niveau-de-vie', 'Ais (1-2) / For (3-6)'),
+('drone-surveillance', 'niveau-de-vie', 'Ais (1-5) / For (6)'),
+('fast-street-food', 'niveau-de-vie', 'Mis'),
+('filtre-respiratoire', 'niveau-de-vie', 'Mod'),
+('fronde', 'dm-temp-1m', '1d4'),
+('fronde', 'incident-de-tir', '1-3'),
+('fronde', 'niveau-de-vie', 'Mis'),
+('fronde', 'portee', '20'),
+('fusil-a-impulsion', 'dm-temp-2m', '4d6'),
+('fusil-a-impulsion', 'incident-de-tir', 'n/a'),
+('fusil-a-impulsion', 'niveau-de-vie', 'Ais'),
+('fusil-a-impulsion', 'portee', '20'),
+('fusil-a-impulsion', 'type', 'Sonique'),
+('fusil-a-plasma', 'dm-2-mains', '3d8+'),
+('fusil-a-plasma', 'incident-de-tir', '1-2'),
+('fusil-a-plasma', 'niveau-de-vie', 'For'),
+('fusil-a-plasma', 'portee', '40'),
+('fusil-a-plasma', 'type', 'Plasma'),
+('fusil-a-pompe', 'aire-deffet', '20'),
+('fusil-a-pompe', 'dm-2-mains', '2d6+'),
+('fusil-a-pompe', 'incident-de-tir', '1-2'),
+('fusil-a-pompe', 'niveau-de-vie', 'Ais'),
+('fusil-dassaut', 'dm-2-mains', '2d8+'),
+('fusil-dassaut', 'incident-de-tir', '1-2'),
+('fusil-dassaut', 'niveau-de-vie', 'Ais'),
+('fusil-dassaut', 'portee', '50'),
+('fusil-de-precision', 'dm-2-mains', '2d8+'),
+('fusil-de-precision', 'incident-de-tir', '1'),
+('fusil-de-precision', 'niveau-de-vie', 'For'),
+('fusil-de-precision', 'portee', '100'),
+('fusil-ionique', 'aire-deffet', '30'),
+('fusil-ionique', 'incident-de-tir', '1'),
+('fusil-ionique', 'niveau-de-vie', 'Ais'),
+('fusil-ionique', 'type', 'Ionique'),
+('fusil-laser', 'dm-2-mains', '3d6'),
+('fusil-laser', 'dm-temp-2m', '2d6'),
+('fusil-laser', 'incident-de-tir', '1'),
+('fusil-laser', 'niveau-de-vie', 'Ais'),
+('fusil-laser', 'type', 'Laser'),
+('fusil-laser-precis', 'dm-2-mains', '4d6'),
+('fusil-laser-precis', 'dm-temp-2m', '3d6'),
+('fusil-laser-precis', 'incident-de-tir', '1-2'),
+('fusil-laser-precis', 'niveau-de-vie', 'For'),
+('fusil-laser-precis', 'type', 'Laser'),
+('fusil-plasma-lourd', 'action-de-tir', '(L)'),
+('fusil-plasma-lourd', 'dm-2-mains', '4d8+'),
+('fusil-plasma-lourd', 'incident-de-tir', '1-4'),
+('fusil-plasma-lourd', 'niveau-de-vie', 'For'),
+('fusil-plasma-lourd', 'portee', '30'),
+('fusil-plasma-lourd', 'type', 'Plasma'),
+('gourdin', 'dm-1-main', '1d4+FOR'),
+('gourdin', 'incident-de-tir', 'n/a'),
+('gourdin', 'niveau-de-vie', 'Mis'),
+('grenade-flash', 'aire-deffet', '5'),
+('grenade-flash', 'incident-de-tir', 'n/a'),
+('grenade-flash', 'niveau-de-vie', 'Mod'),
+('grenade-frag', 'aire-deffet', '5'),
+('grenade-frag', 'dm-1-main', '4d6+'),
+('grenade-frag', 'incident-de-tir', 'n/a'),
+('grenade-frag', 'niveau-de-vie', 'Mod'),
+('grenade-fumigene', 'aire-deffet', '5'),
+('grenade-fumigene', 'incident-de-tir', 'n/a'),
+('grenade-fumigene', 'niveau-de-vie', 'Mod'),
+('grenade-plasma', 'aire-deffet', '3'),
+('grenade-plasma', 'dm-1-main', '4d8+'),
+('grenade-plasma', 'incident-de-tir', 'n/a'),
+('grenade-plasma', 'niveau-de-vie', 'Ais'),
+('grenade-plasma', 'type', 'Plasma'),
+('grenade-sonique', 'aire-deffet', '5'),
+('grenade-sonique', 'dm-temp-1m', '4d6'),
+('grenade-sonique', 'incident-de-tir', 'n/a'),
+('grenade-sonique', 'niveau-de-vie', 'Mod'),
+('grenade-sonique', 'type', 'Sonique'),
+('javeline', 'dm-1-main', '1d6'),
+('javeline', 'incident-de-tir', 'n/a'),
+('javeline', 'niveau-de-vie', 'Pau'),
+('javeline', 'portee', '20'),
+('lame-laser', 'dm-1-main', '2d10'),
+('lame-laser', 'incident-de-tir', 'n/a'),
+('lame-laser', 'niveau-de-vie', 'For'),
+('lame-laser', 'type', 'Laser'),
+('lame-legere', 'dm-1-main', '1d6+FOR'),
+('lame-legere', 'incident-de-tir', 'n/a'),
+('lame-legere', 'niveau-de-vie', 'Ais'),
+('lame-moleculaire', 'dm-1-main', '1d10+FOR+'),
+('lame-moleculaire', 'incident-de-tir', 'n/a'),
+('lame-moleculaire', 'niveau-de-vie', 'Ais'),
+('lance-grenade', 'incident-de-tir', '1-2'),
+('lance-grenade', 'niveau-de-vie', 'Ais'),
+('lance-grenade', 'portee', '40'),
+('lance-plasmique', 'dm-2-mains', '2d8+'),
+('lance-plasmique', 'incident-de-tir', '1-2'),
+('lance-plasmique', 'niveau-de-vie', 'FOR'),
+('lance-plasmique', 'type', 'Plasma'),
+('logiciel-bd', 'bonus', '+2'),
+('logiciel-bd', 'niveau-de-vie', 'Ais'),
+('logiciel-de-pointe', 'bonus', '+5'),
+('logiciel-de-pointe', 'niveau-de-vie', 'For'),
+('machette-hachette', 'dm-1-main', '1d6+FOR'),
+('machette-hachette', 'incident-de-tir', 'n/a'),
+('machette-hachette', 'niveau-de-vie', 'Mod'),
+('mains-nues', 'dm-temp-1m', '1d4+FOR'),
+('mains-nues', 'incident-de-tir', 'n/a'),
+('maison-particuliere', 'niveau-de-vie', 'For'),
+('matraque-sonique', 'dm-temp-1m', '2d6+FOR'),
+('matraque-sonique', 'incident-de-tir', 'n/a'),
+('matraque-sonique', 'niveau-de-vie', 'Mod'),
+('matraque-sonique', 'type', 'Sonique'),
+('medkit', 'bonus', '+2'),
+('medkit', 'niveau-de-vie', 'For'),
+('mitrailleuse-lourde', 'action-de-tir', '(L)'),
+('mitrailleuse-lourde', 'dm-2-mains', '3d8+'),
+('mitrailleuse-lourde', 'incident-de-tir', '1-3'),
+('mitrailleuse-lourde', 'niveau-de-vie', 'For'),
+('mitrailleuse-lourde', 'portee', '50'),
+('ordinateur-personnel', 'niveau-de-vie', 'Mod'),
+('pistolet-a-impulsion', 'dm-temp-1m', '2d6'),
+('pistolet-a-impulsion', 'incident-de-tir', 'n/a'),
+('pistolet-a-impulsion', 'niveau-de-vie', 'Ais'),
+('pistolet-a-impulsion', 'portee', '10'),
+('pistolet-a-impulsion', 'type', 'Sonique'),
+('pistolet-a-plasma', 'dm-1-main', '2d8+'),
+('pistolet-a-plasma', 'incident-de-tir', '1-2'),
+('pistolet-a-plasma', 'niveau-de-vie', 'Ais'),
+('pistolet-a-plasma', 'portee', '20'),
+('pistolet-a-plasma', 'type', 'Plasma'),
+('pistolet-ionique', 'incident-de-tir', '1'),
+('pistolet-ionique', 'niveau-de-vie', 'Ais'),
+('pistolet-ionique', 'portee', '20'),
+('pistolet-ionique', 'type', 'Ionique'),
+('pistolet-laser', 'dm-1-main', '2d6'),
+('pistolet-laser', 'dm-temp-1m', '1d6'),
+('pistolet-laser', 'incident-de-tir', '1'),
+('pistolet-laser', 'niveau-de-vie', 'Ais'),
+('pistolet-laser', 'portee', '-'),
+('pistolet-laser', 'type', 'Laser'),
+('pistolet-leger', 'dm-1-main', '1d6+'),
+('pistolet-leger', 'incident-de-tir', '1'),
+('pistolet-leger', 'niveau-de-vie', 'Mod'),
+('pistolet-leger', 'portee', '10'),
+('pistolet-lourd', 'dm-1-main', '1d10+'),
+('pistolet-lourd', 'incident-de-tir', '1'),
+('pistolet-lourd', 'niveau-de-vie', 'Ais'),
+('pistolet-lourd', 'portee', '20'),
+('poing-americain', 'dm-1-main', '1d4+FOR'),
+('poing-americain', 'incident-de-tir', 'n/a'),
+('poing-americain', 'niveau-de-vie', 'Pau'),
+('radio-portative', 'niveau-de-vie', 'Mod'),
+('restaurant-correct', 'niveau-de-vie', 'Mod'),
+('restaurant-familial', 'niveau-de-vie', 'Pau'),
+('restaurant-luxe', 'niveau-de-vie', 'Ais'),
+('robot-assassin', 'niveau-de-vie', 'Nan'),
+('robot-de-loisir', 'niveau-de-vie', 'Ais'),
+('robot-domestique', 'niveau-de-vie', 'Ais'),
+('robot-exploration', 'niveau-de-vie', 'For'),
+('robot-maintenance', 'niveau-de-vie', 'For'),
+('robot-medical', 'niveau-de-vie', 'For'),
+('robot-minier', 'niveau-de-vie', 'Ais'),
+('robot-protocolaire', 'niveau-de-vie', 'For'),
+('robot-soldat', 'niveau-de-vie', 'Nan'),
+('robot-surveillance', 'niveau-de-vie', 'Ais'),
+('stimpack', 'niveau-de-vie', 'Ais'),
+('suite-de-luxe', 'niveau-de-vie', 'Nan'),
+('traducteur-universel', 'niveau-de-vie', 'Ais'),
+('trousse-1er-secours', 'niveau-de-vie', 'Mod'),
+('trousse-a-outils', 'niveau-de-vie', 'Mod'),
+('unite-hab-mini', 'niveau-de-vie', 'Pau'),
+('unite-hab-moy', 'niveau-de-vie', 'Mod'),
+('unite-hab-sup', 'niveau-de-vie', 'Ais'),
+('vapo-autodefense', 'incident-de-tir', '1-4'),
+('vapo-autodefense', 'niveau-de-vie', 'Mod'),
+('vapo-autodefense', 'portee', '2'),
+('veste-blindee', 'def', '+2'),
+('veste-blindee', 'niveau-de-vie', 'Ais'),
+('veste-blindee', 'rd', '2'),
+('vetements-a-la-mode', 'niveau-de-vie', 'Ais'),
+('vetements-courants', 'niveau-de-vie', 'Mod'),
+('vetements-de-luxe', 'niveau-de-vie', 'For'),
+('vetements-de-recup', 'niveau-de-vie', 'Pau'),
+('vetements-de-sport', 'niveau-de-vie', 'Mod'),
+('vetements-discrets', 'niveau-de-vie', 'Mod'),
+('vetements-renforces', 'def', '+1'),
+('vetements-renforces', 'niveau-de-vie', 'Mod');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_familles`
+--
+
+DROP TABLE IF EXISTS `cog_familles`;
+CREATE TABLE IF NOT EXISTS `cog_familles` (
+  `famille` varchar(20) NOT NULL,
+  `description` varchar(50) NOT NULL,
+  PRIMARY KEY (`famille`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_familles`
+--
+
+INSERT INTO `cog_familles` (`famille`, `description`) VALUES
+('action', 'Action'),
+('aventure', 'Aventure'),
+('reflexion', 'Réflexion');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_profils`
+--
+
+DROP TABLE IF EXISTS `cog_profils`;
+CREATE TABLE IF NOT EXISTS `cog_profils` (
+  `profil` varchar(20) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `description` text,
+  `famille` varchar(20) NOT NULL,
+  `type` char(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`profil`),
+  KEY `cga_profils_famille` (`famille`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_profils`
+--
+
+INSERT INTO `cog_profils` (`profil`, `nom`, `description`, `famille`, `type`) VALUES
+('activiste', 'Activiste', NULL, 'reflexion', '0'),
+('adepte', 'Adepte', NULL, 'action', '1'),
+('agent', 'Agent', NULL, 'aventure', '0'),
+('aristocrate', 'Aristocrate', NULL, 'reflexion', '0'),
+('artilleur', 'Artilleur', NULL, 'action', '0'),
+('artiste', 'Artiste', NULL, 'reflexion', '0'),
+('assassin', 'Assassin', NULL, 'action', '0'),
+('asteromineur', 'Astéromineur', NULL, 'aventure', '0'),
+('astrocommando', 'Astrocommando', NULL, 'action', '0'),
+('astroingenieur', 'Astroingénieur', NULL, 'reflexion', '0'),
+('astronavigateur', 'Astronavigateur', NULL, 'aventure', '0'),
+('biogeneticien', 'Biogénéticien', NULL, 'reflexion', '1'),
+('bureaucrate', 'Bureaucrate', NULL, 'reflexion', '0'),
+('chasseur-de-primes', 'Chasseur de primes', NULL, 'action', '0'),
+('colon', 'Colon', NULL, 'aventure', '0'),
+('commercant', 'Commerçant', NULL, 'aventure', '0'),
+('contrebandier', 'Contrebandier', NULL, 'aventure', '0'),
+('diplomate', 'Diplomate', NULL, 'reflexion', '0'),
+('erudit', 'Erudit', NULL, 'reflexion', '0'),
+('escroc', 'Escroc', NULL, 'aventure', '0'),
+('explorateur', 'Explorateur', NULL, 'aventure', '0'),
+('fantassin', 'Fantassin', NULL, 'action', '0'),
+('ganger', 'Ganger', NULL, 'action', '0'),
+('garde-du-corps', 'Garde du corps', NULL, 'action', '0'),
+('hacker', 'Hacker', NULL, 'reflexion', '0'),
+('hors-la-loi', 'Hors-la-loi', NULL, 'action', '0'),
+('journaliste', 'Journaliste', NULL, 'reflexion', '0'),
+('limier', 'Limier', NULL, 'action', '1'),
+('mecanicien', 'Mécanicien', NULL, 'action', '0'),
+('medecin', 'Médecin', NULL, 'reflexion', '0'),
+('mentat', 'Mentat', NULL, 'aventure', '1'),
+('mercenaire', 'Mercenaire', NULL, 'aventure', '0'),
+('missionnaire', 'Missionnaire', NULL, 'reflexion', '0'),
+('pilote-de-chasse', 'Pilote de chasse', NULL, 'action', '0'),
+('pirate', 'Pirate', NULL, 'action', '0'),
+('prescient', 'Prescient', NULL, 'reflexion', '1'),
+('psiker', 'Psiker', NULL, 'aventure', '1'),
+('psion', 'Psion', NULL, 'reflexion', '1'),
+('psitech', 'Psitech', NULL, 'aventure', '1'),
+('recuperateur', 'Récupérateur', NULL, 'aventure', '0'),
+('spectre', 'Spectre', NULL, 'action', '1'),
+('sportif-pro', 'Sportif professionnel', NULL, 'action', '0'),
+('technicien', 'Technicien', NULL, 'aventure', '0'),
+('xenoarcheologue', 'Xénoarchéologue', NULL, 'aventure', '0'),
+('xenobiologiste', 'Xénobiologiste', NULL, 'reflexion', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_profils_maitrises`
+--
+
+DROP TABLE IF EXISTS `cog_profils_maitrises`;
+CREATE TABLE IF NOT EXISTS `cog_profils_maitrises` (
+  `profil` varchar(20) NOT NULL,
+  `equipement` varchar(20) NOT NULL,
+  PRIMARY KEY (`profil`,`equipement`),
+  KEY `cga_profils_maitrises_profil` (`profil`),
+  KEY `cga_profils_maitrises_equipement` (`equipement`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_profils_traits`
+--
+
+DROP TABLE IF EXISTS `cog_profils_traits`;
+CREATE TABLE IF NOT EXISTS `cog_profils_traits` (
+  `profil` varchar(20) NOT NULL,
+  `sequence` tinyint(4) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`profil`,`sequence`),
+  KEY `cga_profils_traits_profil` (`profil`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_proprietes_equipement`
+--
+
+DROP TABLE IF EXISTS `cog_proprietes_equipement`;
+CREATE TABLE IF NOT EXISTS `cog_proprietes_equipement` (
+  `code` varchar(20) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `defaut` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_proprietes_equipement`
+--
+
+INSERT INTO `cog_proprietes_equipement` (`code`, `intitule`, `defaut`) VALUES
+('action-de-tir', 'Action de tir', NULL),
+('aire-deffet', 'Aire d&#39;effet', NULL),
+('bonus', 'Bonus', NULL),
+('def', 'DEF', NULL),
+('dm-1-main', 'DM 1 main', NULL),
+('dm-2-mains', 'DM 2 mains', NULL),
+('dm-temp-1m', 'DM temp 1 main', NULL),
+('dm-temp-2m', 'DM temp 2 mains', NULL),
+('incident-de-tir', 'Incident de tir', 'n/a'),
+('malus', 'Malus', NULL),
+('niveau-de-vie', 'Niveau de vie', NULL),
+('portee', 'Portée', NULL),
+('rd', 'RD', NULL),
+('type', 'Type DM', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_races`
+--
+
+DROP TABLE IF EXISTS `cog_races`;
+CREATE TABLE IF NOT EXISTS `cog_races` (
+  `race` varchar(20) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `mod_for` tinyint(4) DEFAULT NULL,
+  `mod_dex` tinyint(4) DEFAULT NULL,
+  `mod_con` tinyint(4) DEFAULT NULL,
+  `mod_int` tinyint(4) DEFAULT NULL,
+  `mod_sag` tinyint(4) DEFAULT NULL,
+  `mod_cha` tinyint(4) DEFAULT NULL,
+  `age_base` smallint(6) DEFAULT NULL,
+  `esperance_vie` smallint(6) DEFAULT NULL,
+  `taille_min` decimal(3,2) DEFAULT NULL,
+  `taille_max` decimal(3,2) DEFAULT NULL,
+  `poids_min` smallint(6) DEFAULT NULL,
+  `poids_max` smallint(6) DEFAULT NULL,
+  `type_race` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`race`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_races`
+--
+
+INSERT INTO `cog_races` (`race`, `intitule`, `mod_for`, `mod_dex`, `mod_con`, `mod_int`, `mod_sag`, `mod_cha`, `age_base`, `esperance_vie`, `taille_min`, `taille_max`, `poids_min`, `poids_max`, `type_race`) VALUES
+('agon', 'A&#39;gon (manta lucis sapiens)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('humains', 'Humains (homo sapiens sapiens)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('kneiss', 'Kneiss (pellucidus lucis sapiens)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('libilis', 'Libilis (anguis sapiens)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('tymbris', 'Tymbris (timbrimus sapiens)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_races_capacites`
+--
+
+DROP TABLE IF EXISTS `cog_races_capacites`;
+CREATE TABLE IF NOT EXISTS `cog_races_capacites` (
+  `race` varchar(20) NOT NULL,
+  `capacite` varchar(20) NOT NULL,
+  PRIMARY KEY (`race`,`capacite`),
+  KEY `cga_races_capacites_race` (`race`),
+  KEY `cga_races_capacites_capacite` (`capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_races_traits`
+--
+
+DROP TABLE IF EXISTS `cog_races_traits`;
+CREATE TABLE IF NOT EXISTS `cog_races_traits` (
+  `race` varchar(20) NOT NULL,
+  `sequence` tinyint(4) NOT NULL,
+  `intitule` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`race`,`sequence`),
+  KEY `cga_races_traits_race` (`race`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_races_traits`
+--
+
+INSERT INTO `cog_races_traits` (`race`, `sequence`, `intitule`, `description`) VALUES
+('agon', 1, 'Généralités', 'Les A’gón (prononcer ‘éigone’) sont une espèce faite d’énergie et de lumière. Ils prennent le plus souvent la forme de raies manta luminescentes, entourées d’une pellicule irisée. Toutefois, la plupart des scientifiques affirment que leur forme physique est uniquement gouvernée par un processus psychique, et qu’ils peuvent en changer à volonté. Ils sont apparus sur une géante gazeuse dans un système isolé du bras de Persée. De là, ils ont prospéré dans une partie de ce secteur galactique, avant que leur étoile d’origine n’explose en une supernova qui donna naissance à la nébuleuse du Crabe.'),
+('agon', 2, 'Mode de communication', 'Impulsions électriques'),
+('agon', 3, 'Niveau technologique', 'Type II (certains estiment que les A’gón étaient sur le point d’effectuer la transition vers le Type III au moment où leur étoile a explosé)'),
+('agon', 4, 'Culture', 'Erudite'),
+('agon', 5, 'Système politique', 'Inconnu'),
+('agon', 6, 'Gravité', 'Supérieure'),
+('humains', 1, 'Généralités', 'Les Humains, appelés Solaires par les autres espèces peuplant Omega, se caractérisent par une forte capacité d’adaptation à tous les milieux et à toutes les situations, forgée par une histoire chaotique et violente. Cependant, leur espérance de vie limitée les rend souvent difficiles à appréhender pour des espèces plus développées ou disposant d’une plus grande longévité. C’est pourquoi ils ont souvent une réputation négative de « jeunes loups », qui vivent sans réfléchir au lendemain et épuisent leurs ressources dans de vaines et temporaires conquêtes. Ils se trouvent parmi les plus récents arrivés sur Omega et à leur arrivée, ils ont bénéficié de la bienveillance et du support des autres espèces. Pendant un temps, ils ont même contribué et leur avenir au sein de la communauté galactique était prometteur. Las, ce temps est désormais révolu : par des événements qui comportent encore une part de mystère, ils ont failli causer la destruction de la station Omega. L’un des bras de la station a été gravement endommagé, et l’autre (le bras qui accueillait les Humains) rompu en une multitude de débris qui dérivent encore autour de la station. Désormais, les Humains sont une espèce en voie de disparition, des parias et des squatteurs. Leurs droits et privilèges leur ont été retirés, l’accès à leurs systèmes d’origine a été fermé, et ils survivent tant bien que mal en petits groupes sur certains des débris d’Omega. Quelques rares individus parviennent à se tailler une place et une réputation sur Omega, mais nombre d’entre eux sont devenus des hors-la-loi. La plus grande communauté humaine se trouve d’ailleurs sur Omikron.'),
+('humains', 2, 'Préjugés typiques', 'Plusieurs espèces extraterrestres considèrent les humains au mieux comme impossibles à comprendre et, au pire, comme indignes de confiance. Les espèces à la longévité la plus importante ne cessent de rappeler aux Humains leur responsabilité dans la situation actuelle de la station Omega.'),
+('humains', 3, 'Mode de communication', 'Langage articulé '),
+('humains', 4, 'Niveau technologique', 'Type II'),
+('humains', 5, 'Culture', 'Diversifiée '),
+('humains', 6, 'Système politique', 'Diaspora'),
+('humains', 7, 'Gravité', 'Terrestre'),
+('kneiss', 1, 'Généralités', 'Les Kneiss sont une espèce minérale étrange, originaire de l’amas Kappa Crucis, dans le bras de la Croix. Télépathes, ils ont colonisé leur planète d’origine en prenant le contrôle d’une espèce insectoïde qui y vivait. Aujourd’hui, ces êtres cristallins fabriquent eux-mêmes les robots insectoïdes dans lesquels ils s’abritent pour se déplacer et manipuler des objets, mais, même si ces robots peuvent prendre de nombreuses formes, la plus courante rappelle leurs symbiotes d’origine, un insecte quadrupède muni de mandibules préhensiles. Les Kneiss présentent d’autre part certaines caractéristiques physiques similaires aux cristaux utilisés dans les matrices psi.'),
+('kneiss', 2, 'Mode de communication', 'Télépathie et hologrammes'),
+('kneiss', 3, 'Niveau technologique', 'Type II (après les A’gón, les Kneiss sont l’espèce la plus ancienne sur la station Omega)'),
+('kneiss', 4, 'Culture', 'Technologique'),
+('kneiss', 5, 'Système politique', 'Technocratie (chaque planète colonisée se spécialise dans un domaine technique en fonction des ressources présentes dans le système et de la corpo-ruche qui l’a colonisée)'),
+('kneiss', 6, 'Gravité', 'Légère'),
+('libilis', 1, 'Généralités', 'Les Libilis sont une espèce de bipèdes sauriens provenant d’une planète relativement similaire à la période terrienne du Crétacé. La planète est en orbite autour de l’étoile double Eta Carinae, dans le bras de Carina. Toutefois, contrairement aux sauriens terrestres, où la bataille évolutive s’est jouée en partie sur la taille, les Libilis ont dominé grâce à leur matière grise. Les conditions sur leur système d’origine et la probabilité d’une explosion prochaine (à l’échelle astronomique) en supernova les ont poussés à développer une technologie spatiale performante et à coloniser plusieurs autres planètes, jusqu’à leur arrivée à Omega.'),
+('libilis', 2, 'Mode de communication', 'Langage articulé et phéromones'),
+('libilis', 3, 'Niveau technologique', 'Type II'),
+('libilis', 4, 'Culture', 'Militaire'),
+('libilis', 5, 'Système politique', 'Despotisme (la caste militaire a le pouvoir, et leur représentant est désigné par un conseil des amiraux)'),
+('libilis', 6, 'Gravité', 'Forte'),
+('tymbris', 1, 'Généralités', 'Derniers arrivés sur l’échiquier galactique avant les Terriens, les Tymbris sont une espèce humanoïde. En croisant un Tymbri la nuit, on pourrait tout à fait le prendre pour un humain. Mais une observation plus attentive permettra de déceler des traits faciaux plus canidés que simiesques, une sorte de museau court, un duvet de pelage recouvrant une partie du dos et parfois du front. Les oreilles sont légèrement allongées et placées plus haut au niveau du crâne, et surtout six petites antennes mobiles surgissent au niveau du nez. Ils sont originaires d’une étoile de l’amas M10, sur le bras du Sagittaire, non loin de W51.'),
+('tymbris', 2, 'Mode de communication', 'Langage articulé et télépathie'),
+('tymbris', 3, 'Niveau technologique', 'Type II'),
+('tymbris', 4, 'Culture', 'Diversifiée (leur premier contact n’a précédé l’arrivée des humains que de quelques décennies)'),
+('tymbris', 5, ' Système politique', 'Oligarchie'),
+('tymbris', 6, 'Gravité', 'Terrestre');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_types_capacite`
+--
+
+DROP TABLE IF EXISTS `cog_types_capacite`;
+CREATE TABLE IF NOT EXISTS `cog_types_capacite` (
+  `type_capacite` varchar(5) NOT NULL,
+  `type_capacite_intitule` varchar(50) NOT NULL,
+  `type_capacite_config` text,
+  PRIMARY KEY (`type_capacite`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_types_capacite`
+--
+
+INSERT INTO `cog_types_capacite` (`type_capacite`, `type_capacite_intitule`, `type_capacite_config`) VALUES
+('augm', 'Augmentations', NULL),
+('cult', 'Culturelle', NULL),
+('espbo', 'Espèce (Bras d\'Orion)', NULL),
+('espeg', 'Espèce (Générique)', NULL),
+('ia', 'I.A.', '{ \"ranks\": 13 }'),
+('psych', 'PSI', NULL),
+('savf', 'Savoir-faire', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_types_races`
+--
+
+DROP TABLE IF EXISTS `cog_types_races`;
+CREATE TABLE IF NOT EXISTS `cog_types_races` (
+  `type_race` varchar(5) NOT NULL,
+  `type_race_intitule` varchar(50) NOT NULL,
+  `type_race_config` text,
+  PRIMARY KEY (`type_race`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_types_voie`
+--
+
+DROP TABLE IF EXISTS `cog_types_voie`;
+CREATE TABLE IF NOT EXISTS `cog_types_voie` (
+  `type_voie` varchar(5) NOT NULL,
+  `type_voie_intitule` varchar(50) NOT NULL,
+  `type_voie_config` text,
+  PRIMARY KEY (`type_voie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_types_voie`
+--
+
+INSERT INTO `cog_types_voie` (`type_voie`, `type_voie_intitule`, `type_voie_config`) VALUES
+('augm', 'Augmentations', NULL),
+('cult', 'Culturelle', NULL),
+('espbo', 'Espèce (Bras d\'Orion)', NULL),
+('espeg', 'Espèce (Générique)', NULL),
+('ia', 'I.A.', '{ \"ranks\": 6 }'),
+('psych', 'PSI', NULL),
+('savf', 'Savoir-faire', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_voies`
+--
+
+DROP TABLE IF EXISTS `cog_voies`;
+CREATE TABLE IF NOT EXISTS `cog_voies` (
+  `voie` varchar(20) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `notes` text,
+  `type` varchar(5) DEFAULT NULL,
+  `pfx_deladu` char(1) NOT NULL,
+  PRIMARY KEY (`voie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_voies`
+--
+
+INSERT INTO `cog_voies` (`voie`, `nom`, `notes`, `type`, `pfx_deladu`) VALUES
+('aeriens', 'Aériens', 'Ces espèces ont maîtrisé l’art du vol. Soit qu’elles soient issues de planètes à faible gravité ou composées majoritairement de gaz, soit que leur morphologie leur ait permis de s’arracher à sa surface à la manière des oiseaux, elles évoluent dans un univers en trois dimensions loin au-dessus du sol (ou du noyau) de leur planète d’origine.\r\nPréjugés typiques : Les espèces aériennes sont souvent perçues favorablement par les autres espèces organiques, qui leur envient leur capacité à voler de leurs propres ailes. Elles sont toutefois parfois considérées comme physiquement fragiles et arrogantes.', 'espeg', '3'),
+('agon', 'A\'gon', '', 'espbo', '3'),
+('androide', 'Androïde', NULL, 'espbo', '2'),
+('anthropomorphes', 'Anthropomorphes', 'Les espèces anthropomorphiques sont des chimères mêlant humanoïde et animal. Elles bénéficient de l’adaptabilité des humanoïdes couplée à certains atouts provenant du monde animal, le plus souvent des mammifères. Elles sont parfois le résultat d’expériences génétiques ou d’ingénierie évolutive, ce qui cause une certaine méfiance à leur égard. La plupart du temps, les individus, relativement farouches, préfèrent se mêler à d’autres civilisations et conservent assez peu d’attaches avec la planète (ou le laboratoire) dont ils sont issus.\r\nPréjugés typiques : Le rapport qu’ils ont conservé avec leur origine sauvage crée souvent une forme de spécisme et de condescendance de la part des autres espèces.', 'espeg', '3'),
+('aquatiques', 'Aquatiques', 'Sur bien des planètes, les fonds marins restent très peu explorés. C’est pourtant là que se développent des espèces hors du commun qui font preuve d’ingéniosité et de résistance pour coloniser un environnement extrêmement hostile. Ces espèces se retrouvent avantagées une fois dans l’espace, qui présente beaucoup de similitudes avec leurs océans d’origine. Nombre des meilleurs pilotes de la galaxie sont des aquatiques. Lorsqu’ils évoluent à l’air libre ou au milieu d’autres espèces, les aquatiques ont souvent besoin de scaphandres spéciaux qui assurent leur survie.\r\nPréjugés typiques : Une barrière importante sépare les aquatiques des espèces plus « terrestres ». Très peu d’individus issus de ces dernières franchissent le cap du dégoût et de la répulsion, qui est souvent mutuel.', 'espeg', '3'),
+('arachnides', 'Arachnides', 'Similaires aux insectoïdes, dont elles sont de lointaines cousines, les espèces arachnides se distinguent à la fois physiquement et socialement. Elles adoptent en effet bien souvent des structures sociales plus individualistes et où l’autonomie reste une vertu cardinale, contrairement aux structures sociales insectoïdes, plus élaborées et plus communautaires. À cause de cela, peu d’espèces arachnides parviennent à s’affranchir de leur monde d’origine sans aide extérieure, même lorsqu’elles atteignent des niveaux technologiques théoriquement suffisants.\r\nPréjugés typiques : Leur individualisme exacerbé rend bien d’autres espèces méfiantes vis-à-vis des arachnides. Mais elles sont aussi connues pour leur aptitude à survivre dans des conditions difficiles et les missions d’exploration aiment compter sur un individu de cette espèce.', 'espeg', '3'),
+('aristocratie', 'Aristocratie', NULL, 'cult', '2'),
+('armes-a-feu', 'Armes à feu', NULL, 'savf', '3'),
+('armes-energetiques', 'Armes énergétiques', NULL, 'savf', '3'),
+('armes-lourdes', 'Armes lourdes', NULL, 'savf', '3'),
+('arts', 'Arts', NULL, 'savf', '3'),
+('arts-martiaux', 'Arts martiaux', NULL, 'savf', '3'),
+('bagarre', 'Bagarre', NULL, 'savf', '1'),
+('bas-fonds', 'Bas-fonds', NULL, 'cult', '3'),
+('biokinesie', 'Biokinésie', NULL, 'psych', '1'),
+('bioorg', 'Bioorg', 'En atteignant les rangs 2, 4 et 5 de la voie du bioorg, le personnage diminue son INT de 1. Cela reflète les effets de plus en plus néfastes de l’addiction du personnage aux tissus cultivés et aux drogues et composés chimiques requis pour éviter tout rejet par son organisme.', 'augm', '0'),
+('chronokinesie', 'Chronokinésie', NULL, 'psych', '1'),
+('clairvoyance', 'Clairvoyance', NULL, 'psych', '1'),
+('classe-moyenne', 'Classe moyenne', NULL, 'cult', '1'),
+('corporations', 'Corporations', NULL, 'cult', '3'),
+('cosmokinesie', 'Cosmokinésie', NULL, 'psych', '1'),
+('cyborg', 'Cyborg', 'En atteignant les rangs 2, 4 et 5 de la voie du cyborg, le personnage diminue son CHA de 1. Cela reflète à la fois la perte graduelle d’empathie des êtres organiques qui décident peu à peu de remplacer leurs organes par des machines, ainsi que l’impact social d’un tel choix.', 'augm', '0'),
+('discours', 'Discours', NULL, 'savf', '0'),
+('electrokinesie', 'Electrokinésie', NULL, 'psych', '2'),
+('electronique', 'Electronique', NULL, 'savf', '2'),
+('espace', 'Espace', NULL, 'cult', '2'),
+('exploits-physiques', 'Exploits physiques', NULL, 'savf', '3'),
+('exploration', 'Exploration', NULL, 'savf', '2'),
+('furtivite', 'Furtivité', NULL, 'savf', '1'),
+('humains', 'Humains', '', 'espbo', '3'),
+('hybride', 'Hybride', 'En atteignant les rangs 2, 4 et 5 de la voie de l’hybride, le personnage diminue sa FOR de 1. Le procédé d’hybridation est particulièrement « taxant » pour le système musculaire du personnage.', 'augm', '2'),
+('ia', 'I.A.', NULL, 'ia', '2'),
+('insectoides', 'Insectoïdes', 'Extrêmement résistantes, les espèces insectoïdes sont présentes dans un grand nombre d’environnements. Elles sont souvent à l’origine de structures sociales complexes rappelant les colonies d’insectes sur Terre. Si l’individualité de certains éléments est devenue possible à force d’évolution, la plupart des espèces de ce type conservent un fort instinct grégaire, un système rigide de castes et l’habitude de compter sur la force du nombre et leur intelligence collective.\r\nPréjugés typiques : La plupart sont mal à l’aise en leur présence, et elles ont la réputation pas toujours usurpée d’être agressives. Le fort individualisme qui caractérise beaucoup d’autres espèces ne se marie généralement pas bien avec l’esprit de ruche qui est encore l’apanage de nombre d’insectoïdes.', 'espeg', '3'),
+('investigation', 'Investigation', NULL, 'savf', '2'),
+('kneiss', 'Kneiss', '', 'espbo', '3'),
+('libilis', 'Libilis', '', 'espbo', '3'),
+('luminescents', 'Luminescents', 'Les espèces luminescentes sont des êtres faits d’énergie contenue dans une enveloppe diaphane, capables de subsister dans des environnements inconcevables comme les géantes gazeuses ou même le vide intersidéral. Ils apparaissent comme un mystère pour tous, y compris pour les espèces les plus anciennes, et il se pourrait bien que les luminescents soient les plus anciens êtres doués de sapience de l’univers. Confrontés aux autres espèces, les luminescents ont appris à adopter d’autres formes et modes de communication. Toutefois, il reste rare de les rencontrer en dehors des systèmes qu’ils peuplent, et plusieurs espèces cohabitent avec des luminescents sans le savoir. Les espèces luminescentes sont partiellement immatérielles. Leur intégrité « corporelle » dépend cependant de leur capacité à maintenir un état électromagnétique stable. Les projectiles ou attaques solides perturbent cet état stable et les endommagent donc. Ces êtres sont aussi capables de « voler », au sens où ils peuvent subsister dans le vide ou dans l’atmosphère des géantes gazeuses. Toutefois, pour ce faire, ils ont besoin d’un rayonnement électromagnétique suffisant ou de se trouver dans un environnement gazeux (ou un plasma) assez dense. Ils ne peuvent donc survivre ou se déplacer dans le vide interstellaire ou même au-delà d’une certaine distance depuis une étoile ou une planète. D’autre part, dans un environnement atmosphérique classique, protégé par un champ magnétique (comme la Terre, par exemple) ils ont besoin d’une combinaison spéciale maintenant leur intégrité et ne sont plus capables de voler.\r\nPréjugés typiques : Beaucoup se méfient de ces êtres faits d’énergie et leur prêtent des intentions cachées. D’autres les prennent pour des sortes de divinités des temps anciens qu’il convient de vénérer.', 'espeg', '3'),
+('mechanaute', 'Méchanaute', NULL, 'savf', '0'),
+('medecine', 'Médecine', NULL, 'savf', '1'),
+('mineraux', 'Minéraux', 'Les espèces minérales sont composées de cristaux communiquant par télépathie ou au moyen de la lumière. Elles sont généralement pourvues d’une espérance de vie confinant à l’immortalité, et il n’est pas rare que certains individus aient assisté aux premières étapes de l’exploration spatiale. La connexion à leur planète d’origine est extrêmement importante, et rares sont les espèces de ce type qui s’implantent hors de leur système. Leur durabilité et leur aptitude à interpréter les ondes lumineuses en font toutefois des alliés précieux dans l’espace.  Ces espèces sont toutefois extrêmement dépendantes de la présence d’ondes électromagnétiques « visibles » (ce qui inclut généralement pour ces espèces les infrarouges et les ultraviolets). En l’absence de toute lumière, l’individu se met dans un état similaire à l’hibernation d’une espèce organique ou l’extinction d’un appareil électronique.\r\nPréjugés typiques : Le mode de pensée des espèces minérales est tel que peu d’autres xénomorphes parviennent à les comprendre. Beaucoup les croient insensibles et incapables d’émotions.', 'espeg', '3'),
+('moteurs', 'Moteurs', NULL, 'savf', '3'),
+('panacee', 'Panacée', 'En atteignant les rangs 2, 4 et 5 de la voie de la panacée, le personnage diminue sa CON de 1 (et perd donc [ niveau/2 ] PV). Son organisme devient si dépendant des suppléments chimiques que ses résistances naturelles diminuent d’autant.', 'augm', '1'),
+('parasites', 'Parasites', 'Les parasites sont généralement des créatures de petite taille ou d’une morphologie adaptable. Ils présentent tous comme trait principal le fait de devoir disposer d’un hôte, d’un corps d’accueil, pour pouvoir assurer leur survie tout en bénéficiant à la fois d’une plus grande force et d’une plus grande sécurité. Un parasite peut être organique ou non.  Le niveau de symbiose entre parasite et hôte est extrêmement variable selon les espèces. Toutefois, dans le cadre de ces règles, on suppose que la destruction de l’hôte amène la destruction du parasite et qu’enlever le parasite sans détruire l’hôte est impossible. Si le parasite est rencontré sans hôte, il peut être détruit par une simple attaque réussie. La durée de vie d’un tel parasite est intimement liée à sa capacité à trouver périodiquement de nouveaux hôtes.\r\nPréjugés typiques : Les espèces parasitaires sont craintes pour leur capacité à priver leur hôte de libre arbitre. Leur fourberie et leur non-respect total pour la vie d’autrui les relèguent souvent au rang de créatures indésirables chez la plupart des espèces. Toutefois, certaines rares espèces peuvent entretenir des relations plus ambigües avec les parasites lorsque les deux espèces bénéficient de la présence de l’autre.', 'espeg', '3'),
+('photokinesie', 'Photokinésie', NULL, 'psych', '1'),
+('pilotage', 'Pilotage', NULL, 'savf', '0'),
+('posthumain', 'Posthumain', 'En atteignant les rangs 2, 4 et 5 de la voie du posthumain, le personnage diminue sa PER de 1. Cela reflète la distance de plus en plus grande qui se crée entre le posthumain et son environnement, qu’il juge de plus en plus insignifiant.', 'augm', '0'),
+('psychokinesie', 'Psychokinésie', NULL, 'psych', '1'),
+('psychologie', 'Psychologie', NULL, 'savf', '1'),
+('psychomachie', 'Psychomachie', NULL, 'psych', '1'),
+('quantakinesie', 'Quantakinésie', NULL, 'psych', '1'),
+('reparation', 'Réparation', NULL, 'savf', '1'),
+('reptiloides', 'Reptiloïdes', 'Cette voie correspond aux espèces issues des reptiles, des amphibiens et des sauriens. Il s’agit généralement d’espèces capables d’évoluer à la fois dans l’eau et sur la terre ferme, et de coloniser ces deux habitats, ce qui leur confère un avantage naturel dans leurs efforts d’expansion. Leurs capacités d’adaptation en font d’excellents explorateurs et soldats. Les espèces reptiliennes font en outre de très bons candidats à l’ingénierie génétique.\r\nPréjugés typiques : Les espèces reptiliennes (ou sauriennes) sont redoutées dans toute la galaxie. Malgré l’évolution et l’accès à la sapience, beaucoup estiment que ces espèces sont incapables de combattre leurs instincts primitifs. De plus, beaucoup les jugent limités intellectuellement.', 'espeg', '3'),
+('robot', 'Robot', NULL, 'espbo', '0'),
+('systeme-d', 'Système D', NULL, 'cult', '0'),
+('telepathie', 'Télépathie', NULL, 'psych', '1'),
+('tymbris', 'Tymbris', '', 'espbo', '3'),
+('universitaire', 'Universitaire', NULL, 'cult', '2'),
+('vegetaux', 'Végétaux', 'Sur bien des planètes, certains végétaux ont appris à se protéger des prédateurs animaux, voire à se placer eux-mêmes au sommet de la chaîne alimentaire. Certaines de ces espèces ont ainsi accédé à la sapience, en compensant certaines de leurs faiblesses (le manque de mobilité et la dépendance à la lumière) par leur capacité inégalée à adapter les environnements à leurs besoins et à influer sur leur propre métabolisme.\r\nPréjugés typiques : Les espèces végétales sont souvent considérées comme des anomalies, des « sous-êtres » qui sont parvenus à la sapience par hasard ou par le biais d’expériences contre-nature. Les espèces animales, notamment, souffrent d’un complexe de supériorité notable face aux espèces végétales.', 'espeg', '3');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cog_voies_profils`
+--
+
+DROP TABLE IF EXISTS `cog_voies_profils`;
+CREATE TABLE IF NOT EXISTS `cog_voies_profils` (
+  `profil` varchar(20) NOT NULL,
+  `voie` varchar(20) NOT NULL,
+  PRIMARY KEY (`profil`,`voie`),
+  KEY `cga_voies_profils_profil` (`profil`),
+  KEY `cga_voies_profils_voie` (`voie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `cog_voies_profils`
+--
+
+INSERT INTO `cog_voies_profils` (`profil`, `voie`) VALUES
+('activiste', 'classe-moyenne'),
+('activiste', 'discours'),
+('activiste', 'investigation'),
+('adepte', 'aristocratie'),
+('adepte', 'psychokinesie'),
+('adepte', 'psychomachie'),
+('agent', 'classe-moyenne'),
+('agent', 'electronique'),
+('agent', 'furtivite'),
+('aristocrate', 'aristocratie'),
+('aristocrate', 'arts-martiaux'),
+('aristocrate', 'discours'),
+('artilleur', 'armes-lourdes'),
+('artilleur', 'corporations'),
+('artilleur', 'reparation'),
+('artiste', 'arts'),
+('artiste', 'psychologie'),
+('artiste', 'universitaire'),
+('assassin', 'arts-martiaux'),
+('assassin', 'corporations'),
+('assassin', 'furtivite'),
+('asteromineur', 'bagarre'),
+('asteromineur', 'reparation'),
+('asteromineur', 'systeme-d'),
+('astrocommando', 'armes-energetiques'),
+('astrocommando', 'armes-lourdes'),
+('astrocommando', 'espace'),
+('astroingenieur', 'electronique'),
+('astroingenieur', 'moteurs'),
+('astroingenieur', 'universitaire'),
+('astronavigateur', 'investigation'),
+('astronavigateur', 'pilotage'),
+('astronavigateur', 'universitaire'),
+('biogeneticien', 'biokinesie'),
+('biogeneticien', 'medecine'),
+('biogeneticien', 'universitaire'),
+('bureaucrate', 'corporations'),
+('bureaucrate', 'electronique'),
+('bureaucrate', 'investigation'),
+('chasseur-de-primes', 'armes-energetiques'),
+('chasseur-de-primes', 'espace'),
+('chasseur-de-primes', 'investigation'),
+('colon', 'bagarre'),
+('colon', 'exploration'),
+('colon', 'systeme-d'),
+('commercant', 'corporations'),
+('commercant', 'discours'),
+('commercant', 'psychologie'),
+('contrebandier', 'armes-energetiques'),
+('contrebandier', 'espace'),
+('contrebandier', 'pilotage'),
+('diplomate', 'aristocratie'),
+('diplomate', 'discours'),
+('diplomate', 'psychologie'),
+('erudit', 'discours'),
+('erudit', 'exploration'),
+('erudit', 'universitaire'),
+('escroc', 'bagarre'),
+('escroc', 'corporations'),
+('escroc', 'discours'),
+('explorateur', 'espace'),
+('explorateur', 'exploration'),
+('explorateur', 'pilotage'),
+('fantassin', 'armes-energetiques'),
+('fantassin', 'corporations'),
+('fantassin', 'exploits-physiques'),
+('ganger', 'bagarre'),
+('ganger', 'bas-fonds'),
+('ganger', 'furtivite'),
+('garde-du-corps', 'armes-energetiques'),
+('garde-du-corps', 'corporations'),
+('garde-du-corps', 'psychologie'),
+('hacker', 'electronique'),
+('hacker', 'furtivite'),
+('hacker', 'systeme-d'),
+('hors-la-loi', 'armes-a-feu'),
+('hors-la-loi', 'reparation'),
+('hors-la-loi', 'systeme-d'),
+('journaliste', 'corporations'),
+('journaliste', 'furtivite'),
+('journaliste', 'investigation'),
+('limier', 'corporations'),
+('limier', 'investigation'),
+('limier', 'psychomachie'),
+('mecanicien', 'classe-moyenne'),
+('mecanicien', 'moteurs'),
+('mecanicien', 'reparation'),
+('medecin', 'medecine'),
+('medecin', 'psychologie'),
+('medecin', 'universitaire'),
+('mentat', 'chronokinesie'),
+('mentat', 'psychologie'),
+('mentat', 'systeme-d'),
+('mercenaire', 'armes-energetiques'),
+('mercenaire', 'armes-lourdes'),
+('mercenaire', 'bas-fonds'),
+('missionnaire', 'classe-moyenne'),
+('missionnaire', 'discours'),
+('missionnaire', 'medecine'),
+('pilote-de-chasse', 'armes-lourdes'),
+('pilote-de-chasse', 'espace'),
+('pilote-de-chasse', 'pilotage'),
+('pirate', 'armes-a-feu'),
+('pirate', 'espace'),
+('pirate', 'exploration'),
+('prescient', 'chronokinesie'),
+('prescient', 'clairvoyance'),
+('prescient', 'classe-moyenne'),
+('psiker', 'bas-fonds'),
+('psiker', 'cosmokinesie'),
+('psiker', 'quantakinesie'),
+('psion', 'clairvoyance'),
+('psion', 'corporations'),
+('psion', 'telepathie'),
+('psitech', 'electrokinesie'),
+('psitech', 'electronique'),
+('psitech', 'espace'),
+('recuperateur', 'espace'),
+('recuperateur', 'exploration'),
+('recuperateur', 'reparation'),
+('spectre', 'furtivite'),
+('spectre', 'photokinesie'),
+('spectre', 'systeme-d'),
+('sportif-pro', 'arts-martiaux'),
+('sportif-pro', 'exploits-physiques'),
+('sportif-pro', 'universitaire'),
+('technicien', 'classe-moyenne'),
+('technicien', 'electronique'),
+('technicien', 'reparation'),
+('xenoarcheologue', 'arts'),
+('xenoarcheologue', 'investigation'),
+('xenoarcheologue', 'universitaire'),
+('xenobiologiste', 'espace'),
+('xenobiologiste', 'exploration'),
+('xenobiologiste', 'medecine');
 
 -- --------------------------------------------------------
 
@@ -19356,88 +20437,328 @@ INSERT INTO `cota_voies_profils` (`profil`, `voie`) VALUES
 ('voyageur', 'boheme'),
 ('voyageur', 'escrime');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__bookmark`
+--
+
+DROP TABLE IF EXISTS `pma__bookmark`;
+CREATE TABLE IF NOT EXISTS `pma__bookmark` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `dbase` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `user` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `label` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `query` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Bookmarks';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__central_columns`
+--
+
+DROP TABLE IF EXISTS `pma__central_columns`;
+CREATE TABLE IF NOT EXISTS `pma__central_columns` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_type` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_length` text COLLATE utf8_bin,
+  `col_collation` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_isNull` tinyint(1) NOT NULL,
+  `col_extra` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `col_default` text COLLATE utf8_bin,
+  PRIMARY KEY (`db_name`,`col_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Central list of columns';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__column_info`
+--
+
+DROP TABLE IF EXISTS `pma__column_info`;
+CREATE TABLE IF NOT EXISTS `pma__column_info` (
+  `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `column_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `comment` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `mimetype` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `input_transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `input_transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `db_name` (`db_name`,`table_name`,`column_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Column information for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__designer_settings`
+--
+
+DROP TABLE IF EXISTS `pma__designer_settings`;
+CREATE TABLE IF NOT EXISTS `pma__designer_settings` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `settings_data` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Settings related to Designer';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__export_templates`
+--
+
+DROP TABLE IF EXISTS `pma__export_templates`;
+CREATE TABLE IF NOT EXISTS `pma__export_templates` (
+  `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `export_type` varchar(10) COLLATE utf8_bin NOT NULL,
+  `template_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `template_data` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_user_type_template` (`username`,`export_type`,`template_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved export templates';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__favorite`
+--
+
+DROP TABLE IF EXISTS `pma__favorite`;
+CREATE TABLE IF NOT EXISTS `pma__favorite` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `tables` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Favorite tables';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__history`
+--
+
+DROP TABLE IF EXISTS `pma__history`;
+CREATE TABLE IF NOT EXISTS `pma__history` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sqlquery` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`,`db`,`table`,`timevalue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='SQL history for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__navigationhiding`
+--
+
+DROP TABLE IF EXISTS `pma__navigationhiding`;
+CREATE TABLE IF NOT EXISTS `pma__navigationhiding` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `item_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `item_type` varchar(64) COLLATE utf8_bin NOT NULL,
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`username`,`item_name`,`item_type`,`db_name`,`table_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Hidden items of navigation tree';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__pdf_pages`
+--
+
+DROP TABLE IF EXISTS `pma__pdf_pages`;
+CREATE TABLE IF NOT EXISTS `pma__pdf_pages` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `page_nr` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `page_descr` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  PRIMARY KEY (`page_nr`),
+  KEY `db_name` (`db_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='PDF relation pages for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__recent`
+--
+
+DROP TABLE IF EXISTS `pma__recent`;
+CREATE TABLE IF NOT EXISTS `pma__recent` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `tables` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Recently accessed tables';
+
+--
+-- Déchargement des données de la table `pma__recent`
+--
+
+INSERT INTO `pma__recent` (`username`, `tables`) VALUES
+('root', '[{\"db\":\"comobdb\",\"table\":\"cof_capacites\"},{\"db\":\"comobdb\",\"table\":\"cof_types_voie\"},{\"db\":\"comobdb\",\"table\":\"cof_types_capacite\"},{\"db\":\"comobdb\",\"table\":\"coc_types_voie\"}]');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__relation`
+--
+
+DROP TABLE IF EXISTS `pma__relation`;
+CREATE TABLE IF NOT EXISTS `pma__relation` (
+  `master_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `master_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `master_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `foreign_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `foreign_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `foreign_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`master_db`,`master_table`,`master_field`),
+  KEY `foreign_field` (`foreign_db`,`foreign_table`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Relation table';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__savedsearches`
+--
+
+DROP TABLE IF EXISTS `pma__savedsearches`;
+CREATE TABLE IF NOT EXISTS `pma__savedsearches` (
+  `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `search_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `search_data` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_savedsearches_username_dbname` (`username`,`db_name`,`search_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved searches';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__table_coords`
+--
+
+DROP TABLE IF EXISTS `pma__table_coords`;
+CREATE TABLE IF NOT EXISTS `pma__table_coords` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `pdf_page_number` int(11) NOT NULL DEFAULT '0',
+  `x` float UNSIGNED NOT NULL DEFAULT '0',
+  `y` float UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`db_name`,`table_name`,`pdf_page_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table coordinates for phpMyAdmin PDF output';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__table_info`
+--
+
+DROP TABLE IF EXISTS `pma__table_info`;
+CREATE TABLE IF NOT EXISTS `pma__table_info` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `display_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`db_name`,`table_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table information for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__table_uiprefs`
+--
+
+DROP TABLE IF EXISTS `pma__table_uiprefs`;
+CREATE TABLE IF NOT EXISTS `pma__table_uiprefs` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `prefs` text COLLATE utf8_bin NOT NULL,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`username`,`db_name`,`table_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__tracking`
+--
+
+DROP TABLE IF EXISTS `pma__tracking`;
+CREATE TABLE IF NOT EXISTS `pma__tracking` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `version` int(10) UNSIGNED NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `schema_snapshot` text COLLATE utf8_bin NOT NULL,
+  `schema_sql` text COLLATE utf8_bin,
+  `data_sql` longtext COLLATE utf8_bin,
+  `tracking` set('UPDATE','REPLACE','INSERT','DELETE','TRUNCATE','CREATE DATABASE','ALTER DATABASE','DROP DATABASE','CREATE TABLE','ALTER TABLE','RENAME TABLE','DROP TABLE','CREATE INDEX','DROP INDEX','CREATE VIEW','ALTER VIEW','DROP VIEW') COLLATE utf8_bin DEFAULT NULL,
+  `tracking_active` int(1) UNSIGNED NOT NULL DEFAULT '1',
+  PRIMARY KEY (`db_name`,`table_name`,`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Database changes tracking for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__userconfig`
+--
+
+DROP TABLE IF EXISTS `pma__userconfig`;
+CREATE TABLE IF NOT EXISTS `pma__userconfig` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `config_data` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User preferences storage for phpMyAdmin';
+
+--
+-- Déchargement des données de la table `pma__userconfig`
+--
+
+INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
+('root', '2022-06-18 16:15:26', '{\"Console\\/Mode\":\"collapse\",\"ThemeDefault\":\"metro\",\"lang\":\"fr\"}');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__usergroups`
+--
+
+DROP TABLE IF EXISTS `pma__usergroups`;
+CREATE TABLE IF NOT EXISTS `pma__usergroups` (
+  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL,
+  `tab` varchar(64) COLLATE utf8_bin NOT NULL,
+  `allowed` enum('Y','N') COLLATE utf8_bin NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`usergroup`,`tab`,`allowed`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User groups with configured menu items';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__users`
+--
+
+DROP TABLE IF EXISTS `pma__users`;
+CREATE TABLE IF NOT EXISTS `pma__users` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`username`,`usergroup`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users and their assignments to user groups';
+
 --
 -- Contraintes pour les tables déchargées
 --
-
---
--- Contraintes pour la table `cga_capacites_voies`
---
-ALTER TABLE `cga_capacites_voies`
-  ADD CONSTRAINT `cga_fk_capacites_voies_capacite` FOREIGN KEY (`capacite`) REFERENCES `cga_capacites` (`capacite`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_capacites_voies_voie` FOREIGN KEY (`voie`) REFERENCES `cga_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_categories_equipement`
---
-ALTER TABLE `cga_categories_equipement`
-  ADD CONSTRAINT `cga_fk_categorie_parente` FOREIGN KEY (`parent`) REFERENCES `cga_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_categories_proprietes`
---
-ALTER TABLE `cga_categories_proprietes`
-  ADD CONSTRAINT `cga_fk_categories_proprietes_categorie` FOREIGN KEY (`code_categorie`) REFERENCES `cga_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_categories_proprietes_propriete` FOREIGN KEY (`code_propriete`) REFERENCES `cga_proprietes_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_equipement`
---
-ALTER TABLE `cga_equipement`
-  ADD CONSTRAINT `cga_fk_equipement_categorie` FOREIGN KEY (`categorie`) REFERENCES `cga_categories_equipement` (`code`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `cga_equipement_profils`
---
-ALTER TABLE `cga_equipement_profils`
-  ADD CONSTRAINT `cga_fk_equipement_profils_equipement` FOREIGN KEY (`equipement`) REFERENCES `cga_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_equipement_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cga_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_equipement_proprietes`
---
-ALTER TABLE `cga_equipement_proprietes`
-  ADD CONSTRAINT `cga_fk_equipement_proprietes_equipement` FOREIGN KEY (`code_equipement`) REFERENCES `cga_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_equipement_proprietes_propriete` FOREIGN KEY (`code_propriete`) REFERENCES `cga_proprietes_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_profils`
---
-ALTER TABLE `cga_profils`
-  ADD CONSTRAINT `cga_fk_profils_famille` FOREIGN KEY (`famille`) REFERENCES `cga_familles` (`famille`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_profils_maitrises`
---
-ALTER TABLE `cga_profils_maitrises`
-  ADD CONSTRAINT `cga_fk_profils_maitrises_equipement` FOREIGN KEY (`equipement`) REFERENCES `cga_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_profils_maitrises_profil` FOREIGN KEY (`profil`) REFERENCES `cga_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_profils_traits`
---
-ALTER TABLE `cga_profils_traits`
-  ADD CONSTRAINT `cga_fk_profils_traits_profil` FOREIGN KEY (`profil`) REFERENCES `cga_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_races_capacites`
---
-ALTER TABLE `cga_races_capacites`
-  ADD CONSTRAINT `cga_fk_races_capacites_capacite` FOREIGN KEY (`capacite`) REFERENCES `cga_capacites` (`capacite`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_races_capacites_race` FOREIGN KEY (`race`) REFERENCES `cga_races` (`race`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_races_traits`
---
-ALTER TABLE `cga_races_traits`
-  ADD CONSTRAINT `cga_fk_races_traits_race` FOREIGN KEY (`race`) REFERENCES `cga_races` (`race`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `cga_voies_profils`
---
-ALTER TABLE `cga_voies_profils`
-  ADD CONSTRAINT `cga_fk_voies_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cga_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `cga_fk_voies_profils_voie` FOREIGN KEY (`voie`) REFERENCES `cga_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `coct_capacites_voies`
@@ -19754,6 +21075,85 @@ ALTER TABLE `cof_races_traits`
 ALTER TABLE `cof_voies_profils`
   ADD CONSTRAINT `cof_fk_voies_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cof_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `cof_fk_voies_profils_voie` FOREIGN KEY (`voie`) REFERENCES `cof_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_capacites_voies`
+--
+ALTER TABLE `cog_capacites_voies`
+  ADD CONSTRAINT `cga_fk_capacites_voies_capacite` FOREIGN KEY (`capacite`) REFERENCES `cog_capacites` (`capacite`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_capacites_voies_voie` FOREIGN KEY (`voie`) REFERENCES `cog_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_categories_equipement`
+--
+ALTER TABLE `cog_categories_equipement`
+  ADD CONSTRAINT `cga_fk_categorie_parente` FOREIGN KEY (`parent`) REFERENCES `cog_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_categories_proprietes`
+--
+ALTER TABLE `cog_categories_proprietes`
+  ADD CONSTRAINT `cga_fk_categories_proprietes_categorie` FOREIGN KEY (`code_categorie`) REFERENCES `cog_categories_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_categories_proprietes_propriete` FOREIGN KEY (`code_propriete`) REFERENCES `cog_proprietes_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_equipement`
+--
+ALTER TABLE `cog_equipement`
+  ADD CONSTRAINT `cga_fk_equipement_categorie` FOREIGN KEY (`categorie`) REFERENCES `cog_categories_equipement` (`code`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `cog_equipement_profils`
+--
+ALTER TABLE `cog_equipement_profils`
+  ADD CONSTRAINT `cga_fk_equipement_profils_equipement` FOREIGN KEY (`equipement`) REFERENCES `cog_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_equipement_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cog_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_equipement_proprietes`
+--
+ALTER TABLE `cog_equipement_proprietes`
+  ADD CONSTRAINT `cga_fk_equipement_proprietes_equipement` FOREIGN KEY (`code_equipement`) REFERENCES `cog_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_equipement_proprietes_propriete` FOREIGN KEY (`code_propriete`) REFERENCES `cog_proprietes_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_profils`
+--
+ALTER TABLE `cog_profils`
+  ADD CONSTRAINT `cga_fk_profils_famille` FOREIGN KEY (`famille`) REFERENCES `cog_familles` (`famille`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_profils_maitrises`
+--
+ALTER TABLE `cog_profils_maitrises`
+  ADD CONSTRAINT `cga_fk_profils_maitrises_equipement` FOREIGN KEY (`equipement`) REFERENCES `cog_equipement` (`code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_profils_maitrises_profil` FOREIGN KEY (`profil`) REFERENCES `cog_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_profils_traits`
+--
+ALTER TABLE `cog_profils_traits`
+  ADD CONSTRAINT `cga_fk_profils_traits_profil` FOREIGN KEY (`profil`) REFERENCES `cog_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_races_capacites`
+--
+ALTER TABLE `cog_races_capacites`
+  ADD CONSTRAINT `cga_fk_races_capacites_capacite` FOREIGN KEY (`capacite`) REFERENCES `cog_capacites` (`capacite`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_races_capacites_race` FOREIGN KEY (`race`) REFERENCES `cog_races` (`race`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_races_traits`
+--
+ALTER TABLE `cog_races_traits`
+  ADD CONSTRAINT `cga_fk_races_traits_race` FOREIGN KEY (`race`) REFERENCES `cog_races` (`race`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cog_voies_profils`
+--
+ALTER TABLE `cog_voies_profils`
+  ADD CONSTRAINT `cga_fk_voies_profils_profil` FOREIGN KEY (`profil`) REFERENCES `cog_profils` (`profil`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `cga_fk_voies_profils_voie` FOREIGN KEY (`voie`) REFERENCES `cog_voies` (`voie`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `cota_capacites_voies`
