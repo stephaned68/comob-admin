@@ -9,58 +9,58 @@ use PDOStatement;
 class QueryBuilder
 {
   /**
-   * @var PDO
+   * @var PDO|null
    */
-  private $pdo;
+  private ?PDO $pdo;
 
   /**
    * @var array
    */
-  private $table = [];
+  private array $table = [];
 
   /**
    * @var array
    */
-  private $joins = [];
+  private array $joins = [];
 
   /**
    * @var array
    */
-  private $fields = [];
+  private array $fields = [];
 
   /**
    * @var array
    */
-  private $where = [];
+  private array $where = [];
 
   /**
    * @var array
    */
-  private $orderBy = [];
+  private array $orderBy = [];
 
   /**
    * @var array
    */
-  private $groupBy = [];
+  private array $groupBy = [];
 
   /**
    * @var array
    */
-  private $params = [];
+  private array $params = [];
 
   /**
-   * @var integer
+   * @var integer|null
    */
-  private $limit;
+  private int $limit = 0;
 
   /**
-   * @var integer
+   * @var integer|null
    */
-  private $offset;
+  private int $offset = 0;
 
   /**
    * QueryBuilder constructor.
-   * @param string $table
+   * @param string|null $table
    * @param string|null $alias
    */
   public function __construct(string $table = null, string $alias = null)
@@ -76,7 +76,7 @@ class QueryBuilder
    * @param string|null $alias
    * @return $this
    */
-  public function from(string $table, string $alias = null)
+  public function from(string $table, string $alias = null): QueryBuilder
   {
     $this->table[] = $table . (($alias != null) ? " as $alias" : "");
     return $this;
@@ -86,7 +86,7 @@ class QueryBuilder
    * @param array $fields
    * @return $this
    */
-  public function select(array $fields = [])
+  public function select(array $fields = []): QueryBuilder
   {
     if (count($fields) == 0) {
       $fields = [ "*" ];
@@ -99,7 +99,7 @@ class QueryBuilder
    * @param string $where
    * @return $this
    */
-  public function where(string $where)
+  public function where(string $where): QueryBuilder
   {
     $this->where[] = $where;
     return $this;
@@ -109,7 +109,7 @@ class QueryBuilder
    * @param string $where
    * @return $this
    */
-  public function andWhere(string $where)
+  public function andWhere(string $where): QueryBuilder
   {
     return $this->where("and {$where}");
   }
@@ -118,7 +118,7 @@ class QueryBuilder
    * @param string $where
    * @return $this
    */
-  public function orWhere(string $where)
+  public function orWhere(string $where): QueryBuilder
   {
     return $this->where("or {$where}");
   }
@@ -127,7 +127,7 @@ class QueryBuilder
    * @param string $orderBy
    * @return $this
    */
-  public function orderBy(string $orderBy)
+  public function orderBy(string $orderBy): QueryBuilder
   {
     if (strpos($orderBy, ".") == 0)
     {
@@ -141,7 +141,7 @@ class QueryBuilder
    * @param string $orderByDesc
    * @return $this
    */
-  public function orderByDesc(string $orderByDesc)
+  public function orderByDesc(string $orderByDesc): QueryBuilder
   {
     if (strpos($orderByDesc, ".") == 0)
     {
@@ -163,7 +163,7 @@ class QueryBuilder
     string $table,
     string $primaryKey,
     string $foreignKey,
-    string $alias)
+    string $alias): QueryBuilder
   {
     $this->joins[] = [
       "type" => $type,
@@ -186,7 +186,7 @@ class QueryBuilder
     string $table,
     string $primaryKey,
     string $foreignKey,
-    string $alias = null)
+    string $alias = null): QueryBuilder
   {
     return $this->join("inner", $table, $primaryKey, $foreignKey, $alias);
   }
@@ -202,7 +202,7 @@ class QueryBuilder
     string $table,
     string $primaryKey,
     string $foreignKey,
-    string $alias)
+    string $alias): QueryBuilder
   {
     return $this->join("left", $table, $primaryKey, $foreignKey, $alias);
   }
@@ -211,7 +211,7 @@ class QueryBuilder
    * @param string $groupBy
    * @return $this
    */
-  public function groupBy(string $groupBy)
+  public function groupBy(string $groupBy): QueryBuilder
   {
     if (strpos($groupBy, ".") == 0)
     {
@@ -226,7 +226,7 @@ class QueryBuilder
    * @param string $value
    * @return $this
    */
-  public function setParam(string $key, string $value)
+  public function setParam(string $key, string $value): QueryBuilder
   {
     $this->params[$key] = $value;
     return $this;
@@ -237,7 +237,7 @@ class QueryBuilder
    * @param int|null $offset
    * @return $this
    */
-  public function limit(int $limit, ?int $offset = null)
+  public function limit(int $limit, ?int $offset = null): QueryBuilder
   {
     $this->limit = $limit;
     $this->offset = $offset;
@@ -247,7 +247,7 @@ class QueryBuilder
   /**
    * @return string
    */
-  public function getQuery()
+  public function getQuery(): string
   {
     $sql = [];
 
@@ -269,9 +269,9 @@ class QueryBuilder
     if (count($this->orderBy) > 0) {
       $sql[] = "order by " . implode(", ", $this->orderBy);
     }
-    if ($this->limit != null) {
+    if ($this->limit != null && $this->limit > 0) {
       $sql[] = "limit {$this->limit}";
-      if ($this->offset != null) {
+      if ($this->offset != null && $this->offset > 0) {
         $sql[] = "offset {$this->offset}";
       }
     }

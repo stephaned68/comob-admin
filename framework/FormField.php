@@ -8,24 +8,24 @@ class FormField
 {
 
   /**
-   * @var string
+   * @var string|null
    */
-  private $name;
+  private ?string $name;
 
   /**
-   * @var string
+   * @var string|null
    */
-  private $label;
+  private ?string $label;
 
   /**
    * @var int
    */
-  private $filter;
+  private int $filter;
 
   /**
    * @var bool
    */
-  private $required;
+  private bool $required;
 
   /**
    * @var mixed
@@ -33,34 +33,34 @@ class FormField
   private $defaultValue;
 
   /**
-   * @var string
+   * @var string|null
    */
-  private $errorMessage;
+  private ?string $errorMessage;
 
   /**
-   * @var string
+   * @var string|null
    */
-  private $controlType;
+  private ?string $controlType;
 
   /**
-   * @var string
+   * @var string|null
    */
-  private $cssClass;
+  private ?string $cssClass;
 
   /**
    * @var boolean
    */
-  private $primeKey;
+  private bool $primeKey;
 
   /**
    * @var array
    */
-  private $valueList;
+  private array $valueList;
 
   /**
    * @var array
    */
-  private $size;
+  private array $size;
 
   /**
    * FormField constructor.
@@ -365,7 +365,7 @@ class FormField
     return $fieldHTML;
   }
 
-  public static function getDefaultCSS($controlType)
+  public static function getDefaultCSS($controlType): string
   {
     $defaultCSS = [
       "hidden" => "",

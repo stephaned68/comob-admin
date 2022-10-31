@@ -52,7 +52,7 @@ use \framework\Router;
               <i class="fas fa-cogs" title="Action (L)imitée"></i>
             <?php endif; ?>
             <?php if ($ability["sort"] == 1) : ?>
-              <i class="fas fa-magic" title="Sort"></i>
+              <i class="fas fa-magic" title="<?= ($_SESSION["dataset"]["id"] == 'cog') ? "Vaisseau" : "Sort" ?>"></i>
             <?php endif; ?>
           </td>
           <td><?= $abilityTypes[$ability['type']] ?></td>

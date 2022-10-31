@@ -10,29 +10,30 @@ class Database
 {
 
   /**
-   * @var PDO $pdo
+   * @var ?PDO $pdo
    */
-  private static $pdo = null;
+  private static ?PDO $pdo = null;
 
   /**
    * Return a PDO connection
    * @return PDO
    */
-  public static function getPDO()
+  public static function getPDO(): ?PDO
   {
     if (!self::$pdo) {
       try {
         self::$pdo = new PDO(
           DSN,
-          "root",
-          "",
+          DBUSER,
+          DBPASS,
           [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
           ]
         );
+        self::$pdo->query("SET NAMES utf8;");
       } catch (PDOException $ex) {
-        Tools::setFlash($ex->getMessage(),"danger");
+        Tools::setFlash($ex->getMessage(), "danger");
       }
     }
     return self::$pdo;
@@ -43,7 +44,7 @@ class Database
    * @param $table
    * @return string
    */
-  public static function table(string $table)
+  public static function table(string $table): string
   {
     $dataset = $_SESSION['dataset']['id'] . "_";
     if (substr($table, 0, strlen($dataset)) != $dataset) {
@@ -58,15 +59,14 @@ class Database
    * @param string $table
    * @return bool
    */
-  public static function exists(string $table)
+  public static function exists(string $table): bool
   {
     $qb = new QueryBuilder();
     $qb
       ->from("information_schema.tables")
-      ->select([ "count(*) as found" ])
-      ->where("table_schema = '" . DATABASE . "'")
-      ->andWhere("table_name = '" . self::table($table) . "'")
-      ;
+      ->select(["count(*) as found"])
+      ->where("table_schema = '" . DBNAME . "'")
+      ->andWhere("table_name = '" . self::table($table) . "'");
     $result = Database::getPDO()->query($qb->getQuery())->fetch(PDO::FETCH_ASSOC);
     unset($qb);
     return ($result["found"] > 0);
@@ -77,13 +77,13 @@ class Database
    * @param string $table
    * @return array
    */
-  public static function getColumnsList(string $table)
+  public static function getColumnsList(string $table): array
   {
     $qb = new QueryBuilder();
     $qb
       ->from("information_schema.columns")
-      ->select([ "column_name" ])
-      ->where("table_schema = '" . DATABASE . "'")
+      ->select(["column_name"])
+      ->where("table_schema = '" . DBNAME . "'")
       ->andWhere("table_name = '" . self::table($table) . "'");
 
     $columns = [];
@@ -92,7 +92,8 @@ class Database
       try {
         $statement = $pdo->query($qb->getQuery());
         $columns = $statement->fetchAll(PDO::FETCH_ASSOC);
-      } catch (PDOException $ex) { }
+      } catch (PDOException $ex) {
+      }
     }
     unset($qb);
 
@@ -111,7 +112,7 @@ class Database
    * @param bool $orWhere
    * @return string
    */
-  public static function buildWhere(array $filters, bool $ordinal = true, bool $orWhere = false)
+  public static function buildWhere(array $filters, bool $ordinal = true, bool $orWhere = false): string
   {
     $where = [];
     $andWhere = "where";
@@ -130,7 +131,7 @@ class Database
    * @param array $fields
    * @return string
    */
-  public static function selectFields(array $fields = [])
+  public static function selectFields(array $fields = []): string
   {
     if (count($fields) > 0) {
       return implode(", ", $fields);
@@ -145,7 +146,7 @@ class Database
    * @param array $fields
    * @return QueryBuilder
    */
-  public static function getAll(string $table, array $fields = [])
+  public static function getAll(string $table, array $fields = []): QueryBuilder
   {
     $qb = new QueryBuilder(self::table($table));
     $qb->select($fields);
@@ -158,7 +159,7 @@ class Database
    * @param array $fields
    * @return string
    */
-  public static function getAllQuery(string $table, array $fields = [])
+  public static function getAllQuery(string $table, array $fields = []): string
   {
     $qb = self::getAll($table, $fields);
     $query = $qb->getQuery();
@@ -173,7 +174,7 @@ class Database
    * @param array $fields
    * @return QueryBuilder
    */
-  public static function getOne(string $table, array $primaryKeys = [ "id" ], array $fields = [])
+  public static function getOne(string $table, array $primaryKeys = ["id"], array $fields = []): QueryBuilder
   {
     $qb = new QueryBuilder(self::table($table));
     $qb->select($fields);
@@ -193,7 +194,7 @@ class Database
    * @param array $fields
    * @return string
    */
-  public static function getOneQuery(string $table, array $primaryKeys = [ "id" ], array $fields = [])
+  public static function getOneQuery(string $table, array $primaryKeys = ["id"], array $fields = []): string
   {
     $qb = self::getOne($table, $primaryKeys, $fields);
     $query = $qb->getQuery();
@@ -207,7 +208,7 @@ class Database
    * @param array $fieldNames
    * @return string
    */
-  public static function insertQuery(string $table, array $fieldNames = [])
+  public static function insertQuery(string $table, array $fieldNames = []): string
   {
     if (count($fieldNames) == 0) {
       $fieldNames = self::getColumnsList(self::table($table));
@@ -235,7 +236,7 @@ class Database
    * @param array $fieldNames
    * @return string
    */
-  public static function updateQuery(string $table, array $primaryKeys, array $fieldNames = [])
+  public static function updateQuery(string $table, array $primaryKeys, array $fieldNames = []): string
   {
     if (count($fieldNames) == 0) {
       $fieldList = self::getColumnsList($table);
@@ -268,7 +269,7 @@ class Database
    * @param array $primaryKeys
    * @return string
    */
-  public static function deleteOneQuery(string $table, array $primaryKeys)
+  public static function deleteOneQuery(string $table, array $primaryKeys): string
   {
     $sql =
       [
@@ -288,13 +289,14 @@ class Database
    * @param array $messages
    * @return bool
    */
-  public static function save(FormManager $form, $id, $model, array $messages): bool
+  public static function save(FormManager $form, ?string $id, $model, array $messages): bool
   {
     $success = false;
 
     if ($form->isValid()) {
       $message = null;
       $data = $form->getData();
+      var_dump($data);
       if ($id) {
         try {
           $model::update($data);
@@ -330,19 +332,19 @@ class Database
    * @param array $messages
    * @return bool
    */
-  public static function remove($id, $model, array $messages)
+  public static function remove($id, $model, array $messages): bool
   {
-    $success = false;
-
     if (!$id) {
-      return $success;
+      return false;
     }
+
+    $success = false;
 
     $data = null;
     try {
       $data = $model::getOne($id);
     } catch (\PDOException $ex) {
-      Tools::setFlash("Erreur SQL " . $ex->getMessage(),"danger");
+      Tools::setFlash("Erreur SQL " . $ex->getMessage(), "danger");
     }
 
     if (!$data) {
@@ -354,7 +356,7 @@ class Database
         $success = true;
       } catch (\PDOException $ex) {
         if ($ex->errorInfo[0] == "23000") {
-          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle" . "\n" . $ex->getMessage() , "warning");
+          Tools::setFlash($messages["integrity"] ?? "Erreur d'intégrité référentielle" . "\n" . $ex->getMessage(), "warning");
         } else {
           Tools::setFlash("Erreur SQL " . $ex->getMessage(), "danger");
         }
@@ -371,12 +373,12 @@ class Database
    * @param string $labelField
    * @return array
    */
-  public static function getTypes(string $table, string $valueField, string $labelField)
+  public static function getTypes(string $table, string $valueField, string $labelField): array
   {
     $rs = self::getPDO()->query(
       self::getAllQuery($table)
     );
-    $types = Tools::select($rs->fetchAll(PDO::FETCH_ASSOC),$valueField, $labelField);
+    $types = Tools::select($rs->fetchAll(PDO::FETCH_ASSOC), $valueField, $labelField);
 
     return array_merge(["" => "Base"], $types);
   }

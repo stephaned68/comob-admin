@@ -10,12 +10,12 @@ abstract class AbstractController
   /**
    * @var View
    */
-  private $view;
+  private View $view;
 
   /**
    * @var array
    */
-  private $queryParams = [];
+  private array $queryParams = [];
 
   /**
    * @param $layout

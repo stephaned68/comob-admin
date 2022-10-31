@@ -10,27 +10,27 @@ class Router
   /**
    * @var string
    */
-  private $route;
+  private string $route;
 
   /**
    * @var string
    */
-  private $controllerName = "HomeController";
+  private string $controllerName = "HomeController";
 
   /**
    * @var string
    */
-  private $actionName = "indexAction";
+  private string $actionName = "indexAction";
 
   /**
    * @var string
    */
-  private $getActionName = "getIndex";
+  private string $getActionName = "getIndex";
 
   /**
    * @var string
    */
-  private $postActionName = "postIndex";
+  private string $postActionName = "postIndex";
 
   /**
    * @var array
@@ -40,13 +40,13 @@ class Router
   /**
    * @var array
    */
-  private $queryParams = [];
+  private array $queryParams = [];
 
   /**
    * Router constructor.
    * @param string $route
    */
-  public function __construct($route)
+  public function __construct(string $route)
   {
     $this->route = $route;
 
@@ -81,7 +81,7 @@ class Router
   /**
    * @return string
    */
-  public function getRoute()
+  public function getRoute(): string
   {
     return $this->route;
   }
@@ -89,7 +89,7 @@ class Router
   /**
    * @return string
    */
-  public function getControllerName()
+  public function getControllerName(): string
   {
     return $this->controllerName;
   }
@@ -97,7 +97,7 @@ class Router
   /**
    * @return string
    */
-  public function getActionName()
+  public function getActionName(): string
   {
     return $this->actionName;
   }
@@ -121,7 +121,7 @@ class Router
   /**
    * @return array
    */
-  public function getActionParameters()
+  public function getActionParameters(): array
   {
     return $this->actionParameters;
   }
@@ -137,19 +137,19 @@ class Router
   /**
    * @var string
    */
-  public static $prefix = "index.php?route=";
+  public static string $prefix = "index.php?route=";
 
   /**
    * @param array $args
    * @param array $query
    * @return string
    */
-  public static function route($args = [], $query = [])
+  public static function route(array $args = [], array $query = []): string
   {
     $url = self::$prefix; // "/" or // "index.php?route="
     if (count($args) > 0) {
       foreach ($args as $argK => $argV) {
-        $args[$argK] = urlencode(trim($argV));
+        $args[$argK] = urlencode(trim($argV ?? ""));
       }
       $url .= implode("/", $args);
     }

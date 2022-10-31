@@ -1,7 +1,7 @@
+/**
+ * Use select2
+ */
 
-
-$(function() {
-
+$(function () {
   $('.select2-search--dropdown').select2();
-
 });

@@ -9,12 +9,12 @@ class View
   /**
    * @var string
    */
-  private $layout;
+  private string $layout;
 
   /**
    * @var array
    */
-  private $data = [];
+  private array $data = [];
 
   /**
    * View constructor.
@@ -61,7 +61,12 @@ class View
     return $this;
   }
 
-  private function getTemplateContent($template, $data = [])
+  /**
+   * @param $template
+   * @param array $data
+   * @return false|string
+   */
+  private function getTemplateContent($template, array $data = [])
   {
     ob_start();
 
@@ -72,7 +77,12 @@ class View
     return ob_get_clean();
   }
 
-  public function render($template, $data = [])
+  /**
+   * @param $template
+   * @param array $data
+   * @return false|string
+   */
+  public function render($template, array $data = [])
   {
     $pageContent = $this->getTemplateContent($template, $data);
     $data["content"] = $pageContent;

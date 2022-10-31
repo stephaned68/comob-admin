@@ -1,21 +1,12 @@
-// slugify description for new path
+/**
+ * slugify description for new path
+ */
 
-$(function() {
+$(function () {
+  makeSlug('voie', 'nom');
 
-  makeSlug("voie", "nom");
-  /*
-  var $voie = $("#voie");
-  var $nom = $('#nom');
-  $nom.blur(function() {
-    if ($nom.val() !== '' && $voie.val() === '') {
-      $voie.val(slugify($nom.val()));
-    }
-  });
-   */
-
-  var $notes = $("#notes");
-  $notes.blur(function() {
+  var $notes = $('#notes');
+  $notes.on('blur', function () {
     $notes.val(cleanText($notes.val()));
   });
-
 });

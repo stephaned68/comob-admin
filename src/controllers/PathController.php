@@ -18,7 +18,7 @@ class PathController extends AbstractController
   {
     $pathType = "*";
     if (FormManager::isSubmitted()) {
-      $pathType = filter_input(INPUT_POST, "filter_type", FILTER_SANITIZE_STRING);
+      $pathType = filter_input(INPUT_POST, "filter_type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
 
     $pathList = [];
@@ -38,13 +38,84 @@ class PathController extends AbstractController
         "title" => "Liste des voies",
         "pathTypes" => PathModel::getTypes(),
         "pathType" => $pathType,
-        "pathList" => $pathList
+        "pathList" => $pathList,
+        "fm" => $this->editForm(),
+        "path" => [],
       ]);
+  }
+
+  public function editForm() : FormManager
+  {
+    $form = new FormManager();
+    $form
+      ->setTitle("Maintenance des voies")
+      ->addField(
+        [
+          "name" => "voie",
+          "label" => "Identifiant",
+          "errorMessage" => "Identifiant non saisi",
+          "primeKey" => true
+        ]
+      )
+      ->addField(
+        [
+          "name" => "nom",
+          "label" => "Libellé",
+          "errorMessage" => "Libellé non saisi"
+        ]
+      )
+      ->addField(
+        [
+          "name" => "notes",
+          "label" => "Notes",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 8
+          ]
+        ]
+      )
+      ->addField(
+        [
+          "name" => "type",
+          "label" => "Type",
+          "errorMessage" => "Type non choisi",
+          "controlType" => "select",
+          "valueList" => PathModel::getTypes()
+        ]
+      )
+      ->addField(
+        [ // <Troumad>
+          "name" => "pfx_deladu",
+          "label" => "Préfixe",
+          "errorMessage" => "Préfixe non choisi",
+          "controlType" => "select",
+          "valueList" => [
+            "0" => "Voie du",
+            "1" => "Voie de la",
+            "2" => "Voie de l'",
+            "3" => "Voie des",
+          ]
+        ] // </Troumad>
+      )
+      ->setDeleteRoute(Router::route(["path", "delete", ""]));
+
+    return $form;
+  }
+
+  public function getAction($id)
+  {
+    $path = PathModel::getOne($id);
+    echo json_encode($path);
   }
 
   public function editAction($id = null)
   {
+
     $path = [];
+    if ($id) {
+      $path = PathModel::getOne($id);
+    }
 
     $form = new FormManager();
     $form
@@ -101,10 +172,6 @@ class PathController extends AbstractController
       ->setIndexRoute(Router::route(["path", "index"]))
       ->setDeleteRoute(Router::route(["path", "delete", $id]));
 
-    if ($id) {
-      $path = PathModel::getOne($id);
-    }
-
     if (FormManager::isSubmitted()) {
       if (Database::save(
         $form,
@@ -125,7 +192,7 @@ class PathController extends AbstractController
     $this->render("path/edit",
       [
         "path" => $path,
-        "fm" => $form
+        "fm" => $form,
       ]);
   }
 
@@ -187,7 +254,7 @@ class PathController extends AbstractController
     if ($path["rangs"] !== $maxRanks) {
       $path["rangs"] = $maxRanks;
     }
-    while (count($abilities) < 5) {
+    while (count($abilities) < $maxRanks) { // < 5
       $abilities[] = "";
     }
 
@@ -209,6 +276,7 @@ class PathController extends AbstractController
         "path" => $path,
         "capacites" => $abilities,
         "abilityList" => Tools::select(AbilityModel::getAllForType($path["type"]), "capacite", "nom"),
+        "maxRanks" => $maxRanks,
         "fm" => $form,
       ]);
   }

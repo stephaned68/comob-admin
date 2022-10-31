@@ -29,14 +29,14 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `coct_capacites`;
 CREATE TABLE IF NOT EXISTS `coct_capacites` (
-  `capacite` varchar(20) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `limitee` tinyint(1) DEFAULT NULL,
-  `sort` tinyint(1) DEFAULT NULL,
-  `type` varchar(5) DEFAULT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+    `capacite` VARCHAR(20) NOT NULL,
+    `nom` VARCHAR(50) NOT NULL,
+    `limitee` TINYINT(1) DEFAULT NULL,
+    `sort` TINYINT(1) DEFAULT NULL,
+    `type` VARCHAR(5) DEFAULT NULL,
+    `description` TEXT NOT NULL,
+    PRIMARY KEY (`capacite`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_capacites`
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `coct_capacites_voies` (
   PRIMARY KEY (`voie`,`rang`),
   KEY `coct_capacites_voies_voie` (`voie`),
   KEY `coct_capacites_voies_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_capacites_voies`
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `coct_categories_equipement` (
   `sequence` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`code`),
   KEY `coct_fk_categorie_parente_idx` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_categories_equipement`
@@ -305,7 +305,7 @@ CREATE TABLE IF NOT EXISTS `coct_categories_proprietes` (
   PRIMARY KEY (`code_categorie`,`code_propriete`),
   KEY `coct_categories_proprietes_categorie` (`code_categorie`),
   KEY `coct_categories_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_categories_proprietes`
@@ -348,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `coct_equipement` (
   PRIMARY KEY (`code`),
   KEY `coct_fk_categorie_equipement_idx` (`categorie`),
   KEY `coct_equipement_sequence_idx` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_equipement`
@@ -454,7 +454,7 @@ CREATE TABLE IF NOT EXISTS `coct_equipement_profils` (
   PRIMARY KEY (`profil`,`sequence`),
   KEY `coct_equipement_profils_profil` (`profil`),
   KEY `coct_equipement_profils_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_equipement_profils`
@@ -642,7 +642,7 @@ CREATE TABLE IF NOT EXISTS `coct_equipement_proprietes` (
   PRIMARY KEY (`code_equipement`,`code_propriete`),
   KEY `coct_equipement_proprietes_equipement` (`code_equipement`),
   KEY `coct_equipement_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_equipement_proprietes`
@@ -849,7 +849,7 @@ CREATE TABLE IF NOT EXISTS `coct_familles` (
   `famille` varchar(20) NOT NULL,
   `description` varchar(50) NOT NULL,
   PRIMARY KEY (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_familles`
@@ -875,7 +875,7 @@ CREATE TABLE IF NOT EXISTS `coct_profils` (
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
   KEY `coct_profils_famille` (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_profils`
@@ -918,7 +918,7 @@ CREATE TABLE IF NOT EXISTS `coct_profils_maitrises` (
   PRIMARY KEY (`profil`,`equipement`),
   KEY `coct_profils_maitrises_profil` (`profil`),
   KEY `coct_profils_maitrises_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_profils_maitrises`
@@ -1514,7 +1514,7 @@ CREATE TABLE IF NOT EXISTS `coct_profils_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `coct_profils_traits_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1528,7 +1528,7 @@ CREATE TABLE IF NOT EXISTS `coct_proprietes_equipement` (
   `intitule` varchar(50) NOT NULL,
   `defaut` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_proprietes_equipement`
@@ -1573,7 +1573,7 @@ CREATE TABLE IF NOT EXISTS `coct_races` (
   `poids_max` smallint(6) DEFAULT NULL,
   `type_race` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1588,7 +1588,7 @@ CREATE TABLE IF NOT EXISTS `coct_races_capacites` (
   PRIMARY KEY (`race`,`capacite`),
   KEY `coct_races_capacites_race` (`race`),
   KEY `coct_races_capacites_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1604,7 +1604,7 @@ CREATE TABLE IF NOT EXISTS `coct_races_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`race`,`sequence`),
   KEY `coct_races_traits_race` (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1618,7 +1618,7 @@ CREATE TABLE IF NOT EXISTS `coct_types_capacite` (
   `type_capacite_intitule` varchar(50) NOT NULL,
   `type_capacite_config` text DEFAULT NULL,
   PRIMARY KEY (`type_capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1632,7 +1632,7 @@ CREATE TABLE IF NOT EXISTS `coct_types_races` (
   `type_race_intitule` varchar(50) NOT NULL,
   `type_race_config` text DEFAULT NULL,
   PRIMARY KEY (`type_race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1646,7 +1646,7 @@ CREATE TABLE IF NOT EXISTS `coct_types_voie` (
   `type_voie_intitule` varchar(50) NOT NULL,
   `type_voie_config` text DEFAULT NULL,
   PRIMARY KEY (`type_voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -1662,7 +1662,7 @@ CREATE TABLE IF NOT EXISTS `coct_voies` (
   `type` varchar(5) DEFAULT NULL,
   `pfx_deladu` char(1) NOT NULL,
   PRIMARY KEY (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_voies`
@@ -1702,7 +1702,7 @@ CREATE TABLE IF NOT EXISTS `coct_voies_profils` (
   PRIMARY KEY (`profil`,`voie`),
   KEY `coct_voies_profils_profil` (`profil`),
   KEY `coct_voies_profils_voie` (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coct_voies_profils`
@@ -1791,7 +1791,7 @@ CREATE TABLE IF NOT EXISTS `cocy_capacites` (
   `type` varchar(5) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_capacites`
@@ -2081,7 +2081,7 @@ CREATE TABLE IF NOT EXISTS `cocy_capacites_voies` (
   PRIMARY KEY (`voie`,`rang`),
   KEY `cocy_capacites_voies_voie` (`voie`),
   KEY `cocy_capacites_voies_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_capacites_voies`
@@ -2378,7 +2378,7 @@ CREATE TABLE IF NOT EXISTS `cocy_categories_equipement` (
   `sequence` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`code`),
   KEY `cocy_categories_equipement_parent` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_categories_equipement`
@@ -2413,7 +2413,7 @@ CREATE TABLE IF NOT EXISTS `cocy_categories_proprietes` (
   PRIMARY KEY (`code_categorie`,`code_propriete`),
   KEY `cocy_categories_proprietes_categorie` (`code_categorie`),
   KEY `cocy_categories_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_categories_proprietes`
@@ -2457,7 +2457,7 @@ CREATE TABLE IF NOT EXISTS `cocy_equipement` (
   PRIMARY KEY (`code`),
   KEY `cocy_equipement_categorie` (`categorie`),
   KEY `cocy_equipement_sequence_idx` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_equipement`
@@ -2589,7 +2589,7 @@ CREATE TABLE IF NOT EXISTS `cocy_equipement_profils` (
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cocy_equipement_profils_equipement` (`equipement`),
   KEY `cocy_equipement_profils_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_equipement_profils`
@@ -2656,7 +2656,7 @@ CREATE TABLE IF NOT EXISTS `cocy_equipement_proprietes` (
   PRIMARY KEY (`code_equipement`,`code_propriete`),
   KEY `cocy_equipement_proprietes_equipement` (`code_equipement`),
   KEY `cocy_equipement_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_equipement_proprietes`
@@ -2915,7 +2915,7 @@ CREATE TABLE IF NOT EXISTS `cocy_familles` (
   `famille` varchar(20) NOT NULL,
   `description` varchar(50) NOT NULL,
   PRIMARY KEY (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_familles`
@@ -2940,7 +2940,7 @@ CREATE TABLE IF NOT EXISTS `cocy_profils` (
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
   KEY `cocy_profils_famille` (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_profils`
@@ -2969,7 +2969,7 @@ CREATE TABLE IF NOT EXISTS `cocy_profils_maitrises` (
   PRIMARY KEY (`profil`,`equipement`),
   KEY `cocy_profils_maitrises_profil` (`profil`),
   KEY `cocy_profils_maitrises_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_profils_maitrises`
@@ -3617,7 +3617,7 @@ CREATE TABLE IF NOT EXISTS `cocy_profils_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cocy_profils_traits_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -3631,7 +3631,7 @@ CREATE TABLE IF NOT EXISTS `cocy_proprietes_equipement` (
   `intitule` varchar(50) NOT NULL,
   `defaut` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_proprietes_equipement`
@@ -3676,7 +3676,7 @@ CREATE TABLE IF NOT EXISTS `cocy_races` (
   `poids_max` smallint(6) DEFAULT NULL,
   `type_race` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_races`
@@ -3701,7 +3701,7 @@ CREATE TABLE IF NOT EXISTS `cocy_races_capacites` (
   PRIMARY KEY (`race`,`capacite`),
   KEY `cocy_races_capacites_race` (`race`),
   KEY `cocy_races_capacites_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_races_capacites`
@@ -3727,7 +3727,7 @@ CREATE TABLE IF NOT EXISTS `cocy_races_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`race`,`sequence`),
   KEY `cocy_races_traits_race` (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_races_traits`
@@ -3751,7 +3751,7 @@ CREATE TABLE IF NOT EXISTS `cocy_types_capacite` (
   `type_capacite_intitule` varchar(50) NOT NULL,
   `type_capacite_config` text DEFAULT NULL,
   PRIMARY KEY (`type_capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_types_capacite`
@@ -3774,7 +3774,7 @@ CREATE TABLE IF NOT EXISTS `cocy_types_races` (
   `type_race_intitule` varchar(50) NOT NULL,
   `type_race_config` text DEFAULT NULL,
   PRIMARY KEY (`type_race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -3788,7 +3788,7 @@ CREATE TABLE IF NOT EXISTS `cocy_types_voie` (
   `type_voie_intitule` varchar(50) NOT NULL,
   `type_voie_config` text DEFAULT NULL,
   PRIMARY KEY (`type_voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_types_voie`
@@ -3813,7 +3813,7 @@ CREATE TABLE IF NOT EXISTS `cocy_voies` (
   `type` varchar(5) DEFAULT NULL,
   `pfx_deladu` char(1) NOT NULL,
   PRIMARY KEY (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_voies`
@@ -3893,7 +3893,7 @@ CREATE TABLE IF NOT EXISTS `cocy_voies_profils` (
   PRIMARY KEY (`profil`,`voie`),
   KEY `cocy_voies_profils_voie` (`voie`),
   KEY `cocy_voies_profils_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cocy_voies_profils`
@@ -3948,7 +3948,7 @@ CREATE TABLE IF NOT EXISTS `coc_capacites` (
   `type` varchar(5) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_capacites`
@@ -4544,7 +4544,7 @@ CREATE TABLE IF NOT EXISTS `coc_capacites_voies` (
   PRIMARY KEY (`voie`,`rang`),
   KEY `coc_capacites_voies_voie` (`voie`),
   KEY `coc_capacites_voies_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_capacites_voies`
@@ -5135,7 +5135,7 @@ CREATE TABLE IF NOT EXISTS `coc_categories_equipement` (
   `sequence` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`code`),
   KEY `coc_categories_equipemet_parent` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_categories_equipement`
@@ -5168,7 +5168,7 @@ CREATE TABLE IF NOT EXISTS `coc_categories_proprietes` (
   PRIMARY KEY (`code_categorie`,`code_propriete`),
   KEY `coc_categories_proprietes_categorie` (`code_categorie`),
   KEY `coc_categories_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_categories_proprietes`
@@ -5211,7 +5211,7 @@ CREATE TABLE IF NOT EXISTS `coc_equipement` (
   PRIMARY KEY (`code`),
   KEY `coc_equipement_categorie` (`categorie`),
   KEY `coc_equipement_sequence_idx` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_equipement`
@@ -5317,7 +5317,7 @@ CREATE TABLE IF NOT EXISTS `coc_equipement_profils` (
   PRIMARY KEY (`profil`,`sequence`),
   KEY `coc_equipement_profils_equipement` (`equipement`),
   KEY `coc_equipement_profils_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_equipement_profils`
@@ -5564,7 +5564,7 @@ CREATE TABLE IF NOT EXISTS `coc_equipement_proprietes` (
   PRIMARY KEY (`code_equipement`,`code_propriete`),
   KEY `coc_equipement_proprietes_equipement` (`code_equipement`),
   KEY `coc_equipement_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_equipement_proprietes`
@@ -5771,7 +5771,7 @@ CREATE TABLE IF NOT EXISTS `coc_familles` (
   `famille` varchar(20) NOT NULL,
   `description` varchar(50) NOT NULL,
   PRIMARY KEY (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_familles`
@@ -5799,7 +5799,7 @@ CREATE TABLE IF NOT EXISTS `coc_profils` (
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
   KEY `coc_profils_famille` (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_profils`
@@ -5876,7 +5876,7 @@ CREATE TABLE IF NOT EXISTS `coc_profils_maitrises` (
   PRIMARY KEY (`profil`,`equipement`),
   KEY `coc_profils_maitrises_profil` (`profil`),
   KEY `coc_profils_maitrises_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_profils_maitrises`
@@ -10492,7 +10492,7 @@ CREATE TABLE IF NOT EXISTS `coc_profils_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `coc_profils_traits_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_profils_traits`
@@ -10564,7 +10564,7 @@ CREATE TABLE IF NOT EXISTS `coc_proprietes_equipement` (
   `intitule` varchar(50) NOT NULL,
   `defaut` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_proprietes_equipement`
@@ -10609,7 +10609,7 @@ CREATE TABLE IF NOT EXISTS `coc_races` (
   `poids_max` smallint(6) DEFAULT NULL,
   `type_race` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -10624,7 +10624,7 @@ CREATE TABLE IF NOT EXISTS `coc_races_capacites` (
   PRIMARY KEY (`race`,`capacite`),
   KEY `coc_races_capacites_race` (`race`),
   KEY `coc_races_capacites_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -10640,7 +10640,7 @@ CREATE TABLE IF NOT EXISTS `coc_races_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`race`,`sequence`),
   KEY `coc_races_traits_race` (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -10654,7 +10654,7 @@ CREATE TABLE IF NOT EXISTS `coc_types_capacite` (
   `type_capacite_intitule` varchar(50) NOT NULL,
   `type_capacite_config` text DEFAULT NULL,
   PRIMARY KEY (`type_capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_types_capacite`
@@ -10676,7 +10676,7 @@ CREATE TABLE IF NOT EXISTS `coc_types_races` (
   `type_race_intitule` varchar(50) NOT NULL,
   `type_race_config` text DEFAULT NULL,
   PRIMARY KEY (`type_race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -10690,7 +10690,7 @@ CREATE TABLE IF NOT EXISTS `coc_types_voie` (
   `type_voie_intitule` varchar(50) NOT NULL,
   `type_voie_config` text DEFAULT NULL,
   PRIMARY KEY (`type_voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_types_voie`
@@ -10714,7 +10714,7 @@ CREATE TABLE IF NOT EXISTS `coc_voies` (
   `type` varchar(5) DEFAULT NULL,
   `pfx_deladu` char(1) NOT NULL,
   PRIMARY KEY (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_voies`
@@ -10854,7 +10854,7 @@ CREATE TABLE IF NOT EXISTS `coc_voies_profils` (
   PRIMARY KEY (`profil`,`voie`),
   KEY `coc_voies_profils_profil` (`profil`),
   KEY `coc_voies_profils_voie` (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `coc_voies_profils`
@@ -11102,7 +11102,7 @@ CREATE TABLE IF NOT EXISTS `cof_capacites` (
   `type` varchar(5) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_capacites`
@@ -12053,7 +12053,7 @@ CREATE TABLE IF NOT EXISTS `cof_capacites_voies` (
   PRIMARY KEY (`voie`,`rang`),
   KEY `cof_capacites_voies_voie` (`voie`),
   KEY `cof_capacites_voies_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_capacites_voies`
@@ -12963,7 +12963,7 @@ CREATE TABLE IF NOT EXISTS `cof_categories_equipement` (
   PRIMARY KEY (`code`),
   KEY `cof_fk_categorie_parente_idx` (`parent`),
   KEY `cof_categorie_sequence` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_categories_equipement`
@@ -12998,7 +12998,7 @@ CREATE TABLE IF NOT EXISTS `cof_categories_proprietes` (
   PRIMARY KEY (`code_categorie`,`code_propriete`),
   KEY `cof_categories_proprietes_categorie` (`code_categorie`),
   KEY `cof_categories_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_categories_proprietes`
@@ -13041,7 +13041,7 @@ CREATE TABLE IF NOT EXISTS `cof_equipement` (
   PRIMARY KEY (`code`),
   KEY `cof_fk_categorie_equipement_idx` (`categorie`),
   KEY `cof_equipement_sequence` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_equipement`
@@ -13158,7 +13158,7 @@ CREATE TABLE IF NOT EXISTS `cof_equipement_profils` (
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cof_equipement_profils_profil` (`profil`),
   KEY `cof_equipement_profils_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_equipement_profils`
@@ -13380,7 +13380,7 @@ CREATE TABLE IF NOT EXISTS `cof_equipement_proprietes` (
   PRIMARY KEY (`code_equipement`,`code_propriete`),
   KEY `cof_equipement_proprietes_equipement` (`code_equipement`),
   KEY `cof_equipement_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_equipement_proprietes`
@@ -13503,7 +13503,7 @@ CREATE TABLE IF NOT EXISTS `cof_familles` (
   `famille` varchar(20) NOT NULL,
   `description` varchar(50) NOT NULL,
   PRIMARY KEY (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_familles`
@@ -13534,7 +13534,7 @@ CREATE TABLE IF NOT EXISTS `cof_profils` (
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
   KEY `cof_profils_famille` (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_profils`
@@ -13610,7 +13610,7 @@ CREATE TABLE IF NOT EXISTS `cof_profils_maitrises` (
   PRIMARY KEY (`profil`,`equipement`),
   KEY `cof_profils_maitrises_profil` (`profil`),
   KEY `cof_profils_maitrises_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_profils_maitrises`
@@ -16520,7 +16520,7 @@ CREATE TABLE IF NOT EXISTS `cof_profils_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cof_profils_traits_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -16534,7 +16534,7 @@ CREATE TABLE IF NOT EXISTS `cof_proprietes_equipement` (
   `intitule` varchar(50) NOT NULL,
   `defaut` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_proprietes_equipement`
@@ -16575,7 +16575,7 @@ CREATE TABLE IF NOT EXISTS `cof_races` (
   `poids_max` smallint(6) DEFAULT NULL,
   `type_race` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_races`
@@ -16620,7 +16620,7 @@ CREATE TABLE IF NOT EXISTS `cof_races_capacites` (
   PRIMARY KEY (`race`,`capacite`),
   KEY `cof_races_capacites_race` (`race`),
   KEY `cof_races_capacites_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_races_capacites`
@@ -16698,7 +16698,7 @@ CREATE TABLE IF NOT EXISTS `cof_races_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`race`,`sequence`),
   KEY `cof_races_traits_race` (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_races_traits`
@@ -16814,7 +16814,7 @@ CREATE TABLE IF NOT EXISTS `cof_types_capacite` (
   `type_capacite_intitule` varchar(50) NOT NULL,
   `type_capacite_config` text DEFAULT NULL,
   PRIMARY KEY (`type_capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_types_capacite`
@@ -16838,7 +16838,7 @@ CREATE TABLE IF NOT EXISTS `cof_types_races` (
   `type_race_intitule` varchar(50) NOT NULL,
   `type_race_config` text DEFAULT NULL,
   PRIMARY KEY (`type_race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_types_races`
@@ -16860,7 +16860,7 @@ CREATE TABLE IF NOT EXISTS `cof_types_voie` (
   `type_voie_intitule` varchar(50) NOT NULL,
   `type_voie_config` text DEFAULT NULL,
   PRIMARY KEY (`type_voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_types_voie`
@@ -16885,7 +16885,7 @@ CREATE TABLE IF NOT EXISTS `cof_voies` (
   `type` varchar(5) DEFAULT NULL,
   `pfx_deladu` char(1) NOT NULL,
   PRIMARY KEY (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_voies`
@@ -17089,7 +17089,7 @@ CREATE TABLE IF NOT EXISTS `cof_voies_profils` (
   PRIMARY KEY (`profil`,`voie`),
   KEY `cof_voies_profils_profil` (`profil`),
   KEY `cof_voies_profils_voie` (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cof_voies_profils`
@@ -17390,7 +17390,7 @@ CREATE TABLE IF NOT EXISTS `cota_capacites` (
   `type` varchar(5) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_capacites`
@@ -17672,7 +17672,7 @@ CREATE TABLE IF NOT EXISTS `cota_capacites_voies` (
   PRIMARY KEY (`voie`,`rang`),
   KEY `cota_capacites_voies_voie` (`voie`),
   KEY `cota_capacites_voies_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_capacites_voies`
@@ -17939,7 +17939,7 @@ CREATE TABLE IF NOT EXISTS `cota_categories_equipement` (
   `sequence` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`code`),
   KEY `cota_fk_categorie_parente_idx` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_categories_equipement`
@@ -17981,7 +17981,7 @@ CREATE TABLE IF NOT EXISTS `cota_categories_proprietes` (
   PRIMARY KEY (`code_categorie`,`code_propriete`),
   KEY `cota_categories_proprietes_categorie` (`code_categorie`),
   KEY `cota_categories_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_categories_proprietes`
@@ -18008,7 +18008,7 @@ CREATE TABLE IF NOT EXISTS `cota_equipement` (
   PRIMARY KEY (`code`),
   KEY `cota_fk_categorie_equipement_idx` (`categorie`),
   KEY `cota_equipement_sequence_idx` (`sequence`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_equipement`
@@ -18033,7 +18033,7 @@ CREATE TABLE IF NOT EXISTS `cota_equipement_profils` (
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cota_equipement_profils_profil` (`profil`),
   KEY `cota_equipement_profils_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -18049,7 +18049,7 @@ CREATE TABLE IF NOT EXISTS `cota_equipement_proprietes` (
   PRIMARY KEY (`code_equipement`,`code_propriete`),
   KEY `cota_equipement_proprietes_equipement` (`code_equipement`),
   KEY `cota_equipement_proprietes_propriete` (`code_propriete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -18062,7 +18062,7 @@ CREATE TABLE IF NOT EXISTS `cota_familles` (
   `famille` varchar(20) NOT NULL,
   `description` varchar(50) NOT NULL,
   PRIMARY KEY (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_familles`
@@ -18088,7 +18088,7 @@ CREATE TABLE IF NOT EXISTS `cota_profils` (
   `type` char(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`profil`),
   KEY `cota_profils_famille` (`famille`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_profils`
@@ -18160,7 +18160,7 @@ CREATE TABLE IF NOT EXISTS `cota_profils_maitrises` (
   PRIMARY KEY (`profil`,`equipement`),
   KEY `cota_profils_maitrises_profil` (`profil`),
   KEY `cota_profils_maitrises_equipement` (`equipement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -18176,7 +18176,7 @@ CREATE TABLE IF NOT EXISTS `cota_profils_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`profil`,`sequence`),
   KEY `cota_profils_traits_profil` (`profil`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_profils_traits`
@@ -18263,7 +18263,7 @@ CREATE TABLE IF NOT EXISTS `cota_proprietes_equipement` (
   `intitule` varchar(50) NOT NULL,
   `defaut` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_proprietes_equipement`
@@ -18305,7 +18305,7 @@ CREATE TABLE IF NOT EXISTS `cota_races` (
   `poids_max` smallint(6) DEFAULT NULL,
   `type_race` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_races`
@@ -18334,7 +18334,7 @@ CREATE TABLE IF NOT EXISTS `cota_races_capacites` (
   PRIMARY KEY (`race`,`capacite`),
   KEY `cota_races_capacites_race` (`race`),
   KEY `cota_races_capacites_capacite` (`capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_races_capacites`
@@ -18361,7 +18361,7 @@ CREATE TABLE IF NOT EXISTS `cota_races_traits` (
   `description` text NOT NULL,
   PRIMARY KEY (`race`,`sequence`),
   KEY `cota_races_traits_race` (`race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_races_traits`
@@ -18394,7 +18394,7 @@ CREATE TABLE IF NOT EXISTS `cota_types_capacite` (
   `type_capacite_intitule` varchar(50) NOT NULL,
   `type_capacite_config` text DEFAULT NULL,
   PRIMARY KEY (`type_capacite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_types_capacite`
@@ -18418,7 +18418,7 @@ CREATE TABLE IF NOT EXISTS `cota_types_races` (
   `type_race_intitule` varchar(50) NOT NULL,
   `type_race_config` text DEFAULT NULL,
   PRIMARY KEY (`type_race`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- --------------------------------------------------------
 
@@ -18432,7 +18432,7 @@ CREATE TABLE IF NOT EXISTS `cota_types_voie` (
   `type_voie_intitule` varchar(50) NOT NULL,
   `type_voie_config` text DEFAULT NULL,
   PRIMARY KEY (`type_voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_types_voie`
@@ -18457,7 +18457,7 @@ CREATE TABLE IF NOT EXISTS `cota_voies` (
   `type` varchar(5) DEFAULT NULL,
   `pfx_deladu` char(1) NOT NULL,
   PRIMARY KEY (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_voies`
@@ -18528,7 +18528,7 @@ CREATE TABLE IF NOT EXISTS `cota_voies_profils` (
   PRIMARY KEY (`profil`,`voie`),
   KEY `cota_voies_profils_profil` (`profil`),
   KEY `cota_voies_profils_voie` (`voie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 --
 -- Dumping data for table `cota_voies_profils`

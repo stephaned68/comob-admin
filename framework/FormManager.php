@@ -10,27 +10,27 @@ class FormManager
   /**
    * @var string
    */
-  private $title;
+  private string $title;
 
   /**
    * @var string
    */
-  private $entity;
+  private string $entity;
 
   /**
    * @var array
    */
-  private $formFields;
+  private array $formFields;
 
   /**
    * @var string
    */
-  private $indexRoute;
+  private string $indexRoute;
 
   /**
    * @var string
    */
-  private $deleteRoute;
+  private string $deleteRoute;
 
   /**
    * @return string
@@ -53,7 +53,7 @@ class FormManager
   /**
    * @return string
    */
-  public function getEntity()
+  public function getEntity(): string
   {
     return $this->entity;
   }
@@ -126,7 +126,7 @@ class FormManager
    * @param array $submits
    * @return bool
    */
-  public static function isSubmitted($submits = [ "submit", "close" ])
+  public static function isSubmitted(array $submits = ["submit", "close"]): bool
   {
     $submitted = false;
     foreach ($submits as $submit) {
@@ -144,13 +144,13 @@ class FormManager
    * @param $props
    * @return FormManager
    */
-  public function addField($props)
+  public function addField($props): FormManager
   {
     $field = new FormField();
     $field
       ->setName($props["name"] ?? "")
       ->setLabel($props["label"] ?? $props["name"])
-      ->setFilter($props["filter"] ?? FILTER_SANITIZE_STRING)
+      ->setFilter($props["filter"] ?? FILTER_SANITIZE_FULL_SPECIAL_CHARS)
       ->setRequired($props["required"] ?? false)
       ->setDefaultValue($props["defaultValue"] ?? "")
       ->setErrorMessage($props["errorMessage"] ?? ($props['label'] ?? $props["name"]) . " non saisi(e)")
@@ -158,8 +158,7 @@ class FormManager
       ->setCssClass($props["cssClass"] ?? FormField::getDefaultCSS($field->getControlType()))
       ->setPrimeKey($props["primeKey"] ?? false)
       ->setValueList($props["valueList"] ?? [])
-      ->setSize($props["size"] ?? [])
-    ;
+      ->setSize($props["size"] ?? []);
 
     $this->formFields[$props["name"]] = $field;
 
@@ -171,7 +170,7 @@ class FormManager
    * @param $name
    * @return FormField
    */
-  public function getField($name)
+  public function getField($name): FormField
   {
     return $this->formFields[$name];
   }
@@ -180,7 +179,7 @@ class FormManager
    * Check if form is valid
    * @return bool
    */
-  public function isValid()
+  public function isValid(): bool
   {
     return (count($this->validateForm()) == 0);
   }
@@ -189,7 +188,7 @@ class FormManager
    * Check form fields and return a list of errors, if any
    * @return array
    */
-  public function validateForm()
+  public function validateForm(): array
   {
     $errorList = [];
 
@@ -197,7 +196,7 @@ class FormManager
       $fieldValue = filter_input(INPUT_POST, $field->getName(), $field->getFilter());
       if (trim($fieldValue) === "") {
         if ($field->isPrimeKey() || $field->isRequired()) {
-          array_push($errorList, $field->getErrorMessage());
+          $errorList[] = $field->getErrorMessage();
         }
       }
     }
@@ -209,7 +208,7 @@ class FormManager
    * Convert POSTed data to an associative array
    * @return array
    */
-  public function getData()
+  public function getData(): array
   {
 
     $formData = [];
@@ -232,10 +231,10 @@ class FormManager
   /**
    * Generate HTML chunk for field
    * @param FormField $field
-   * @param $data
+   * @param array $data
    * @return false|string
    */
-  private function renderHTML(FormField $field, $data)
+  private function renderHTML(FormField $field, array $data): string
   {
     $name = $field->getName();
     $value = null;
@@ -250,7 +249,7 @@ class FormManager
    * @param array $data
    * @return string
    */
-  public function render($data = [])
+  public function render(array $data = []): string
   {
     $formHTML = "";
 
@@ -267,7 +266,7 @@ class FormManager
    * @param array $data
    * @return false|string
    */
-  public function renderField($fieldName, $data = [])
+  public function renderField($fieldName, array $data = []): string
   {
     $formHTML = "";
 
@@ -286,7 +285,7 @@ class FormManager
    * @param array $data
    * @return false|string
    */
-  public function renderButtons($data = [])
+  public function renderButtons(array $data = []): string
   {
     $empty = (count($data) == 0);
 
@@ -312,7 +311,5 @@ class FormManager
     require VIEWS_PATH . "/_fragments/form-buttons.phtml";
 
     return ob_get_clean();
-
   }
-
 }

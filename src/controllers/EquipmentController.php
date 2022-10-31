@@ -18,7 +18,7 @@ class EquipmentController extends AbstractController
   {
     $categoryFilter = "*";
     if (FormManager::isSubmitted()) {
-      $categoryFilter = filter_input(INPUT_POST, "filter_category", FILTER_SANITIZE_STRING);
+      $categoryFilter = filter_input(INPUT_POST, "filter_category", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
 
     $equipmentList = [];
@@ -179,7 +179,7 @@ class EquipmentController extends AbstractController
 
     $propsForm = new FormManager();
     foreach ($propertyList as $property) {
-      $default = $property["defaut"];
+      $default = $property["defaut"] ?? "";
       if (strpos($default,"[") == 0
         && strpos($default,"]") == strlen($default) - 1) {
         $valueList = explode(",", substr($default,1, -1));

@@ -6,6 +6,15 @@
 function slugify(s) {
   return s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, "") //remove diacritics
     .toLowerCase()
+    .replace(' les ', ' ')
+    .replace(' le ',  ' ')
+    .replace(' la ',  ' ')
+    .replace(' des ', ' ')
+    .replace(' de ',  ' ')
+    .replace(' du ',  ' ')
+    .replace(' une ', ' ')
+    .replace(' un ',  ' ')
+    .replace(' au ',  ' ')
     .replace(/\s+/g, '-') //spaces to dashes
     .replace(/&/g, '-and-') //ampersand to and
     .replace(/[^\w\-]+/g, '') //remove non-words
@@ -63,7 +72,7 @@ function confirmDelete() {
 function makeSlug(idField, nameField) {
   var $id = $(`#${idField}`);
   var $name = $(`#${nameField}`);
-  $name.blur(function() {
+  $name.on("blur", function() {
     if ($name.val() !== '' && $id.val() === '') {
       $id.val(slugify($name.val()));
     }
@@ -103,5 +112,35 @@ function deleteItem(tableId, deleteBtClass, confirm) {
     }
     const $row = $(this).parent().parent();
     $row.remove();
+  });
+}
+
+/**
+ * Load modal form with data
+ * @param url
+ * @param fields
+ * @param formId
+ */
+function loadModalForm(url, fields, formId) {
+  formId = formId || 'editPopup';
+  $.get(url, function (response) {
+    const modal = $(`#${ formId }`);
+    const data = JSON.parse(response);
+    fields.forEach(field => {
+      modal.find(`.modal-body .form-group #${ field }`).val(data[field]);
+    });
+    // setup submit target
+    let submitUrl=url;
+    submitUrl = submitUrl.split('/');
+    submitUrl[2]='edit';
+    submitUrl = submitUrl.join('/');
+    modal.find('.modal-body form').attr('action',submitUrl);
+    // setup delete URL
+    let deleteUrl = modal.find('.modal-body .form-group .btn-danger').attr('href');
+    deleteUrl = deleteUrl.split('/')
+    deleteUrl.pop();
+    deleteUrl.push(url.split('/')[3]);
+    deleteUrl = deleteUrl.join('/');
+    modal.find('.modal-body .form-group .btn-danger').attr('href', deleteUrl);
   });
 }

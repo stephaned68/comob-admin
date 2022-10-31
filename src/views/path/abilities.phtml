@@ -6,7 +6,7 @@
 
     <?= $fm->render($path) ?>
 
-    <?php for ($r = 0; $r < 5; $r++) : ?>
+    <?php for ($r = 0; $r < $maxRanks; $r++) : ?>
       <div class="form-group">
         <label for="rang<?= $r ?>">Rang <?= $r + 1 ?></label>
         <select id="rang<?= $r ?>"

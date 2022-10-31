@@ -76,7 +76,7 @@ class AbilityController extends AbstractController
       ->addField(
         [
           "name" => "sort",
-          "label" => "Sort ?",
+          "label" => ($_SESSION["dataset"]["id"] == 'cog') ? "Vaisseau" : "Sort",
           "controlType" => "checkbox"
         ]
       )
@@ -143,6 +143,76 @@ class AbilityController extends AbstractController
     Router::redirectTo([($success ? "ability" : "home"), "index"]);
   }
 
+  private function processAbilityName(array $params) : array
+  {
+    $abilityName = "";
+    $extra = "";
+    $limited = 0;
+    $spell = 0;
+
+    extract($params);
+
+    if (substr($abilityName, -1) === "*") {
+      $spell = 1;
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 1);
+    }
+    if (substr($abilityName, -5) === " (L*)") {
+      $limited = 1;
+      $spell = 1;
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 5);
+    }
+    if (substr($abilityName, -4) === " (L)") {
+      $limited = 1;
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 4);
+    }
+    if (substr($abilityName, -10) === " (L - PER)") {
+      $limited = 1;
+      $extra = " (PER)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
+    }
+    if (substr($abilityName, -10) === " (L - CHA)") {
+      $limited = 1;
+      $extra = " (CHA)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
+    }
+    if (substr($abilityName, -5) === " (A*)") {
+      $spell = 1;
+      $extra = " (A)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 5);
+    }
+    if (substr($abilityName, -4) === " (A)") {
+      $extra = " (A)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 4);
+    }
+    if (substr($abilityName, -10) === " (A - PER)") {
+      $extra = " (A:PER)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
+    }
+    if (substr($abilityName, -10) === " (A - CHA)") {
+    $extra = " (A:CHA)";
+    $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
+    }
+    if (substr($abilityName, -5) === " (M*)") {
+      $spell = 1;
+      $extra = " (M)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 5);
+    }
+    if (substr($abilityName, -4) === " (M)") {
+      $extra = " (M)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 4);
+    }
+    if (substr($abilityName, -10) === " (M - PER)") {
+      $extra = " (M:PER)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
+    }
+    if (substr($abilityName, -10) === " (M - CHA)") {
+      $extra = " (M:CHA)";
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
+    }
+
+    return compact([ "abilityName", "extra", "limited", "spell" ]);
+  }
+
   public function multipleAction()
   {
 
@@ -201,17 +271,14 @@ class AbilityController extends AbstractController
         $rank = substr($fullPath, $startAt + 1, $endsAt - $startAt - 1);
         $fullPath = substr($fullPath, $endsAt - 1);
         $rankParts = explode(" : ", $rank);
-        $rankParts[0] = substr($rankParts[0],3);
-        if (substr($rankParts[0], -1) === "*") {
-          $spell = 1;
-          $rankParts[0] = substr($rankParts[0], 0, strlen($rankParts[0]) - 1);
-        }
-        if (substr($rankParts[0], -4) === " (L)") {
-          $limited = 1;
-          $rankParts[0] = substr($rankParts[0], 0, strlen($rankParts[0]) - 4);
-        }
-        $slug = iconv('UTF-8','ASCII//TRANSLIT', $rankParts[0]);
-        $slug = str_replace([ " ", "'", "`", "^" ], [ "-" ], $slug);
+        $abilityName = substr($rankParts[0],3);
+        $extra = "";
+        $limited = 0;
+        $spell = 0;
+        $result = $this->processAbilityName(compact([ "abilityName", "extra", "limited", "spell" ]));
+        extract($result);
+        $slug = iconv('UTF-8','ASCII//TRANSLIT', $abilityName);
+        $slug = str_replace([ " ", "'", "`", "^", "/" ], [ "-" ], $slug);
         $slug = strtolower($slug);
         if (!AbilityModel::getOne($slug)) {
           $description = $rankParts[1];
@@ -219,14 +286,14 @@ class AbilityController extends AbstractController
             $description .= " : " . $rankParts[2];
           $data = [
             "capacite" => $slug,
-            "nom" => $rankParts[0],
+            "nom" => $abilityName . $extra,
             "limitee" => $limited ?? 0,
             "sort" => $spell ?? 0,
             "type" => $pathData["type"],
             "description" => $description
           ];
           AbilityModel::insert($data);
-          Tools::setFlash("La capacité '{$rankParts[0]}' a été ajoutée avec succès", "success");
+          Tools::setFlash("La capacité '{$abilityName}' a été ajoutée avec succès", "success");
         } else {
           Tools::setFlash("L'identifiant de capacité '$slug' existe déjà", "warning");
         }
@@ -234,7 +301,7 @@ class AbilityController extends AbstractController
       }
       $abilities["capacites"] = $slugs;
       PathModel::saveAbilities($abilities);
-      Router::redirectTo(["ability", "index"]);
+      Router::redirectTo(["path", "abilities", $path]);
       return;
     }
 

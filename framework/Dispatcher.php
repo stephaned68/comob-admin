@@ -9,12 +9,12 @@ class Dispatcher
   /**
    * @var Router
    */
-  private $router;
+  private Router $router;
 
   /**
    * @var string
    */
-  private $nameSpace;
+  private string $nameSpace;
 
   /**
    * Dispatcher constructor.
@@ -49,6 +49,12 @@ class Dispatcher
     }
     if (method_exists($controllerInstance, $method)) {
       $action = $method;
+    }
+
+    // try database connection
+    $dbo = Database::getPDO();
+    if ($dbo == null) {
+      Tools::setFlash("Please start the database server and check the database credentials", "danger");
     }
 
     call_user_func_array(

@@ -6,14 +6,17 @@ use framework\Dispatcher;
 use framework\Tools;
 
 define("ROOT_PATH", dirname(__DIR__));
-define("MODELS_PATH", dirname(__DIR__) . "/src/models");
-define("VIEWS_PATH", dirname(__DIR__) . "/src/views");
-define("CONTROLLERS_PATH", dirname(__DIR__) . "/src/controllers");
-define("PUBLIC_PATH", dirname(__DIR__) . "/public");
+const MODELS_PATH = ROOT_PATH . "/src/models";
+const VIEWS_PATH = ROOT_PATH . "/src/views";
+const CONTROLLERS_PATH = ROOT_PATH . "/src/controllers";
+const PUBLIC_PATH = ROOT_PATH . "/public";
 
-const DATABASE = "comobdb";
+const DBHOST = "localhost";
+const DBUSER = "root";
+const DBPASS = "";
+const DBNAME = "comobdb";
 
-const DSN = "mysql:host=localhost;dbname=" . DATABASE . ";charset=UTF8";
+const DSN = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=UTF8";
 
 const DATASETS = [
   "cof" => [
@@ -31,7 +34,7 @@ const DATASETS = [
   "cocy" => [
     "name" => "Cyberpunk"
   ],
-  "cga" => [
+  "cog" => [
     "name" => "Galactique"
   ]
 ];
