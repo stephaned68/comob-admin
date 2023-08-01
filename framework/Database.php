@@ -16,7 +16,7 @@ class Database
 
   /**
    * Return a PDO connection
-   * @return PDO
+   * @return PDO|null
    */
   public static function getPDO(): ?PDO
   {
@@ -31,7 +31,7 @@ class Database
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
           ]
         );
-        self::$pdo->query("SET NAMES utf8;");
+        self::$pdo->exec("SET NAMES 'UTF8'");
       } catch (PDOException $ex) {
         Tools::setFlash($ex->getMessage(), "danger");
       }
@@ -41,13 +41,13 @@ class Database
 
   /**
    * Return the table name for the current dataset
-   * @param $table
+   * @param string $table
    * @return string
    */
   public static function table(string $table): string
   {
     $dataset = $_SESSION['dataset']['id'] . "_";
-    if (substr($table, 0, strlen($dataset)) != $dataset) {
+    if (!str_starts_with($table, "co") && !str_starts_with($table, $dataset)) {
       return $dataset . $table;
     } else {
       return $table;
@@ -61,15 +61,12 @@ class Database
    */
   public static function exists(string $table): bool
   {
-    $qb = new QueryBuilder();
-    $qb
-      ->from("information_schema.tables")
-      ->select(["count(*) as found"])
-      ->where("table_schema = '" . DBNAME . "'")
-      ->andWhere("table_name = '" . self::table($table) . "'");
-    $result = Database::getPDO()->query($qb->getQuery())->fetch(PDO::FETCH_ASSOC);
-    unset($qb);
-    return ($result["found"] > 0);
+    $result = self::raw(implode(" ", [
+      "SHOW TABLES",
+      "FROM `" . DBNAME . "`",
+      "WHERE `Tables_in_" . DBNAME . "`='$table'"
+    ]))[0];
+    return ($result["Tables_in_" . DBNAME] == $table);
   }
 
   /**
@@ -77,7 +74,7 @@ class Database
    * @param string $table
    * @return array
    */
-  public static function getColumnsList(string $table): array
+  public static function getColumnsList(string $table, string $data_type = ""): array
   {
     $qb = new QueryBuilder();
     $qb
@@ -85,6 +82,9 @@ class Database
       ->select(["column_name"])
       ->where("table_schema = '" . DBNAME . "'")
       ->andWhere("table_name = '" . self::table($table) . "'");
+    if ($data_type != "") {
+      $qb->andWhere("data_type LIKE '%$data_type%'");
+    }
 
     $columns = [];
     $pdo = Database::getPDO();
@@ -99,7 +99,7 @@ class Database
 
     $columnsList = [];
     foreach ($columns as $column) {
-      $columnsList[] = $column["column_name"];
+      $columnsList[] = $column["COLUMN_NAME"];
     }
 
     return $columnsList;
@@ -296,23 +296,17 @@ class Database
     if ($form->isValid()) {
       $message = null;
       $data = $form->getData();
-      var_dump($data);
-      if ($id) {
-        try {
+      try {
+        if ($id) {
           $model::update($data);
           $message = $messages["update"];
-          $success = true;
-        } catch (\PDOException $ex) {
-          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
-        }
-      } else {
-        try {
+        } else {
           $model::insert($data);
           $message = $messages["insert"];
-          $success = true;
-        } catch (\PDOException $ex) {
-          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
         }
+        $success = true;
+      } catch (\PDOException $ex) {
+          Tools::setFlash("Erreur SQL" . $ex->getMessage(), "danger");
       }
       if ($message) {
         Tools::setFlash($message, "success");
@@ -381,5 +375,12 @@ class Database
     $types = Tools::select($rs->fetchAll(PDO::FETCH_ASSOC), $valueField, $labelField);
 
     return array_merge(["" => "Base"], $types);
+  }
+
+  public static function raw(string $sqlQuery, array $values = []): array
+  {
+    $statement = self::getPDO()->prepare($sqlQuery);
+    $statement->execute($values);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 }

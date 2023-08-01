@@ -25,7 +25,7 @@ use framework\Router;
         <tr>
           <td>
             <a href="<?= Router::route(['property', 'edit', $property['code']]) ?>"
-            ><?= $property["intitule"] ?></a>
+            ><?= stripslashes($property["intitule"]) ?></a>
           </td>
           <td class="text-center">
             <a class="btn btn-sm btn-outline-danger confirm-delete"

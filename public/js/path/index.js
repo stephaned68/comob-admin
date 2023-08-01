@@ -16,6 +16,7 @@ $('#editPopup').on('show.bs.modal', function (event) {
     'voie',
     'nom',
     'notes',
+    'equipement',
     'type',
     'pfx_deladu',
   ]);

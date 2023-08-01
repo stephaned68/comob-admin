@@ -45,7 +45,7 @@ use \framework\Router;
           <td> <!--
             <a href="<?= Router::route(['path', 'edit', $path['voie']]) ?>"
             ><?= $path["nom"] ?></a> -->
-            <a href="#editPopup" data-toggle="modal" data-id="<?= $path['voie'] ?>"><?= $path["nom"] ?></a>
+            <a href="#editPopup" data-toggle="modal" data-id="<?= $path['voie'] ?>"><?= stripslashes($path["nom"]) ?></a>
           </td>
           <td><?= $pathTypes[$path['type']] ?></td>
           <td class="text-center">

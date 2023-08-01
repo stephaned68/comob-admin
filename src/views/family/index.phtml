@@ -32,7 +32,7 @@ use \framework\Router;
         <tr>
           <td>
             <a href="<?= Router::route(['family', 'edit', $family['famille']]) ?>"
-            ><?= $family["description"] ?></a>
+            ><?= stripslashes($family["description"]) ?></a>
           </td>
           <td class="text-center">
             <a class="btn btn-sm btn-outline-danger confirm-delete"

@@ -32,6 +32,13 @@ class Tools
       "yeti"
     ];
 
+  public static function dump_var($var)
+  {
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+  }
+
   /**
    * @param string $singular
    * @return string

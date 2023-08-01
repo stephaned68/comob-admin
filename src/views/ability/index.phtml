@@ -45,7 +45,7 @@ use \framework\Router;
           <td><?= ++$ix ?></td>
           <td>
             <a href="<?= Router::route(['ability', 'edit', $ability['capacite']]) ?>"
-            ><?= $ability["nom"] ?></a>
+            ><?= stripslashes($ability["nom"]) ?></a>
           </td>
           <td>
             <?php if ($ability["limitee"] == 1) : ?>

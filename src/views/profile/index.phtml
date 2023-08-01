@@ -44,7 +44,7 @@ use \framework\Router;
           <td class="text-center"><?= ++$ix ?></td>
           <td>
             <a href="<?= Router::route(['profile', 'edit', $profile['profil']]) ?>"
-            ><?= $profile["nom"] ?></a>
+            ><?= stripslashes($profile["nom"]) ?></a>
           </td>
           <td><?= $profile["famille"] ?></td>
           <td class="text-center">

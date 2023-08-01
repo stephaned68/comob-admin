@@ -223,4 +223,20 @@ class CategoryModel
     $pdo->commit();
   }
 
+  public static function setProficiency($id)
+  {
+    $sql = implode(" ", [
+      "INSERT INTO " . Database::table("profils_maitrises"),
+      "SELECT pr.profil AS profil, eq.code AS equipement",
+      "FROM " . Database::table("equipement") . " eq",
+      "CROSS JOIN " . Database::table("profils") . " pr",
+      "WHERE eq.categorie=?",
+      "ON DUPLICATE KEY UPDATE profil = pr.profil, equipement = equipement"
+    ]);
+
+    $statement = Database::getPDO()->prepare($sql);
+    $statement->execute([ $id ]);
+    return $statement->rowCount();
+  }
+
 }

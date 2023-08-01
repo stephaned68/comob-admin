@@ -14,7 +14,7 @@ const PUBLIC_PATH = ROOT_PATH . "/public";
 const DBHOST = "localhost";
 const DBUSER = "root";
 const DBPASS = "";
-const DBNAME = "comobdb";
+const DBNAME = "comob-db";
 
 const DSN = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=UTF8";
 

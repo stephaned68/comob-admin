@@ -3,7 +3,6 @@
 
 namespace app\controllers;
 
-
 use framework\Database;
 use framework\FormManager;
 use framework\Router;
@@ -18,7 +17,7 @@ class AbilityController extends AbstractController
   {
     $abilityType = "*";
     if (FormManager::isSubmitted()) {
-      $abilityType = filter_input(INPUT_POST, "filter_type", FILTER_SANITIZE_STRING);
+      $abilityType = filter_input(INPUT_POST, "filter_type", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
 
     $abilityList = [];
@@ -262,13 +261,13 @@ class AbilityController extends AbstractController
       $ranks = intval($data["ranks"] ?? "5");
       $abilities["rangs"] = $ranks++;
 
-      $fullPath = " " . $data["fullPath"] . " {$ranks}. ";
+      $fullPath = " " . $data["fullPath"] . " R#{$ranks}. ";
       $slugs = [];
       for ($r = 1; $r <= $ranks - 1; $r++) {
-        $startAt = strpos($fullPath, " {$r}. ");
+        $startAt = strpos($fullPath, " R#{$r}. ");
         $nr = $r + 1;
-        $endsAt = strpos($fullPath, " {$nr}. ");
-        $rank = substr($fullPath, $startAt + 1, $endsAt - $startAt - 1);
+        $endsAt = strpos($fullPath, " R#{$nr}. ");
+        $rank = substr($fullPath, $startAt + 1 + 2, $endsAt - $startAt - 1);
         $fullPath = substr($fullPath, $endsAt - 1);
         $rankParts = explode(" : ", $rank);
         $abilityName = substr($rankParts[0],3);
@@ -279,7 +278,21 @@ class AbilityController extends AbstractController
         extract($result);
         $slug = iconv('UTF-8','ASCII//TRANSLIT', $abilityName);
         $slug = str_replace([ " ", "'", "`", "^", "/" ], [ "-" ], $slug);
-        $slug = strtolower($slug);
+        $slug = str_replace("-(o)", "", strtolower($slug));
+        if (strlen($slug) > 20) {
+          $slug = strtr($slug, [
+            "-a-" => "-",
+            "-du-" => "-",
+            "-de-la-" => "-",
+            "-de-" => "-",
+            "-des-" => "-",
+            "-le-" => "-",
+            "-la-" => "-",
+            "-les-" => "-",
+          ]);
+          if (strlen($slug) > 20)
+            $slug = substr($slug, 0, 20);
+        }
         if (!AbilityModel::getOne($slug)) {
           $description = $rankParts[1];
           if (count($rankParts) > 2)

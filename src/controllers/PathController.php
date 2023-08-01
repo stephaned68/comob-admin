@@ -3,7 +3,6 @@
 
 namespace app\controllers;
 
-
 use framework\Database;
 use framework\FormManager;
 use framework\Router;
@@ -77,6 +76,17 @@ class PathController extends AbstractController
       )
       ->addField(
         [
+          "name" => "equipement",
+          "label" => "Equipement",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 4
+          ]
+        ]
+      )
+      ->addField(
+        [
           "name" => "type",
           "label" => "Type",
           "errorMessage" => "Type non choisi",
@@ -143,6 +153,17 @@ class PathController extends AbstractController
           "size" => [
             "cols" => 60,
             "rows" => 8
+          ]
+        ]
+      )
+      ->addField(
+        [
+          "name" => "equipement",
+          "label" => "Equipement",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 4
           ]
         ]
       )

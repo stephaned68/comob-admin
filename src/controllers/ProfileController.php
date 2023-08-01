@@ -21,7 +21,7 @@ class ProfileController extends AbstractController
   {
     $familyFilter = "*";
     if (FormManager::isSubmitted()) {
-      $familyFilter = filter_input(INPUT_POST, "filter_family", FILTER_SANITIZE_STRING);
+      $familyFilter = filter_input(INPUT_POST, "filter_family", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
 
     $profileList = [];
@@ -74,6 +74,17 @@ class ProfileController extends AbstractController
           "size" => [
             "cols" => 80,
             "rows" => 6
+          ]
+        ]
+      )
+      ->addField(
+        [
+          "name" => "combat",
+          "label" => "Combat (ATC,ATD,ATP,INIT)",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 80,
+            "rows" => 3
           ]
         ]
       )
@@ -318,5 +329,51 @@ class ProfileController extends AbstractController
         "fm" => $form,
       ]
     );
+  }
+
+  public function equipathAction($id)
+  {
+    $paths = ProfileModel::getPaths($id);
+    $equipments = [];
+    $numbers = [];
+    $specials = [];
+    $gear_profile["profil"] = $id;
+    foreach ($paths as $path) {
+      $pathData = PathModel::getOne($path["voie"]);
+      $gears = $pathData["equipement"];
+      if (!$gears || strlen($gears) == 0)
+        continue;
+      foreach (explode(PHP_EOL, $gears) as $gear) {
+        $gear_id = "autre";
+        $number = 1;
+        if (str_starts_with($gear, "pk:")) {
+          $gear = substr($gear, 3);
+          $gear_id = explode("|", $gear)[0];
+          $special = explode("|", $gear)[1] ?? "";
+          $gear_id = explode(",", $gear_id)[0];
+          $number = explode(",", $gear_id)[1] ?? 1;
+          $gearData = EquipmentModel::getOne($gear_id);
+          if (!$gearData) {
+            $msg = "Voie ".$pathData["nom"].", ".$gear_id." inconnu";
+            Tools::setFlash($msg, "danger");
+            $gear_profile["profil"] = "";
+          }
+        } else {
+          $special = $gear;
+        }
+        $equipments[] = $gear_id;
+        $numbers[] = $number;
+        $specials[] = $special;
+      }
+    }
+
+    if ($gear_profile["profil"] !== "") {
+      $gear_profile["equipments"] = $equipments;
+      $gear_profile["numbers"] = $numbers;
+      $gear_profile["specials"] = $specials;
+      ProfileModel::saveEquipments($gear_profile);
+    }
+
+    Router::redirectTo([ "profile" ]);
   }
 }

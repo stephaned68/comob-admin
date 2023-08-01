@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\controllers;
 
 use app\models\CategoryModel;
@@ -123,6 +122,13 @@ class CategoryController extends AbstractController
       ]);
 
     Router::redirectTo([($success ? "category" : "home"), "index"]);
+  }
+  
+  public function proficiencyAction($id = null)
+  {
+    $rowsAffected = CategoryModel::setProficiency($id);
+    Tools::setFlash("$rowsAffected lignes de maitrise créées", "success");
+    Router::redirectTo(["category", "index"]);
   }
 
 }

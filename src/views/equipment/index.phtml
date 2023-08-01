@@ -45,7 +45,7 @@ $eqCount = 0;
         <tr>
           <td>
             <a href="<?= Router::route(['equipment', 'edit', $equipment['code']]) ?>"
-            ><?= $equipment["designation"] ?></a>
+            ><?= stripslashes($equipment["designation"]) ?></a>
           </td>
           <td>
             <?= $equipment["categorie"] ?>

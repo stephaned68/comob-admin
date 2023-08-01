@@ -150,7 +150,7 @@ class FormManager
     $field
       ->setName($props["name"] ?? "")
       ->setLabel($props["label"] ?? $props["name"])
-      ->setFilter($props["filter"] ?? FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+      ->setFilter($props["filter"] ?? FILTER_SANITIZE_ADD_SLASHES)
       ->setRequired($props["required"] ?? false)
       ->setDefaultValue($props["defaultValue"] ?? "")
       ->setErrorMessage($props["errorMessage"] ?? ($props['label'] ?? $props["name"]) . " non saisi(e)")
@@ -218,11 +218,7 @@ class FormManager
       if ($field->getControlType() === "checkbox") {
         $fieldValue = $fieldValue ?? "0";
       }
-      if ($fieldValue != null) {
-        $formData[$fieldName] = addslashes($fieldValue);
-      } else {
-        $formData[$fieldName] = null;
-      }
+      $formData[$fieldName] = $fieldValue;
     }
 
     return $formData;
@@ -240,6 +236,9 @@ class FormManager
     $value = null;
     if (array_key_exists($name, $data)) {
       $value = $data[$name];
+      if ($value !== null) {
+        $value = stripslashes($value);
+      }
     }
     return $field->render($value);
   }

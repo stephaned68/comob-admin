@@ -26,12 +26,17 @@ use framework\Router;
         <tr>
           <td>
             <a href="<?= Router::route(['category', 'edit', $category['code']]) ?>"
-            ><?= $category["libelle"] ?></a>
+            ><?= stripslashes($category["libelle"]) ?></a>
           </td>
           <td>
-            <?= $category["libelle_parent"] ?>
+            <?= $category["libelle_parent"] !== null ? stripslashes($category["libelle_parent"]) : "" ?>
           </td>
           <td class="text-center">
+            <?php if ($category["libelle_parent"] && $category["libelle_parent"] !== ""): ?>
+              <a class="btn btn-sm btn-outline-dark"
+                 href="<?= Router::route(['category', 'proficiency', $category['code']]) ?>"
+              ><i class="fas fa-gears"></i>&nbsp;Maitrises</a>
+            <?php endif; ?>
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['category', 'delete', $category['code']]) ?>"
             ><i class="fas fa-trash"></i></a>

@@ -25,7 +25,7 @@ use framework\Router;
         <tr>
           <td>
             <a href="<?= Router::route(['race', 'edit', $race['race']]) ?>"
-            ><?= $race['intitule'] ?></a>
+            ><?= stripslashes($race['intitule']) ?></a>
           </td>
           <td class="text-center">
             <a class="btn btn-sm btn-outline-dark"
