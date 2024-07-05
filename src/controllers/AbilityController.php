@@ -267,7 +267,7 @@ class AbilityController extends AbstractController
         $startAt = strpos($fullPath, " R#{$r}. ");
         $nr = $r + 1;
         $endsAt = strpos($fullPath, " R#{$nr}. ");
-        $rank = substr($fullPath, $startAt + 1 + 2, $endsAt - $startAt - 1);
+        $rank = substr($fullPath, $startAt + 1 + 2, $endsAt - $startAt - 2);
         $fullPath = substr($fullPath, $endsAt - 1);
         $rankParts = explode(" : ", $rank);
         $abilityName = substr($rankParts[0],3);

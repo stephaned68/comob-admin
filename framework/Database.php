@@ -72,6 +72,7 @@ class Database
   /**
    * Return the list of columns for a table
    * @param string $table
+   * @param string $data_type
    * @return array
    */
   public static function getColumnsList(string $table, string $data_type = ""): array
@@ -88,12 +89,10 @@ class Database
 
     $columns = [];
     $pdo = Database::getPDO();
-    if ($pdo) {
-      try {
-        $statement = $pdo->query($qb->getQuery());
-        $columns = $statement->fetchAll(PDO::FETCH_ASSOC);
-      } catch (PDOException $ex) {
-      }
+    if ($pdo) try {
+      $statement = $pdo->query($qb->getQuery());
+      $columns = $statement->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException) {
     }
     unset($qb);
 

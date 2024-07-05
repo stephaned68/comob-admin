@@ -22,6 +22,9 @@ const DATASETS = [
   "cof" => [
     "name" => "Fantasy"
   ],
+  "cof2" => [
+    "name" => "Fantasy 2E"
+  ],
   "cota" => [
     "name" => "Terres d'Arran"
   ],
