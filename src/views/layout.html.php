@@ -1,6 +1,6 @@
 <?php
 
-use \framework\Router;
+use framework\Router;
 use framework\Tools;
 
 ?>

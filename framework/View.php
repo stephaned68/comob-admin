@@ -72,7 +72,7 @@ class View
 
     extract($data);
 
-    require_once VIEWS_PATH . "/{$template}.phtml";
+    require_once VIEWS_PATH . "/{$template}.html.php";
 
     return ob_get_clean();
   }

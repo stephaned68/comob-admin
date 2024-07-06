@@ -307,7 +307,7 @@ class FormManager
 
     extract($options);
 
-    require VIEWS_PATH . "/_fragments/form-buttons.phtml";
+    require VIEWS_PATH . "/_fragments/form-buttons.html.php";
 
     return ob_get_clean();
   }

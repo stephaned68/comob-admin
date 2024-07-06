@@ -355,9 +355,9 @@ class FormField
     if ($this->controlType === "select"
       || $this->controlType === "textarea"
       || $this->controlType === "checkbox") {
-      require VIEWS_PATH . "/_fragments/form-{$this->controlType}.phtml";
+      require VIEWS_PATH . "/_fragments/form-{$this->controlType}.html.php";
     } else {
-      require VIEWS_PATH . "/_fragments/form-group.phtml";
+      require VIEWS_PATH . "/_fragments/form-group.html.php";
     }
 
     $fieldHTML = ob_get_clean();
