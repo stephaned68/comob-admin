@@ -40,6 +40,19 @@ class Tools
   }
 
   /**
+   * @param string $stripAccents
+   * @return string
+   */
+  public static function stripAccents(string $stripAccents): string
+  {
+    return strtr(
+      $stripAccents,
+      'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
+      'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY'
+    );
+  }
+
+  /**
    * @param string $singular
    * @return string
    */

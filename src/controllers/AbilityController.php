@@ -276,9 +276,13 @@ class AbilityController extends AbstractController
         $spell = 0;
         $result = $this->processAbilityName(compact([ "abilityName", "extra", "limited", "spell" ]));
         extract($result);
-        $slug = iconv('UTF-8','ASCII//TRANSLIT', $abilityName);
+        $slug = $abilityName;
+        $slug = iconv('UTF-8','ASCII//TRANSLIT', $slug);
         $slug = str_replace([ " ", "'", "`", "^", "/" ], [ "-" ], $slug);
         $slug = str_replace("-(o)", "", strtolower($slug));
+        $slug = str_replace("-(g)", "-g", strtolower($slug));
+        $slug = str_replace("-(m)", "-m", strtolower($slug));
+        $slug = str_replace("-(a)", "-a", strtolower($slug));
         if (strlen($slug) > 20) {
           $slug = strtr($slug, [
             "-a-" => "-",
