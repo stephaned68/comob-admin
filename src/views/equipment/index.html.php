@@ -57,12 +57,14 @@ $eqCount = 0;
             <?php
               if (strpos($equipment['props'],"\n") != 0 || $equipment['props'] != "") {
                 $props = explode("\n", $equipment['props']);
-                echo "<div class='text-left'>Afficher <a data-toggle=\"collapse\" href=\"#collapseProps$eqCount\"><i class=\"fas fa-chevron-circle-down\"></i></a></div>";
-                echo "<ul class=\"collapse\" id=\"collapseProps$eqCount\">";
+                echo "<details>";
+                echo "<summary>Afficher</summary>";
+                echo "<ul>";
                 foreach ($props as $prop) {
                   echo "<li>" . trim($prop) . "</li>";
                 }
                 echo "</ul>";
+                echo "</details>";
               }
             ?>
           </td>
