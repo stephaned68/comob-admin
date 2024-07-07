@@ -27,12 +27,23 @@
       <div class="col">
         <?= $fm->renderField("mod_con", $race) ?>
       </div>
+      <?php if ($_SESSION['dataset']['id'] == "cof2"): ?>
+        <div class="col">
+          <?= $fm->renderField("mod_sag", $race) ?>
+        </div>
+      <?php endif ?>
       <div class="col">
         <?= $fm->renderField("mod_int", $race) ?>
       </div>
-      <div class="col">
-        <?= $fm->renderField("mod_sag", $race) ?>
-      </div>
+      <?php if ($_SESSION['dataset']['id'] == "cof2"): ?>
+        <div class="col">
+          <?= $fm->renderField("mod_vol", $race) ?>
+        </div>
+      <?php else: ?>
+        <div class="col">
+          <?= $fm->renderField("mod_sag", $race) ?>
+        </div>
+      <?php endif ?>
       <div class="col">
         <?= $fm->renderField("mod_cha", $race) ?>
       </div>

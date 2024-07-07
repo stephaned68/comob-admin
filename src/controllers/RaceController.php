@@ -63,7 +63,7 @@ class RaceController extends AbstractController
       ->addField(
         [
           "name" => "mod_dex",
-          "label" => "DEX",
+          "label" => $_SESSION['dataset']['id'] == "cof2" ? "AGI" : "DEX",
           "controlType" => "number"
         ]
       )
@@ -85,6 +85,13 @@ class RaceController extends AbstractController
         [
           "name" => "mod_sag",
           "label" => $_SESSION['dataset']['id'] == "cof" ? "SAG" : "PER",
+          "controlType" => "number"
+        ]
+      )
+      ->addField(
+        [
+          "name" => "mod_vol",
+          "label" => "VOL",
           "controlType" => "number"
         ]
       )
