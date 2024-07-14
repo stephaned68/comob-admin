@@ -70,7 +70,7 @@ class PathController extends AbstractController
           "controlType" => "textarea",
           "size" => [
             "cols" => 60,
-            "rows" => 8
+            "rows" => 4
           ]
         ]
       )
@@ -152,7 +152,7 @@ class PathController extends AbstractController
           "controlType" => "textarea",
           "size" => [
             "cols" => 60,
-            "rows" => 8
+            "rows" => 4
           ]
         ]
       )
