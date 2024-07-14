@@ -81,6 +81,19 @@ class AbilityController extends AbstractController
       )
       ->addField(
         [
+          "name" => "action",
+          "label" => "Action",
+          "controlType" => "select",
+          "valueList" => [
+            "0" => "",
+            "1" => "Gratuite",
+            "2" => "Mouvement",
+            "3" => "Action"
+          ]
+        ]
+      )
+      ->addField(
+        [
           "name" => "type",
           "label" => "Type",
           "errorMessage" => "Type non choisi",
@@ -148,6 +161,8 @@ class AbilityController extends AbstractController
     $extra = "";
     $limited = 0;
     $spell = 0;
+    $action = 0;
+    $dataset = $_SESSION["dataset"]["id"];
 
     extract($params);
 
@@ -180,7 +195,8 @@ class AbilityController extends AbstractController
       $abilityName = substr($abilityName, 0, strlen($abilityName) - 5);
     }
     if (substr($abilityName, -4) === " (A)") {
-      $extra = " (A)";
+      $extra = $dataset === "cof2" ? "" : " (A)";
+      $action = $dataset === "cof2" ? 3 : 0;
       $abilityName = substr($abilityName, 0, strlen($abilityName) - 4);
     }
     if (substr($abilityName, -10) === " (A - PER)") {
@@ -197,7 +213,8 @@ class AbilityController extends AbstractController
       $abilityName = substr($abilityName, 0, strlen($abilityName) - 5);
     }
     if (substr($abilityName, -4) === " (M)") {
-      $extra = " (M)";
+      $extra = $dataset === "cof2" ? "" : " (M)";
+      $action = $dataset === "cof2" ? 2 : 0;
       $abilityName = substr($abilityName, 0, strlen($abilityName) - 4);
     }
     if (substr($abilityName, -10) === " (M - PER)") {
@@ -208,8 +225,12 @@ class AbilityController extends AbstractController
       $extra = " (M:CHA)";
       $abilityName = substr($abilityName, 0, strlen($abilityName) - 10);
     }
+    if (substr($abilityName, -4) === " (G)") {
+      $action = $dataset === "cof2" ? 1 : 0;
+      $abilityName = substr($abilityName, 0, strlen($abilityName) - 4);
+    }
 
-    return compact([ "abilityName", "extra", "limited", "spell" ]);
+    return compact([ "abilityName", "extra", "limited", "spell", "action" ]);
   }
 
   public function multipleAction()
@@ -264,38 +285,59 @@ class AbilityController extends AbstractController
       $fullPath = " " . $data["fullPath"] . " R#{$ranks}. ";
       $slugs = [];
       for ($r = 1; $r <= $ranks - 1; $r++) {
+        // get rank
         $startAt = strpos($fullPath, " R#{$r}. ");
         $nr = $r + 1;
         $endsAt = strpos($fullPath, " R#{$nr}. ");
         $rank = substr($fullPath, $startAt + 1 + 2, $endsAt - $startAt - 2);
         $fullPath = substr($fullPath, $endsAt - 1);
         $rankParts = explode(" : ", $rank);
+        // process ability name
         $abilityName = substr($rankParts[0],3);
         $extra = "";
         $limited = 0;
         $spell = 0;
-        $result = $this->processAbilityName(compact([ "abilityName", "extra", "limited", "spell" ]));
+        $action = 0;
+        $result = $this->processAbilityName(compact([ "abilityName", "extra", "limited", "spell", "action" ]));
         extract($result);
+        // create slug
         $slug = $abilityName;
+        $slug = str_replace("héroïque", "hero", $slug);
         $slug = iconv('UTF-8','ASCII//TRANSLIT', $slug);
         $slug = str_replace([ " ", "'", "`", "^", "/" ], [ "-" ], $slug);
         $slug = str_replace("-(o)", "", strtolower($slug));
-        $slug = str_replace("-(g)", "-g", strtolower($slug));
-        $slug = str_replace("-(m)", "-m", strtolower($slug));
-        $slug = str_replace("-(a)", "-a", strtolower($slug));
+        $slug = strtr($slug, [
+          "force" => "for",
+          "agilite" => "agi",
+          "constitution" => "con",
+          "perception" => "per",
+          "intelligence" => "int",
+          "volonte" => "vol",
+          "charisme" => "cha"
+        ]);
         if (strlen($slug) > 20) {
           $slug = strtr($slug, [
             "-a-" => "-",
+            "-d-" => "-",
             "-du-" => "-",
             "-de-la-" => "-",
             "-de-" => "-",
             "-des-" => "-",
+            "-l-" => "-",
             "-le-" => "-",
             "-la-" => "-",
             "-les-" => "-",
           ]);
           if (strlen($slug) > 20)
             $slug = substr($slug, 0, 20);
+        }
+        if ($action > 0) {
+          $slug = substr($slug, 0, 18) . match($action) {
+            1 => "-g",
+            2 => "-m",
+            3 => "-a",
+            default => ""
+          };
         }
         if (!AbilityModel::getOne($slug)) {
           $description = $rankParts[1];
@@ -307,7 +349,8 @@ class AbilityController extends AbstractController
             "limitee" => $limited ?? 0,
             "sort" => $spell ?? 0,
             "type" => $pathData["type"],
-            "description" => $description
+            "description" => $description,
+            "action" => $action
           ];
           AbilityModel::insert($data);
           Tools::setFlash("La capacité '{$abilityName}' a été ajoutée avec succès", "success");

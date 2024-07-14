@@ -218,7 +218,11 @@ class FormManager
       if ($field->getControlType() === "checkbox") {
         $fieldValue = $fieldValue ?? "0";
       }
-      $formData[$fieldName] = $fieldValue;
+      if ($field->getControlType() === "number") {
+        $formData[$fieldName] = (float)$fieldValue;
+      } else {
+        $formData[$fieldName] = $fieldValue;
+      }
     }
 
     return $formData;
