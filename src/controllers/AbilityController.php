@@ -168,13 +168,19 @@ class AbilityController extends AbstractController
 
     if (substr($abilityName, -11) === "(G) ou (L)*" ||
         substr($abilityName, -11) === "(M) ou (L)*" ||
-        substr($abilityName, -11) === "(A) ou (L)*") {
+        substr($abilityName, -11) === "(A) ou (L)*" ||
+        substr($abilityName, -11) === "(G) ou (M)*" ||
+        substr($abilityName, -11) === "(G) ou (A)*" ||
+        substr($abilityName, -11) === "(M) ou (A)*") {
       $spell = 1;
-      $limited = 1;
-      $action = match(substr($abilityName, -10, 1)) {
-        "G" => 1,
-        "M" => 2,
-        "A" => 3,
+      $limited = substr($abilityName, -3, 1) === "L" ? 1 : 0;
+      $action = match(substr($abilityName, -10, 1) . substr($abilityName, -3, 1)) {
+        "GL" => 1,
+        "ML" => 2,
+        "AL" => 3,
+        "GM" => 2,
+        "GA" => 3,
+        "MA" => 3,
         default => 0
       };
       $abilityName = substr($abilityName, 0, strlen($abilityName) - 11);
@@ -354,7 +360,7 @@ class AbilityController extends AbstractController
           };
         }
         if (!AbilityModel::getOne($slug)) {
-          $description = $rankParts[1];
+          $description = trim($rankParts[1]);
           if (count($rankParts) > 2)
             $description .= " : " . $rankParts[2];
           $data = [
@@ -370,6 +376,7 @@ class AbilityController extends AbstractController
           Tools::setFlash("La capacité '{$abilityName}' a été ajoutée avec succès", "success");
         } else {
           Tools::setFlash("L'identifiant de capacité '$slug' existe déjà", "warning");
+          $slug = "";
         }
         $slugs[] = $slug;
       }
