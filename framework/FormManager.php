@@ -193,7 +193,7 @@ class FormManager
     $errorList = [];
 
     foreach ($this->formFields as $field) {
-      $fieldValue = filter_input(INPUT_POST, $field->getName(), $field->getFilter());
+      $fieldValue = filter_input(INPUT_POST, $field->getName(), $field->getFilter()) ?? "";
       if (trim($fieldValue) === "") {
         if ($field->isPrimeKey() || $field->isRequired()) {
           $errorList[] = $field->getErrorMessage();
