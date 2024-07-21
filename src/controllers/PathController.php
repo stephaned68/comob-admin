@@ -257,6 +257,11 @@ class PathController extends AbstractController
       ->setIndexRoute(Router::route(["path", "index"]));
 
     $path = PathModel::getOne($id);
+    if (!$path) {
+      Tools::setFlash("Voie inexistante", "warning");
+      Router::redirectTo(["race"]);
+      return;
+    }
     $maxRanks = 5;
     if ($path["type"] !== null && $path["type"] !== "") {
       $pathType = PathModel::getOneType($path["type"]);
