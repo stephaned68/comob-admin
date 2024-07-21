@@ -48,7 +48,7 @@ use framework\Tools;
           <a class="dropdown-item" href="<?= Router::route(['profile']) ?>">Profils</a>
           <a class="dropdown-item" href="<?= Router::route(['path']) ?>">Voies</a>
           <a class="dropdown-item" href="<?= Router::route(['ability']) ?>">Capacités</a>
-          <a class="dropdown-item" href="<?= Router::route(['race']) ?>">Races</a>
+          <a class="dropdown-item" href="<?= Router::route(['race']) ?>">Peuples/Espèces</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<?= Router::route(['ability', 'multiple']) ?>">Voie complète</a>
         </div>
