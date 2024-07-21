@@ -258,7 +258,7 @@ class PathController extends AbstractController
 
     $path = PathModel::getOne($id);
     if (!$path) {
-      Tools::setFlash("La voie $id n'inexiste pas", "warning");
+      Tools::setFlash("La voie $id n'existe pas", "warning");
       Router::redirectTo(["race"]);
       return;
     }
