@@ -34,6 +34,9 @@ use framework\Router;
             <a class="btn btn-sm btn-outline-dark"
                href="<?= Router::route(['race', 'abilities', $race['race']]) ?>"
             >Capacité(s) raciale(s)</a>
+            <a class="btn btn-sm btn-outline-dark"
+               href="<?= Router::route(['path', 'abilities', $race['race']]) ?>"
+            >Voie</a>
             <a class="btn btn-sm btn-outline-danger confirm-delete"
                href="<?= Router::route(['race', 'delete', $race['race']]) ?>"
             >Supprimer</a>
