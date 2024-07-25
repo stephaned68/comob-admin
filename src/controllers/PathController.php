@@ -273,8 +273,14 @@ class PathController extends AbstractController
     }
 
     $abilities = [];
+    $rank = 1;
     foreach (PathModel::getAbilities($id) as $ability) {
+      while ($ability["rang"] > $rank) {
+        $abilities[] = "";
+        $rank++;
+      }
       $abilities[] = $ability["capacite"];
+      $rank++;
     }
     $path["rangs"] = count($abilities);
     if ($path["rangs"] !== $maxRanks) {
