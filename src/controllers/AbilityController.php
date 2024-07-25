@@ -298,17 +298,20 @@ class AbilityController extends AbstractController
       $pathData = PathModel::getOne($path);
       $abilities = [];
       $abilities["voie"] = $path;
+      $prestcof2 = ($_SESSION["dataset"]["id"] === "cof2" && $pathData["type"] === "prest") ? 3 : 0;
 
       $ranks = intval($data["ranks"] ?? "5");
-      $abilities["rangs"] = $ranks++;
+      $lastRank = $ranks + $prestcof2 + 1;
+      $abilities["rangs"] = $ranks;
 
-      $fullPath = " " . $data["fullPath"] . " R#{$ranks}. ";
+      $fullPath = " " . $data["fullPath"] . " R#{$lastRank}. ";
       $slugs = [];
-      for ($r = 1; $r <= $ranks - 1; $r++) {
+      for ($r = 1; $r <= $ranks; $r++) {
         // get rank
-        $startAt = strpos($fullPath, " R#{$r}. ");
-        $nr = $r + 1;
-        $endsAt = strpos($fullPath, " R#{$nr}. ");
+        $searchRank = $r + $prestcof2;
+        $startAt = strpos($fullPath, " R#{$searchRank}. ");
+        $nextRank = $searchRank + 1;
+        $endsAt = strpos($fullPath, " R#{$nextRank}. ");
         $rank = substr($fullPath, $startAt + 1 + 2, $endsAt - $startAt - 2);
         $fullPath = substr($fullPath, $endsAt - 1);
         $rankParts = explode(" : ", $rank);
