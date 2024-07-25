@@ -196,12 +196,15 @@ class PathModel
       )
     );
     for ($rang = 0; $rang < $rangs; $rang++) {
-      $statement->execute(
-        [
-          "voie" => $data["voie"],
-          "rang" => $rang + 1,
-          "capacite" => $data["capacites"][$rang]
-        ]);
+      $capacite = $data["capacites"][$rang];
+      if ($capacite !== "") {
+        $statement->execute(
+          [
+            "voie" => $data["voie"],
+            "rang" => $rang + 1,
+            "capacite" => $capacite
+          ]);
+      }
     }
 
     $pdo->commit();
