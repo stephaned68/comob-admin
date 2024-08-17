@@ -42,10 +42,10 @@ use \framework\Router;
       foreach ($pathList as $path) : ?>
         <tr>
           <td class="text-center"><?= ++$ix ?></td>
-          <td> <!--
+          <td>
             <a href="<?= Router::route(['path', 'edit', $path['voie']]) ?>"
-            ><?= $path["nom"] ?></a> -->
-            <a href="#editPopup" data-toggle="modal" data-id="<?= $path['voie'] ?>"><?= stripslashes($path["nom"]) ?></a>
+            ><?= $path["nom"] ?></a>
+            <!-- <a href="#editPopup" data-toggle="modal" data-id="<?= $path['voie'] ?>"><?= stripslashes($path["nom"]) ?></a> -->
           </td>
           <td><?= $pathTypes[$path['type']] ?></td>
           <td class="text-center">
