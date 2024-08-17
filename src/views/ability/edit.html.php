@@ -16,13 +16,22 @@
     </div>
     <div class="row">
       <div class="col">
-      <?= $fm->renderField("action", $ability) ?>
+        <?= $fm->renderField("action", $ability) ?>
       </div>
       <div class="col">
         <?= $fm->renderField("type", $ability) ?>
       </div>
     </div>
     <?= $fm->renderField("description", $ability) ?>
+    <div class="row">
+      <div class="col">
+        <?= $fm->renderField("utilisations", $ability) ?>
+      </div>
+      <div class="col">
+        <?= $fm->renderField("utilisations_freq", $ability) ?>
+      </div>
+    </div>
+    
 
     <?= $fm->renderButtons($ability) ?>
 

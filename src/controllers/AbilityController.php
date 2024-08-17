@@ -88,7 +88,7 @@ class AbilityController extends AbstractController
             "0" => "",
             "1" => "Gratuite",
             "2" => "Mouvement",
-            "3" => "Action"
+            "3" => "Attaque"
           ]
         ]
       )
@@ -111,6 +111,18 @@ class AbilityController extends AbstractController
             "rows" => 12
           ],
           "required" => true
+        ]
+      )
+      ->addField(
+        [
+          "name" => "utilisations",
+          "label" => "Nombre d'utilisations",
+          "controlType" => "number"
+        ]
+      )
+      ->addField([
+          "name" => "utilisations_freq",
+          "label" => "Fréquence d'utilisation"
         ]
       )
       ->setIndexRoute(Router::route(["ability", "index"]))
@@ -298,7 +310,8 @@ class AbilityController extends AbstractController
       $pathData = PathModel::getOne($path);
       $abilities = [];
       $abilities["voie"] = $path;
-      $prestcof2 = ($_SESSION["dataset"]["id"] === "cof2" && $pathData["type"] === "prest") ? 3 : 0;
+      $prestige = [ "prest", "prsta", "prstc", "prstm", "prsty" ];
+      $prestcof2 = ($_SESSION["dataset"]["id"] === "cof2" && in_array($pathData["type"], $prestige)) ? 3 : 0;
 
       $ranks = intval($data["ranks"] ?? "5");
       $lastRank = $ranks + $prestcof2 + 1;
@@ -321,6 +334,8 @@ class AbilityController extends AbstractController
         $limited = 0;
         $spell = 0;
         $action = 0;
+        $utilisations = 0;
+        $utilisations_freq = "";
         $result = $this->processAbilityName(compact([ "abilityName", "extra", "limited", "spell", "action" ]));
         extract($result);
         // create slug
@@ -331,11 +346,13 @@ class AbilityController extends AbstractController
         $slug = str_replace("-(o)", "", strtolower($slug));
         $slug = strtr($slug, [
           "force" => "for",
+          "dexterite" => "dex",
           "agilite" => "agi",
           "constitution" => "con",
           "perception" => "per",
           "intelligence" => "int",
           "volonte" => "vol",
+          "sagesse" => "sag",
           "charisme" => "cha"
         ]);
         if (strlen($slug) > 20) {
@@ -364,8 +381,24 @@ class AbilityController extends AbstractController
         }
         if (!AbilityModel::getOne($slug)) {
           $description = trim($rankParts[1]);
+          $utilisations = 0;
           if (count($rankParts) > 2)
             $description .= " : " . $rankParts[2];
+          if (preg_match('/([Uu]ne|1|[Dd]eux|2|[Tt]rois|3) fois par ([a-z]+)/', $description, $matches , 0, 0) === 1) {
+            $utilisations = match(strtolower($matches[1])) {
+              "une" => 1,
+              "deux" => 2,
+              "trois" => 3,
+              default => is_numeric($matches[1]) ? intval($matches[1]) : 0
+            };
+            if ($utilisations > 0) {
+              $utilisations_freq = strtolower($matches[2]);
+              if (in_array($utilisations_freq, [ "round", "tour" ])) {
+                $utilisations = 0;
+                $utilisations_freq = "";
+              }
+            }
+          }
           $data = [
             "capacite" => $slug,
             "nom" => $abilityName . $extra,
@@ -373,7 +406,9 @@ class AbilityController extends AbstractController
             "sort" => $spell ?? 0,
             "type" => $pathData["type"],
             "description" => $description,
-            "action" => $action
+            "action" => $action,
+            "utilisations" => $utilisations,
+            "utilisations_freq" => $utilisations_freq
           ];
           AbilityModel::insert($data);
           Tools::setFlash("La capacité '{$abilityName}' a été ajoutée avec succès", "success");
