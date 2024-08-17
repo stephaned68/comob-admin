@@ -108,6 +108,17 @@ class PathController extends AbstractController
           ]
         ] // </Troumad>
       )
+      ->addField(
+        [
+          "name" => "config",
+          "label" => "Config",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 4
+          ]
+        ]
+      )
       ->setDeleteRoute(Router::route(["path", "delete", ""]));
 
     return $form;
@@ -189,6 +200,17 @@ class PathController extends AbstractController
             "3" => "Voie des",
           ]
         ] // </Troumad>
+      )
+      ->addField(
+        [
+          "name" => "config",
+          "label" => "Config",
+          "controlType" => "textarea",
+          "size" => [
+            "cols" => 60,
+            "rows" => 2
+          ]
+        ]
       )
       ->setIndexRoute(Router::route(["path", "index"]))
       ->setDeleteRoute(Router::route(["path", "delete", $id]));
