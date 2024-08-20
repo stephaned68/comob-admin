@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mar. 20 août 2024 à 09:16
+-- Généré le : mar. 20 août 2024 à 11:25
 -- Version du serveur : 8.0.30
 -- Version de PHP : 8.1.10
 
@@ -12955,6 +12955,7 @@ INSERT INTO `cof2_categories_equipement` (`code`, `libelle`, `parent`, `sequence
 ('armes-distance', 'Armes à distance', 'armes', '0010'),
 ('armures', 'Armures', 'defense', '0005'),
 ('auberge', 'Auberge', 'divers', '0015'),
+('autres', 'Autres', 'divers', '0095'),
 ('boucliers', 'Boucliers', 'defense', '0010'),
 ('defense', 'Défense', NULL, '0010'),
 ('divers', 'Divers', NULL, '0015'),
@@ -13028,6 +13029,7 @@ INSERT INTO `cof2_equipement` (`code`, `designation`, `categorie`, `sequence`, `
 ('arbalete-poing', 'Arbalète de poing', 'armes-distance', '0005', '8.00', ''),
 ('arc-court', 'Arc court', 'armes-distance', '0020', '4.00', ''),
 ('arc-long', 'Arc long', 'armes-distance', '0025', '8.00', 'FOR +1 minimum'),
+('autres', 'Autres', 'autres', '', '0.00', ''),
 ('banquet', 'Banquet', 'auberge', '0040', '10.00', '10-20 pa'),
 ('baton', 'Bâton', 'armes-contact', '0010', '0.00', 'DM temporaires possibles'),
 ('baton-ferre', 'Bâton ferré', 'armes-contact', '0015', '2.00', ''),
@@ -13135,9 +13137,62 @@ INSERT INTO `cof2_equipement_profils` (`profil`, `sequence`, `equipement`, `nomb
 ('arquebusier', 2, 'epee-longue', 1, ''),
 ('arquebusier', 3, 'dague', 1, ''),
 ('arquebusier', 4, 'cuir-renforce', 1, ''),
+('barbare', 1, 'hache-deux-mains', 1, ''),
+('barbare', 2, 'autres', 1, 'Ou arme à une main (d8)'),
+('barbare', 3, 'javelot', 2, ''),
+('barbare', 4, 'dague', 1, ''),
+('barbare', 5, 'cuir', 1, ''),
+('barbare', 6, 'grand-bouclier', 1, ''),
 ('barde', 1, 'rapiere', 1, ''),
 ('barde', 2, 'dague', 1, ''),
-('barde', 3, 'cuir', 1, '');
+('barde', 3, 'cuir', 1, ''),
+('barde', 4, 'autres', 1, 'Instrument de musique'),
+('chevalier', 1, 'epee-longue', 1, ''),
+('chevalier', 2, 'lance-cavalerie', 1, ''),
+('chevalier', 3, 'dague', 1, ''),
+('chevalier', 4, 'cotte-mailles', 1, ''),
+('chevalier', 5, 'grand-bouclier', 1, ''),
+('druide', 1, 'baton-ferre', 1, 'Bâton noueux'),
+('druide', 2, 'epieu', 1, 'Ou épieux'),
+('druide', 3, 'dague', 1, ''),
+('druide', 4, 'arc-court', 1, ''),
+('druide', 5, 'carquois-20-fleches', 1, ''),
+('druide', 6, 'cuir', 1, ''),
+('ensorceleur', 1, 'baton-ferre', 1, ''),
+('ensorceleur', 2, 'dague', 1, ''),
+('ensorceleur', 3, 'autres', 1, 'Ou autre arme maîtrisée'),
+('forgesort', 1, 'baton-ferre', 1, ''),
+('forgesort', 2, 'marteau', 1, ''),
+('forgesort', 3, 'dague', 1, ''),
+('guerrier', 1, 'epee-longue', 1, ''),
+('guerrier', 2, 'epee-deux-mains', 1, ''),
+('guerrier', 3, 'hache-deux-mains', 1, 'Ou hache à deux mains'),
+('guerrier', 4, 'dague', 1, ''),
+('guerrier', 5, 'hachette-lancer', 1, 'Ou hachette'),
+('guerrier', 6, 'chemise-mailles', 1, ''),
+('guerrier', 7, 'grand-bouclier', 1, ''),
+('magicien', 1, 'baton-ferre', 1, ''),
+('magicien', 2, 'dague', 1, ''),
+('magicien', 3, 'autres', 1, 'Grimoire de sorts'),
+('moine', 1, 'baton', 1, ''),
+('pretre', 1, 'masse', 1, ''),
+('pretre', 2, 'marteau', 1, ''),
+('pretre', 3, 'baton-ferre', 1, 'Ou bâton ferré'),
+('pretre', 4, 'chemise-mailles', 1, ''),
+('pretre', 5, 'petit-bouclier', 1, ''),
+('rodeur', 1, 'epee-longue', 1, ''),
+('rodeur', 2, 'arc-court', 1, ''),
+('rodeur', 3, 'carquois-20-fleches', 1, ''),
+('rodeur', 4, 'dague', 1, ''),
+('rodeur', 5, 'cuir-renforce', 1, ''),
+('sorcier', 1, 'baton-ferre', 1, ''),
+('sorcier', 2, 'dague', 1, ''),
+('sorcier', 3, 'autres', 1, 'Grimoire de sorts ou parchemins anciens'),
+('voleur', 1, 'rapiere', 1, ''),
+('voleur', 2, 'dague', 5, ''),
+('voleur', 3, 'cuir', 1, ''),
+('voleur', 4, 'outil-crochetage', 1, ''),
+('voleur', 5, 'corde-15-m', 1, '');
 
 -- --------------------------------------------------------
 
