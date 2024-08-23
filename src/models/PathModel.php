@@ -78,7 +78,8 @@ class PathModel
   public static function getAllButType($type): array
   {
     $qb = Database::getAll(self::$table);
-    $qb->where("type <> ?");
+    $qb->where("type is null");
+    $qb->orWhere("type <> ?");
 
     $all = [];
     $pdo = Database::getPDO();

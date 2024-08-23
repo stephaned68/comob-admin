@@ -139,6 +139,15 @@ class ProfileController extends AbstractController
 
   public function deleteAction($id = null)
   {
+    $deleteProficiencies = Database::deleteOneQuery("profils_maitrises", [ "profil" ]);
+    Database::raw($deleteProficiencies, [ $id ]);
+
+    $deleteTraits = Database::deleteOneQuery("profils_traits", [ "profil" ]);
+    Database::raw($deleteTraits, [ $id ]);
+
+    $deleteTraits = Database::deleteOneQuery("voies_profils", [ "profil" ]);
+    Database::raw($deleteTraits, [ $id ]);
+
     $success = Database::remove($id,ProfileModel::class,
       [
         "success" => "Le profil a été supprimé avec succès",
